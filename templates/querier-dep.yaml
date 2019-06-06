@@ -1,0 +1,97 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "fullname" . }}-querier
+  labels:
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    cortex: querier
+spec:
+  replicas: {{ .Values.querier.replicas }}
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: {{ template "name" . }}-querier
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "name" . }}-querier
+        release: {{ .Release.Name }}
+        cortex: querier
+    {{- with .Values.querier.podAnnotations }}
+      annotations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    spec:
+      tolerations:
+{{ toYaml .Values.querier.tolerations | indent 8 }}
+      affinity:
+{{ toYaml .Values.querier.affinity | indent 8 }}
+      containers:
+      - name: querier
+        image: "{{ .Values.querier.image.repository }}:{{ .Values.querier.image.tag }}"
+        imagePullPolicy: IfNotPresent
+        args:
+        - -server.http-listen-port=80
+        - -consul.hostname={{ template "fullname" . }}-consul.{{ .Release.Namespace }}.svc.cluster.local:8500
+        # - -querier.frontend-address={{ template "fullname" . }}-query-frontend.{{ .Release.Namespace }}.svc.cluster.local:9095
+        - -querier.query-ingesters-within={{ .Values.querier.queryIngestersWithin }}
+        - -dynamodb.original-table-name={{ index .Values "dynamodb" "original-table-name" }}
+        {{ if not .Values.dynamodbLocal.enabled -}}
+        {{ if .Values.aws.stsEnabled -}}
+        - -dynamodb.url=dynamodb://$(AWS_DEFAULT_REGION)
+        {{- else -}}
+        - -dynamodb.url=dynamodb://$(USER_NAME):$(USER_PASSWORD)@$(AWS_DEFAULT_REGION)
+        {{- end -}}
+        {{- else -}}
+        - -dynamodb.url=dynamodb://user:pass@{{ template "fullname" .}}-dynamodb.{{ .Release.Namespace }}.svc.cluster.local:8000
+        {{- end }}
+
+        {{ if eq .Values.s3.type "local" }}
+        - -s3.url=s3://$(USER_NAME):$(USER_PASSWORD)@{{ .Values.s3.bucketName }}
+        {{ else }}
+        {{ if .Values.aws.stsEnabled }}
+        - -s3.url=s3://{{ .Values.s3.bucketName }}
+        {{ else }}
+        - -s3.url=s3://$(USER_NAME):$(USER_PASSWORD)@{{ .Values.s3.bucketName }}
+        {{ end }}
+        {{ end }}
+{{ include "cortex.tableargs" . | indent 8 }}
+{{ include "cortex.memcachedArgs" . | indent 8 }}
+{{ include "cortex.storeIndexMemcachedArgs" . | indent 8 }}
+        - -distributor.replication-factor={{ .Values.replicationFactor }}
+        - -querier.batch-iterators
+        - -querier.ingester-streaming
+        - -querier.max-concurrent={{ .Values.querier.maxConcurrent }}
+        ports:
+        - containerPort: 80
+          name: http
+        env:
+          - name: AWS_DEFAULT_REGION
+          {{ if .Values.aws.stsEnabled -}}
+            value: "{{ .Values.aws.region }}"
+          {{- else }}
+            valueFrom:
+              secretKeyRef:
+                name: cortex-aws-creds
+                key: AWS_DEFAULT_REGION
+          {{- end }}
+          {{ if not .Values.aws.stsEnabled -}}
+          - name: USER_NAME
+            valueFrom:
+              secretKeyRef:
+                name: cortex-aws-creds
+                key: USER_NAME
+          - name: USER_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: cortex-aws-creds
+                key: USER_PASSWORD
+          {{- end }}
+        resources:
+{{ toYaml .Values.querier.resources | indent 10 }}

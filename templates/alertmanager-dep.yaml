@@ -1,0 +1,48 @@
+---
+{{- if .Values.alertmanager.enabled -}}
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "fullname" . }}-alertmanager
+  labels:
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    cortex: alertmanager
+spec:
+  replicas: {{ .Values.alertmanager.replicas }}
+  selector:
+    matchLabels:
+      app: {{ template "name" . }}-alertmanager
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "name" . }}-alertmanager
+        release: {{ .Release.Name }}
+        cortex: alertmanager
+    {{- with .Values.alertmanager.podAnnotations }}
+      annotations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    spec:
+      tolerations:
+{{ toYaml .Values.alertmanager.tolerations | indent 8 }}
+      affinity:
+{{ toYaml .Values.alertmanager.affinity | indent 8 }}
+      containers:
+      - name: alertmanager
+        image: "{{ .Values.alertmanager.image.repository }}:{{ .Values.alertmanager.image.tag }}"
+        imagePullPolicy: IfNotPresent
+        args:
+        - -alertmanager.configs.url=http://{{ template "fullname" . }}-configs.{{ .Release.Namespace }}.svc.cluster.local:80
+        - -alertmanager.web.external-url=/api/prom/alertmanager
+        - -log.level=debug
+        - -server.http-listen-port=80
+        - -server.register-instrumentation=true
+        ports:
+        - containerPort: 80
+          name: http
+        resources:
+{{ toYaml .Values.alertmanager.resources | indent 10 }}
+{{- end }}
