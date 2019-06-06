@@ -1,0 +1,41 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "fullname" . }}-query-frontend
+  labels:
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    cortex: query-frontend
+spec:
+  replicas: {{ .Values.queryFrontend.replicas }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "name" . }}-query-frontend
+        release: {{ .Release.Name }}
+        cortex: query-frontend
+    {{- with .Values.queryFrontend.podAnnotations }}
+      annotations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    spec:
+      tolerations:
+{{ toYaml .Values.queryFrontend.tolerations | indent 8 }}
+      affinity:
+{{ toYaml .Values.queryFrontend.affinity | indent 8 }}
+      containers:
+      - name: query-frontend
+        image: "{{ .Values.queryFrontend.image.repository }}:{{ .Values.queryFrontend.image.tag }}"
+        imagePullPolicy: IfNotPresent
+        args:
+        - -log.level=debug
+        - -server.http-listen-port=80
+        - -server.grpc-listen-port=9095
+        ports:
+        - containerPort: 9095
+          name: grpc
+        - containerPort: 80
+          name: http
+        resources:
+{{ toYaml .Values.queryFrontend.resources | indent 10 }}

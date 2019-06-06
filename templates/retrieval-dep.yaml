@@ -1,0 +1,51 @@
+---
+{{- if .Values.retrieval.enabled -}}
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "fullname" . }}-retrieval
+  labels:
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    cortex: retrieval
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ template "name" . }}-retrieval
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "name" . }}-retrieval
+        release: {{ .Release.Name }}
+        cortex: retrieval
+    {{- with .Values.retrieval.podAnnotations }}
+      annotations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    spec:
+      serviceAccountName: {{ template "fullname" . }}-retrieval-sa
+      tolerations:
+{{ toYaml .Values.retrieval.tolerations | indent 8 }}
+      affinity:
+{{ toYaml .Values.retrieval.affinity | indent 8 }}
+      containers:
+      - name: retrieval
+        image: "{{ .Values.retrieval.image.repository }}:{{ .Values.retrieval.image.tag }}"
+        imagePullPolicy: IfNotPresent
+        args:
+        - -config.file=/etc/prometheus/prometheus.yml
+        - -web.listen-address=:80
+        ports:
+        - containerPort: 80
+          name: http
+        volumeMounts:
+        - name: config-volume
+          mountPath: /etc/prometheus
+      volumes:
+        - name: config-volume
+          configMap:
+            name: {{ template "fullname" . }}-retrieval-config
+{{- end }}

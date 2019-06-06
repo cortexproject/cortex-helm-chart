@@ -1,0 +1,48 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "fullname" . }}-distributor
+  labels:
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    cortex: distributor
+spec:
+  replicas: {{ .Values.distributor.replicas }}
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: {{ template "name" . }}-distributor
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "name" . }}-distributor
+        release: {{ .Release.Name }}
+        cortex: distributor
+    {{- with .Values.distributor.podAnnotations }}
+      annotations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    spec:
+      tolerations:
+{{ toYaml .Values.distributor.tolerations | indent 8 }}
+      affinity:
+{{ toYaml .Values.distributor.affinity | indent 8 }}
+      containers:
+      - name: distributor
+        image: "{{ .Values.distributor.image.repository }}:{{ .Values.distributor.image.tag }}"
+        imagePullPolicy: IfNotPresent
+        args:
+        - -log.level=debug
+        - -server.http-listen-port=80
+        - -consul.hostname={{ template "fullname" . }}-consul.{{ .Release.Namespace }}.svc.cluster.local:8500
+        - -distributor.replication-factor={{ .Values.replicationFactor }}
+        ports:
+        - containerPort: 80
+          name: http
+        resources:
+{{ toYaml .Values.distributor.resources | indent 10 }}
