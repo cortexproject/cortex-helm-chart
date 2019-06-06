@@ -1,0 +1,65 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "fullname" . }}-consul
+  labels:
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    cortex: consul
+spec:
+  # Only one pod. Ingesters handle data loss well
+  replicas: 1
+  # Ensure we only have one pod running at a time.
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: {{ template "name" . }}-consul
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "name" . }}-consul
+        release: {{ .Release.Name }}
+        cortex: consul
+    {{- with .Values.consul.podAnnotations }}
+      annotations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    spec:
+      tolerations:
+{{ toYaml .Values.consul.tolerations | indent 8 }}
+      affinity:
+{{ toYaml .Values.consul.affinity | indent 8 }}
+      containers:
+      - name: consul
+        image: "{{ .Values.consul.image.repository }}:{{ .Values.consul.image.tag }}"
+        imagePullPolicy: IfNotPresent
+        args:
+        - agent
+        - -ui
+        - -server
+        - -client=0.0.0.0
+        - -bootstrap
+        env:
+        - name: CHECKPOINT_DISABLE
+          value: "1"
+        ports:
+        - name: server-noscrape
+          containerPort: 8300
+        - name: serf-noscrape
+          containerPort: 8301
+        - name: client-noscrape
+          containerPort: 8400
+        - name: http-noscrape
+          containerPort: 8500
+        livenessProbe:
+          exec:
+            command:
+            - consul
+            - members
+          initialDelaySeconds: 300
+          timeoutSeconds: 5
+        resources:
+{{ toYaml .Values.consul.resources | indent 10 }}

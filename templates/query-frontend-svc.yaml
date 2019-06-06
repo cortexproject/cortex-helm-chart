@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "fullname" . }}-query-frontend
+  labels:
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    app: {{ template "name" . }}-query-frontend
+    cortex: query-frontend
+spec:
+  # clusterIP: None gives a "headless" service so DNS returns all endpoints.
+  clusterIP: None
+  ports:
+    - port: 9095
+      name: grpc
+      targetPort: grpc
+    - port: 80
+      name: http
+      targetPort: http
+  selector:
+    app: {{ template "name" . }}-query-frontend
+    release: {{ .Release.Name }}
