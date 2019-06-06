@@ -1,0 +1,17 @@
+---
+{{- if .Values.configsdb.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "fullname" . }}-configs-db
+  labels:
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  ports:
+    - port: 5432
+  selector:
+    app: {{ template "name" . }}-configs-db
+    release: {{ .Release.Name }}
+{{- end }}

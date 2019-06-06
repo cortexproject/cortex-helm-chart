@@ -1,0 +1,147 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "fullname" . }}-table-manager
+  labels:
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    cortex: table-manager
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ template "name" . }}-table-manager
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "name" . }}-table-manager
+        release: {{ .Release.Name }}
+        cortex: table-manager
+    {{- with .Values.tablemanager.podAnnotations }}
+      annotations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    spec:
+      tolerations:
+{{ toYaml .Values.tablemanager.tolerations | indent 8 }}
+      affinity:
+{{ toYaml .Values.tablemanager.affinity | indent 8 }}
+      containers:
+      - name: table-manager
+        image: "{{ .Values.tablemanager.image.repository }}:{{ .Values.tablemanager.image.tag }}"
+        imagePullPolicy: IfNotPresent
+        args:
+        - -server.http-listen-port=80
+        - "-dynamodb.original-table-name={{ .Values.dynamodb.originalTableName }}"
+        - "-dynamodb.periodic-table.inactive-read-throughput={{.Values.dynamodb.tableConfigs.periodic.inactiveReadThroughput.base}}"
+        - "-dynamodb.periodic-table.inactive-write-throughput={{.Values.dynamodb.tableConfigs.periodic.inactiveWriteThroughput.base}}"
+
+        - "-dynamodb.periodic-table.read-throughput={{.Values.dynamodb.tableConfigs.periodic.readThroughput.base}}"
+        - "-dynamodb.periodic-table.write-throughput={{.Values.dynamodb.tableConfigs.periodic.writeThroughput.base}}"
+
+        - "-dynamodb.chunk-table.inactive-read-throughput={{.Values.dynamodb.tableConfigs.chunk.inactiveReadThroughput.base}}"
+        - "-dynamodb.chunk-table.inactive-write-throughput={{.Values.dynamodb.tableConfigs.chunk.inactiveWriteThroughput.base}}"
+
+        - "-dynamodb.chunk-table.read-throughput={{.Values.dynamodb.tableConfigs.chunk.readThroughput.base}}"
+        - "-dynamodb.chunk-table.write-throughput={{.Values.dynamodb.tableConfigs.chunk.writeThroughput.base}}"
+
+        {{ if not .Values.dynamodbLocal.enabled -}}
+
+        {{- if .Values.aws.stsEnabled -}}
+        - -dynamodb.url=dynamodb://$(AWS_DEFAULT_REGION)
+        - -applicationautoscaling.url=autoscaling://$(AWS_DEFAULT_REGION)
+        {{- else -}}
+        - -dynamodb.url=dynamodb://$(USER_NAME):$(USER_PASSWORD)@$(AWS_DEFAULT_REGION)
+        - -applicationautoscaling.url=autoscaling://$(USER_NAME):$(USER_PASSWORD)@$(AWS_DEFAULT_REGION)
+        {{- end -}}
+
+        {{- if .Values.dynamodb.tableConfigs.periodic.inactiveWriteThroughput.scale.enabled }}
+        - -dynamodb.periodic-table.inactive-write-throughput.scale.enabled
+        - "-dynamodb.periodic-table.inactive-write-throughput.scale.min-capacity={{.Values.dynamodb.tableConfigs.periodic.inactiveWriteThroughput.scale.minCapacity}}"
+        - "-dynamodb.periodic-table.inactive-write-throughput.scale.role-arn={{ .Values.dynamodb.autoScalingRoleARN }}"
+        {{- end }}
+
+        {{- if .Values.dynamodb.tableConfigs.periodic.writeThroughput.scale.enabled }}
+        - -dynamodb.periodic-table.write-throughput.scale.enabled
+        - "-dynamodb.periodic-table.write-throughput.scale.min-capacity={{.Values.dynamodb.tableConfigs.periodic.writeThroughput.scale.minCapacity}}"
+        - "-dynamodb.periodic-table.write-throughput.scale.max-capacity={{.Values.dynamodb.tableConfigs.periodic.writeThroughput.scale.maxCapacity}}"
+        - "-dynamodb.periodic-table.write-throughput.scale.role-arn={{ .Values.dynamodb.autoScalingRoleARN }}"
+        {{- end }}
+
+        {{- if .Values.dynamodb.tableConfigs.chunk.inactiveWriteThroughput.scale.enabled }}
+        - -dynamodb.chunk-table.inactive-write-throughput.scale.enabled
+        - "-dynamodb.chunk-table.inactive-write-throughput.scale.min-capacity={{.Values.dynamodb.tableConfigs.chunk.inactiveWriteThroughput.scale.minCapacity}}"
+        - "-dynamodb.chunk-table.inactive-write-throughput.scale.role-arn={{ .Values.dynamodb.autoScalingRoleARN }}"
+        {{- end }}
+
+        {{- if .Values.dynamodb.tableConfigs.chunk.writeThroughput.scale.enabled }}
+        - -dynamodb.chunk-table.write-throughput.scale.enabled
+        - "-dynamodb.chunk-table.write-throughput.scale.min-capacity={{.Values.dynamodb.tableConfigs.chunk.writeThroughput.scale.minCapacity}}"
+        - "-dynamodb.chunk-table.write-throughput.scale.max-capacity={{.Values.dynamodb.tableConfigs.chunk.writeThroughput.scale.maxCapacity}}"
+        - "-dynamodb.chunk-table.write-throughput.scale.role-arn={{ .Values.dynamodb.autoScalingRoleARN }}"
+        {{- end }}
+
+        {{- if .Values.dynamodb.tableConfigs.periodic.inactiveReadThroughput.scale.enabled }}
+        - -dynamodb.periodic-table.inactive-read-throughput.scale.enabled
+        - "-dynamodb.periodic-table.inactive-read-throughput.scale.min-capacity={{.Values.dynamodb.tableConfigs.periodic.inactiveReadThroughput.scale.minCapacity}}"
+        - "-dynamodb.periodic-table.inactive-read-throughput.scale.role-arn={{ .Values.dynamodb.autoScalingRoleARN }}"
+        {{- end }}
+
+        {{- if .Values.dynamodb.tableConfigs.periodic.readThroughput.scale.enabled }}
+        - -dynamodb.periodic-table.read-throughput.scale.enabled
+        - "-dynamodb.periodic-table.read-throughput.scale.min-capacity={{.Values.dynamodb.tableConfigs.periodic.readThroughput.scale.minCapacity}}"
+        - "-dynamodb.periodic-table.read-throughput.scale.max-capacity={{.Values.dynamodb.tableConfigs.periodic.readThroughput.scale.maxCapacity}}"
+        - "-dynamodb.periodic-table.read-throughput.scale.role-arn={{ .Values.dynamodb.autoScalingRoleARN }}"
+        {{- end }}
+
+        {{- if .Values.dynamodb.tableConfigs.chunk.inactiveReadThroughput.scale.enabled }}
+        - -dynamodb.chunk-table.inactive-read-throughput.scale.enabled
+        - "-dynamodb.chunk-table.inactive-read-throughput.scale.min-capacity={{.Values.dynamodb.tableConfigs.chunk.inactiveReadThroughput.scale.minCapacity}}"
+        - "-dynamodb.chunk-table.inactive-read-throughput.scale.role-arn={{ .Values.dynamodb.autoScalingRoleARN }}"
+        {{- end }}
+
+        {{- if .Values.dynamodb.tableConfigs.chunk.readThroughput.scale.enabled }}
+        - -dynamodb.chunk-table.read-throughput.scale.enabled
+        - "-dynamodb.chunk-table.read-throughput.scale.min-capacity={{.Values.dynamodb.tableConfigs.chunk.readThroughput.scale.minCapacity}}"
+        - "-dynamodb.chunk-table.read-throughput.scale.max-capacity={{.Values.dynamodb.tableConfigs.chunk.readThroughput.scale.maxCapacity}}"
+        - "-dynamodb.chunk-table.read-throughput.scale.role-arn={{ .Values.dynamodb.autoScalingRoleARN }}"
+        {{- end }}
+
+        {{- else -}}
+        - -dynamodb.url=dynamodb://user:pass@{{ template "fullname" .}}-dynamodb.{{ .Release.Namespace }}.svc.cluster.local:8000
+        {{- end }}
+{{ include "cortex.tableargs" . | indent 8 }}
+        {{- if .Values.tablemanager.retention.deletesEnabled }}
+        - -table-manager.retention-deletes-enabled={{ .Values.tablemanager.retention.deletesEnabled }}
+        - -table-manager.retention-period={{ .Values.tablemanager.retention.period }}
+        {{- end }}
+        ports:
+        - containerPort: 80
+          name: http
+        env:
+          - name: AWS_DEFAULT_REGION
+          {{ if .Values.aws.stsEnabled -}}
+            value: "{{ .Values.aws.region }}"
+          {{- else }}
+            valueFrom:
+              secretKeyRef:
+                name: cortex-aws-creds
+                key: AWS_DEFAULT_REGION
+          {{- end }}
+          {{ if not .Values.aws.stsEnabled -}}
+          - name: USER_NAME
+            valueFrom:
+              secretKeyRef:
+                name: cortex-aws-creds
+                key: USER_NAME
+          - name: USER_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: cortex-aws-creds
+                key: USER_PASSWORD
+          {{- end }}
+        resources:
+{{ toYaml .Values.tablemanager.resources | indent 10 }}

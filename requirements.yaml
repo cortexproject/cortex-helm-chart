@@ -1,0 +1,10 @@
+dependencies:
+  - name: memcached
+    version: 2.0.1
+    condition: memcached.enabled
+  - name: memcached-index-read
+    version: 2.0.1
+    condition: memcached-index-read.enabled
+  - name: memcached-index-write
+    version: 2.0.1
+    condition: memcached-index-write.enabled

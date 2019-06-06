@@ -1,0 +1,49 @@
+---
+{{- if .Values.configs.enabled -}}
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "fullname" . }}-configs
+  labels:
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    cortex: configs
+spec:
+  replicas: {{ .Values.configs.replicas }}
+  selector:
+    matchLabels:
+      app: {{ template "name" . }}-configs
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "name" . }}-configs
+        release: {{ .Release.Name }}
+        cortex: configs
+    {{- with .Values.configs.podAnnotations }}
+      annotations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    spec:
+      tolerations:
+{{ toYaml .Values.configs.tolerations | indent 8 }}
+      affinity:
+{{ toYaml .Values.configs.affinity | indent 8 }}
+      containers:
+      - name: configs
+        image: "{{ .Values.configs.image.repository }}:{{ .Values.configs.image.tag }}"
+        imagePullPolicy: IfNotPresent
+        args:
+        - -server.http-listen-port=80
+        - -server.register-instrumentation=true
+        {{ if .Values.configsdb.enabled -}}
+        - -database.uri=postgres://postgres@{{ template "fullname" . }}-configs-db.{{ .Release.Namespace }}.svc.cluster.local/configs?sslmode=disable
+        {{- end }}
+        - -database.migrations=/migrations
+        ports:
+        - containerPort: 80
+          name: http
+        resources:
+{{ toYaml .Values.configs.resources | indent 10 }}
+{{- end }}
