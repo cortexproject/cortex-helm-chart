@@ -1,0 +1,39 @@
+---
+{{- if .Values.dynamodbLocal.enabled -}}
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "fullname" . }}-dynamodb
+  labels:
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    cortex: dynamodb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ template "name" . }}-dynamodb
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "name" . }}-dynamodb
+        release: {{ .Release.Name }}
+        cortex: dynamodb
+    {{- with .Values.dynamodbLocal.podAnnotations }}
+      annotations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    spec:
+      tolerations:
+{{ toYaml .Values.dynamodbLocal.tolerations | indent 8 }}
+      affinity:
+{{ toYaml .Values.dynamodbLocal.affinity | indent 8 }}
+      containers:
+      - name: dynamodb
+        image: "{{ .Values.dynamodbLocal.image.repository }}:{{ .Values.dynamodbLocal.image.tag }}"
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8000
+{{- end }}

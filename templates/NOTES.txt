@@ -1,0 +1,33 @@
+Info about this release:
+Release Name = {{ .Release.Name }}
+Release Namespace = {{ .Release.Namespace }}
+
+There are few manual steps for installing this chart correctly:
+
+1) Create a secret "cortex-aws-creds" which contains AWS credentials for IAM user
+   kubectl -n {{ .Release.Namespace }} create secret generic cortex-aws-creds \
+     --from-literal=USER_NAME=<AWS_ACCESS_KEY_ID> \
+     --from-literal=USER_PASSWORD=<URL Encoded AWS_SECRET_ACCESS_KEY> \
+     --from-literal=AWS_DEFAULT_REGION=<AWS_DEFAULT_REGION>
+
+2) If using DynamoDB and/or S3 Local, use the following credentials:
+   USER_NAME = user
+   USER_PASSWORD = pass
+   AWS_DEFAULT_REGION = dummy
+
+List all the things:
+  kubectl -n {{ .Release.Namespace }} get po,svc,cm -o wide
+
+Verify cortex is installed correctly by port-forwarding to nginx Pod
+  kubectl -n {{ .Release.Namespace }} port-forward $(kubectl -n {{ .Release.Namespace }} get pods -l "cortex=nginx" -o jsonpath='{.items[0].metadata.name}') 8080:80
+
+and visiting the Prometheus API:
+
+http://127.0.0.1:8080/api/prom/api/v1/query?query=up
+
+which should list all the metrics "retrieval" is currently collecting.
+
+If you're using DynamoDB local, you can query DynamoDB local to see the tables
+that are created via the following command:
+  kubectl -n {{ .Release.Namespace }} port-forward $(kubectl -n {{ .Release.Namespace }} get pods -l "cortex=dynamodb" -o jsonpath='{.items[0].metadata.name}') 9090:8000
+  AWS_ACCESS_KEY_ID=user AWS_SECRET_ACCESS_KEY=pass AWS_DEFAULT_REGION=dummy aws --endpoint-url http://127.0.0.1:9090 dynamodb list-tables
