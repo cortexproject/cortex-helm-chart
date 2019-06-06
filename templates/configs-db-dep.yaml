@@ -1,0 +1,44 @@
+---
+{{- if .Values.configsdb.enabled -}}
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "fullname" . }}-configs-db
+  labels:
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    cortex: configs-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ template "name" . }}-configs-db
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "name" . }}-configs-db
+        release: {{ .Release.Name }}
+        cortex: configs-db
+    {{- with .Values.configsdb.podAnnotations }}
+      annotations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    spec:
+      tolerations:
+{{ toYaml .Values.configsdb.tolerations | indent 8 }}
+      affinity:
+{{ toYaml .Values.configsdb.affinity | indent 8 }}
+      containers:
+      - name: configs-db
+        image: "{{ .Values.configsdb.image.repository }}:{{ .Values.configsdb.image.tag }}"
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: POSTGRES_DB
+            value: configs
+        ports:
+        - containerPort: 5432
+        resources:
+{{ toYaml .Values.configsdb.resources | indent 10 }}
+{{- end }}

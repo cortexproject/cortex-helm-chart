@@ -1,0 +1,4 @@
+apiVersion: v1
+description: Chart for installing cortex.
+name: cortex
+version: 0.0.1
