@@ -34,8 +34,8 @@ spec:
 {{ toYaml .Values.querier.affinity | indent 8 }}
       containers:
       - name: querier
-        image: "{{ .Values.querier.image.repository }}:{{ .Values.querier.image.tag }}"
-        imagePullPolicy: IfNotPresent
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
         args:
         - -server.http-listen-port=80
         - -consul.hostname={{ template "fullname" . }}-consul.{{ .Release.Namespace }}.svc.cluster.local:8500

@@ -34,8 +34,8 @@ spec:
 {{ toYaml .Values.distributor.affinity | indent 8 }}
       containers:
       - name: distributor
-        image: "{{ .Values.distributor.image.repository }}:{{ .Values.distributor.image.tag }}"
-        imagePullPolicy: IfNotPresent
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
         args:
         - -log.level=debug
         - -server.http-listen-port=80

@@ -1,3 +1,8 @@
+image:
+  repository: quay.io/cortexproject/cortex
+  tag: v0.3.0
+  pullPolicy: IfNotPresent
+
 dynamodb:
   originalTableName: cortex_original
   v9SchemaFrom: 2019-06-05
@@ -79,9 +84,6 @@ aws:
 
 alertmanager:
   enabled: false
-  image:
-    repository: quay.io/cortexproject/alertmanager
-    tag: v0.3.0
   replicas: 1
   podAnnotations:
     sidecar.istio.io/inject: "false"
@@ -139,9 +141,6 @@ configsdb:
 
 configs:
   enabled: false
-  image:
-    repository: quay.io/cortexproject/configs
-    tag: v0.3.0
   replicas: 3
   podAnnotations:
     sidecar.istio.io/inject: "false"
@@ -195,9 +194,6 @@ consul:
 
 distributor:
   replicas: 1
-  image:
-    repository: quay.io/cortexproject/distributor
-    tag: v0.3.0
   podAnnotations:
     sidecar.istio.io/inject: "false"
     prometheus.io/scrape: "true"
@@ -248,9 +244,6 @@ dynamodbLocal:
 
 ingester:
   replicas: 3
-  image:
-    repository: quay.io/cortexproject/ingester
-    tag: v0.3.0
   podAnnotations:
     sidecar.istio.io/inject: "false"
     prometheus.io/scrape: "true"
@@ -375,9 +368,6 @@ memcached-index-write:
 
 querier:
   replicas: 1
-  image:
-    repository: quay.io/cortexproject/querier
-    tag: v0.3.0
   podAnnotations:
     sidecar.istio.io/inject: "false"
     prometheus.io/scrape: "true"
@@ -430,9 +420,6 @@ retrieval:
 
 ruler:
   enabled: false
-  image:
-    repository: quay.io/cortexproject/ruler
-    tag: v0.3.0
   replicas: 1
   podAnnotations:
     sidecar.istio.io/inject: "false"
@@ -460,9 +447,6 @@ ruler:
       cpu: 1
 
 tablemanager:
-  image:
-    repository: quay.io/cortexproject/table-manager
-    tag: v0.3.0
   podAnnotations:
     sidecar.istio.io/inject: "false"
     prometheus.io/scrape: "true"
@@ -514,9 +498,6 @@ queryFrontend:
   # Do not increase until https://github.com/cortexproject/cortex/issues/1150
   # is resolved.
   replicas: 2
-  image:
-    repository: quay.io/cortexproject/query-frontend
-    tag: v0.3.0
   podAnnotations:
     sidecar.istio.io/inject: "false"
     prometheus.io/scrape: "true"

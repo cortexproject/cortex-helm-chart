@@ -32,8 +32,8 @@ spec:
 {{ toYaml .Values.alertmanager.affinity | indent 8 }}
       containers:
       - name: alertmanager
-        image: "{{ .Values.alertmanager.image.repository }}:{{ .Values.alertmanager.image.tag }}"
-        imagePullPolicy: IfNotPresent
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
         args:
         - -alertmanager.configs.url=http://{{ template "fullname" . }}-configs.{{ .Release.Namespace }}.svc.cluster.local:80
         - -alertmanager.web.external-url=/api/prom/alertmanager

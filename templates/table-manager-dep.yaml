@@ -31,8 +31,8 @@ spec:
 {{ toYaml .Values.tablemanager.affinity | indent 8 }}
       containers:
       - name: table-manager
-        image: "{{ .Values.tablemanager.image.repository }}:{{ .Values.tablemanager.image.tag }}"
-        imagePullPolicy: IfNotPresent
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
         args:
         - -server.http-listen-port=80
         - "-dynamodb.original-table-name={{ .Values.dynamodb.originalTableName }}"

@@ -54,8 +54,8 @@ spec:
 
       containers:
       - name: ingester
-        image: "{{ .Values.ingester.image.repository }}:{{ .Values.ingester.image.tag }}"
-        imagePullPolicy: IfNotPresent
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
         args:
         - -ingester.join-after=30s
         - -ingester.claim-on-rollout=true

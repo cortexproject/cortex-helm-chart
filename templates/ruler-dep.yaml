@@ -32,8 +32,8 @@ spec:
 {{ toYaml .Values.ruler.affinity | indent 8 }}
       containers:
       - name: ruler
-        image: "{{ .Values.ruler.image.repository }}:{{ .Values.ruler.image.tag }}"
-        imagePullPolicy: IfNotPresent
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
         args:
         - -log.level=debug
         - -server.http-listen-port=80

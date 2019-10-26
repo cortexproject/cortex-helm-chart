@@ -26,8 +26,8 @@ spec:
 {{ toYaml .Values.queryFrontend.affinity | indent 8 }}
       containers:
       - name: query-frontend
-        image: "{{ .Values.queryFrontend.image.repository }}:{{ .Values.queryFrontend.image.tag }}"
-        imagePullPolicy: IfNotPresent
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
         args:
         - -log.level=debug
         - -server.http-listen-port=80
