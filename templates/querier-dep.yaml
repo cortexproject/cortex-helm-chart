@@ -37,6 +37,7 @@ spec:
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         args:
+        - -target=querier
         - -server.http-listen-port=80
         - -consul.hostname={{ template "fullname" . }}-consul.{{ .Release.Namespace }}.svc.cluster.local:8500
         # - -querier.frontend-address={{ template "fullname" . }}-query-frontend.{{ .Release.Namespace }}.svc.cluster.local:9095

@@ -57,6 +57,7 @@ spec:
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         args:
+        - -target=ingester
         - -ingester.join-after=30s
         - -ingester.claim-on-rollout=true
         - -ingester.search-pending-for=5m

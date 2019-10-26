@@ -34,6 +34,7 @@ spec:
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         args:
+        - -target=table-manager
         - -server.http-listen-port=80
         - "-dynamodb.original-table-name={{ .Values.dynamodb.originalTableName }}"
         - "-dynamodb.periodic-table.inactive-read-throughput={{.Values.dynamodb.tableConfigs.periodic.inactiveReadThroughput.base}}"

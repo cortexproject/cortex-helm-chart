@@ -35,6 +35,7 @@ spec:
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         args:
+        - -target=alertmanager
         - -alertmanager.configs.url=http://{{ template "fullname" . }}-configs.{{ .Release.Namespace }}.svc.cluster.local:80
         - -alertmanager.web.external-url=/api/prom/alertmanager
         - -log.level=debug

@@ -35,6 +35,7 @@ spec:
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         args:
+        - -target=ruler
         - -log.level=debug
         - -server.http-listen-port=80
         - -ruler.num-workers={{ .Values.ruler.workers }}
