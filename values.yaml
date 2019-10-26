@@ -61,20 +61,6 @@ s3:
       image:
         repository: lphoward/fake-s3
         tag: latest
-      tolerations:
-      - key: "dedicated"
-        operator: "Equal"
-        value: "cortex"
-        effect: "NoSchedule"
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-              nodeSelectorTerms:
-              - matchExpressions:
-                - key: dedicated
-                  operator: In
-                  values:
-                  - cortex
 
 replicationFactor: 3
 
@@ -89,20 +75,6 @@ alertmanager:
     sidecar.istio.io/inject: "false"
     prometheus.io/scrape: "true"
     prometheus.io/port: "80"
-  tolerations:
-  - key: "dedicated"
-    operator: "Equal"
-    value: "cortex"
-    effect: "NoSchedule"
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-          - matchExpressions:
-            - key: dedicated
-              operator: In
-              values:
-              - cortex
   resources:
     requests:
       memory: 1Gi
@@ -118,20 +90,6 @@ configsdb:
   podAnnotations:
     prometheus.io.scrape: "false"
     sidecar.istio.io/inject: "false"
-  tolerations:
-  - key: "dedicated"
-    operator: "Equal"
-    value: "cortex"
-    effect: "NoSchedule"
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-          - matchExpressions:
-            - key: dedicated
-              operator: In
-              values:
-              - cortex
   resources:
     requests:
       memory: 1Gi
@@ -144,20 +102,6 @@ configs:
   replicas: 3
   podAnnotations:
     sidecar.istio.io/inject: "false"
-  tolerations:
-  - key: "dedicated"
-    operator: "Equal"
-    value: "cortex"
-    effect: "NoSchedule"
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-          - matchExpressions:
-            - key: dedicated
-              operator: In
-              values:
-              - cortex
   resources:
     requests:
       memory: 128Mi
@@ -171,20 +115,6 @@ consul:
     tag: 1.0.7
   podAnnotations:
     sidecar.istio.io/inject: "false"
-  tolerations:
-  - key: "dedicated"
-    operator: "Equal"
-    value: "cortex"
-    effect: "NoSchedule"
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-          - matchExpressions:
-            - key: dedicated
-              operator: In
-              values:
-              - cortex
   resources:
     requests:
       memory: 512Mi
@@ -198,20 +128,6 @@ distributor:
     sidecar.istio.io/inject: "false"
     prometheus.io/scrape: "true"
     prometheus.io/port: "80"
-  tolerations:
-  - key: "dedicated"
-    operator: "Equal"
-    value: "cortex"
-    effect: "NoSchedule"
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-          - matchExpressions:
-            - key: dedicated
-              operator: In
-              values:
-              - cortex
   resources:
     requests:
       memory: 4Gi
@@ -227,20 +143,6 @@ dynamodbLocal:
   podAnnotations:
     prometheus.io.scrape: "false"
     sidecar.istio.io/inject: "false"
-  tolerations:
-  - key: "dedicated"
-    operator: "Equal"
-    value: "cortex"
-    effect: "NoSchedule"
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-          - matchExpressions:
-            - key: dedicated
-              operator: In
-              values:
-              - cortex
 
 ingester:
   replicas: 3
@@ -248,20 +150,6 @@ ingester:
     sidecar.istio.io/inject: "false"
     prometheus.io/scrape: "true"
     prometheus.io/port: "80"
-  tolerations:
-  - key: "dedicated"
-    operator: "Equal"
-    value: "cortex"
-    effect: "NoSchedule"
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-          - matchExpressions:
-            - key: dedicated
-              operator: In
-              values:
-              - cortex
   resources:
     requests:
       memory: 4Gi
@@ -285,20 +173,6 @@ memcached:
       cpu: 500m
   metrics:
     enabled: true
-  tolerations:
-  - key: "dedicated"
-    operator: "Equal"
-    value: "cortex-memcached"
-    effect: "NoSchedule"
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-          - matchExpressions:
-            - key: dedicated
-              operator: In
-              values:
-              - cortex-memcached
 
 # index read caching
 memcached-index-read:
@@ -318,20 +192,6 @@ memcached-index-read:
       cpu: 500m
   metrics:
     enabled: true
-  tolerations:
-  - key: "dedicated"
-    operator: "Equal"
-    value: "cortex-memcached"
-    effect: "NoSchedule"
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-          - matchExpressions:
-            - key: dedicated
-              operator: In
-              values:
-              - cortex-memcached
 
 # index write caching
 memcached-index-write:
@@ -351,20 +211,6 @@ memcached-index-write:
       cpu: 500m
   metrics:
     enabled: true
-  tolerations:
-  - key: "dedicated"
-    operator: "Equal"
-    value: "cortex-memcached"
-    effect: "NoSchedule"
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-          - matchExpressions:
-            - key: dedicated
-              operator: In
-              values:
-              - cortex-memcached
 
 querier:
   replicas: 1
@@ -373,20 +219,6 @@ querier:
     prometheus.io/scrape: "true"
     prometheus.io/port: "80"
   queryIngestersWithin: 0
-  tolerations:
-  - key: "dedicated"
-    operator: "Equal"
-    value: "cortex"
-    effect: "NoSchedule"
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-          - matchExpressions:
-            - key: dedicated
-              operator: In
-              values:
-              - cortex
   resources:
     requests:
       memory: 1Gi
@@ -403,20 +235,6 @@ retrieval:
     sidecar.istio.io/inject: "false"
     prometheus.io/scrape: "true"
     prometheus.io/port: "80"
-  tolerations:
-  - key: "dedicated"
-    operator: "Equal"
-    value: "cortex"
-    effect: "NoSchedule"
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-          - matchExpressions:
-            - key: dedicated
-              operator: In
-              values:
-              - cortex
 
 ruler:
   enabled: false
@@ -425,20 +243,6 @@ ruler:
     sidecar.istio.io/inject: "false"
   useConfigs: false
   workers: 4
-  tolerations:
-  - key: "dedicated"
-    operator: "Equal"
-    value: "cortex"
-    effect: "NoSchedule"
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-          - matchExpressions:
-            - key: dedicated
-              operator: In
-              values:
-              - cortex
   resources:
     requests:
       memory: 1Gi
@@ -451,19 +255,6 @@ tablemanager:
     sidecar.istio.io/inject: "false"
     prometheus.io/scrape: "true"
     prometheus.io/port: "80"
-  tolerations:
-  - key: "dedicated"
-    operator: "Equal"
-    value: "cortex"
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-          - matchExpressions:
-            - key: dedicated
-              operator: In
-              values:
-              - cortex
   resources:
     requests:
       memory: 256Mi
@@ -479,20 +270,6 @@ nginx:
   enabled: true
   podAnnotations:
     prometheus.io.scrape: "false"
-  tolerations:
-  - key: "dedicated"
-    operator: "Equal"
-    value: "cortex"
-    effect: "NoSchedule"
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-          - matchExpressions:
-            - key: dedicated
-              operator: In
-              values:
-              - cortex
 
 queryFrontend:
   # Do not increase until https://github.com/cortexproject/cortex/issues/1150
@@ -502,20 +279,6 @@ queryFrontend:
     sidecar.istio.io/inject: "false"
     prometheus.io/scrape: "true"
     prometheus.io/port: "80"
-  tolerations:
-  - key: "dedicated"
-    operator: "Equal"
-    value: "cortex"
-    effect: "NoSchedule"
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-          - matchExpressions:
-            - key: dedicated
-              operator: In
-              values:
-              - cortex
   resources:
     requests:
       memory: 1Gi
