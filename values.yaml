@@ -81,7 +81,7 @@ alertmanager:
   enabled: false
   image:
     repository: quay.io/cortexproject/alertmanager
-    tag: master-79bba2f9
+    tag: v0.3.0
   replicas: 1
   podAnnotations:
     sidecar.istio.io/inject: "false"
@@ -141,7 +141,7 @@ configs:
   enabled: false
   image:
     repository: quay.io/cortexproject/configs
-    tag: master-79bba2f9
+    tag: v0.3.0
   replicas: 3
   podAnnotations:
     sidecar.istio.io/inject: "false"
@@ -197,7 +197,7 @@ distributor:
   replicas: 1
   image:
     repository: quay.io/cortexproject/distributor
-    tag: master-79bba2f9
+    tag: v0.3.0
   podAnnotations:
     sidecar.istio.io/inject: "false"
     prometheus.io/scrape: "true"
@@ -250,7 +250,7 @@ ingester:
   replicas: 3
   image:
     repository: quay.io/cortexproject/ingester
-    tag: master-79bba2f9
+    tag: v0.3.0
   podAnnotations:
     sidecar.istio.io/inject: "false"
     prometheus.io/scrape: "true"
@@ -377,7 +377,7 @@ querier:
   replicas: 1
   image:
     repository: quay.io/cortexproject/querier
-    tag: master-79bba2f9
+    tag: v0.3.0
   podAnnotations:
     sidecar.istio.io/inject: "false"
     prometheus.io/scrape: "true"
@@ -432,7 +432,7 @@ ruler:
   enabled: false
   image:
     repository: quay.io/cortexproject/ruler
-    tag: master-79bba2f9
+    tag: v0.3.0
   replicas: 1
   podAnnotations:
     sidecar.istio.io/inject: "false"
@@ -462,7 +462,7 @@ ruler:
 tablemanager:
   image:
     repository: quay.io/cortexproject/table-manager
-    tag: master-79bba2f9
+    tag: v0.3.0
   podAnnotations:
     sidecar.istio.io/inject: "false"
     prometheus.io/scrape: "true"
@@ -516,7 +516,7 @@ queryFrontend:
   replicas: 2
   image:
     repository: quay.io/cortexproject/query-frontend
-    tag: master-79bba2f9
+    tag: v0.3.0
   podAnnotations:
     sidecar.istio.io/inject: "false"
     prometheus.io/scrape: "true"
