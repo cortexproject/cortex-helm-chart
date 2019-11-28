@@ -1,5 +1,5 @@
----
 {{- if .Values.retrieval.enabled -}}
+---
 kind: ConfigMap
 apiVersion: v1
 metadata:

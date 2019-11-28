@@ -1,5 +1,5 @@
----
 {{- if .Values.alertmanager.enabled -}}
+---
 apiVersion: v1
 kind: Service
 metadata:
