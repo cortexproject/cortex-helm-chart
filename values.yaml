@@ -1,5 +1,6 @@
 dynamodb:
   originalTableName: cortex_original
+  v6SchemaFrom: 2006-01-02
   v9SchemaFrom: 2019-06-05
   # Configs used to build table CLI flags for services.
   # Only supports "chunk" and "periodic" tables
@@ -383,6 +384,7 @@ querier:
     prometheus.io/scrape: "true"
     prometheus.io/port: "80"
   queryIngestersWithin: 0
+  maxConcurrent: 20
   tolerations:
   - key: "dedicated"
     operator: "Equal"
