@@ -288,7 +288,7 @@ memcached:
     requests:
       memory: 4Gi
       cpu: 500m
-    limit:
+    limits:
       cpu: 500m
   metrics:
     enabled: true
@@ -321,7 +321,7 @@ memcached-index-read:
     requests:
       memory: 4Gi
       cpu: 500m
-    limit:
+    limits:
       cpu: 500m
   metrics:
     enabled: true
@@ -354,7 +354,7 @@ memcached-index-write:
     requests:
       memory: 4Gi
       cpu: 500m
-    limit:
+    limits:
       cpu: 500m
   metrics:
     enabled: true
