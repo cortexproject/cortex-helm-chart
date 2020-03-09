@@ -36,3 +36,4 @@ To upgrade Cortex use the following command:
 ```bash
   helm upgrade cortex -f my-cortex-values.yaml <path-to-cortex-helm-chart>
 ```
+
