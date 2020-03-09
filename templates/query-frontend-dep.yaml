@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ template "fullname" . }}-query-frontend
@@ -9,6 +9,10 @@ metadata:
     cortex: query-frontend
 spec:
   replicas: {{ .Values.queryFrontend.replicas }}
+  selector:
+    matchLabels:
+      app: {{ template "name" . }}-query-frontend
+      cortex: query-frontend
   template:
     metadata:
       labels:
