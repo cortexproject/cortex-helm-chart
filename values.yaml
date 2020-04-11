@@ -1,543 +1,946 @@
-dynamodb:
-  originalTableName: cortex_original
-  v9SchemaFrom: 2019-06-05
-  # Configs used to build table CLI flags for services.
-  # Only supports "chunk" and "periodic" tables
-  tableConfigs:
-    chunk:
-      prefix: cortex_chunks_
-      tag: "cortex=chunks"
-      period: 168h
-      from: 2019-06-05
-      inactiveWriteThroughput:
-        base: 1
-        scale:
-          enabled: true
-          minCapacity: 3000
-          maxCapacity: 6000
-      inactiveReadThroughput:
-        base: 300
-      readThroughput:
-        base: 300
-      writeThroughput:
-        base: 3000
-        scale:
-          enabled: true
-          minCapacity: 3000
-          maxCapacity: 6000
-    periodic:
-      prefix: cortex_weekly_
-      tag: "cortex=periodic-table"
-      period: 168h
-      from: 2019-06-05
-      inactiveWriteThroughput:
-        base: 1
-        scale:
-          enabled: true
-          minCapacity: 3000
-          maxCapacity: 6000
-      inactiveReadThroughput:
-        base: 300
-      readThroughput:
-        base: 300
-      writeThroughput:
-        base: 3000
-        scale:
-          enabled: true
-          minCapacity: 3000
-          maxCapacity: 6000
+## Container image settings.
+## Since the image is unique for all microservices, so are image settings.
 
-s3:
-  bucketName: cortex
-  # Type options: cloud or local
-  type: local
-  configuration:
-    local:
-      image:
-        repository: lphoward/fake-s3
-        tag: latest
-      tolerations:
-      - key: "dedicated"
-        operator: "Equal"
-        value: "cortex"
-        effect: "NoSchedule"
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-              nodeSelectorTerms:
-              - matchExpressions:
-                - key: dedicated
-                  operator: In
-                  values:
-                  - cortex
+image:
+  repository: quay.io/cortexproject/cortex
+  tag: v1.1.0
+  pullPolicy: IfNotPresent
 
-replicationFactor: 3
+  ## Optionally specify an array of imagePullSecrets.
+  ## Secrets must be manually created in the namespace.
+  ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+  ##
+  # pullSecrets:
+  #   - myRegistrKeySecretName
 
-aws:
-  stsEnabled: false
-  region: "us-west-2"
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: chart-example.local
+      paths:
+        - /
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+serviceAccount:
+  create: true
+  name:
+  annotations: {}
+
+
+config:
+  auth_enabled: false
+  ingester:
+    max_transfer_retries: 0
+    lifecycler:
+      join_after: 0s
+      final_sleep: 0s
+      num_tokens: 512
+      ring:
+        replication_factor: 1
+        kvstore:
+          store: consul
+          prefix: "collectors/"
+          consul:
+            host: "consul:8500"
+            http_client_timeout: "20s"
+            consistent_reads: true
+  limits:
+    enforce_metric_name: false
+    reject_old_samples: true
+    reject_old_samples_max_age: 168h
+  schema:
+    configs:
+    - from: 2019-07-29
+      store: cassandra
+      object_store: cassandra
+      schema: v10
+      index:
+        prefix: index_
+        period: 168h
+  server:
+    http_listen_port: 8080
+    grpc_listen_port: 9095
+    grpc_server_max_recv_msg_size: 104857600
+    grpc_server_max_send_msg_size: 104857600
+    grpc_server_max_concurrent_streams: 1000
+  ingester_client:
+    grpc_client_config:
+      max_recv_msg_size: 104857600
+      max_send_msg_size: 104857600
+      use_gzip_compression: true
+  # See https://github.com/cortexproject/cortex/blob/master/docs/configuration/config-file-reference.md#storage_config
+  storage:
+    cassandra:
+      addresses: # configure cassandra addresses here.
+      keyspace: cortex # configure desired keyspace here.
+      auth: true
+      username: # configure cassandra user here. 
+      password: # configure cassandra password here. 
+    azure:
+      container_name: # configure azure blob container name here. 
+      account_name: # configure azure storage account name here. 
+      account_key: # configure azure storage account key here. 
+    # aws:
+    #   dynamodb:
+    #     dynamodb_url: 
+    #     api_limit: 
+    #     throttle_limit: 
+    #     metrics:
+    #       url: 
+    #       target_queue_length: 
+    #       scale_up_factor: 
+    #       ignore_throttle_below: 
+    #       queue_length_query: 
+    #       write_throttle_query: 
+    #       write_usage_query: 
+    #       read_usage_query: 
+    #       read_error_query: 
+    #     chunk_gang_size: 
+    #     chunk_get_max_parallelism: 
+    #   s3: 
+    #   bucketnames: 
+    #   s3forcepathstyle: 
+    index_queries_cache_config:
+      memcached:
+        expiration: 1h
+      memcached_client:
+        timeout: 1s
+  chunk_store:
+    max_look_back_period: 0s
+    chunk_cache_config:
+      memcached:
+        expiration: 1h
+      memcached_client:
+        timeout: 1s
+  table_manager:
+    retention_deletes_enabled: false
+    retention_period: 0s
+  distributor:
+    shard_by_all_labels: true
+    pool: 
+      health_check_ingesters: true
+  querier:
+    active_query_tracker_dir: /data/cortex/querier
+    query_ingesters_within: 12h
+  query_range:
+    split_queries_by_interval: 24h
+    align_queries_with_step: true
+    cache_results: true
+    results_cache:
+      max_freshness: 1m
+      cache:
+        memcached:
+          expiration: 1h
+        memcached_client:
+          timeout: 1s
+  alertmanager:
+    external_url: "/api/prom/alertmanager"
+  frontend:
+    #max_outstanding_per_tenant: 1000
+    log_queries_longer_than: 10s
+    compress_responses: true
+
+rbac:
+  create: true
+  pspEnabled: true
 
 alertmanager:
-  enabled: false
-  image:
-    repository: quay.io/cortexproject/alertmanager
-    tag: master-79bba2f9
   replicas: 1
+
+  service:
+    port: 80
+    annotations: {}
+    labels: {}
+
+  resources:
+    limits:
+      cpu: 200m
+      memory: 256Mi
+    requests:
+      cpu: 10m
+      memory: 32Mi
+
+  ## Additional Loki container arguments, e.g. log level (debug, info, warn, error)
+  extraArgs: {}
+    # log.level: debug
+
+  ## Pod Labels
+  podLabels: {}
+
+  ## Pod Annotations
   podAnnotations:
-    sidecar.istio.io/inject: "false"
     prometheus.io/scrape: "true"
-    prometheus.io/port: "80"
-  tolerations:
-  - key: "dedicated"
-    operator: "Equal"
-    value: "cortex"
-    effect: "NoSchedule"
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-          - matchExpressions:
-            - key: dedicated
-              operator: In
-              values:
-              - cortex
-  resources:
-    requests:
-      memory: 1Gi
-      cpu: 4
-    limits:
-      cpu: 4
+    prometheus.io/port: "http-metrics"
 
-configsdb:
-  enabled: false
-  image:
-    repository: postgres
-    tag: 9.6
-  podAnnotations:
-    prometheus.io.scrape: "false"
-    sidecar.istio.io/inject: "false"
-  tolerations:
-  - key: "dedicated"
-    operator: "Equal"
-    value: "cortex"
-    effect: "NoSchedule"
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-          - matchExpressions:
-            - key: dedicated
-              operator: In
-              values:
-              - cortex
-  resources:
-    requests:
-      memory: 1Gi
-      cpu: 250m
-    limits:
-      cpu: 250m
+  nodeSelector: {}
+  affinity: {}
+  annotations: {}
+  persistence:
+    subPath: 
 
-configs:
-  enabled: false
-  image:
-    repository: quay.io/cortexproject/configs
-    tag: master-79bba2f9
-  replicas: 3
-  podAnnotations:
-    sidecar.istio.io/inject: "false"
-  tolerations:
-  - key: "dedicated"
-    operator: "Equal"
-    value: "cortex"
-    effect: "NoSchedule"
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-          - matchExpressions:
-            - key: dedicated
-              operator: In
-              values:
-              - cortex
-  resources:
-    requests:
-      memory: 128Mi
-      cpu: 250m
-    limits:
-      cpu: 250m
+  livenessProbe:
+    httpGet:
+      path: /ready
+      port: http-metrics
+    initialDelaySeconds: 45
+  readinessProbe:
+    httpGet:
+      path: /ready
+      port: http-metrics
+    initialDelaySeconds: 45
 
-consul:
-  image:
-    repository: consul
-    tag: 1.0.7
-  podAnnotations:
-    sidecar.istio.io/inject: "false"
-  tolerations:
-  - key: "dedicated"
-    operator: "Equal"
-    value: "cortex"
-    effect: "NoSchedule"
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-          - matchExpressions:
-            - key: dedicated
-              operator: In
-              values:
-              - cortex
-  resources:
-    requests:
-      memory: 512Mi
-      cpu: 1
-    limits:
-      cpu: 1
+  securityContext: {}
+    #fsGroup: 10001
+    #runAsGroup: 10001
+    #runAsNonRoot: true
+    #runAsUser: 10001
+
+  ## Tolerations for pod assignment
+  ## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
+  tolerations: []
+
+  # The values to set in the PodDisruptionBudget spec
+  # If not set then a PodDisruptionBudget will not be created
+  podDisruptionBudget: {}
+  # minAvailable: 1
+  # maxUnavailable: 1
+
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 1
+
+  terminationGracePeriodSeconds: 60
+
+  initContainers: []
+  ## Init containers to be added to the cortex pod.
+  # - name: my-init-container
+  #   image: busybox:latest
+  #   command: ['sh', '-c', 'echo hello']
+
+  extraContainers: []
+  ## Additional containers to be added to the cortex pod.
+  # - name: reverse-proxy
+  #   image: angelbarrera92/basic-auth-reverse-proxy:dev
+  #   args:
+  #     - "serve"
+  #     - "--upstream=http://localhost:3100"
+  #     - "--auth-config=/etc/reverse-proxy-conf/authn.yaml"
+  #   ports:
+  #     - name: http
+  #       containerPort: 11811
+  #       protocol: TCP
+  #   volumeMounts:
+  #     - name: reverse-proxy-auth-config
+  #       mountPath: /etc/reverse-proxy-conf
+
+
+  extraVolumes: []
+  ## Additional volumes to the cortex pod.
+  # - name: reverse-proxy-auth-config
+  #   secret:
+  #     secretName: reverse-proxy-auth-config
+
+  ## Extra volume mounts that will be added to the cortex container
+  extraVolumeMounts: []
+
+  extraPorts: []
+  ## Additional ports to the cortex services. Useful to expose extra container ports.
+  # - port: 11811
+  #   protocol: TCP
+  #   name: http
+  #   targetPort: http
+
+  # Extra env variables to pass to the cortex container
+  env: []
 
 distributor:
-  replicas: 1
-  image:
-    repository: quay.io/cortexproject/distributor
-    tag: master-79bba2f9
-  podAnnotations:
-    sidecar.istio.io/inject: "false"
-    prometheus.io/scrape: "true"
-    prometheus.io/port: "80"
-  tolerations:
-  - key: "dedicated"
-    operator: "Equal"
-    value: "cortex"
-    effect: "NoSchedule"
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-          - matchExpressions:
-            - key: dedicated
-              operator: In
-              values:
-              - cortex
-  resources:
-    requests:
-      memory: 4Gi
-      cpu: 4
-    limits:
-      cpu: 4
+  replicas: 2
 
-dynamodbLocal:
-  enabled: true
-  image:
-    repository: deangiberson/aws-dynamodb-local
-    tag: latest
+  service:
+    port: 80
+    annotations: {}
+    labels: {}
+
+  resources:
+    limits:
+      cpu: 1
+      memory: 1Gi
+    requests:
+      cpu: 100m
+      memory: 512Mi
+
+  ## Additional Loki container arguments, e.g. log level (debug, info, warn, error)
+  extraArgs: {}
+    # log.level: debug
+
+  ## Pod Labels
+  podLabels: {}
+
+  ## Pod Annotations
   podAnnotations:
-    prometheus.io.scrape: "false"
-    sidecar.istio.io/inject: "false"
-  tolerations:
-  - key: "dedicated"
-    operator: "Equal"
-    value: "cortex"
-    effect: "NoSchedule"
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "http-metrics"
+
+  nodeSelector: {}
   affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-          - matchExpressions:
-            - key: dedicated
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+            - key: target
               operator: In
               values:
-              - cortex
+              - distributor
+          topologyKey: "kubernetes.io/hostname"
+
+  annotations: {}
+  persistence:
+    subPath: 
+
+  livenessProbe:
+    httpGet:
+      path: /ready
+      port: http-metrics
+    initialDelaySeconds: 45
+  readinessProbe:
+    httpGet:
+      path: /ready
+      port: http-metrics
+    initialDelaySeconds: 45
+
+  securityContext: {}
+
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 1
+
+  terminationGracePeriodSeconds: 60
+
+  tolerations: []
+  podDisruptionBudget: {}
+  initContainers: []
+  extraContainers: []
+  extraVolumes: []
+  extraVolumeMounts: []
+  extraPorts: []
+  env: []
 
 ingester:
   replicas: 3
-  image:
-    repository: quay.io/cortexproject/ingester
-    tag: master-79bba2f9
+
+  service:
+    port: 80
+    annotations: {}
+    labels: {}
+
+  resources:
+    limits:
+      cpu: 1
+      memory: 1Gi
+    requests:
+      cpu: 100m
+      memory: 512Mi
+
+  ## Additional Loki container arguments, e.g. log level (debug, info, warn, error)
+  extraArgs: {}
+    # log.level: debug
+
+  ## Pod Labels
+  podLabels: {}
+
+  ## Pod Annotations
   podAnnotations:
-    sidecar.istio.io/inject: "false"
     prometheus.io/scrape: "true"
-    prometheus.io/port: "80"
-  tolerations:
-  - key: "dedicated"
-    operator: "Equal"
-    value: "cortex"
-    effect: "NoSchedule"
+    prometheus.io/port: "http-metrics"
+
+  nodeSelector: {}
   affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-          - matchExpressions:
-            - key: dedicated
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+            - key: target
               operator: In
               values:
-              - cortex
+              - ingester
+          topologyKey: "kubernetes.io/hostname"
+
+  annotations: {}
+  persistence:
+    subPath: 
+
+  livenessProbe:
+    failureThreshold: 20 # 10 minutes failure threshold
+    httpGet:
+      path: /ready
+      port: http-metrics
+      scheme: HTTP
+    initialDelaySeconds: 180
+    periodSeconds: 30
+    successThreshold: 1
+    timeoutSeconds: 1
+  readinessProbe:
+    httpGet:
+      path: /ready
+      port: http-metrics
+    initialDelaySeconds: 60
+
+  securityContext: {}
+
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 1
+
+  terminationGracePeriodSeconds: 240
+
+  tolerations: []
+  podDisruptionBudget: {}
+  initContainers: []
+  extraContainers: []
+  extraVolumes: []
+  extraVolumeMounts: []
+  extraPorts: []
+  env: []
+
+ruler:
+  replicas: 1
+
+  service:
+    port: 80
+    annotations: {}
+    labels: {}
+
   resources:
-    requests:
-      memory: 4Gi
-      cpu: 4
     limits:
-      cpu: 4
+      cpu: 200m
+      memory: 256Mi
+    requests:
+      cpu: 10m
+      memory: 32Mi
+
+  ## Additional Loki container arguments, e.g. log level (debug, info, warn, error)
+  extraArgs: {}
+    # log.level: debug
+
+  ## Pod Labels
+  podLabels: {}
+
+  ## Pod Annotations
+  podAnnotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "http-metrics"
+
+  nodeSelector: {}
+  affinity: {}
+  annotations: {}
+  persistence:
+    subPath: 
+
+  livenessProbe:
+    httpGet:
+      path: /ready
+      port: http-metrics
+    initialDelaySeconds: 45
+  readinessProbe:
+    httpGet:
+      path: /ready
+      port: http-metrics
+    initialDelaySeconds: 45
+
+  securityContext: {}
+
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 1
+
+  terminationGracePeriodSeconds: 180
+
+  tolerations: []
+  podDisruptionBudget: {}
+  initContainers: []
+  extraContainers: []
+  extraVolumes: []
+  extraVolumeMounts: []
+  extraPorts: []
+  env: []
+
+querier:
+  replicas: 2
+
+  service:
+    port: 80
+    annotations: {}
+    labels: {}
+
+  resources:
+    limits:
+      cpu: 1
+      memory: 1Gi
+    requests:
+      cpu: 50m
+      memory: 128Mi
+
+  ## Additional Loki container arguments, e.g. log level (debug, info, warn, error)
+  extraArgs: {}
+    # log.level: debug
+
+  ## Pod Labels
+  podLabels: {}
+
+  ## Pod Annotations
+  podAnnotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "http-metrics"
+
+  nodeSelector: {}
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+            - key: target
+              operator: In
+              values:
+              - querier
+          topologyKey: "kubernetes.io/hostname"
+
+  annotations: {}
+  persistence:
+    subPath: 
+
+  livenessProbe:
+    httpGet:
+      path: /ready
+      port: http-metrics
+    initialDelaySeconds: 45
+  readinessProbe:
+    httpGet:
+      path: /ready
+      port: http-metrics
+    initialDelaySeconds: 45
+
+  securityContext: {}
+
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 1
+
+  terminationGracePeriodSeconds: 180
+
+  tolerations: []
+  podDisruptionBudget: {}
+  initContainers: []
+  extraContainers: []
+  extraVolumes: []
+  extraVolumeMounts: []
+  extraPorts: []
+  env: []
+
+query_frontend:
+  replicas: 2
+
+  service:
+    http_port: 80
+    grpc_port: 9095
+    annotations: {}
+    labels: {}
+
+  resources:
+    limits:
+      cpu: 1
+      memory: 256Mi
+    requests:
+      cpu: 10m
+      memory: 32Mi
+
+  ## Additional Loki container arguments, e.g. log level (debug, info, warn, error)
+  extraArgs: {}
+    # log.level: debug
+
+  ## Pod Labels
+  podLabels: {}
+
+  ## Pod Annotations
+  podAnnotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "http-metrics"
+
+  nodeSelector: {}
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+            - key: target
+              operator: In
+              values:
+              - query-frontend
+          topologyKey: "kubernetes.io/hostname"
+
+  annotations: {}
+  persistence:
+    subPath: 
+
+  livenessProbe:
+    httpGet:
+      path: /ready
+      port: http-metrics
+    initialDelaySeconds: 45
+  readinessProbe:
+    httpGet:
+      path: /ready
+      port: http-metrics
+    initialDelaySeconds: 45
+
+  securityContext: {}
+
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 1
+
+  terminationGracePeriodSeconds: 180
+
+  tolerations: []
+  podDisruptionBudget: {}
+  initContainers: []
+  extraContainers: []
+  extraVolumes: []
+  extraVolumeMounts: []
+  extraPorts: []
+  env: []
+
+table_manager:
+  replicas: 1
+
+  service:
+    port: 80
+    annotations: {}
+    labels: {}
+
+  resources:
+    limits:
+      cpu: 1
+      memory: 1Gi
+    requests:
+      cpu: 10m
+      memory: 32Mi
+
+  ## Additional Loki container arguments, e.g. log level (debug, info, warn, error)
+  extraArgs: {}
+    # log.level: debug
+
+  ## Pod Labels
+  podLabels: {}
+
+  ## Pod Annotations
+  podAnnotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "http-metrics"
+
+  nodeSelector: {}
+  affinity: {}
+  annotations: {}
+  persistence:
+    subPath: 
+
+  livenessProbe:
+    httpGet:
+      path: /ready
+      port: http-metrics
+    initialDelaySeconds: 45
+  readinessProbe:
+    httpGet:
+      path: /ready
+      port: http-metrics
+    initialDelaySeconds: 45
+
+  securityContext: {}
+
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 1
+
+  terminationGracePeriodSeconds: 180
+
+  tolerations: []
+  podDisruptionBudget: {}
+  initContainers: []
+  extraContainers: []
+  extraVolumes: []
+  extraVolumeMounts: []
+  extraPorts: []
+  env: []
+
+configs:
+  replicas: 1
+
+  service:
+    port: 80
+    annotations: {}
+    labels: {}
+
+  resources:
+    limits:
+      cpu: 1
+      memory: 1Gi
+    requests:
+      cpu: 10m
+      memory: 32Mi
+
+  ## Additional Loki container arguments, e.g. log level (debug, info, warn, error)
+  extraArgs: {}
+    # log.level: debug
+
+  ## Pod Labels
+  podLabels: {}
+
+  ## Pod Annotations
+  podAnnotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "http-metrics"
+
+  nodeSelector: {}
+  affinity: {}
+  annotations: {}
+  persistence:
+    subPath: 
+
+  livenessProbe:
+    httpGet:
+      path: /ready
+      port: http-metrics
+    initialDelaySeconds: 45
+  readinessProbe:
+    httpGet:
+      path: /ready
+      port: http-metrics
+    initialDelaySeconds: 45
+
+  securityContext: {}
+
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 1
+
+  terminationGracePeriodSeconds: 180
+
+  tolerations: []
+  podDisruptionBudget: {}
+  initContainers: []
+  extraContainers: []
+  extraVolumes: []
+  extraVolumeMounts: []
+  extraPorts: []
+  env: []
+
+nginx:
+  replicas: 2
+  http_listen_port: 80
+  image:
+    repository: nginx
+    tag: 1.17
+    pullPolicy: IfNotPresent
+
+  service:
+    port: 80
+    annotations: {}
+    labels: {}
+
+  resources:
+    limits:
+      cpu: 100m
+      memory: 128Mi
+    requests:
+      cpu: 10m
+      memory: 16Mi
+
+  ## Additional Loki container arguments, e.g. log level (debug, info, warn, error)
+  extraArgs: {}
+    # log.level: debug
+
+  ## Pod Labels
+  podLabels: {}
+
+  ## Pod Annotations
+  podAnnotations:
+    prometheus.io/scrape: ""
+    prometheus.io/port: "http-metrics"
+
+  nodeSelector: {}
+  affinity: {}
+  annotations: {}
+  persistence:
+    subPath: 
+
+  livenessProbe:
+    httpGet:
+      path: /healthz
+      port: http-metrics
+    initialDelaySeconds: 10
+  readinessProbe:
+    httpGet:
+      path: /healthz
+      port: http-metrics
+    initialDelaySeconds: 10
+
+  securityContext: {}
+
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 1
+
+  terminationGracePeriodSeconds: 10
+
+  tolerations: []
+  podDisruptionBudget: {}
+  initContainers: []
+  extraContainers: []
+  extraVolumes: []
+  extraVolumeMounts: []
+  extraPorts: []
+  env: []
 
 # chunk caching
 memcached:
-  replicaCount: 1
+  enabled: false
+  replicaCount: 2
   pdbMinAvailable: 1
-  enabled: true
   memcached:
     maxItemMemory: 3840
+    extraArgs:
+      - -I 32m
     threads: 32
   resources:
     requests:
+      memory: 1Gi
+      cpu: 10m
+    limits:
       memory: 4Gi
-      cpu: 500m
-    limit:
-      cpu: 500m
+      cpu: 1
   metrics:
     enabled: true
-  tolerations:
-  - key: "dedicated"
-    operator: "Equal"
-    value: "cortex-memcached"
-    effect: "NoSchedule"
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-          - matchExpressions:
-            - key: dedicated
-              operator: In
-              values:
-              - cortex-memcached
+  #tolerations: {}
+  # - key: "dedicated"
+  #   operator: "Equal"
+  #   value: "cortex-memcached"
+  #   effect: "NoSchedule"
+  #affinity: {}
+  #   nodeAffinity:
+  #     requiredDuringSchedulingIgnoredDuringExecution:
+  #         nodeSelectorTerms:
+  #         - matchExpressions:
+  #           - key: dedicated
+  #             operator: In
+  #             values:
+  #             - cortex-memcached
 
 # index read caching
 memcached-index-read:
-  replicaCount: 1
-  pdbMinAvailable: 1
-  enabled: true
-  image: memcached:1.5.7-alpine
+  enabled: false
+  replicaCount: 2
+  #pdbMinAvailable: 1
+  #image: memcached:1.5.7-alpine
   memcached:
     maxItemMemory: 3840
-    maxItemSize: 32m
+    extraArgs:
+      - -I 32m
     threads: 32
   resources:
     requests:
+      memory: 1Gi
+      cpu: 10m
+    limits:
       memory: 4Gi
-      cpu: 500m
-    limit:
-      cpu: 500m
+      cpu: 1
   metrics:
     enabled: true
-  tolerations:
-  - key: "dedicated"
-    operator: "Equal"
-    value: "cortex-memcached"
-    effect: "NoSchedule"
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-          - matchExpressions:
-            - key: dedicated
-              operator: In
-              values:
-              - cortex-memcached
+  #tolerations: []
+  # - key: "dedicated"
+  #   operator: "Equal"
+  #   value: "cortex-memcached"
+  #   effect: "NoSchedule"
+  #affinity: {}
+  #   nodeAffinity:
+  #     requiredDuringSchedulingIgnoredDuringExecution:
+  #         nodeSelectorTerms:
+  #         - matchExpressions:
+  #           - key: dedicated
+  #             operator: In
+  #             values:
+  #             - cortex-memcached
 
 # index write caching
 memcached-index-write:
-  replicaCount: 1
-  pdbMinAvailable: 1
-  enabled: true
-  image: memcached:1.5.7-alpine
+  enabled: false
+  replicaCount: 2
+  #dpdbMinAvailable: 1
+  #image: memcached:1.5.7-alpine
   memcached:
     maxItemMemory: 3840
-    maxItemSize: 32m
+    extraArgs:
+      - -I 32m
     threads: 32
   resources:
     requests:
+      memory: 1Gi
+      cpu: 10m
+    limits:
       memory: 4Gi
-      cpu: 500m
-    limit:
-      cpu: 500m
+      cpu: 1
   metrics:
     enabled: true
-  tolerations:
-  - key: "dedicated"
-    operator: "Equal"
-    value: "cortex-memcached"
-    effect: "NoSchedule"
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-          - matchExpressions:
-            - key: dedicated
-              operator: In
-              values:
-              - cortex-memcached
+  #tolerations: []
+  # - key: "dedicated"
+  #   operator: "Equal"
+  #   value: "cortex-memcached"
+  #   effect: "NoSchedule"
+  # affinity: {}
+  #   nodeAffinity:
+  #     requiredDuringSchedulingIgnoredDuringExecution:
+  #         nodeSelectorTerms:
+  #         - matchExpressions:
+  #           - key: dedicated
+  #             operator: In
+  #             values:
+  #             - cortex-memcached
 
-querier:
-  replicas: 1
-  image:
-    repository: quay.io/cortexproject/querier
-    tag: master-79bba2f9
-  podAnnotations:
-    sidecar.istio.io/inject: "false"
-    prometheus.io/scrape: "true"
-    prometheus.io/port: "80"
-  queryIngestersWithin: 0
-  tolerations:
-  - key: "dedicated"
-    operator: "Equal"
-    value: "cortex"
-    effect: "NoSchedule"
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-          - matchExpressions:
-            - key: dedicated
-              operator: In
-              values:
-              - cortex
-  resources:
-    requests:
-      memory: 1Gi
-      cpu: 1
-    limits:
-      cpu: 1
-
-retrieval:
-  enabled: true
-  image:
-    repository: prom/prometheus
-    tag: v1.4.1
-  podAnnotations:
-    sidecar.istio.io/inject: "false"
-    prometheus.io/scrape: "true"
-    prometheus.io/port: "80"
-  tolerations:
-  - key: "dedicated"
-    operator: "Equal"
-    value: "cortex"
-    effect: "NoSchedule"
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-          - matchExpressions:
-            - key: dedicated
-              operator: In
-              values:
-              - cortex
-
-ruler:
+configsdb_postgresql:
   enabled: false
-  image:
-    repository: quay.io/cortexproject/ruler
-    tag: master-79bba2f9
-  replicas: 1
-  podAnnotations:
-    sidecar.istio.io/inject: "false"
-  useConfigs: false
-  workers: 4
-  tolerations:
-  - key: "dedicated"
-    operator: "Equal"
-    value: "cortex"
-    effect: "NoSchedule"
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-          - matchExpressions:
-            - key: dedicated
-              operator: In
-              values:
-              - cortex
-  resources:
-    requests:
-      memory: 1Gi
-      cpu: 1
-    limits:
-      cpu: 1
-
-tablemanager:
-  image:
-    repository: quay.io/cortexproject/table-manager
-    tag: master-79bba2f9
-  podAnnotations:
-    sidecar.istio.io/inject: "false"
-    prometheus.io/scrape: "true"
-    prometheus.io/port: "80"
-  tolerations:
-  - key: "dedicated"
-    operator: "Equal"
-    value: "cortex"
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-          - matchExpressions:
-            - key: dedicated
-              operator: In
-              values:
-              - cortex
-  resources:
-    requests:
-      memory: 256Mi
-      cpu: 200m
-    limits:
-      cpu: 200m
-  retention:
-    deletesEnabled: false
-    period: 1080h
-
-
-nginx:
-  enabled: true
-  podAnnotations:
-    prometheus.io.scrape: "false"
-  tolerations:
-  - key: "dedicated"
-    operator: "Equal"
-    value: "cortex"
-    effect: "NoSchedule"
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-          - matchExpressions:
-            - key: dedicated
-              operator: In
-              values:
-              - cortex
-
-queryFrontend:
-  # Do not increase until https://github.com/cortexproject/cortex/issues/1150
-  # is resolved.
-  replicas: 2
-  image:
-    repository: quay.io/cortexproject/query-frontend
-    tag: master-79bba2f9
-  podAnnotations:
-    sidecar.istio.io/inject: "false"
-    prometheus.io/scrape: "true"
-    prometheus.io/port: "80"
-  tolerations:
-  - key: "dedicated"
-    operator: "Equal"
-    value: "cortex"
-    effect: "NoSchedule"
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-          - matchExpressions:
-            - key: dedicated
-              operator: In
-              values:
-              - cortex
-  resources:
-    requests:
-      memory: 1Gi
-      cpu: 1
-    limits:
-      cpu: 1
+  uri:
+  auth:
+    password:
+    existing_secret:
+      name:
+      key:

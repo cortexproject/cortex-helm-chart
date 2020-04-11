@@ -1,21 +1,25 @@
----
-{{- if .Values.nginx.enabled -}}
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "fullname" . }}-nginx
+  name: {{ template "cortex.fullname" . }}
+  namespace: {{ .Release.Namespace }}
   labels:
-    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    app: {{ template "cortex.name" . }}-nginx
+    chart: {{ template "cortex.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
-    app: {{ template "name" . }}-nginx
-    cortex: nginx
+    {{- with .Values.nginx.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  annotations:
+    {{- toYaml .Values.nginx.annotations | nindent 4 }}
 spec:
-  type: NodePort
+  type: ClusterIP
   ports:
-  - name: http
-    port: 80
-    nodePort: 30080
+    - port: {{ .Values.nginx.service.port }}
+      protocol: TCP
+      name: http-metrics
+      targetPort: http-metrics
   selector:
-    name: nginx
-{{- end }}
+    app: {{ template "cortex.name" . }}-nginx
+    release: {{ .Release.Name }}
