@@ -495,6 +495,8 @@ nginx:
   enabled: true
   podAnnotations:
     prometheus.io.scrape: "false"
+  config:
+    dnsResolver: kube-dns.kube-system.svc.cluster.local
   tolerations:
   - key: "dedicated"
     operator: "Equal"
