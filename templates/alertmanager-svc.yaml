@@ -1,20 +1,25 @@
----
-{{- if .Values.alertmanager.enabled -}}
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "fullname" . }}-alertmanager
+  name: {{ template "cortex.fullname" . }}-alertmanager
+  namespace: {{ .Release.Namespace }}
   labels:
-    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    app: {{ template "cortex.name" . }}-alertmanager
+    chart: {{ template "cortex.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
-    cortex: alertmanager
+    {{- with .Values.alertmanager.service.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  annotations:
+    {{- toYaml .Values.alertmanager.service.annotations | nindent 4 }}
 spec:
+  type: ClusterIP
   ports:
-    - port: 80
-      name: http
-      targetPort: http
+    - port: {{ .Values.alertmanager.service.port }}
+      protocol: TCP
+      name: http-metrics
+      targetPort: http-metrics
   selector:
-    app: {{ template "name" . }}-alertmanager
+    app: {{ template "cortex.name" . }}-alertmanager
     release: {{ .Release.Name }}
-{{- end }}

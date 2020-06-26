@@ -1,48 +1,104 @@
----
-{{- if .Values.alertmanager.enabled -}}
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ template "fullname" . }}-alertmanager
+  name: {{ template "cortex.fullname" . }}-alertmanager
+  namespace: {{ .Release.Namespace }}
   labels:
-    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    app: {{ template "cortex.name" . }}-alertmanager
+    chart: {{ template "cortex.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
-    cortex: alertmanager
+  annotations:
+    {{- toYaml .Values.alertmanager.annotations | nindent 4 }}
 spec:
   replicas: {{ .Values.alertmanager.replicas }}
   selector:
     matchLabels:
-      app: {{ template "name" . }}-alertmanager
+      app: {{ template "cortex.name" . }}-alertmanager
       release: {{ .Release.Name }}
+  strategy:
+    {{- toYaml .Values.alertmanager.strategy | nindent 4 }}
   template:
     metadata:
       labels:
-        app: {{ template "name" . }}-alertmanager
+        app: {{ template "cortex.name" . }}-alertmanager
+        name: {{ template "cortex.name" . }}-alertmanager
         release: {{ .Release.Name }}
-        cortex: alertmanager
-    {{- with .Values.alertmanager.podAnnotations }}
+        {{- with .Values.alertmanager.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
       annotations:
-{{ toYaml . | indent 8 }}
-    {{- end }}
+        checksum/config: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+        {{- with .Values.alertmanager.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
     spec:
-      tolerations:
-{{ toYaml .Values.alertmanager.tolerations | indent 8 }}
-      affinity:
-{{ toYaml .Values.alertmanager.affinity | indent 8 }}
+      serviceAccountName: {{ template "cortex.serviceAccountName" . }}
+    {{- if .Values.alertmanager.priorityClassName }}
+      priorityClassName: {{ .Values.query_frontend.priorityClassName }}
+    {{- end }}
+      securityContext:
+        {{- toYaml .Values.alertmanager.securityContext | nindent 8 }}
+      initContainers:
+        {{- toYaml .Values.alertmanager.initContainers | nindent 8 }}
+      {{- if .Values.image.pullSecrets }}
+      imagePullSecrets:
+      {{- range .Values.image.pullSecrets }}
+        - name: {{ . }}
+      {{- end}}
+      {{- end }}
       containers:
-      - name: alertmanager
-        image: "{{ .Values.alertmanager.image.repository }}:{{ .Values.alertmanager.image.tag }}"
-        imagePullPolicy: IfNotPresent
-        args:
-        - -alertmanager.configs.url=http://{{ template "fullname" . }}-configs.{{ .Release.Namespace }}.svc.cluster.local:80
-        - -alertmanager.web.external-url=/api/prom/alertmanager
-        - -log.level=debug
-        - -server.http-listen-port=80
-        - -server.register-instrumentation=true
-        ports:
-        - containerPort: 80
-          name: http
-        resources:
-{{ toYaml .Values.alertmanager.resources | indent 10 }}
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args:
+            - "-target=alertmanager"
+            - "-config.file=/etc/cortex/cortex.yaml"
+            - "-alertmanager.configs.url=http://{{ template "cortex.fullname" . }}-configs"
+          {{- range $key, $value := .Values.alertmanager.extraArgs }}
+            - "-{{ $key }}={{ $value }}"
+          {{- end }}
+          volumeMounts:
+            {{- if .Values.alertmanager.extraVolumeMounts }}
+              {{ toYaml .Values.alertmanager.extraVolumeMounts | nindent 12}}
+            {{- end }}
+            - name: config
+              mountPath: /etc/cortex
+            - name: storage
+              mountPath: "/data"
+              subPath: {{ .Values.alertmanager.persistence.subPath }}
+          ports:
+            - name: http-metrics
+              containerPort: {{ .Values.config.server.http_listen_port }}
+              protocol: TCP
+          livenessProbe:
+            {{- toYaml .Values.alertmanager.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.alertmanager.readinessProbe | nindent 12 }}
+          resources:
+            {{- toYaml .Values.alertmanager.resources | nindent 12 }}
+          securityContext:
+            readOnlyRootFilesystem: true
+          env:
+            {{- if .Values.alertmanager.env }}
+              {{- toYaml .Values.alertmanager.env | nindent 12 }}
+            {{- end }}
+{{- if .Values.alertmanager.extraContainers }}
+{{ toYaml .Values.alertmanager.extraContainers | indent 8}}
 {{- end }}
+      nodeSelector:
+        {{- toYaml .Values.alertmanager.nodeSelector | nindent 8 }}
+      affinity:
+        {{- toYaml .Values.alertmanager.affinity | nindent 8 }}
+      tolerations:
+        {{- toYaml .Values.alertmanager.tolerations | nindent 8 }}
+      terminationGracePeriodSeconds: {{ .Values.alertmanager.terminationGracePeriodSeconds }}
+      volumes:
+        - name: config
+          secret:
+            secretName: {{ template "cortex.fullname" . }}
+{{- if .Values.alertmanager.extraVolumes }}
+{{ toYaml .Values.alertmanager.extraVolumes | indent 8}}
+{{- end }}
+        - name: storage
+          emptyDir: {}
