@@ -1,99 +1,109 @@
----
-{{- if .Values.ruler.enabled -}}
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ template "fullname" . }}-ruler
+  name: {{ template "cortex.fullname" . }}-ruler
+  namespace: {{ .Release.Namespace }}
   labels:
-    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    app: {{ template "cortex.name" . }}-ruler
+    chart: {{ template "cortex.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
-    cortex: ruler
+  annotations:
+    {{- toYaml .Values.ruler.annotations | nindent 4 }}
 spec:
   replicas: {{ .Values.ruler.replicas }}
   selector:
     matchLabels:
-      app: {{ template "name" . }}-ruler
+      app: {{ template "cortex.name" . }}-ruler
       release: {{ .Release.Name }}
+  strategy:
+    {{- toYaml .Values.ruler.strategy | nindent 4 }}
   template:
     metadata:
       labels:
-        app: {{ template "name" . }}-ruler
+        app: {{ template "cortex.name" . }}-ruler
+        name: {{ template "cortex.name" . }}-ruler
         release: {{ .Release.Name }}
-        cortex: ruler
-    {{- with .Values.ruler.podAnnotations }}
+        {{- with .Values.ruler.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
       annotations:
-{{ toYaml . | indent 8 }}
-    {{- end }}
+        checksum/config: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+        {{- with .Values.ruler.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
     spec:
-      tolerations:
-{{ toYaml .Values.ruler.tolerations | indent 8 }}
-      affinity:
-{{ toYaml .Values.ruler.affinity | indent 8 }}
+      serviceAccountName: {{ template "cortex.serviceAccountName" . }}
+    {{- if .Values.ruler.priorityClassName }}
+      priorityClassName: {{ .Values.ruler.priorityClassName }}
+    {{- end }}
+      securityContext:
+        {{- toYaml .Values.ruler.securityContext | nindent 8 }}
+      initContainers:
+        {{- toYaml .Values.ruler.initContainers | nindent 8 }}
+      {{- if .Values.image.pullSecrets }}
+      imagePullSecrets:
+      {{- range .Values.image.pullSecrets }}
+        - name: {{ . }}
+      {{- end}}
+      {{- end }}
       containers:
-      - name: ruler
-        image: "{{ .Values.ruler.image.repository }}:{{ .Values.ruler.image.tag }}"
-        imagePullPolicy: IfNotPresent
-        args:
-        - -log.level=debug
-        - -server.http-listen-port=80
-        - -ruler.num-workers={{ .Values.ruler.workers }}
-        {{ if .Values.ruler.useConfigs }}
-        - -ruler.configs.url=http://{{ template "fullname" . }}-configs.{{ .Release.Namespace }}.svc.cluster.local:80
-        {{- else -}}
-        {{ if .Values.configsdb.enabled -}}
-        - -database.uri=postgres://postgres@{{ template "fullname" . }}-configs-db.{{ .Release.Namespace }}.svc.cluster.local/configs?sslmode=disable
-        {{- end }}
-        {{- end }}
-        - -ruler.alertmanager-url=http://{{ template "fullname" . }}-alertmanager.{{ .Release.Namespace }}.svc.cluster.local/api/prom/alertmanager/
-        - -consul.hostname={{ template "fullname" . }}-consul.{{ .Release.Namespace }}.svc.cluster.local:8500
-        - -dynamodb.original-table-name={{ index .Values "dynamodb" "original-table-name" }}
-        {{ if not .Values.dynamodbLocal.enabled -}}
-        {{ if .Values.aws.stsEnabled -}}
-        - -dynamodb.url=dynamodb://$(AWS_DEFAULT_REGION)
-        {{- else -}}
-        - -dynamodb.url=dynamodb://$(USER_NAME):$(USER_PASSWORD)@$(AWS_DEFAULT_REGION)
-        {{- end -}}
-        {{- else -}}
-        - -dynamodb.url=dynamodb://user:pass@{{ template "fullname" .}}-dynamodb.{{ .Release.Namespace }}.svc.cluster.local:8000
-        {{- end }}
-        {{ if eq .Values.s3.type "local" }}
-        - -s3.url=s3://$(USER_NAME):$(USER_PASSWORD)@{{ .Values.s3.bucketName }}
-        {{ else }}
-        {{ if .Values.aws.stsEnabled }}
-        - -s3.url=s3://{{ .Values.s3.bucketName }}
-        {{ else }}
-        - -s3.url=s3://$(USER_NAME):$(USER_PASSWORD)@{{ .Values.s3.bucketName }}
-        {{ end }}
-        {{ end }}
-{{ include "cortex.tableargs" . | indent 8 }}
-{{ include "cortex.memcachedArgs" . | indent 8 }}
-        - -distributor.replication-factor={{ .Values.replicationFactor }}
-        ports:
-        - containerPort: 80
-          name: http
-        env:
-          - name: AWS_DEFAULT_REGION
-          {{ if .Values.aws.stsEnabled -}}
-            value: "{{ .Values.aws.region }}"
-          {{- else }}
-            valueFrom:
-              secretKeyRef:
-                name: cortex-aws-creds
-                key: AWS_DEFAULT_REGION
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args:
+            - "-target=ruler"
+            - "-config.file=/etc/cortex/cortex.yaml"
+            - "-ruler.configs.url=http://{{ template "cortex.name" . }}-configs"
+            - "-ruler.alertmanager-url=http://{{ template "cortex.name" . }}-alertmanager/api/prom/alertmanager/"
+            {{- if .Values.memcached.enabled }}
+            - -store.chunks-cache.memcached.addresses=dns+{{ template "cortex.fullname" . }}-memcached.{{ .Release.Namespace }}.svc.cluster.local:11211
+            - -store.chunks-cache.memcached.timeout=100ms
+            {{- end }}
+          {{- range $key, $value := .Values.ruler.extraArgs }}
+            - "-{{ $key }}={{ $value }}"
           {{- end }}
-          {{ if .Values.aws.stsEnabled -}}
-          - name: USER_NAME
-            valueFrom:
-              secretKeyRef:
-                name: cortex-aws-creds
-                key: USER_NAME
-          - name: USER_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: cortex-aws-creds
-                key: USER_PASSWORD
-          {{- end }}
-        resources:
-{{ toYaml .Values.ruler.resources | indent 10 }}
+          volumeMounts:
+            {{- if .Values.ruler.extraVolumeMounts }}
+              {{ toYaml .Values.ruler.extraVolumeMounts | nindent 12}}
+            {{- end }}
+            - name: config
+              mountPath: /etc/cortex
+            - name: storage
+              mountPath: "/data"
+              subPath: {{ .Values.ruler.persistence.subPath }}
+          ports:
+            - name: http-metrics
+              containerPort: {{ .Values.config.server.http_listen_port }}
+              protocol: TCP
+          livenessProbe:
+            {{- toYaml .Values.ruler.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.ruler.readinessProbe | nindent 12 }}
+          resources:
+            {{- toYaml .Values.ruler.resources | nindent 12 }}
+          securityContext:
+            readOnlyRootFilesystem: true
+          env:
+            {{- if .Values.ruler.env }}
+              {{- toYaml .Values.ruler.env | nindent 12 }}
+            {{- end }}
+{{- if .Values.ruler.extraContainers }}
+{{ toYaml .Values.ruler.extraContainers | indent 8}}
 {{- end }}
+      nodeSelector:
+        {{- toYaml .Values.ruler.nodeSelector | nindent 8 }}
+      affinity:
+        {{- toYaml .Values.ruler.affinity | nindent 8 }}
+      tolerations:
+        {{- toYaml .Values.ruler.tolerations | nindent 8 }}
+      terminationGracePeriodSeconds: {{ .Values.ruler.terminationGracePeriodSeconds }}
+      volumes:
+        - name: config
+          secret:
+            secretName: {{ template "cortex.fullname" . }}
+{{- if .Values.ruler.extraVolumes }}
+{{ toYaml .Values.ruler.extraVolumes | indent 8}}
+{{- end }}
+        - name: storage
+          emptyDir: {}

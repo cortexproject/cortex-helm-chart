@@ -1,15 +1,13 @@
----
-{{- if .Values.nginx.enabled -}}
 kind: ConfigMap
 apiVersion: v1
 metadata:
-  name: {{ template "fullname" . }}-nginx
+  name: {{ template "cortex.fullname" . }}-nginx
+  namespace: {{ .Release.Namespace }}
   labels:
-    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    app: {{ template "cortex.name" . }}-nginx
+    chart: {{ template "cortex.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
-    app: {{ template "name" . }}-nginx
-    cortex: nginx
 data:
   nginx.conf: |-
     worker_processes  5;  ## Default: 1
@@ -32,17 +30,29 @@ data:
       resolver kube-dns.kube-system.svc.cluster.local;
 
       server { # simple reverse-proxy
-        listen 80;
-        proxy_set_header X-Scope-OrgID 0;
+        listen {{ .Values.nginx.http_listen_port }};
+        #proxy_set_header X-Scope-OrgID 0;
+        proxy_connect_timeout 300s;
+        proxy_send_timeout 300s;
+        proxy_read_timeout 300s;
+        
+        location = /healthz {
+          return 200 'alive';
+        }
 
-        # pass requests for dynamic content to rails/turbogears/zope, et al
         location = /api/prom/push {
-          proxy_pass      http://{{ template "fullname" . }}-distributor.{{ .Release.Namespace }}.svc.cluster.local$request_uri;
+          proxy_pass      http://{{ template "cortex.fullname" . }}-distributor.{{ .Release.Namespace }}.svc.cluster.local$request_uri;
+        }
+
+        location = /ring {
+          proxy_pass      http://{{ template "cortex.fullname" . }}-distributor.{{ .Release.Namespace }}.svc.cluster.local$request_uri;
+        }
+        location = /all_user_stats {
+          proxy_pass      http://{{ template "cortex.fullname" . }}-distributor.{{ .Release.Namespace }}.svc.cluster.local$request_uri;
         }
 
         location ~ /api/prom/.* {
-          proxy_pass      http://{{ template "fullname" . }}-querier.{{ .Release.Namespace }}.svc.cluster.local$request_uri;
+          proxy_pass      http://{{ template "cortex.fullname" . }}-query-frontend.{{ .Release.Namespace }}.svc.cluster.local$request_uri;
         }
       }
     }
-{{- end }}
