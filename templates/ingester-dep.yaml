@@ -1,119 +1,110 @@
----
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ template "fullname" . }}-ingester
+  name: {{ template "cortex.fullname" . }}-ingester
+  namespace: {{ .Release.Namespace }}
   labels:
-    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    app: {{ template "cortex.name" . }}-ingester
+    chart: {{ template "cortex.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
-    cortex: ingester
+  annotations:
+    {{- toYaml .Values.ingester.annotations | nindent 4 }}
 spec:
   replicas: {{ .Values.ingester.replicas }}
-
-  # Ingesters are not ready for at least 1 min
-  # after creation.  This has to be in sync with
-  # the ring timeout value, as this will stop a
-  # stampede of new ingesters if we should loose
-  # some.
-  minReadySeconds: 60
-
-  # Having maxSurge 0 and maxUnavailable 1 means
-  # the deployment will update one ingester at a time
-  # as it will have to stop one (making one unavailable)
-  # before it can start one (surge of zero)
-  strategy:
-    rollingUpdate:
-      maxSurge: 0
-      maxUnavailable: 1
-
   selector:
     matchLabels:
-      app: {{ template "name" . }}-ingester
+      app: {{ template "cortex.name" . }}-ingester
       release: {{ .Release.Name }}
+  strategy:
+    {{- toYaml .Values.ingester.strategy | nindent 4 }}
   template:
     metadata:
       labels:
-        app: {{ template "name" . }}-ingester
+        app: {{ template "cortex.name" . }}-ingester
+        name: {{ template "cortex.name" . }}-ingester
+        target: ingester
         release: {{ .Release.Name }}
-        cortex: ingester
-    {{- with .Values.ingester.podAnnotations }}
-      annotations:
-{{ toYaml . | indent 8 }}
-    {{- end }}
-    spec:
-      # Give ingesters 80 minutes grace to flush chunks and exit cleanly.
-      # Service is available during this time, as long as we don't stop
-      # too many ingesters at once.
-      terminationGracePeriodSeconds: 4800
-
-      tolerations:
-{{ toYaml .Values.ingester.tolerations | indent 8 }}
-      affinity:
-{{ toYaml .Values.ingester.affinity | indent 8 }}
-
-      containers:
-      - name: ingester
-        image: "{{ .Values.ingester.image.repository }}:{{ .Values.ingester.image.tag }}"
-        imagePullPolicy: IfNotPresent
-        args:
-        - -ingester.join-after=30s
-        - -ingester.claim-on-rollout=true
-        - -ingester.search-pending-for=5m
-        - -consul.hostname={{ template "fullname" .}}-consul.{{ .Release.Namespace }}.svc.cluster.local:8500
-        - -dynamodb.original-table-name={{ index .Values "dynamodb" "original-table-name" }}
-        {{ if not .Values.dynamodbLocal.enabled -}}
-        {{ if .Values.aws.stsEnabled -}}
-        - -dynamodb.url=dynamodb://$(AWS_DEFAULT_REGION)
-        {{- else -}}
-        - -dynamodb.url=dynamodb://$(USER_NAME):$(USER_PASSWORD)@$(AWS_DEFAULT_REGION)
-        {{- end -}}
-        {{- else -}}
-        - -dynamodb.url=dynamodb://user:pass@{{ template "fullname" .}}-dynamodb.{{ .Release.Namespace }}.svc.cluster.local:8000
+        {{- with .Values.ingester.podLabels }}
+        {{- toYaml . | nindent 8 }}
         {{- end }}
-
-        {{ if eq .Values.s3.type "local" }}
-        - -s3.url=s3://$(USER_NAME):$(USER_PASSWORD)@{{ .Values.s3.bucketName }}
-        {{ else }}
-        {{ if .Values.aws.stsEnabled }}
-        - -s3.url=s3://{{ .Values.s3.bucketName }}
-        {{ else }}
-        - -s3.url=s3://$(USER_NAME):$(USER_PASSWORD)@{{ .Values.s3.bucketName }}
-        {{ end }}
-        {{ end }}
-{{ include "cortex.tableargs" . | indent 8 }}
-{{ include "cortex.memcachedArgs" . | indent 8 }}
-{{ include "cortex.storeIndexMemcachedArgs" . | indent 8 }}
-        ports:
-        - containerPort: 80
-          name: http
-        readinessProbe:
-          httpGet:
-            path: /ready
-            port: 80
-          initialDelaySeconds: 15
-          timeoutSeconds: 1
-        env:
-          - name: AWS_DEFAULT_REGION
-          {{ if .Values.aws.stsEnabled -}}
-            value: "{{ .Values.aws.region }}"
-          {{- else }}
-            valueFrom:
-              secretKeyRef:
-                name: cortex-aws-creds
-                key: AWS_DEFAULT_REGION
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+        {{- with .Values.ingester.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      serviceAccountName: {{ template "cortex.serviceAccountName" . }}
+    {{- if .Values.ingester.priorityClassName }}
+      priorityClassName: {{ .Values.ingester.priorityClassName }}
+    {{- end }}
+      securityContext:
+        {{- toYaml .Values.ingester.securityContext | nindent 8 }}
+      initContainers:
+        {{- toYaml .Values.ingester.initContainers | nindent 8 }}
+      {{- if .Values.image.pullSecrets }}
+      imagePullSecrets:
+      {{- range .Values.image.pullSecrets }}
+        - name: {{ . }}
+      {{- end}}
+      {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args:
+            - "-target=ingester"
+            - "-config.file=/etc/cortex/cortex.yaml"
+            {{- if .Values.memcached.enabled }}
+            - -store.chunks-cache.memcached.addresses=dns+{{ template "cortex.fullname" . }}-memcached.{{ .Release.Namespace }}.svc.cluster.local:11211
+            {{- end }}
+            {{- if index .Values "memcached-index-write" "enabled" }}
+            - -store.index-cache-write.memcached.addresses=dns+{{ template "cortex.fullname" . }}-memcached-index-write.{{ .Release.Namespace }}.svc.cluster.local:11211
+            {{- end }}
+          {{- range $key, $value := .Values.ingester.extraArgs }}
+            - "-{{ $key }}={{ $value }}"
           {{- end }}
-          {{ if not .Values.aws.stsEnabled -}}
-          - name: USER_NAME
-            valueFrom:
-              secretKeyRef:
-                name: cortex-aws-creds
-                key: USER_NAME
-          - name: USER_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: cortex-aws-creds
-                key: USER_PASSWORD
-          {{- end }}
-        resources:
-{{ toYaml .Values.ingester.resources | indent 10 }}
+          volumeMounts:
+            {{- if .Values.ingester.extraVolumeMounts }}
+              {{ toYaml .Values.ingester.extraVolumeMounts | nindent 12}}
+            {{- end }}
+            - name: config
+              mountPath: /etc/cortex
+            - name: storage
+              mountPath: "/data"
+              subPath: {{ .Values.ingester.persistence.subPath }}
+          ports:
+            - name: http-metrics
+              containerPort: {{ .Values.config.server.http_listen_port }}
+              protocol: TCP
+          livenessProbe:
+            {{- toYaml .Values.ingester.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.ingester.readinessProbe | nindent 12 }}
+          resources:
+            {{- toYaml .Values.ingester.resources | nindent 12 }}
+          securityContext:
+            readOnlyRootFilesystem: true
+          env:
+            {{- if .Values.ingester.env }}
+              {{- toYaml .Values.ingester.env | nindent 12 }}
+            {{- end }}
+{{- if .Values.ingester.extraContainers }}
+{{ toYaml .Values.ingester.extraContainers | indent 8}}
+{{- end }}
+      nodeSelector:
+        {{- toYaml .Values.ingester.nodeSelector | nindent 8 }}
+      affinity:
+        {{- toYaml .Values.ingester.affinity | nindent 8 }}
+      tolerations:
+        {{- toYaml .Values.ingester.tolerations | nindent 8 }}
+      terminationGracePeriodSeconds: {{ .Values.ingester.terminationGracePeriodSeconds }}
+      volumes:
+        - name: config
+          secret:
+            secretName: {{ template "cortex.fullname" . }}
+{{- if .Values.ingester.extraVolumes }}
+{{ toYaml .Values.ingester.extraVolumes | indent 8}}
+{{- end }}
+        - name: storage
+          emptyDir: {}

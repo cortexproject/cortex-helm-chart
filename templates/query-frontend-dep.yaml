@@ -1,41 +1,102 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ template "fullname" . }}-query-frontend
+  name: {{ template "cortex.fullname" . }}-query-frontend
+  namespace: {{ .Release.Namespace }}
   labels:
-    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    app: {{ template "cortex.name" . }}-query-frontend
+    chart: {{ template "cortex.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
-    cortex: query-frontend
+  annotations:
+    {{- toYaml .Values.query_frontend.annotations | nindent 4 }}
 spec:
-  replicas: {{ .Values.queryFrontend.replicas }}
+  replicas: {{ .Values.query_frontend.replicas }}
+  selector:
+    matchLabels:
+      app: {{ template "cortex.name" . }}-query-frontend
+      release: {{ .Release.Name }}
+  strategy:
+    {{- toYaml .Values.query_frontend.strategy | nindent 4 }}
   template:
     metadata:
       labels:
-        app: {{ template "name" . }}-query-frontend
+        app: {{ template "cortex.name" . }}-query-frontend
+        name: {{ template "cortex.name" . }}-query-frontend
+        target: query-frontend
         release: {{ .Release.Name }}
-        cortex: query-frontend
-    {{- with .Values.queryFrontend.podAnnotations }}
+        {{- with .Values.query_frontend.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
       annotations:
-{{ toYaml . | indent 8 }}
-    {{- end }}
+        checksum/config: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+        {{- with .Values.query_frontend.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
     spec:
-      tolerations:
-{{ toYaml .Values.queryFrontend.tolerations | indent 8 }}
-      affinity:
-{{ toYaml .Values.queryFrontend.affinity | indent 8 }}
+      serviceAccountName: {{ template "cortex.serviceAccountName" . }}
+    {{- if .Values.query_frontend.priorityClassName }}
+      priorityClassName: {{ .Values.query_frontend.priorityClassName }}
+    {{- end }}
+      securityContext:
+        {{- toYaml .Values.query_frontend.securityContext | nindent 8 }}
+      initContainers:
+        {{- toYaml .Values.query_frontend.initContainers | nindent 8 }}
+      {{- if .Values.image.pullSecrets }}
+      imagePullSecrets:
+      {{- range .Values.image.pullSecrets }}
+        - name: {{ . }}
+      {{- end}}
+      {{- end }}
       containers:
-      - name: query-frontend
-        image: "{{ .Values.queryFrontend.image.repository }}:{{ .Values.queryFrontend.image.tag }}"
-        imagePullPolicy: IfNotPresent
-        args:
-        - -log.level=debug
-        - -server.http-listen-port=80
-        - -server.grpc-listen-port=9095
-        ports:
-        - containerPort: 9095
-          name: grpc
-        - containerPort: 80
-          name: http
-        resources:
-{{ toYaml .Values.queryFrontend.resources | indent 10 }}
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args:
+            - "-target=query-frontend"
+            - "-config.file=/etc/cortex/cortex.yaml"
+          {{- range $key, $value := .Values.query_frontend.extraArgs }}
+            - "-{{ $key }}={{ $value }}"
+          {{- end }}
+          volumeMounts:
+            {{- if .Values.query_frontend.extraVolumeMounts }}
+              {{ toYaml .Values.query_frontend.extraVolumeMounts | nindent 12}}
+            {{- end }}
+            - name: config
+              mountPath: /etc/cortex
+          ports:
+            - name: http-metrics
+              containerPort: {{ .Values.config.server.http_listen_port }}
+              protocol: TCP
+            - name: grpc
+              containerPort: {{ .Values.config.server.grpc_listen_port }}
+              protocol: TCP
+          livenessProbe:
+            {{- toYaml .Values.query_frontend.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.query_frontend.readinessProbe | nindent 12 }}
+          resources:
+            {{- toYaml .Values.query_frontend.resources | nindent 12 }}
+          securityContext:
+            readOnlyRootFilesystem: true
+          env:
+            {{- if .Values.query_frontend.env }}
+              {{- toYaml .Values.query_frontend.env | nindent 12 }}
+            {{- end }}
+{{- if .Values.query_frontend.extraContainers }}
+{{ toYaml .Values.query_frontend.extraContainers | indent 8}}
+{{- end }}
+      nodeSelector:
+        {{- toYaml .Values.query_frontend.nodeSelector | nindent 8 }}
+      affinity:
+        {{- toYaml .Values.query_frontend.affinity | nindent 8 }}
+      tolerations:
+        {{- toYaml .Values.query_frontend.tolerations | nindent 8 }}
+      terminationGracePeriodSeconds: {{ .Values.query_frontend.terminationGracePeriodSeconds }}
+      volumes:
+        - name: config
+          secret:
+            secretName: {{ template "cortex.fullname" . }}
+{{- if .Values.query_frontend.extraVolumes }}
+{{ toYaml .Values.query_frontend.extraVolumes | indent 8}}
+{{- end }}

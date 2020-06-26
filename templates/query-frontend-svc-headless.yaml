@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "cortex.fullname" . }}-query-frontend
+  name: {{ template "cortex.fullname" . }}-query-frontend-headless
   namespace: {{ .Release.Namespace }}
   labels:
     app: {{ template "cortex.name" . }}-query-frontend
@@ -15,8 +15,9 @@ metadata:
     {{- toYaml .Values.query_frontend.annotations | nindent 4 }}
 spec:
   type: ClusterIP
+  clusterIP: None
   ports:
-    - port: {{ .Values.query_frontend.service.http_port }}
+    - port: {{ .Values.config.server.http_listen_port }}
       protocol: TCP
       name: http-metrics
       targetPort: http-metrics
