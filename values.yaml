@@ -33,6 +33,8 @@ serviceAccount:
   annotations: {}
 
 
+useExternalConfig: false
+externalConfigSecretName: "secret-with-config.yaml"
 config:
   auth_enabled: false
   ingester:

@@ -101,7 +101,11 @@ spec:
       volumes:
         - name: config
           secret:
+{{- if eq .Values.useExternalConfig }}
+            secretName: {{ .Values.externalConfigSecretName }}
+{{- else }}
             secretName: {{ template "cortex.fullname" . }}
+{{- end }}
 {{- if .Values.ruler.extraVolumes }}
 {{ toYaml .Values.ruler.extraVolumes | indent 8}}
 {{- end }}
