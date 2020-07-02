@@ -28,7 +28,9 @@ spec:
         {{- toYaml . | nindent 8 }}
         {{- end }}
       annotations:
+{{- if not .Values.useExternalConfig }}      
         checksum/config: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+{{- end}}  
         {{- with .Values.table_manager.podAnnotations }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
