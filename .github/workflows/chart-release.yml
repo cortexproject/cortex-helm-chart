@@ -1,0 +1,19 @@
+name: release-chart
+on:
+  push:
+    tags: 'chart-*'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Publish Helm chart
+        uses: foundato/helm-gh-pages@master
+        with:
+          token: ${{ secrets.BOT_GITHUB_TOKEN }}
+          charts_dir: chart
+          charts_url: https://charts.foundato.io
+          owner: foundato
+          repository: charts
+          branch: gh-pages
