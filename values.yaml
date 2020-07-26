@@ -764,6 +764,7 @@ configs:
   env: []
 
 nginx:
+  enabled: true
   replicas: 2
   http_listen_port: 80
   config:

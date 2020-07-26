@@ -1,3 +1,4 @@
+{{- if .Values.nginx.enabled }}
 kind: ConfigMap
 apiVersion: v1
 metadata:
@@ -56,3 +57,4 @@ data:
         }
       }
     }
+{{- end}}
