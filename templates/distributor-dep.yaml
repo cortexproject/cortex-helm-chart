@@ -29,9 +29,11 @@ spec:
         {{- toYaml . | nindent 8 }}
         {{- end }}
       annotations:
-{{- if not .Values.useExternalConfig }}      
+{{- if .Values.useExternalConfig }}      
+        checksum/config: {{ .Values.externalConfigVersion }}
+{{- else }}
         checksum/config: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
-{{- end}}  
+{{- end}}    
         {{- with .Values.distributor.podAnnotations }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
