@@ -1,3 +1,4 @@
+{{- if .Values.nginx.enabled }}
 apiVersion: v1
 kind: Service
 metadata:
@@ -23,3 +24,4 @@ spec:
   selector:
     app: {{ template "cortex.name" . }}-nginx
     release: {{ .Release.Name }}
+{{- end }}
