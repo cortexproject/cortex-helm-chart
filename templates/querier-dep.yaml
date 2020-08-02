@@ -29,7 +29,11 @@ spec:
         {{- toYaml . | nindent 8 }}
         {{- end }}
       annotations:
+{{- if .Values.useExternalConfig }}      
+        checksum/config: {{ .Values.externalConfigVersion }}
+{{- else }}
         checksum/config: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+{{- end}}    
         {{- with .Values.querier.podAnnotations }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
@@ -103,7 +107,11 @@ spec:
       volumes:
         - name: config
           secret:
+{{- if eq .Values.useExternalConfig }}
+            secretName: {{ .Values.externalConfigSecretName }}
+{{- else }}
             secretName: {{ template "cortex.fullname" . }}
+{{- end }}
 {{- if .Values.querier.extraVolumes }}
 {{ toYaml .Values.querier.extraVolumes | indent 8}}
 {{- end }}
