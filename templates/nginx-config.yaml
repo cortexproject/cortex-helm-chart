@@ -31,7 +31,7 @@ data:
 
       server { # simple reverse-proxy
         listen {{ .Values.nginx.http_listen_port }};
-        #proxy_set_header X-Scope-OrgID 0;
+        proxy_set_header X-Scope-OrgID 0;
         proxy_connect_timeout 300s;
         proxy_send_timeout 300s;
         proxy_read_timeout 300s;
@@ -44,9 +44,18 @@ data:
           proxy_pass      http://{{ template "cortex.fullname" . }}-distributor.{{ .Release.Namespace }}.svc.cluster.local$request_uri;
         }
 
+        location ~ /api/prom/configs/.* {
+          proxy_pass      http://cortex-configs.observability.svc.cluster.local$request_uri;
+        }
+
+        location ~ /api/prom/alertmanager/.* {
+          proxy_pass      http://cortex-alertmanager.observability.svc.cluster.local$request_uri;
+        }
+
         location = /ring {
           proxy_pass      http://{{ template "cortex.fullname" . }}-distributor.{{ .Release.Namespace }}.svc.cluster.local$request_uri;
         }
+
         location = /all_user_stats {
           proxy_pass      http://{{ template "cortex.fullname" . }}-distributor.{{ .Release.Namespace }}.svc.cluster.local$request_uri;
         }
