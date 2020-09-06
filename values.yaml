@@ -343,6 +343,12 @@ distributor:
 ingester:
   replicas: 3
 
+  statefulSet:
+    ## If true, use a statefulset instead of a deployment for pod management.
+    ## This is useful when using WAL
+    ##
+    enabled: false
+
   service:
     port: 80
     annotations: {}
@@ -383,8 +389,46 @@ ingester:
           topologyKey: "kubernetes.io/hostname"
 
   annotations: {}
+
+  ## DEPRECATED: use persistentVolume.subPath instead
   persistence:
     subPath: 
+
+  persistentVolume:
+    ## If true and ingester.statefulSet.enabled is true, 
+    ## Ingester will create/use a Persistent Volume Claim
+    ## If false, use emptyDir
+    ##
+    enabled: true
+    
+    ## Ingester data Persistent Volume Claim annotations
+    ##
+    annotations: {}
+    
+    ## Ingester data Persistent Volume access modes
+    ## Must match those of existing PV or dynamic provisioner
+    ## Ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
+    ##
+    accessModes:
+    - ReadWriteOnce
+
+    ## Ingester data Persistent Volume size
+    ##
+    size: 2Gi
+
+    ## Subdirectory of Ingester data Persistent Volume to mount
+    ## Useful if the volume's root directory is not empty
+    ##
+    subPath: ""
+
+    ## Ingester data Persistent Volume Storage Class
+    ## If defined, storageClassName: <storageClass>
+    ## If set to "-", storageClassName: "", which disables dynamic provisioning
+    ## If undefined (the default) or set to null, no storageClassName spec is
+    ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+    ##   GKE, AWS & OpenStack)
+    ##
+    # storageClass: "-"
 
   livenessProbe:
     failureThreshold: 20 # 10 minutes failure threshold
