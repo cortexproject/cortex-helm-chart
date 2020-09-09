@@ -1,3 +1,4 @@
+{{- if .Values.nginx.enabled }}
 kind: ConfigMap
 apiVersion: v1
 metadata:
@@ -27,7 +28,7 @@ data:
       access_log   /dev/stderr  main;
       sendfile     on;
       tcp_nopush   on;
-      resolver kube-dns.kube-system.svc.cluster.local;
+      resolver {{ default "kube-dns.kube-system.svc.cluster.local" .Values.nginx.config.dnsResolver }};
 
       server { # simple reverse-proxy
         listen {{ .Values.nginx.http_listen_port }};
@@ -65,3 +66,4 @@ data:
         }
       }
     }
+{{- end}}

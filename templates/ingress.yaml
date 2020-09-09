@@ -1,4 +1,4 @@
-{{- if .Values.ingress.enabled -}}
+{{- if and .Values.ingress.enabled .Values.nginx.enabled -}}
 {{- $fullName := include "cortex.fullname" . -}}
 {{- $svcPort := .Values.nginx.service.port -}}
 {{- if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}

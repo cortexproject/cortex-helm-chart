@@ -33,6 +33,9 @@ serviceAccount:
   annotations: {}
 
 
+useExternalConfig: false
+externalConfigSecretName: "secret-with-config.yaml"
+externalConfigVersion: "0"
 config:
   auth_enabled: false
   ingester:
@@ -764,8 +767,11 @@ configs:
   env: []
 
 nginx:
+  enabled: true
   replicas: 2
   http_listen_port: 80
+  config:
+    dnsResolver: kube-dns.kube-system.svc.cluster.local
   image:
     repository: nginx
     tag: 1.17

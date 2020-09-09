@@ -1,2 +1,3 @@
 charts
-.tgz
+*.tgz
+cortex

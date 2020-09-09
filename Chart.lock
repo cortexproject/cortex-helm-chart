@@ -8,8 +8,5 @@ dependencies:
 - name: memcached
   repository: https://kubernetes-charts.storage.googleapis.com/
   version: 3.2.3
-- name: postgresql
-  repository: https://charts.bitnami.com/bitnami
-  version: 8.6.13
-digest: sha256:1a40fe2aae73dfcc54eeb47bad91111c91bcb0eeec9b9dd24e5e0bd2e54a3d9c
-generated: "2020-04-04T20:29:40.131333Z"
+digest: sha256:15343a3a535fa858a532546a47dbb63e1379be1d4081f55b01de56db3d2b7617
+generated: "2020-07-02T10:49:04.929498-07:00"
