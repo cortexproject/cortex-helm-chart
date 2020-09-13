@@ -1,3 +1,4 @@
+{{- if ne .Values.config.storage.engine "blocks" -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -109,3 +110,4 @@ spec:
 {{- end }}
         - name: storage
           emptyDir: {}
+{{- end -}}
