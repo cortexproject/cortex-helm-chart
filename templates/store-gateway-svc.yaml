@@ -1,27 +1,28 @@
-{{- if ne .Values.config.storage.engine "blocks" -}}
+{{- if eq .Values.config.storage.engine "blocks" -}}
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "cortex.fullname" . }}-table-manager
+  name: {{ template "cortex.fullname" . }}-store-gateway-headless
   namespace: {{ .Release.Namespace }}
   labels:
-    app: {{ template "cortex.name" . }}-table-manager
+    app: {{ template "cortex.name" . }}-store-gateway
     chart: {{ template "cortex.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
-    {{- with .Values.table_manager.labels }}
+    {{- with .Values.store_gateway.labels }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
   annotations:
-    {{- toYaml .Values.table_manager.annotations | nindent 4 }}
+    {{- toYaml .Values.store_gateway.annotations | nindent 4 }}
 spec:
   type: ClusterIP
+  clusterIP: None
   ports:
-    - port: {{ .Values.table_manager.service.port }}
+    - port: {{ .Values.store_gateway.service.port }}
       protocol: TCP
       name: http-metrics
       targetPort: http-metrics
   selector:
-    app: {{ template "cortex.name" . }}-table-manager
+    app: {{ template "cortex.name" . }}-store-gateway
     release: {{ .Release.Name }}
 {{- end -}}
