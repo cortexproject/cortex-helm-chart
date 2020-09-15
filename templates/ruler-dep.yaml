@@ -23,6 +23,7 @@ spec:
       labels:
         app: {{ template "cortex.name" . }}-ruler
         name: {{ template "cortex.name" . }}-ruler
+        target: ruler
         release: {{ .Release.Name }}
         {{- with .Values.ruler.podLabels }}
         {{- toYaml . | nindent 8 }}
