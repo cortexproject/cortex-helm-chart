@@ -23,7 +23,7 @@ spec:
       labels:
         app: {{ template "cortex.name" . }}-querier
         name: {{ template "cortex.name" . }}-querier
-        target: distributor
+        target: querier
         release: {{ .Release.Name }}
         {{- with .Values.querier.podLabels }}
         {{- toYaml . | nindent 8 }}

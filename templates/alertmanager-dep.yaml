@@ -23,6 +23,7 @@ spec:
       labels:
         app: {{ template "cortex.name" . }}-alertmanager
         name: {{ template "cortex.name" . }}-alertmanager
+        target: alertmanager
         release: {{ .Release.Name }}
         {{- with .Values.alertmanager.podLabels }}
         {{- toYaml . | nindent 8 }}
