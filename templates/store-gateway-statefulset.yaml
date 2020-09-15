@@ -1,55 +1,55 @@
-{{- if .Values.ingester.statefulSet.enabled -}}
+{{- if eq .Values.config.storage.engine "blocks" -}}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: {{ template "cortex.fullname" . }}-ingester
+  name: {{ template "cortex.fullname" . }}-store-gateway
   namespace: {{ .Release.Namespace }}
   labels:
-    app: {{ template "cortex.name" . }}-ingester
+    app: {{ template "cortex.name" . }}-store-gateway
     chart: {{ template "cortex.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
   annotations:
-    {{- toYaml .Values.ingester.annotations | nindent 4 }}
+    {{- toYaml .Values.store_gateway.annotations | nindent 4 }}
 spec:
-  replicas: {{ .Values.ingester.replicas }}
+  replicas: {{ .Values.store_gateway.replicas }}
   selector:
     matchLabels:
-      app: {{ template "cortex.name" . }}-ingester
+      app: {{ template "cortex.name" . }}-store-gateway
       release: {{ .Release.Name }}
   updateStrategy:
-    {{- toYaml .Values.ingester.statefulStrategy | nindent 4 }}          
-  serviceName: {{ template "cortex.fullname" . }}-ingester
-  {{- if .Values.ingester.persistentVolume.enabled }}
+    {{- toYaml .Values.store_gateway.strategy | nindent 4 }}      
+  serviceName: {{ template "cortex.fullname" . }}-store-gateway
+  {{- if .Values.store_gateway.persistentVolume.enabled }}
   volumeClaimTemplates:
     - metadata:
         name: storage
-        {{- if .Values.ingester.persistentVolume.annotations }}
+        {{- if .Values.store_gateway.persistentVolume.annotations }}
         annotations:
-          {{ toYaml .Values.ingester.persistentVolume.annotations | nindent 10 }}
+          {{ toYaml .Values.store_gateway.persistentVolume.annotations | nindent 10 }}
         {{- end }}
       spec:
-        {{- if .Values.ingester.persistentVolume.storageClass }}
-        {{- if (eq "-" .Values.ingester.persistentVolume.storageClass) }}
+        {{- if .Values.store_gateway.persistentVolume.storageClass }}
+        {{- if (eq "-" .Values.store_gateway.persistentVolume.storageClass) }}
         storageClassName: ""
         {{- else }}
-        storageClassName: "{{ .Values.ingester.persistentVolume.storageClass }}"
+        storageClassName: "{{ .Values.store_gateway.persistentVolume.storageClass }}"
         {{- end }}
         {{- end }}
         accessModes:
-          {{ toYaml .Values.ingester.persistentVolume.accessModes | nindent 10 }}
+          {{ toYaml .Values.store_gateway.persistentVolume.accessModes | nindent 10 }}
         resources:
           requests:
-            storage: "{{ .Values.ingester.persistentVolume.size }}"
+            storage: "{{ .Values.store_gateway.persistentVolume.size }}"
   {{- end }}
   template:
     metadata:
       labels:
-        app: {{ template "cortex.name" . }}-ingester
-        name: {{ template "cortex.name" . }}-ingester
-        target: ingester
+        app: {{ template "cortex.name" . }}-store-gateway
+        name: {{ template "cortex.name" . }}-store-gateway
+        target: store-gateway
         release: {{ .Release.Name }}
-        {{- with .Values.ingester.podLabels }}
+        {{- with .Values.store_gateway.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
       annotations:
@@ -58,18 +58,18 @@ spec:
         {{- else }}
         checksum/config: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
         {{- end }}
-        {{- with .Values.ingester.podAnnotations }}
+        {{- with .Values.store_gateway.podAnnotations }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
       serviceAccountName: {{ template "cortex.serviceAccountName" . }}
-      {{- if .Values.ingester.priorityClassName }}
-      priorityClassName: {{ .Values.ingester.priorityClassName }}
+      {{- if .Values.store_gateway.priorityClassName }}
+      priorityClassName: {{ .Values.store_gateway.priorityClassName }}
       {{- end }}
       securityContext:
-        {{- toYaml .Values.ingester.securityContext | nindent 8 }}
+        {{- toYaml .Values.store_gateway.securityContext | nindent 8 }}
       initContainers:
-        {{- toYaml .Values.ingester.initContainers | nindent 8 }}
+        {{- toYaml .Values.store_gateway.initContainers | nindent 8 }}
       {{- if .Values.image.pullSecrets }}
       imagePullSecrets:
       {{- range .Values.image.pullSecrets }}
@@ -77,12 +77,12 @@ spec:
       {{- end }}
       {{- end }}
       nodeSelector:
-        {{- toYaml .Values.ingester.nodeSelector | nindent 8 }}
+        {{- toYaml .Values.store_gateway.nodeSelector | nindent 8 }}
       affinity:
-        {{- toYaml .Values.ingester.affinity | nindent 8 }}
+        {{- toYaml .Values.store_gateway.affinity | nindent 8 }}
       tolerations:
-        {{- toYaml .Values.ingester.tolerations | nindent 8 }}
-      terminationGracePeriodSeconds: {{ .Values.ingester.terminationGracePeriodSeconds }}
+        {{- toYaml .Values.store_gateway.tolerations | nindent 8 }}
+      terminationGracePeriodSeconds: {{ .Values.store_gateway.terminationGracePeriodSeconds }}
       volumes:
         - name: config
           secret:
@@ -91,22 +91,22 @@ spec:
             {{- else }}
             secretName: {{ template "cortex.fullname" . }}
             {{- end }}
-        {{- if not .Values.ingester.persistentVolume.enabled }}
+        {{- if not .Values.store_gateway.persistentVolume.enabled }}
         - name: storage
           emptyDir: {}
         {{- end }}
-        {{- if .Values.ingester.extraVolumes }}
-        {{ toYaml .Values.ingester.extraVolumes | nindent 8 }}
+        {{- if .Values.store_gateway.extraVolumes }}
+        {{ toYaml .Values.store_gateway.extraVolumes | nindent 8 }}
         {{- end }}
       containers:
-        {{- if .Values.ingester.extraContainers }}
-        {{ toYaml .Values.ingester.extraContainers | nindent 8 }}
+        {{- if .Values.store_gateway.extraContainers }}
+        {{ toYaml .Values.store_gateway.extraContainers | nindent 8 }}
         {{- end }}
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args:
-            - "-target=ingester"
+            - "-target=store-gateway"
             - "-config.file=/etc/cortex/cortex.yaml"
             {{- if .Values.memcached.enabled }}
             - -store.chunks-cache.memcached.addresses=dns+{{ template "cortex.fullname" . }}-memcached.{{ .Release.Namespace }}.svc.cluster.local:11211
@@ -114,39 +114,34 @@ spec:
             {{- if index .Values "memcached-index-write" "enabled" }}
             - -store.index-cache-write.memcached.addresses=dns+{{ template "cortex.fullname" . }}-memcached-index-write.{{ .Release.Namespace }}.svc.cluster.local:11211
             {{- end }}
-            {{- range $key, $value := .Values.ingester.extraArgs }}
+            {{- range $key, $value := .Values.store_gateway.extraArgs }}
             - "-{{ $key }}={{ $value }}"
             {{- end }}
           volumeMounts:
-            {{- if .Values.ingester.extraVolumeMounts }}
-            {{ toYaml .Values.ingester.extraVolumeMounts | nindent 12}}
+            {{- if .Values.store_gateway.extraVolumeMounts }}
+            {{ toYaml .Values.store_gateway.extraVolumeMounts | nindent 12}}
             {{- end }}
             - name: config
               mountPath: /etc/cortex
             - name: storage
               mountPath: "/data"
-              {{- if .Values.ingester.persistentVolume.subPath }}
-              subPath: {{ .Values.ingester.persistentVolume.subPath }}
-              {{- else }}
-              {{- if .Values.ingester.persistence.subPath }}
-              ## DEPRECATED: use persistentVolume.subPath instead
-              subPath: {{ .Values.ingester.persistence.subPath }}
-              {{- end }}
+              {{- if .Values.store_gateway.persistentVolume.subPath }}
+              subPath: {{ .Values.store_gateway.persistentVolume.subPath }}             
               {{- end }}
           ports:
             - name: http-metrics
               containerPort: {{ .Values.config.server.http_listen_port }}
               protocol: TCP
           livenessProbe:
-            {{- toYaml .Values.ingester.livenessProbe | nindent 12 }}
+            {{- toYaml .Values.store_gateway.livenessProbe | nindent 12 }}
           readinessProbe:
-            {{- toYaml .Values.ingester.readinessProbe | nindent 12 }}
+            {{- toYaml .Values.store_gateway.readinessProbe | nindent 12 }}
           resources:
-            {{- toYaml .Values.ingester.resources | nindent 12 }}
+            {{- toYaml .Values.store_gateway.resources | nindent 12 }}
           securityContext:
             readOnlyRootFilesystem: true
           env:
-            {{- if .Values.ingester.env }}
-              {{- toYaml .Values.ingester.env | nindent 12 }}
+            {{- if .Values.store_gateway.env }}
+              {{- toYaml .Values.store_gateway.env | nindent 12 }}
             {{- end }}
 {{- end -}}
