@@ -23,6 +23,7 @@ spec:
       labels:
         app: {{ template "cortex.name" . }}-configs
         name: {{ template "cortex.name" . }}-configs
+        target: configs
         release: {{ .Release.Name }}
         {{- with .Values.configs.podLabels }}
         {{- toYaml . | nindent 8 }}

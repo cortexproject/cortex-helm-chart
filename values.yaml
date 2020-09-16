@@ -6,6 +6,7 @@ image:
   tag: v1.1.0
   pullPolicy: IfNotPresent
 
+
   ## Optionally specify an array of imagePullSecrets.
   ## Secrets must be manually created in the namespace.
   ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
@@ -32,10 +33,9 @@ serviceAccount:
   name:
   annotations: {}
 
-
 useExternalConfig: false
-externalConfigSecretName: "secret-with-config.yaml"
-externalConfigVersion: "0"
+externalConfigSecretName: 'secret-with-config.yaml'
+externalConfigVersion: '0'
 config:
   auth_enabled: false
   ingester:
@@ -48,24 +48,27 @@ config:
         replication_factor: 1
         kvstore:
           store: consul
-          prefix: "collectors/"
+          prefix: 'collectors/'
           consul:
-            host: "consul:8500"
-            http_client_timeout: "20s"
+            host: 'consul:8500'
+            http_client_timeout: '20s'
             consistent_reads: true
   limits:
     enforce_metric_name: false
     reject_old_samples: true
     reject_old_samples_max_age: 168h
+    # See https://github.com/cortexproject/cortex/blob/master/docs/configuration/config-file-reference.md#storage_config
+  storage:
+    engine: chunks
   schema:
     configs:
-    - from: 2019-07-29
-      store: cassandra
-      object_store: cassandra
-      schema: v10
-      index:
-        prefix: index_
-        period: 168h
+      - from: 2019-07-29
+        store: cassandra
+        object_store: cassandra
+        schema: v10
+        index:
+          prefix: index_
+          period: 168h
   server:
     http_listen_port: 8080
     grpc_listen_port: 9095
@@ -83,32 +86,32 @@ config:
       addresses: # configure cassandra addresses here.
       keyspace: cortex # configure desired keyspace here.
       auth: true
-      username: # configure cassandra user here. 
-      password: # configure cassandra password here. 
+      username: # configure cassandra user here.
+      password: # configure cassandra password here.
     azure:
-      container_name: # configure azure blob container name here. 
-      account_name: # configure azure storage account name here. 
-      account_key: # configure azure storage account key here. 
+      container_name: # configure azure blob container name here.
+      account_name: # configure azure storage account name here.
+      account_key: # configure azure storage account key here.
     # aws:
     #   dynamodb:
-    #     dynamodb_url: 
-    #     api_limit: 
-    #     throttle_limit: 
+    #     dynamodb_url:
+    #     api_limit:
+    #     throttle_limit:
     #     metrics:
-    #       url: 
-    #       target_queue_length: 
-    #       scale_up_factor: 
-    #       ignore_throttle_below: 
-    #       queue_length_query: 
-    #       write_throttle_query: 
-    #       write_usage_query: 
-    #       read_usage_query: 
-    #       read_error_query: 
-    #     chunk_gang_size: 
-    #     chunk_get_max_parallelism: 
-    #   s3: 
-    #   bucketnames: 
-    #   s3forcepathstyle: 
+    #       url:
+    #       target_queue_length:
+    #       scale_up_factor:
+    #       ignore_throttle_below:
+    #       queue_length_query:
+    #       write_throttle_query:
+    #       write_usage_query:
+    #       read_usage_query:
+    #       read_error_query:
+    #     chunk_gang_size:
+    #     chunk_get_max_parallelism:
+    #   s3:
+    #   bucketnames:
+    #   s3forcepathstyle:
     index_queries_cache_config:
       memcached:
         expiration: 1h
@@ -126,7 +129,7 @@ config:
     retention_period: 0s
   distributor:
     shard_by_all_labels: true
-    pool: 
+    pool:
       health_check_ingesters: true
   querier:
     active_query_tracker_dir: /data/cortex/querier
@@ -136,14 +139,13 @@ config:
     align_queries_with_step: true
     cache_results: true
     results_cache:
-      max_freshness: 1m
       cache:
         memcached:
           expiration: 1h
         memcached_client:
           timeout: 1s
   alertmanager:
-    external_url: "/api/prom/alertmanager"
+    external_url: '/api/prom/alertmanager'
   frontend:
     #max_outstanding_per_tenant: 1000
     log_queries_longer_than: 10s
@@ -169,8 +171,9 @@ alertmanager:
       cpu: 10m
       memory: 32Mi
 
-  ## Additional Loki container arguments, e.g. log level (debug, info, warn, error)
-  extraArgs: {}
+  ## Additional Cortex container arguments, e.g. log level (debug, info, warn, error)
+  extraArgs:
+    {}
     # log.level: debug
 
   ## Pod Labels
@@ -178,14 +181,14 @@ alertmanager:
 
   ## Pod Annotations
   podAnnotations:
-    prometheus.io/scrape: "true"
-    prometheus.io/port: "http-metrics"
+    prometheus.io/scrape: 'true'
+    prometheus.io/port: 'http-metrics'
 
   nodeSelector: {}
   affinity: {}
   annotations: {}
   persistence:
-    subPath: 
+    subPath:
 
   livenessProbe:
     httpGet:
@@ -198,7 +201,8 @@ alertmanager:
       port: http-metrics
     initialDelaySeconds: 45
 
-  securityContext: {}
+  securityContext:
+    {}
     #fsGroup: 10001
     #runAsGroup: 10001
     #runAsNonRoot: true
@@ -244,7 +248,6 @@ alertmanager:
   #     - name: reverse-proxy-auth-config
   #       mountPath: /etc/reverse-proxy-conf
 
-
   extraVolumes: []
   ## Additional volumes to the cortex pod.
   # - name: reverse-proxy-auth-config
@@ -280,8 +283,9 @@ distributor:
       cpu: 100m
       memory: 512Mi
 
-  ## Additional Loki container arguments, e.g. log level (debug, info, warn, error)
-  extraArgs: {}
+  ## Additional Cortex container arguments, e.g. log level (debug, info, warn, error)
+  extraArgs:
+    {}
     # log.level: debug
 
   ## Pod Labels
@@ -289,26 +293,26 @@ distributor:
 
   ## Pod Annotations
   podAnnotations:
-    prometheus.io/scrape: "true"
-    prometheus.io/port: "http-metrics"
+    prometheus.io/scrape: 'true'
+    prometheus.io/port: 'http-metrics'
 
   nodeSelector: {}
   affinity:
     podAntiAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:
-      - weight: 100
-        podAffinityTerm:
-          labelSelector:
-            matchExpressions:
-            - key: target
-              operator: In
-              values:
-              - distributor
-          topologyKey: "kubernetes.io/hostname"
+        - weight: 100
+          podAffinityTerm:
+            labelSelector:
+              matchExpressions:
+                - key: target
+                  operator: In
+                  values:
+                    - distributor
+            topologyKey: 'kubernetes.io/hostname'
 
   annotations: {}
   persistence:
-    subPath: 
+    subPath:
 
   livenessProbe:
     httpGet:
@@ -362,8 +366,9 @@ ingester:
       cpu: 100m
       memory: 512Mi
 
-  ## Additional Loki container arguments, e.g. log level (debug, info, warn, error)
-  extraArgs: {}
+  ## Additional Cortex container arguments, e.g. log level (debug, info, warn, error)
+  extraArgs:
+    {}
     # log.level: debug
 
   ## Pod Labels
@@ -371,46 +376,46 @@ ingester:
 
   ## Pod Annotations
   podAnnotations:
-    prometheus.io/scrape: "true"
-    prometheus.io/port: "http-metrics"
+    prometheus.io/scrape: 'true'
+    prometheus.io/port: 'http-metrics'
 
   nodeSelector: {}
   affinity:
     podAntiAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:
-      - weight: 100
-        podAffinityTerm:
-          labelSelector:
-            matchExpressions:
-            - key: target
-              operator: In
-              values:
-              - ingester
-          topologyKey: "kubernetes.io/hostname"
+        - weight: 100
+          podAffinityTerm:
+            labelSelector:
+              matchExpressions:
+                - key: target
+                  operator: In
+                  values:
+                    - ingester
+            topologyKey: 'kubernetes.io/hostname'
 
   annotations: {}
 
   ## DEPRECATED: use persistentVolume.subPath instead
   persistence:
-    subPath: 
+    subPath:
 
   persistentVolume:
-    ## If true and ingester.statefulSet.enabled is true, 
+    ## If true and ingester.statefulSet.enabled is true,
     ## Ingester will create/use a Persistent Volume Claim
     ## If false, use emptyDir
     ##
     enabled: true
-    
+
     ## Ingester data Persistent Volume Claim annotations
     ##
     annotations: {}
-    
+
     ## Ingester data Persistent Volume access modes
     ## Must match those of existing PV or dynamic provisioner
     ## Ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
     ##
     accessModes:
-    - ReadWriteOnce
+      - ReadWriteOnce
 
     ## Ingester data Persistent Volume size
     ##
@@ -419,7 +424,8 @@ ingester:
     ## Subdirectory of Ingester data Persistent Volume to mount
     ## Useful if the volume's root directory is not empty
     ##
-    subPath: ""
+    subPath: ''
+
 
     ## Ingester data Persistent Volume Storage Class
     ## If defined, storageClassName: <storageClass>
@@ -453,6 +459,8 @@ ingester:
     rollingUpdate:
       maxSurge: 0
       maxUnavailable: 1
+  statefulStrategy:
+    type: RollingUpdate
 
   terminationGracePeriodSeconds: 240
 
@@ -481,8 +489,9 @@ ruler:
       cpu: 10m
       memory: 32Mi
 
-  ## Additional Loki container arguments, e.g. log level (debug, info, warn, error)
-  extraArgs: {}
+  ## Additional Cortex container arguments, e.g. log level (debug, info, warn, error)
+  extraArgs:
+    {}
     # log.level: debug
 
   ## Pod Labels
@@ -490,14 +499,14 @@ ruler:
 
   ## Pod Annotations
   podAnnotations:
-    prometheus.io/scrape: "true"
-    prometheus.io/port: "http-metrics"
+    prometheus.io/scrape: 'true'
+    prometheus.io/port: 'http-metrics'
 
   nodeSelector: {}
   affinity: {}
   annotations: {}
   persistence:
-    subPath: 
+    subPath:
 
   livenessProbe:
     httpGet:
@@ -545,8 +554,9 @@ querier:
       cpu: 50m
       memory: 128Mi
 
-  ## Additional Loki container arguments, e.g. log level (debug, info, warn, error)
-  extraArgs: {}
+  ## Additional Cortex container arguments, e.g. log level (debug, info, warn, error)
+  extraArgs:
+    {}
     # log.level: debug
 
   ## Pod Labels
@@ -554,26 +564,26 @@ querier:
 
   ## Pod Annotations
   podAnnotations:
-    prometheus.io/scrape: "true"
-    prometheus.io/port: "http-metrics"
+    prometheus.io/scrape: 'true'
+    prometheus.io/port: 'http-metrics'
 
   nodeSelector: {}
   affinity:
     podAntiAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:
-      - weight: 100
-        podAffinityTerm:
-          labelSelector:
-            matchExpressions:
-            - key: target
-              operator: In
-              values:
-              - querier
-          topologyKey: "kubernetes.io/hostname"
+        - weight: 100
+          podAffinityTerm:
+            labelSelector:
+              matchExpressions:
+                - key: target
+                  operator: In
+                  values:
+                    - querier
+            topologyKey: 'kubernetes.io/hostname'
 
   annotations: {}
   persistence:
-    subPath: 
+    subPath:
 
   livenessProbe:
     httpGet:
@@ -622,8 +632,9 @@ query_frontend:
       cpu: 10m
       memory: 32Mi
 
-  ## Additional Loki container arguments, e.g. log level (debug, info, warn, error)
-  extraArgs: {}
+  ## Additional Cortex container arguments, e.g. log level (debug, info, warn, error)
+  extraArgs:
+    {}
     # log.level: debug
 
   ## Pod Labels
@@ -631,26 +642,26 @@ query_frontend:
 
   ## Pod Annotations
   podAnnotations:
-    prometheus.io/scrape: "true"
-    prometheus.io/port: "http-metrics"
+    prometheus.io/scrape: 'true'
+    prometheus.io/port: 'http-metrics'
 
   nodeSelector: {}
   affinity:
     podAntiAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:
-      - weight: 100
-        podAffinityTerm:
-          labelSelector:
-            matchExpressions:
-            - key: target
-              operator: In
-              values:
-              - query-frontend
-          topologyKey: "kubernetes.io/hostname"
+        - weight: 100
+          podAffinityTerm:
+            labelSelector:
+              matchExpressions:
+                - key: target
+                  operator: In
+                  values:
+                    - query-frontend
+            topologyKey: 'kubernetes.io/hostname'
 
   annotations: {}
   persistence:
-    subPath: 
+    subPath:
 
   livenessProbe:
     httpGet:
@@ -698,8 +709,9 @@ table_manager:
       cpu: 10m
       memory: 32Mi
 
-  ## Additional Loki container arguments, e.g. log level (debug, info, warn, error)
-  extraArgs: {}
+  ## Additional Cortex container arguments, e.g. log level (debug, info, warn, error)
+  extraArgs:
+    {}
     # log.level: debug
 
   ## Pod Labels
@@ -707,14 +719,14 @@ table_manager:
 
   ## Pod Annotations
   podAnnotations:
-    prometheus.io/scrape: "true"
-    prometheus.io/port: "http-metrics"
+    prometheus.io/scrape: 'true'
+    prometheus.io/port: 'http-metrics'
 
   nodeSelector: {}
   affinity: {}
   annotations: {}
   persistence:
-    subPath: 
+    subPath:
 
   livenessProbe:
     httpGet:
@@ -762,8 +774,9 @@ configs:
       cpu: 10m
       memory: 32Mi
 
-  ## Additional Loki container arguments, e.g. log level (debug, info, warn, error)
-  extraArgs: {}
+  ## Additional Cortex container arguments, e.g. log level (debug, info, warn, error)
+  extraArgs:
+    {}
     # log.level: debug
 
   ## Pod Labels
@@ -771,14 +784,14 @@ configs:
 
   ## Pod Annotations
   podAnnotations:
-    prometheus.io/scrape: "true"
-    prometheus.io/port: "http-metrics"
+    prometheus.io/scrape: 'true'
+    prometheus.io/port: 'http-metrics'
 
   nodeSelector: {}
   affinity: {}
   annotations: {}
   persistence:
-    subPath: 
+    subPath:
 
   livenessProbe:
     httpGet:
@@ -834,8 +847,9 @@ nginx:
       cpu: 10m
       memory: 16Mi
 
-  ## Additional Loki container arguments, e.g. log level (debug, info, warn, error)
-  extraArgs: {}
+  ## Additional Cortex container arguments, e.g. log level (debug, info, warn, error)
+  extraArgs:
+    {}
     # log.level: debug
 
   ## Pod Labels
@@ -843,14 +857,14 @@ nginx:
 
   ## Pod Annotations
   podAnnotations:
-    prometheus.io/scrape: ""
-    prometheus.io/port: "http-metrics"
+    prometheus.io/scrape: ''
+    prometheus.io/port: 'http-metrics'
 
   nodeSelector: {}
   affinity: {}
   annotations: {}
   persistence:
-    subPath: 
+    subPath:
 
   livenessProbe:
     httpGet:
@@ -872,6 +886,233 @@ nginx:
       maxUnavailable: 1
 
   terminationGracePeriodSeconds: 10
+
+  tolerations: []
+  podDisruptionBudget: {}
+  initContainers: []
+  extraContainers: []
+  extraVolumes: []
+  extraVolumeMounts: []
+  extraPorts: []
+  env: []
+
+store_gateway:
+  replicas: 1
+
+  service:
+    port: 80
+    annotations: {}
+    labels: {}
+
+  resources:
+    limits:
+      cpu: 1
+      memory: 1Gi
+    requests:
+      cpu: 100m
+      memory: 512Mi
+
+  ## Additional Cortex container arguments, e.g. log level (debug, info, warn, error)
+  extraArgs:
+    {}
+    # log.level: debug
+
+  ## Pod Labels
+  podLabels: {}
+
+  ## Pod Annotations
+  podAnnotations:
+    prometheus.io/scrape: 'true'
+    prometheus.io/port: 'http-metrics'
+
+  nodeSelector: {}
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 100
+          podAffinityTerm:
+            labelSelector:
+              matchExpressions:
+                - key: target
+                  operator: In
+                  values:
+                    - store-gateway
+            topologyKey: 'kubernetes.io/hostname'
+
+  annotations: {}
+
+  persistentVolume:
+    ## If true Store-gateway will create/use a Persistent Volume Claim
+    ## If false, use emptyDir
+    ##
+    enabled: true
+
+    ## Store-gateway data Persistent Volume Claim annotations
+    ##
+    annotations: {}
+
+    ## Store-gateway data Persistent Volume access modes
+    ## Must match those of existing PV or dynamic provisioner
+    ## Ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
+    ##
+    accessModes:
+      - ReadWriteOnce
+
+    ## Store-gateway data Persistent Volume size
+    ##
+    size: 2Gi
+
+    ## Subdirectory of Store-gateway data Persistent Volume to mount
+    ## Useful if the volume's root directory is not empty
+    ##
+    subPath: ''
+
+
+    ## Store-gateway data Persistent Volume Storage Class
+    ## If defined, storageClassName: <storageClass>
+    ## If set to "-", storageClassName: "", which disables dynamic provisioning
+    ## If undefined (the default) or set to null, no storageClassName spec is
+    ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+    ##   GKE, AWS & OpenStack)
+    ##
+    # storageClass: "-"
+
+  livenessProbe:
+    failureThreshold: 20 # 10 minutes failure threshold
+    httpGet:
+      path: /ready
+      port: http-metrics
+      scheme: HTTP
+    initialDelaySeconds: 180
+    periodSeconds: 30
+    successThreshold: 1
+    timeoutSeconds: 1
+  readinessProbe:
+    httpGet:
+      path: /ready
+      port: http-metrics
+    initialDelaySeconds: 60
+
+  securityContext: {}
+
+  strategy:
+    type: RollingUpdate
+
+  terminationGracePeriodSeconds: 240
+
+  tolerations: []
+  podDisruptionBudget: {}
+  initContainers: []
+  extraContainers: []
+  extraVolumes: []
+  extraVolumeMounts: []
+  extraPorts: []
+  env: []
+
+compactor:
+  enabled: true
+  replicas: 1
+
+  service:
+    port: 80
+    annotations: {}
+    labels: {}
+
+  resources:
+    limits:
+      cpu: 1
+      memory: 1Gi
+    requests:
+      cpu: 100m
+      memory: 512Mi
+
+  ## Additional Cortex container arguments, e.g. log level (debug, info, warn, error)
+  extraArgs:
+    {}
+    # log.level: debug
+
+  ## Pod Labels
+  podLabels: {}
+
+  ## Pod Annotations
+  podAnnotations:
+    prometheus.io/scrape: 'true'
+    prometheus.io/port: 'http-metrics'
+
+  nodeSelector: {}
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 100
+          podAffinityTerm:
+            labelSelector:
+              matchExpressions:
+                - key: target
+                  operator: In
+                  values:
+                    - compactor
+            topologyKey: 'kubernetes.io/hostname'
+
+  annotations: {}
+
+  persistentVolume:
+    ## If true compactor will create/use a Persistent Volume Claim
+    ## If false, use emptyDir
+    ##
+    enabled: true
+
+    ## compactor data Persistent Volume Claim annotations
+    ##
+    annotations: {}
+
+    ## compactor data Persistent Volume access modes
+    ## Must match those of existing PV or dynamic provisioner
+    ## Ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
+    ##
+    accessModes:
+      - ReadWriteOnce
+
+    ## compactor data Persistent Volume size
+    ##
+    size: 2Gi
+
+    ## Subdirectory of compactor data Persistent Volume to mount
+    ## Useful if the volume's root directory is not empty
+    ##
+    subPath: ''
+
+
+    ## compactor data Persistent Volume Storage Class
+    ## If defined, storageClassName: <storageClass>
+    ## If set to "-", storageClassName: "", which disables dynamic provisioning
+    ## If undefined (the default) or set to null, no storageClassName spec is
+    ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+    ##   GKE, AWS & OpenStack)
+    ##
+    # storageClass: "-"
+
+  livenessProbe:
+    failureThreshold: 20 # 10 minutes failure threshold
+    httpGet:
+      path: /ready
+      port: http-metrics
+      scheme: HTTP
+    initialDelaySeconds: 180
+    periodSeconds: 30
+    successThreshold: 1
+    timeoutSeconds: 1
+  readinessProbe:
+    httpGet:
+      path: /ready
+      port: http-metrics
+    initialDelaySeconds: 60
+
+  securityContext: {}
+
+  strategy:
+    type: RollingUpdate
+
+  terminationGracePeriodSeconds: 240
 
   tolerations: []
   podDisruptionBudget: {}

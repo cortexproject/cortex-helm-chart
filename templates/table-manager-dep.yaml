@@ -1,3 +1,4 @@
+{{- if ne .Values.config.storage.engine "blocks" -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -23,6 +24,7 @@ spec:
       labels:
         app: {{ template "cortex.name" . }}-table-manager
         name: {{ template "cortex.name" . }}-table-manager
+        target: table-manager
         release: {{ .Release.Name }}
         {{- with .Values.table_manager.podLabels }}
         {{- toYaml . | nindent 8 }}
@@ -109,3 +111,4 @@ spec:
 {{- end }}
         - name: storage
           emptyDir: {}
+{{- end -}}
