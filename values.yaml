@@ -899,6 +899,7 @@ store_gateway:
 
   service:
     port: 80
+    grpc_port: 9095
     annotations: {}
     labels: {}
 
