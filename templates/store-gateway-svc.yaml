@@ -22,6 +22,10 @@ spec:
       protocol: TCP
       name: http-metrics
       targetPort: http-metrics
+    - port: {{ .Values.store_gateway.service.grpc_port }}
+      protocol: TCP
+      name: grpclb
+      targetPort: grpc      
   selector:
     app: {{ template "cortex.name" . }}-store-gateway
     release: {{ .Release.Name }}
