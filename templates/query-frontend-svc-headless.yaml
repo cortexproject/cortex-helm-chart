@@ -8,11 +8,11 @@ metadata:
     chart: {{ template "cortex.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
-    {{- with .Values.query_frontend.labels }}
+    {{- with .Values.query_frontend.service.labels }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
   annotations:
-    {{- toYaml .Values.query_frontend.annotations | nindent 4 }}
+    {{- toYaml .Values.query_frontend.service.annotations | nindent 4 }}
 spec:
   type: ClusterIP
   clusterIP: None
@@ -22,7 +22,7 @@ spec:
       protocol: TCP
       name: http-metrics
       targetPort: http-metrics
-    - port: {{ .Values.query_frontend.service.grpc_port }}
+    - port: {{ .Values.config.server.grpc_listen_port }}
       protocol: TCP
       name: grpclb
       targetPort: grpc
