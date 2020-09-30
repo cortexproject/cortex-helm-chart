@@ -18,11 +18,11 @@ spec:
   type: ClusterIP
   clusterIP: None
   ports:
-    - port: {{ .Values.store_gateway.service.port }}
+    - port: {{ .Values.config.server.http_listen_port }}
       protocol: TCP
       name: http-metrics
       targetPort: http-metrics
-    - port: {{ .Values.store_gateway.service.grpc_port }}
+    - port: {{ .Values.config.server.grpc_listen_port }}
       protocol: TCP
       name: grpclb
       targetPort: grpc      
