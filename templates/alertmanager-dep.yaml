@@ -1,3 +1,4 @@
+{{- if not .Values.alertmanager.statefulSet.enabled -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -59,7 +60,7 @@ spec:
           args:
             - "-target=alertmanager"
             - "-config.file=/etc/cortex/cortex.yaml"
-            - "-alertmanager.configs.url=http://{{ template "cortex.fullname" . }}-configs"
+            - "-alertmanager.configs.url=http://{{ template "cortex.fullname" . }}-configs.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.config.server.http_listen_port }}"
           {{- range $key, $value := .Values.alertmanager.extraArgs }}
             - "-{{ $key }}={{ $value }}"
           {{- end }}
@@ -111,3 +112,4 @@ spec:
 {{- end }}
         - name: storage
           emptyDir: {}
+{{- end -}}
