@@ -156,8 +156,13 @@ rbac:
 alertmanager:
   replicas: 1
 
+  statefulSet:
+    ## If true, use a statefulset instead of a deployment for pod management.
+    ## This is useful for using a persistent volume for storing silences between restarts
+    ##
+    enabled: false
+
   service:
-    port: 80
     annotations: {}
     labels: {}
 
@@ -185,8 +190,46 @@ alertmanager:
   nodeSelector: {}
   affinity: {}
   annotations: {}
+
+  ## DEPRECATED: use persistentVolume.subPath instead
   persistence:
     subPath:
+
+  persistentVolume:
+    ## If true and alertmanager.statefulSet.enabled is true,
+    ## Alertmanager will create/use a Persistent Volume Claim
+    ## If false, use emptyDir
+    ##
+    enabled: true
+
+    ## Alertmanager data Persistent Volume Claim annotations
+    ##
+    annotations: {}
+
+    ## Alertmanager data Persistent Volume access modes
+    ## Must match those of existing PV or dynamic provisioner
+    ## Ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
+    ##
+    accessModes:
+      - ReadWriteOnce
+
+    ## Alertmanager data Persistent Volume size
+    ##
+    size: 2Gi
+
+    ## Subdirectory of Alertmanager data Persistent Volume to mount
+    ## Useful if the volume's root directory is not empty
+    ##
+    subPath: ''
+
+    ## Alertmanager data Persistent Volume Storage Class
+    ## If defined, storageClassName: <storageClass>
+    ## If set to "-", storageClassName: "", which disables dynamic provisioning
+    ## If undefined (the default) or set to null, no storageClassName spec is
+    ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+    ##   GKE, AWS & OpenStack)
+    ##
+    # storageClass: "-"
 
   livenessProbe:
     httpGet:
@@ -221,6 +264,8 @@ alertmanager:
     rollingUpdate:
       maxSurge: 0
       maxUnavailable: 1
+  statefulStrategy:
+    type: RollingUpdate
 
   terminationGracePeriodSeconds: 60
 
