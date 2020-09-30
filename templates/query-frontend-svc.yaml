@@ -16,13 +16,13 @@ metadata:
 spec:
   type: ClusterIP
   ports:
-    - port: {{ .Values.query_frontend.service.http_port }}
+    - port: {{ .Values.config.server.http_listen_port }}
       protocol: TCP
       name: http-metrics
       targetPort: http-metrics
-    - port: {{ .Values.query_frontend.service.grpc_port }}
+    - port: {{ .Values.config.server.grpc_listen_port }}
       protocol: TCP
-      name: grpc
+      name: grpclb
       targetPort: grpc
   selector:
     app: {{ template "cortex.name" . }}-query-frontend
