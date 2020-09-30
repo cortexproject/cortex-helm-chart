@@ -59,8 +59,8 @@ spec:
           args:
             - "-target=ruler"
             - "-config.file=/etc/cortex/cortex.yaml"
-            - "-ruler.configs.url=http://{{ template "cortex.name" . }}-configs"
-            - "-ruler.alertmanager-url=http://{{ template "cortex.name" . }}-alertmanager/api/prom/alertmanager/"
+            - "-ruler.configs.url=http://{{ template "cortex.fullname" . }}-configs.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.config.server.http_listen_port }}"
+            - "-ruler.alertmanager-url=http://{{ template "cortex.fullname" . }}-alertmanager.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.config.server.http_listen_port }}/api/prom/alertmanager/"
             {{- if .Values.memcached.enabled }}
             - -store.chunks-cache.memcached.addresses=dns+{{ template "cortex.fullname" . }}-memcached.{{ .Release.Namespace }}.svc.cluster.local:11211
             - -store.chunks-cache.memcached.timeout=100ms

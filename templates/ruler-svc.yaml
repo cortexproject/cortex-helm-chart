@@ -16,7 +16,7 @@ metadata:
 spec:
   type: ClusterIP
   ports:
-    - port: {{ .Values.ruler.service.port }}
+    - port: {{ .Values.config.server.http_listen_port }}
       protocol: TCP
       name: http-metrics
       targetPort: http-metrics
