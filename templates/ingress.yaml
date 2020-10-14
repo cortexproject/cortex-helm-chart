@@ -1,6 +1,6 @@
 {{- if and .Values.ingress.enabled .Values.nginx.enabled -}}
 {{- $fullName := include "cortex.fullname" . -}}
-{{- $svcPort := .Values.nginx.service.port -}}
+{{- $svcPort := .Values.nginx.http_listen_port -}}
 {{- if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
 apiVersion: networking.k8s.io/v1beta1
 {{- else -}}
