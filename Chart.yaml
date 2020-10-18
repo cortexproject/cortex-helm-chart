@@ -1,17 +1,17 @@
 apiVersion: v2
-version: 0.1.2
-appVersion: v1.1.0
+version: 0.2.0
+appVersion: v1.4.0
 description: 'Cortex'
 engine: gotpl
 home: https://cortexmetrics.io/
 icon: https://avatars2.githubusercontent.com/u/43045022?s=200&v=4
 kubeVersion: ^1.10.0-0
 maintainers:
-- email: cortex-team@googlegroups.com
-  name: Cortex Maintainers
+  - email: cortex-team@googlegroups.com
+    name: Cortex Maintainers
 name: cortex
 sources:
-- https://github.com/cortexproject/cortex-helm-chart
+  - https://github.com/cortexproject/cortex-helm-chart
 dependencies:
   - name: memcached
     alias: memcached
