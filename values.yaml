@@ -36,6 +36,7 @@ serviceAccount:
 useExternalConfig: false
 externalConfigSecretName: 'secret-with-config.yaml'
 externalConfigVersion: '0'
+
 config:
   auth_enabled: false
   ingester:
@@ -142,6 +143,8 @@ config:
           expiration: 1h
         memcached_client:
           timeout: 1s
+  ruler:
+    enable_alertmanager_discovery: false
   alertmanager:
     external_url: '/api/prom/alertmanager'
   frontend:
