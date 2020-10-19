@@ -60,7 +60,12 @@ spec:
             - "-target=ruler"
             - "-config.file=/etc/cortex/cortex.yaml"
             - "-ruler.configs.url=http://{{ template "cortex.fullname" . }}-configs.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.config.server.http_listen_port }}"
+            {{- if .Values.config.ruler.enable_alertmanager_discovery }}
+            - "-ruler.alertmanager-discovery=true"
+            - "-ruler.alertmanager-url=http://_http-metrics._tcp.{{ template "cortex.name" . }}-alertmanager-headless/api/prom/alertmanager/"
+            {{- else }}
             - "-ruler.alertmanager-url=http://{{ template "cortex.fullname" . }}-alertmanager.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.config.server.http_listen_port }}/api/prom/alertmanager/"
+            {{- end }}
             {{- if .Values.memcached.enabled }}
             - -store.chunks-cache.memcached.addresses=dns+{{ template "cortex.fullname" . }}-memcached.{{ .Release.Namespace }}.svc.cluster.local:11211
             - -store.chunks-cache.memcached.timeout=100ms
