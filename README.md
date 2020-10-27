@@ -19,16 +19,32 @@ See [cortex documentation](https://cortexmetrics.io/docs/) for details on storag
 
 ## Installation
 
-Cortex can be installed in your Kubernetes cluster using the following command:
+[Helm](https://helm.sh) must be installed to use the charts.
+Please refer to Helm's [documentation](https://helm.sh/docs/) to get started.
+
+Once Helm is set up properly, add the repo as follows:
 
 ```bash
-  helm install cortex --name cortex --namespace cortex <path-to-cortex-helm-chart>
+  helm repo add cortex-helm https://cortexproject.github.io/cortex-helm-chart
 ```
 
-or if you have custom options or values you want to override:
+Cortex can now be installed with the following command:
 
 ```bash
-  helm install cortex --name cortex --namespace cortex -f my-cortex-values.yaml <path-to-cortex-helm-chart>
+  helm install cortex --name cortex --namespace cortex cortex-helm/cortex
+```
+
+If you have custom options or values you want to override:
+
+```bash
+  helm install cortex --name cortex --namespace cortex -f my-cortex-values.yaml cortex-helm/cortex
+```
+
+Specific versions of the chart can be installed using the `--version` option, with the default being the latest release.
+What versions are available for installation can be listed with the following command:
+
+```bash
+  helm search repo cortex-helm
 ```
 
 As part of this chart many different pods and services are installed which all
@@ -36,23 +52,18 @@ have varying resource requirements. Please make sure that you have sufficient
 resources (CPU/memory) available in your cluster before installing Cortex Helm
 chart.
 
-Additionally, the default chart installation expects Cortex pods to be deployed
-on nodes with taints "dedicated=cortex" and memcached pods on nodes with taints
-"dedicated=cortex-memcached". Additonally, Cortex pods have node affinity for
-nodes which match the expression "dedicated=cortex" and mamcached pods have
-affinity for "dedicated=cortex-memcached" nodes.
 
 ## Upgrades
 
 To upgrade Cortex use the following command:
 
 ```bash
-  helm upgrade cortex -f my-cortex-values.yaml <path-to-cortex-helm-chart>
+  helm upgrade cortex -f my-cortex-values.yaml cortex-helm/cortex
 ```
 
 Source code can be found [here](https://cortexmetrics.io/)
 
-## Chart Requirements
+## Chart Dependencies
 
 | Repository | Name | Version |
 |------------|------|---------|
