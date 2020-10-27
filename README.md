@@ -105,6 +105,7 @@ Source code can be found [here](https://cortexmetrics.io/)
 | alertmanager.strategy.type | string | `"RollingUpdate"` |  |
 | alertmanager.terminationGracePeriodSeconds | int | `60` |  |
 | alertmanager.tolerations | list | `[]` |  |
+| clusterDomain | string | `"cluster.local"` |  |
 | compactor.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].podAffinityTerm.labelSelector.matchExpressions[0].key | string | `"target"` |  |
 | compactor.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].podAffinityTerm.labelSelector.matchExpressions[0].operator | string | `"In"` |  |
 | compactor.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].podAffinityTerm.labelSelector.matchExpressions[0].values[0] | string | `"compactor"` |  |
