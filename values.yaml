@@ -13,6 +13,9 @@ image:
   # pullSecrets:
   #   - myRegistrKeySecretName
 
+## Kubernetes cluster DNS domain
+clusterDomain: cluster.local
+
 ingress:
   enabled: true
   annotations:
