@@ -31,13 +31,13 @@ Once Helm is set up properly, add the repo as follows:
 Cortex can now be installed with the following command:
 
 ```bash
-  helm install cortex --name cortex --namespace cortex cortex-helm/cortex
+  helm install cortex --namespace cortex cortex-helm/cortex
 ```
 
 If you have custom options or values you want to override:
 
 ```bash
-  helm install cortex --name cortex --namespace cortex -f my-cortex-values.yaml cortex-helm/cortex
+  helm install cortex --namespace cortex -f my-cortex-values.yaml cortex-helm/cortex
 ```
 
 Specific versions of the chart can be installed using the `--version` option, with the default being the latest release.
