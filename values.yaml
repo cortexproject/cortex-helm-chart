@@ -3,9 +3,8 @@
 
 image:
   repository: quay.io/cortexproject/cortex
-  tag: v1.1.0
+  tag: v1.4.0
   pullPolicy: IfNotPresent
-
 
   ## Optionally specify an array of imagePullSecrets.
   ## Secrets must be manually created in the namespace.
@@ -469,7 +468,6 @@ ingester:
     ## Useful if the volume's root directory is not empty
     ##
     subPath: ''
-
 
     ## Ingester data Persistent Volume Storage Class
     ## If defined, storageClassName: <storageClass>
@@ -1003,7 +1001,6 @@ store_gateway:
     ##
     subPath: ''
 
-
     ## Store-gateway data Persistent Volume Storage Class
     ## If defined, storageClassName: <storageClass>
     ## If set to "-", storageClassName: "", which disables dynamic provisioning
@@ -1115,7 +1112,6 @@ compactor:
     ## Useful if the volume's root directory is not empty
     ##
     subPath: ''
-
 
     ## compactor data Persistent Volume Storage Class
     ## If defined, storageClassName: <storageClass>
