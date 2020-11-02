@@ -59,7 +59,7 @@ spec:
           args:
             - "-target=querier"
             - "-config.file=/etc/cortex/cortex.yaml"
-            - "-querier.frontend-address={{ template "cortex.fullname" . }}-query-frontend-headless.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.query_frontend.service.grpc_port}}"
+            - "-querier.frontend-address={{ template "cortex.fullname" . }}-query-frontend-headless.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.config.server.grpc_listen_port}}"
             {{- if .Values.memcached.enabled }}
             - "-store.chunks-cache.memcached.addresses=dns+{{ template "cortex.fullname" . }}-memcached.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:11211"
             {{- end }}
