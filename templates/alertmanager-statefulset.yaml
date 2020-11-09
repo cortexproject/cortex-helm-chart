@@ -19,7 +19,7 @@ spec:
       app: {{ template "cortex.name" . }}-alertmanager
       release: {{ .Release.Name }}
   updateStrategy:
-    {{- toYaml .Values.alertmanager.statefulStrategy | nindent 4 }}          
+    {{- toYaml .Values.alertmanager.statefulStrategy | nindent 4 }}
   serviceName: {{ template "cortex.fullname" . }}-alertmanager
   {{- if .Values.alertmanager.persistentVolume.enabled }}
   volumeClaimTemplates:
@@ -85,6 +85,8 @@ spec:
         {{- toYaml .Values.alertmanager.tolerations | nindent 8 }}
       terminationGracePeriodSeconds: {{ .Values.alertmanager.terminationGracePeriodSeconds }}
       volumes:
+        - emptyDir: {}
+          name: tmp
         - name: config
           secret:
             {{- if .Values.useExternalConfig }}
@@ -112,7 +114,7 @@ spec:
             - "-alertmanager.configs.url=http://{{ template "cortex.fullname" . }}-configs.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.config.server.http_listen_port }}"
             {{- if gt (.Values.alertmanager.replicas | int) 1 }}
             {{- range $n := until (.Values.alertmanager.replicas |int ) }}
-            - -cluster.peer={{ template "cortex.fullname" $ }}-alertmanager-{{ $n }}.{{ template "cortex.fullname" $ }}-alertmanager-headless.{{ $.Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ $clusterPort }}
+            - -cluster.peer={{ template "cortex.fullname" $ }}-alertmanager-{{ $n }}.{{ template "cortex.fullname" $ }}-alertmanager.{{ $.Release.Namespace }}.svc.cluster.local:{{ $clusterPort }}
             {{- end }}
             {{- end }}
             {{- range $key, $value := .Values.alertmanager.extraArgs }}
@@ -124,6 +126,8 @@ spec:
             {{- end }}
             - name: config
               mountPath: /etc/cortex
+            - mountPath: /tmp
+              name: tmp
             - name: storage
               mountPath: "/data"
               {{- if .Values.alertmanager.persistentVolume.subPath }}
