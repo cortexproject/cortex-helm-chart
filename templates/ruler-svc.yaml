@@ -8,11 +8,11 @@ metadata:
     chart: {{ template "cortex.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
-    {{- with .Values.ruler.labels }}
+    {{- with .Values.ruler.service.labels }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
   annotations:
-    {{- toYaml .Values.ruler.annotations | nindent 4 }}
+    {{- toYaml .Values.ruler.service.annotations | nindent 4 }}
 spec:
   type: ClusterIP
   ports:
