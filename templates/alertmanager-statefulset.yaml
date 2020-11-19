@@ -85,8 +85,6 @@ spec:
         {{- toYaml .Values.alertmanager.tolerations | nindent 8 }}
       terminationGracePeriodSeconds: {{ .Values.alertmanager.terminationGracePeriodSeconds }}
       volumes:
-        - emptyDir: {}
-          name: tmp
         - name: config
           secret:
             {{- if .Values.useExternalConfig }}
@@ -126,8 +124,6 @@ spec:
             {{- end }}
             - name: config
               mountPath: /etc/cortex
-            - mountPath: /tmp
-              name: tmp
             - name: storage
               mountPath: "/data"
               {{- if .Values.alertmanager.persistentVolume.subPath }}
