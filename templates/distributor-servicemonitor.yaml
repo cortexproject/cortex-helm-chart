@@ -1,0 +1,34 @@
+{{- if .Values.distributor.serviceMonitor.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ template "cortex.fullname" . }}-distributor
+  labels:
+    app: {{ template "cortex.name" . }}
+    chart: {{ template "cortex.chart" . }}
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
+    {{- if .Values.distributor.serviceMonitor.additionalLabels }}
+{{ toYaml .Values.distributor.serviceMonitor.additionalLabels | indent 4 }}
+    {{- end }}
+  {{- if .Values.distributor.serviceMonitor.annotations }}
+  annotations:
+{{ toYaml .Values.distributor.serviceMonitor.annotations | indent 4 }}
+  {{- end }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ template "cortex.name" . }}-distributor
+      release: {{ .Release.Name | quote }}
+  namespaceSelector:
+    matchNames:
+      - {{ .Release.Namespace | quote }}
+  endpoints:
+  - port: http-metrics
+    {{- if .Values.distributor.serviceMonitor.interval }}
+    interval: {{ .Values.distributor.serviceMonitor.interval }}
+    {{- end }}
+    {{- if .Values.distributor.serviceMonitor.scrapeTimeout }}
+    scrapeTimeout: {{ .Values.distributor.serviceMonitor.scrapeTimeout }}
+    {{- end }}
+{{- end }}
