@@ -1,0 +1,34 @@
+{{- if .Values.store_gateway.serviceMonitor.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ template "cortex.fullname" . }}-store-gateway
+  labels:
+    app: {{ template "cortex.name" . }}
+    chart: {{ template "cortex.chart" . }}
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
+    {{- if .Values.store_gateway.serviceMonitor.additionalLabels }}
+{{ toYaml .Values.store_gateway.serviceMonitor.additionalLabels | indent 4 }}
+    {{- end }}
+  {{- if .Values.store_gateway.serviceMonitor.annotations }}
+  annotations:
+{{ toYaml .Values.store_gateway.serviceMonitor.annotations | indent 4 }}
+  {{- end }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ template "cortex.name" . }}-store-gateway
+      release: {{ .Release.Name | quote }}
+  namespaceSelector:
+    matchNames:
+      - {{ .Release.Namespace | quote }}
+  endpoints:
+  - port: http-metrics
+    {{- if .Values.store_gateway.serviceMonitor.interval }}
+    interval: {{ .Values.store_gateway.serviceMonitor.interval }}
+    {{- end }}
+    {{- if .Values.store_gateway.serviceMonitor.scrapeTimeout }}
+    scrapeTimeout: {{ .Values.store_gateway.serviceMonitor.scrapeTimeout }}
+    {{- end }}
+{{- end }}
