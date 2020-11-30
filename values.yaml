@@ -3,7 +3,7 @@
 
 image:
   repository: quay.io/cortexproject/cortex
-  tag: v1.4.0
+  # tag: v1.4.0  default is the app version from Chart.yaml
   pullPolicy: IfNotPresent
 
   ## Optionally specify an array of imagePullSecrets.
@@ -53,7 +53,7 @@ config:
           store: consul
           prefix: 'collectors/'
           consul:
-            host: 'consul:8500'
+            host: '{{ .Release.Name }}-consul-server:8500'
             http_client_timeout: '20s'
             consistent_reads: true
   limits:
@@ -66,6 +66,9 @@ config:
         store: cassandra
         object_store: cassandra
         schema: v10
+        chunks:
+          prefix: chunks_
+          period: 168h
         index:
           prefix: index_
           period: 168h
@@ -153,6 +156,8 @@ config:
     #max_outstanding_per_tenant: 1000
     log_queries_longer_than: 10s
     compress_responses: true
+  store_gateway:
+    sharding_enabled: false  # this is also default but allows for this to be used the templates
 
 rbac:
   create: true
@@ -1290,3 +1295,6 @@ configsdb_postgresql:
     existing_secret:
       name:
       key:
+
+consul:
+  enabled: true

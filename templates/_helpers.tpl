@@ -70,6 +70,15 @@ Create the name of the service account
 {{- end -}}
 
 {{/*
+Resolve the actual image tag to use.
+*/}}
+{{- define "cortex.imageTag" -}}
+{{- $tag := default .Chart.AppVersion .Values.image.tag -}}
+{{- $tag -}}
+{{- end }}
+
+
+{{/*
 Create the app name of cortex clients. Defaults to the same logic as "cortex.fullname", and default client expects "prometheus".
 */}}
 {{- define "client.name" -}}

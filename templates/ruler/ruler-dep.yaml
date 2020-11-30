@@ -43,7 +43,7 @@ spec:
       {{- end }}
       containers:
         - name: {{ .Chart.Name }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          image: "{{ .Values.image.repository }}:{{ include "cortex.imageTag" . }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args:
             - "-target=ruler"
@@ -54,6 +54,9 @@ spec:
             - "-ruler.alertmanager-url=http://_http-metrics._tcp.{{ template "cortex-alertmanager.headlessname" . }}/api/prom/alertmanager/"
             {{- else }}
             - "-ruler.alertmanager-url=http://{{ template "cortex-alertmanager.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.config.server.http_listen_port }}/api/prom/alertmanager/"
+            {{- end }}
+            {{- if and (eq .Values.config.storage.engine "blocks") (not .Values.config.store_gateway.sharding_enabled) }}
+            - "-querier.store-gateway-addresses=dns+{{ template "cortex-store-gateway.headlessname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.config.server.grpc_listen_port }}"
             {{- end }}
             {{- if .Values.memcached.enabled }}
             - -store.chunks-cache.memcached.addresses=dns+{{ template "cortex.fullname" . }}-memcached.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:11211

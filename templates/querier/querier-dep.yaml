@@ -43,12 +43,15 @@ spec:
       {{- end }}
       containers:
         - name: {{ .Chart.Name }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          image: "{{ .Values.image.repository }}:{{ include "cortex.imageTag" . }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args:
             - "-target=querier"
             - "-config.file=/etc/cortex/cortex.yaml"
             - "-querier.frontend-address={{ template "cortex-query-frontend.headlessname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.config.server.grpc_listen_port }}"
+            {{- if and (eq .Values.config.storage.engine "blocks") (not .Values.config.store_gateway.sharding_enabled) }}
+            - "-querier.store-gateway-addresses=dns+{{ template "cortex-store-gateway.headlessname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.config.server.grpc_listen_port }}"
+            {{- end }}
             {{- if .Values.memcached.enabled }}
             - "-store.chunks-cache.memcached.addresses=dns+{{ template "cortex.fullname" . }}-memcached.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:11211"
             {{- end }}

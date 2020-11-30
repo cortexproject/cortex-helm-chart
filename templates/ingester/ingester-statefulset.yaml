@@ -92,7 +92,7 @@ spec:
         {{ toYaml .Values.ingester.extraContainers | nindent 8 }}
         {{- end }}
         - name: {{ .Chart.Name }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          image: "{{ .Values.image.repository }}:{{ include "cortex.imageTag" . }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args:
             - "-target=ingester"
