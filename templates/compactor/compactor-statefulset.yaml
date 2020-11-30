@@ -1,23 +1,15 @@
-{{- if eq .Values.config.storage.engine "blocks" -}}
-{{- if .Values.compactor.enabled -}}
+{{- if and .Values.compactor.enabled (eq .Values.config.storage.engine "blocks") -}}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: {{ template "cortex.fullname" . }}-compactor
-  namespace: {{ .Release.Namespace }}
-  labels:
-    app: {{ template "cortex.name" . }}-compactor
-    chart: {{ template "cortex.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+  name: {{ template "cortex-compactor.fullname" . }}
+  labels: {{ include "cortex-compactor.labels" . | nindent 4 }}
   annotations:
     {{- toYaml .Values.compactor.annotations | nindent 4 }}
 spec:
   replicas: {{ .Values.compactor.replicas }}
   selector:
-    matchLabels:
-      app: {{ template "cortex.name" . }}-compactor
-      release: {{ .Release.Name }}
+    matchLabels: {{ include "cortex-compactor.matchLabels" . | nindent 6 }}
   updateStrategy:
     {{- toYaml .Values.compactor.strategy | nindent 4 }}            
   serviceName: {{ template "cortex.fullname" . }}-compactor
@@ -45,13 +37,9 @@ spec:
   {{- end }}
   template:
     metadata:
-      labels:
-        app: {{ template "cortex.name" . }}-compactor
-        name: {{ template "cortex.name" . }}-compactor
-        target: compactor
-        release: {{ .Release.Name }}
+      labels: {{ include "cortex-compactor.labels" . | nindent 8 }}
         {{- with .Values.compactor.podLabels }}
-        {{- toYaml . | nindent 8 }}
+{{- toYaml . | indent 8 }}
         {{- end }}
       annotations:
         {{- if .Values.useExternalConfig }}
@@ -145,5 +133,4 @@ spec:
             {{- if .Values.compactor.env }}
               {{- toYaml .Values.compactor.env | nindent 12 }}
             {{- end }}
-{{- end -}}
 {{- end -}}

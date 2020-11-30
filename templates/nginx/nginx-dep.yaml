@@ -2,34 +2,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ template "cortex.fullname" . }}-nginx
-  namespace: {{ .Release.Namespace }}
-  labels:
-    app: {{ template "cortex.name" . }}-nginx
-    chart: {{ template "cortex.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+  name: {{ template "cortex-nginx.fullname" . }}
+  labels: {{ include "cortex-nginx.labels" . | nindent 4 }}
   annotations:
     {{- toYaml .Values.nginx.annotations | nindent 4 }}
 spec:
   replicas: {{ .Values.nginx.replicas }}
   selector:
-    matchLabels:
-      app: {{ template "cortex.name" . }}-nginx
-      release: {{ .Release.Name }}
+    matchLabels: {{ include "cortex-nginx.matchLabels" . | nindent 6 }}
   strategy:
     {{- toYaml .Values.nginx.strategy | nindent 4 }}
   template:
     metadata:
-      labels:
-        app: {{ template "cortex.name" . }}-nginx
-        name: {{ template "cortex.name" . }}-nginx
-        release: {{ .Release.Name }}
-        {{- with .Values.nginx.podLabels }}
-        {{- toYaml . | nindent 8 }}
-        {{- end }}
+      labels: {{ include "cortex-nginx.labels" . | nindent 8 }}
+{{- with .Values.nginx.podLabels }}
+{{- toYaml . | indent 8 }}
+{{- end }}
       annotations:
-        checksum/config: {{ include (print $.Template.BasePath "/nginx-config.yaml") . | sha256sum }}
+        checksum/config: {{ include (print $.Template.BasePath "/nginx/nginx-config.yaml") . | sha256sum }}
         {{- with .Values.nginx.podAnnotations }}
         {{- toYaml . | nindent 8 }}
         {{- end }}

@@ -1,15 +1,11 @@
+{{- if and .Values.compactor.enabled (eq .Values.config.storage.engine "blocks") -}}
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "cortex.fullname" . }}-compactor
-  namespace: {{ .Release.Namespace }}
-  labels:
-    app: {{ template "cortex.name" . }}-compactor
-    chart: {{ template "cortex.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+  name: {{ template "cortex-compactor.fullname" . }}
+  labels: {{ include "cortex-compactor.labels" . | nindent 4 }}
     {{- with .Values.compactor.service.labels }}
-    {{- toYaml . | nindent 4 }}
+{{- toYaml . | indent 4 }}
     {{- end }}
   annotations:
     {{- toYaml .Values.compactor.service.annotations | nindent 4 }}
@@ -20,6 +16,5 @@ spec:
       protocol: TCP
       name: http-metrics
       targetPort: http-metrics
-  selector:
-    app: {{ template "cortex.name" . }}-compactor
-    release: {{ .Release.Name }}
+  selector: {{ include "cortex-compactor.matchLabels" . | nindent 4 }}
+{{- end }}

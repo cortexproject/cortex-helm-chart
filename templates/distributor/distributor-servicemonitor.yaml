@@ -2,12 +2,8 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: {{ template "cortex.fullname" . }}-distributor
-  labels:
-    app: {{ template "cortex.name" . }}
-    chart: {{ template "cortex.chart" . }}
-    heritage: {{ .Release.Service }}
-    release: {{ .Release.Name }}
+  name: {{ template "cortex-distributor.fullname" . }}
+  labels: {{ include "cortex-distributor.labels" . | nindent 4 }}
     {{- if .Values.distributor.serviceMonitor.additionalLabels }}
 {{ toYaml .Values.distributor.serviceMonitor.additionalLabels | indent 4 }}
     {{- end }}
@@ -17,9 +13,7 @@ metadata:
   {{- end }}
 spec:
   selector:
-    matchLabels:
-      app: {{ template "cortex.name" . }}-distributor
-      release: {{ .Release.Name | quote }}
+    matchLabels: {{ include "cortex-distributor.matchLabels" . | nindent 6 }}
   namespaceSelector:
     matchNames:
       - {{ .Release.Namespace | quote }}

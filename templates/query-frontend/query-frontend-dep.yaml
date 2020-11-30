@@ -1,33 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ template "cortex.fullname" . }}-query-frontend
-  namespace: {{ .Release.Namespace }}
-  labels:
-    app: {{ template "cortex.name" . }}-query-frontend
-    chart: {{ template "cortex.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+  name: {{ template "cortex-query-frontend.fullname" . }}
+  labels: {{ include "cortex-query-frontend.labels" . | nindent 4 }}
   annotations:
     {{- toYaml .Values.query_frontend.annotations | nindent 4 }}
 spec:
   replicas: {{ .Values.query_frontend.replicas }}
   selector:
-    matchLabels:
-      app: {{ template "cortex.name" . }}-query-frontend
-      release: {{ .Release.Name }}
+    matchLabels: {{ include "cortex-query-frontend.matchLabels" . | nindent 6 }}
   strategy:
     {{- toYaml .Values.query_frontend.strategy | nindent 4 }}
   template:
     metadata:
-      labels:
-        app: {{ template "cortex.name" . }}-query-frontend
-        name: {{ template "cortex.name" . }}-query-frontend
-        target: query-frontend
-        release: {{ .Release.Name }}
-        {{- with .Values.query_frontend.podLabels }}
-        {{- toYaml . | nindent 8 }}
-        {{- end }}
+      labels: {{ include "cortex-query-frontend.labels" . | nindent 8 }}
+{{- with .Values.query_frontend.podLabels }}
+{{- toYaml . | indent 8 }}
+{{- end }}
       annotations:
 {{- if .Values.useExternalConfig }}
         checksum/config: {{ .Values.externalConfigVersion }}

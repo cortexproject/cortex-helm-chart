@@ -4,11 +4,7 @@ kind: PodDisruptionBudget
 metadata:
   name: {{ template "cortex.fullname" . }}
   namespace: {{ .Release.Namespace }}
-  labels:
-    app: {{ template "cortex.name" . }}
-    heritage: {{ .Release.Service }}
-    release: {{ .Release.Name }}
-    chart: {{ template "cortex.chart" . }}
+  labels: {{ include "cortex.labels" . | nindent 4 }}
 spec:
   selector:
     matchLabels:

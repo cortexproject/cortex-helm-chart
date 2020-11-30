@@ -1,33 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ template "cortex.fullname" . }}-distributor
-  namespace: {{ .Release.Namespace }}
-  labels:
-    app: {{ template "cortex.name" . }}-distributor
-    chart: {{ template "cortex.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+  name: {{ template "cortex-distributor.fullname" . }}
+  labels: {{ include "cortex-distributor.labels" . | nindent 4 }}
   annotations:
     {{- toYaml .Values.distributor.annotations | nindent 4 }}
 spec:
   replicas: {{ .Values.distributor.replicas }}
   selector:
-    matchLabels:
-      app: {{ template "cortex.name" . }}-distributor
-      release: {{ .Release.Name }}
+    matchLabels: {{ include "cortex-distributor.matchLabels" . | nindent 6 }}
   strategy:
     {{- toYaml .Values.distributor.strategy | nindent 4 }}
   template:
     metadata:
-      labels:
-        app: {{ template "cortex.name" . }}-distributor
-        name: {{ template "cortex.name" . }}-distributor
-        target: distributor
-        release: {{ .Release.Name }}
-        {{- with .Values.distributor.podLabels }}
-        {{- toYaml . | nindent 8 }}
-        {{- end }}
+      labels: {{ include "cortex-distributor.labels" . | nindent 8 }}
+{{- with .Values.distributor.podLabels }}
+{{- toYaml . | indent 8 }}
+{{- end }}
       annotations:
 {{- if .Values.useExternalConfig }}
         checksum/config: {{ .Values.externalConfigVersion }}

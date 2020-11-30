@@ -1,13 +1,9 @@
-{{- if .Values.table_manager.serviceMonitor.enabled }}
+{{- if and (ne .Values.config.storage.engine "blocks") .Values.table_manager.serviceMonitor.enabled }}
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: {{ template "cortex.fullname" . }}-table-manager
-  labels:
-    app: {{ template "cortex.name" . }}
-    chart: {{ template "cortex.chart" . }}
-    heritage: {{ .Release.Service }}
-    release: {{ .Release.Name }}
+  name: {{ template "cortex-table-manager.fullname" . }}
+  labels: {{ include "cortex-table-manager.labels" . | nindent 4 }}
     {{- if .Values.table_manager.serviceMonitor.additionalLabels }}
 {{ toYaml .Values.table_manager.serviceMonitor.additionalLabels | indent 4 }}
     {{- end }}
@@ -17,9 +13,7 @@ metadata:
   {{- end }}
 spec:
   selector:
-    matchLabels:
-      app: {{ template "cortex.name" . }}-table-manager
-      release: {{ .Release.Name | quote }}
+    matchLabels: {{ include "cortex-table-manager.matchLabels" . | nindent 6 }}
   namespaceSelector:
     matchNames:
       - {{ .Release.Namespace | quote }}

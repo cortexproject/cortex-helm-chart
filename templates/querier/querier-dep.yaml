@@ -1,33 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ template "cortex.fullname" . }}-querier
-  namespace: {{ .Release.Namespace }}
-  labels:
-    app: {{ template "cortex.name" . }}-querier
-    chart: {{ template "cortex.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+  name: {{ template "cortex-querier.fullname" . }}
+  labels: {{ include "cortex-querier.labels" . | nindent 4 }}
   annotations:
     {{- toYaml .Values.querier.annotations | nindent 4 }}
 spec:
   replicas: {{ .Values.querier.replicas }}
   selector:
-    matchLabels:
-      app: {{ template "cortex.name" . }}-querier
-      release: {{ .Release.Name }}
+    matchLabels: {{ include "cortex-querier.matchLabels" . | nindent 6 }}
   strategy:
     {{- toYaml .Values.querier.strategy | nindent 4 }}
   template:
     metadata:
-      labels:
-        app: {{ template "cortex.name" . }}-querier
-        name: {{ template "cortex.name" . }}-querier
-        target: querier
-        release: {{ .Release.Name }}
-        {{- with .Values.querier.podLabels }}
-        {{- toYaml . | nindent 8 }}
-        {{- end }}
+      labels: {{ include "cortex-querier.labels" . | nindent 8 }}
+{{- with .Values.querier.podLabels }}
+{{- toYaml . | indent 8 }}
+{{- end }}
       annotations:
 {{- if .Values.useExternalConfig }}
         checksum/config: {{ .Values.externalConfigVersion }}
@@ -59,7 +48,7 @@ spec:
           args:
             - "-target=querier"
             - "-config.file=/etc/cortex/cortex.yaml"
-            - "-querier.frontend-address={{ template "cortex.fullname" . }}-query-frontend-headless.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.config.server.grpc_listen_port }}"
+            - "-querier.frontend-address={{ template "cortex-query-frontend.headlessname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.config.server.grpc_listen_port }}"
             {{- if .Values.memcached.enabled }}
             - "-store.chunks-cache.memcached.addresses=dns+{{ template "cortex.fullname" . }}-memcached.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:11211"
             {{- end }}

@@ -2,21 +2,14 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: {{ template "cortex.fullname" . }}-store-gateway
-  namespace: {{ .Release.Namespace }}
-  labels:
-    app: {{ template "cortex.name" . }}-store-gateway
-    chart: {{ template "cortex.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+  name: {{ template "cortex-store-gateway.fullname" . }}
+  labels: {{ include "cortex-store-gateway.labels" . | nindent 4 }}
   annotations:
     {{- toYaml .Values.store_gateway.annotations | nindent 4 }}
 spec:
   replicas: {{ .Values.store_gateway.replicas }}
   selector:
-    matchLabels:
-      app: {{ template "cortex.name" . }}-store-gateway
-      release: {{ .Release.Name }}
+    matchLabels: {{ include "cortex-store-gateway.matchLabels" . | nindent 6 }}
   updateStrategy:
     {{- toYaml .Values.store_gateway.strategy | nindent 4 }}      
   serviceName: {{ template "cortex.fullname" . }}-store-gateway
@@ -44,14 +37,10 @@ spec:
   {{- end }}
   template:
     metadata:
-      labels:
-        app: {{ template "cortex.name" . }}-store-gateway
-        name: {{ template "cortex.name" . }}-store-gateway
-        target: store-gateway
-        release: {{ .Release.Name }}
-        {{- with .Values.store_gateway.podLabels }}
-        {{- toYaml . | nindent 8 }}
-        {{- end }}
+      labels: {{ include "cortex-store-gateway.labels" . | nindent 8 }}
+{{- with .Values.store_gateway.podLabels }}
+{{- toYaml . | indent 8 }}
+{{- end }}
       annotations:
         {{- if .Values.useExternalConfig }}
         checksum/config: {{ .Values.externalConfigVersion }}

@@ -1,15 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "cortex.fullname" . }}-configs
-  namespace: {{ .Release.Namespace }}
-  labels:
-    app: {{ template "cortex.name" . }}-configs
-    chart: {{ template "cortex.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+  name: {{ template "cortex-configs.fullname" . }}
+  labels: {{ include "cortex-configs.labels" . | nindent 4 }}
     {{- with .Values.configs.service.labels }}
-    {{- toYaml . | nindent 4 }}
+{{- toYaml . | indent 4 }}
     {{- end }}
   annotations:
     {{- toYaml .Values.configs.service.annotations | nindent 4 }}
@@ -20,6 +15,4 @@ spec:
       protocol: TCP
       name: http-metrics
       targetPort: http-metrics
-  selector:
-    app: {{ template "cortex.name" . }}-configs
-    release: {{ .Release.Name }}
+  selector: {{ include "cortex-configs.matchLabels" . | nindent 4 }}

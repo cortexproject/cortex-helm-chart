@@ -3,21 +3,14 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: {{ template "cortex.fullname" . }}-alertmanager
-  namespace: {{ .Release.Namespace }}
-  labels:
-    app: {{ template "cortex.name" . }}-alertmanager
-    chart: {{ template "cortex.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+  name: {{ template "cortex-alertmanager.fullname" . }}
+  labels: {{ include "cortex-alertmanager.labels" . | nindent 4 }}
   annotations:
     {{- toYaml .Values.alertmanager.annotations | nindent 4 }}
 spec:
   replicas: {{ .Values.alertmanager.replicas }}
   selector:
-    matchLabels:
-      app: {{ template "cortex.name" . }}-alertmanager
-      release: {{ .Release.Name }}
+    matchLabels: {{ include "cortex-alertmanager.matchLabels" . | nindent 6 }}
   updateStrategy:
     {{- toYaml .Values.alertmanager.statefulStrategy | nindent 4 }}
   serviceName: {{ template "cortex.fullname" . }}-alertmanager
@@ -45,14 +38,10 @@ spec:
   {{- end }}
   template:
     metadata:
-      labels:
-        app: {{ template "cortex.name" . }}-alertmanager
-        name: {{ template "cortex.name" . }}-alertmanager
-        target: alertmanager
-        release: {{ .Release.Name }}
-        {{- with .Values.alertmanager.podLabels }}
-        {{- toYaml . | nindent 8 }}
-        {{- end }}
+      labels: {{ include "cortex-alertmanager.labels" . | nindent 8 }}
+{{- with .Values.alertmanager.podLabels }}
+{{- toYaml . | indent 8 }}
+{{- end }}
       annotations:
         {{- if .Values.useExternalConfig }}
         checksum/config: {{ .Values.externalConfigVersion }}
@@ -112,7 +101,7 @@ spec:
             - "-alertmanager.configs.url=http://{{ template "cortex.fullname" . }}-configs.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.config.server.http_listen_port }}"
             {{- if gt (.Values.alertmanager.replicas | int) 1 }}
             {{- range $n := until (.Values.alertmanager.replicas |int ) }}
-            - -cluster.peer={{ template "cortex.fullname" $ }}-alertmanager-{{ $n }}.{{ template "cortex.fullname" $ }}-alertmanager.{{ $.Release.Namespace }}.svc.{{ $.Values.clusterDomain }}:{{ $clusterPort }}
+            - -cluster.peer={{ template "cortex-alertmanager.fullname" $ }}-{{ $n }}.{{ template "cortex-alertmanager.headlessname" $ }}.{{ $.Release.Namespace }}.svc.{{ $.Values.clusterDomain }}:{{ $clusterPort }}
             {{- end }}
             {{- end }}
             {{- range $key, $value := .Values.alertmanager.extraArgs }}

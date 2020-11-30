@@ -314,6 +314,8 @@ alertmanager:
 
   # Extra env variables to pass to the cortex container
   env: []
+  serviceMonitor:
+    enabled: false
 
 distributor:
   replicas: 2
@@ -390,6 +392,8 @@ distributor:
   extraVolumeMounts: []
   extraPorts: []
   env: []
+  serviceMonitor:
+    enabled: false
 
 ingester:
   replicas: 3
@@ -426,18 +430,18 @@ ingester:
     prometheus.io/port: 'http-metrics'
 
   nodeSelector: {}
-  affinity:
-    podAntiAffinity:
-      preferredDuringSchedulingIgnoredDuringExecution:
-        - weight: 100
-          podAffinityTerm:
-            labelSelector:
-              matchExpressions:
-                - key: target
-                  operator: In
-                  values:
-                    - ingester
-            topologyKey: 'kubernetes.io/hostname'
+  affinity: {}
+  #  podAntiAffinity:
+  #    preferredDuringSchedulingIgnoredDuringExecution:
+  #      - weight: 100
+  #        podAffinityTerm:
+  #          labelSelector:
+  #            matchExpressions:
+  #              - key: target
+  #                operator: In
+  #                values:
+  #                  - ingester
+  #          topologyKey: 'kubernetes.io/hostname'
 
   annotations: {}
 
@@ -517,6 +521,8 @@ ingester:
   extraVolumeMounts: []
   extraPorts: []
   env: []
+  serviceMonitor:
+    enabled: false
 
 ruler:
   replicas: 1
@@ -581,6 +587,8 @@ ruler:
   extraVolumeMounts: []
   extraPorts: []
   env: []
+  serviceMonitor:
+    enabled: false
 
 querier:
   replicas: 2
@@ -611,18 +619,18 @@ querier:
     prometheus.io/port: 'http-metrics'
 
   nodeSelector: {}
-  affinity:
-    podAntiAffinity:
-      preferredDuringSchedulingIgnoredDuringExecution:
-        - weight: 100
-          podAffinityTerm:
-            labelSelector:
-              matchExpressions:
-                - key: target
-                  operator: In
-                  values:
-                    - querier
-            topologyKey: 'kubernetes.io/hostname'
+  affinity: {}
+  #  podAntiAffinity:
+  #    preferredDuringSchedulingIgnoredDuringExecution:
+  #      - weight: 100
+  #        podAffinityTerm:
+  #          labelSelector:
+  #            matchExpressions:
+  #              - key: target
+  #                operator: In
+  #                values:
+  #                  - querier
+  #          topologyKey: 'kubernetes.io/hostname'
 
   annotations: {}
   persistence:
@@ -657,6 +665,8 @@ querier:
   extraVolumeMounts: []
   extraPorts: []
   env: []
+  serviceMonitor:
+    enabled: false
 
 query_frontend:
   replicas: 2
@@ -687,18 +697,18 @@ query_frontend:
     prometheus.io/port: 'http-metrics'
 
   nodeSelector: {}
-  affinity:
-    podAntiAffinity:
-      preferredDuringSchedulingIgnoredDuringExecution:
-        - weight: 100
-          podAffinityTerm:
-            labelSelector:
-              matchExpressions:
-                - key: target
-                  operator: In
-                  values:
-                    - query-frontend
-            topologyKey: 'kubernetes.io/hostname'
+  affinity: {}
+  #  podAntiAffinity:
+  #    preferredDuringSchedulingIgnoredDuringExecution:
+  #      - weight: 100
+  #        podAffinityTerm:
+  #          labelSelector:
+  #            matchExpressions:
+  #              - key: target
+  #                operator: In
+  #                values:
+  #                  - query-frontend
+  #          topologyKey: 'kubernetes.io/hostname'
 
   annotations: {}
   persistence:
@@ -733,6 +743,8 @@ query_frontend:
   extraVolumeMounts: []
   extraPorts: []
   env: []
+  serviceMonitor:
+    enabled: false
 
 table_manager:
   replicas: 1
@@ -798,6 +810,9 @@ table_manager:
   extraPorts: []
   env: []
 
+  serviceMonitor:
+    enabled: false
+
 configs:
   replicas: 1
 
@@ -861,6 +876,8 @@ configs:
   extraVolumeMounts: []
   extraPorts: []
   env: []
+  serviceMonitor:
+    enabled: false
 
 nginx:
   enabled: true
@@ -1044,6 +1061,8 @@ store_gateway:
   extraVolumeMounts: []
   extraPorts: []
   env: []
+  serviceMonitor:
+    enabled: false
 
 compactor:
   enabled: true
@@ -1075,18 +1094,18 @@ compactor:
     prometheus.io/port: 'http-metrics'
 
   nodeSelector: {}
-  affinity:
-    podAntiAffinity:
-      preferredDuringSchedulingIgnoredDuringExecution:
-        - weight: 100
-          podAffinityTerm:
-            labelSelector:
-              matchExpressions:
-                - key: target
-                  operator: In
-                  values:
-                    - compactor
-            topologyKey: 'kubernetes.io/hostname'
+  affinity: {}
+  #  podAntiAffinity:
+  #    preferredDuringSchedulingIgnoredDuringExecution:
+  #      - weight: 100
+  #        podAffinityTerm:
+  #          labelSelector:
+  #            matchExpressions:
+  #              - key: target
+  #                operator: In
+  #                values:
+  #                  - compactor
+  #          topologyKey: 'kubernetes.io/hostname'
 
   annotations: {}
 
@@ -1156,6 +1175,8 @@ compactor:
   extraVolumeMounts: []
   extraPorts: []
   env: []
+  serviceMonitor:
+    enabled: false
 
 # chunk caching
 memcached:

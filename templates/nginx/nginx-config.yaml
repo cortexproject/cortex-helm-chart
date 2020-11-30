@@ -2,13 +2,8 @@
 kind: ConfigMap
 apiVersion: v1
 metadata:
-  name: {{ template "cortex.fullname" . }}-nginx
-  namespace: {{ .Release.Namespace }}
-  labels:
-    app: {{ template "cortex.name" . }}-nginx
-    chart: {{ template "cortex.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+  name: {{ template "cortex-nginx.fullname" . }}
+  labels: {{ include "cortex-nginx.labels" . | nindent 4 }}
 data:
   nginx.conf: |-
     worker_processes  5;  ## Default: 1

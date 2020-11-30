@@ -2,33 +2,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ template "cortex.fullname" . }}-alertmanager
-  namespace: {{ .Release.Namespace }}
-  labels:
-    app: {{ template "cortex.name" . }}-alertmanager
-    chart: {{ template "cortex.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+  name: {{ template "cortex-alertmanager.fullname" . }}
+  labels: {{ include "cortex-alertmanager.labels" . | nindent 4 }}
   annotations:
     {{- toYaml .Values.alertmanager.annotations | nindent 4 }}
 spec:
   replicas: {{ .Values.alertmanager.replicas }}
   selector:
-    matchLabels:
-      app: {{ template "cortex.name" . }}-alertmanager
-      release: {{ .Release.Name }}
+    matchLabels: {{ include "cortex-alertmanager.matchLabels" . | nindent 6 }}
   strategy:
     {{- toYaml .Values.alertmanager.strategy | nindent 4 }}
   template:
     metadata:
-      labels:
-        app: {{ template "cortex.name" . }}-alertmanager
-        name: {{ template "cortex.name" . }}-alertmanager
-        target: alertmanager
-        release: {{ .Release.Name }}
-        {{- with .Values.alertmanager.podLabels }}
-        {{- toYaml . | nindent 8 }}
-        {{- end }}
+      labels: {{ include "cortex-alertmanager.labels" . | nindent 8 }}
+{{- with .Values.alertmanager.podLabels }}
+{{- toYaml . | indent 8 }}
+{{- end }}
       annotations:
 {{- if .Values.useExternalConfig }}
         checksum/config: {{ .Values.externalConfigVersion }}
@@ -41,7 +30,7 @@ spec:
     spec:
       serviceAccountName: {{ template "cortex.serviceAccountName" . }}
     {{- if .Values.alertmanager.priorityClassName }}
-      priorityClassName: {{ .Values.query_frontend.priorityClassName }}
+      priorityClassName: {{ .Values.alertmanager.priorityClassName }}
     {{- end }}
       securityContext:
         {{- toYaml .Values.alertmanager.securityContext | nindent 8 }}

@@ -32,6 +32,33 @@ Create chart name and version as used by the chart label.
 {{- end -}}
 
 {{/*
+Common labels
+*/}}
+{{- define "cortex.labels" -}}
+{{ include "cortex.metaLabels" . }}
+{{ include "cortex.matchLabels" . }}
+{{- end }}
+
+{{/*
+Meta labels
+*/}}
+{{- define "cortex.metaLabels" -}}
+helm.sh/chart: {{ include "cortex.chart" . }}
+{{- if .Chart.AppVersion }}
+app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+{{- end }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- end }}
+
+{{/*
+Selector labels
+*/}}
+{{- define "cortex.matchLabels" -}}
+app.kubernetes.io/name: {{ include "cortex.name" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}
+
+{{/*
 Create the name of the service account
 */}}
 {{- define "cortex.serviceAccountName" -}}

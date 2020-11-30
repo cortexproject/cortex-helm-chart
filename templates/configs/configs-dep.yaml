@@ -1,32 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ template "cortex.fullname" . }}-configs
-  namespace: {{ .Release.Namespace }}
-  labels:
-    app: {{ template "cortex.name" . }}-configs
-    chart: {{ template "cortex.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+  name: {{ template "cortex-configs.fullname" . }}
+  labels: {{ include "cortex-configs.labels" . | nindent 4 }}
   annotations:
     {{- toYaml .Values.configs.annotations | nindent 4 }}
 spec:
   replicas: {{ .Values.configs.replicas }}
   selector:
-    matchLabels:
-      app: {{ template "cortex.name" . }}-configs
-      release: {{ .Release.Name }}
+    matchLabels: {{ include "cortex-configs.matchLabels" . | nindent 6 }}
   strategy:
     {{- toYaml .Values.configs.strategy | nindent 4 }}
   template:
     metadata:
-      labels:
-        app: {{ template "cortex.name" . }}-configs
-        name: {{ template "cortex.name" . }}-configs
-        target: configs
-        release: {{ .Release.Name }}
+      labels: {{ include "cortex-configs.labels" . | nindent 8 }}
         {{- with .Values.configs.podLabels }}
-        {{- toYaml . | nindent 8 }}
+{{- toYaml . | indent 8 }}
         {{- end }}
       annotations:
 {{- if .Values.useExternalConfig }}
