@@ -84,7 +84,7 @@ data:
 
         # Query Config
         location ~ /api/prom/.* {
-          proxy_pass      http://{{ template "cortex.fullname" . }}-query-frontend.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.config.server.http_listen_port }}$request_uri;
+          proxy_pass      http://{{ template "cortex.fullname" . }}-query-frontend.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.config.server.http_listen_port }}$request_uri;
         }
       }
     }
