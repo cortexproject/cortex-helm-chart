@@ -98,7 +98,9 @@ spec:
           args:
             - "-target=alertmanager"
             - "-config.file=/etc/cortex/cortex.yaml"
-            - "-alertmanager.configs.url=http://{{ template "cortex.fullname" . }}-configs.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.config.server.http_listen_port }}"
+            {{- if .Values.configs.enabled }}
+            - "-alertmanager.configs.url=http://{{ template "cortex-configs.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.config.server.http_listen_port }}"
+            {{- end }}
             {{- if gt (.Values.alertmanager.replicas | int) 1 }}
             {{- range $n := until (.Values.alertmanager.replicas |int ) }}
             - -cluster.peer={{ template "cortex-alertmanager.fullname" $ }}-{{ $n }}.{{ template "cortex-alertmanager.headlessname" $ }}.{{ $.Release.Namespace }}.svc.{{ $.Values.clusterDomain }}:{{ $clusterPort }}

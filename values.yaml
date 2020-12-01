@@ -40,7 +40,7 @@ externalConfigSecretName: 'secret-with-config.yaml'
 externalConfigVersion: '0'
 
 config:
-  auth_enabled: false
+  auth_enabled: true
   ingester:
     max_transfer_retries: 0
     lifecycler:
@@ -826,6 +826,8 @@ table_manager:
     enabled: false
 
 configs:
+  enabled: true
+
   replicas: 1
 
   service:

@@ -48,12 +48,14 @@ spec:
           args:
             - "-target=ruler"
             - "-config.file=/etc/cortex/cortex.yaml"
+            {{- if .Values.configs.enabled }}
             - "-ruler.configs.url=http://{{ template "cortex-configs.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.config.server.http_listen_port }}"
+            {{- end }}
             {{- if .Values.config.ruler.enable_alertmanager_discovery }}
             - "-ruler.alertmanager-discovery=true"
-            - "-ruler.alertmanager-url=http://_http-metrics._tcp.{{ template "cortex-alertmanager.headlessname" . }}/api/prom/alertmanager/"
+            - "-ruler.alertmanager-url=http://_http-metrics._tcp.{{ template "cortex-alertmanager.headlessname" . }}{{ .Values.config.alertmanager.external_url }}/"
             {{- else }}
-            - "-ruler.alertmanager-url=http://{{ template "cortex-alertmanager.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.config.server.http_listen_port }}/api/prom/alertmanager/"
+            - "-ruler.alertmanager-url=http://{{ template "cortex-alertmanager.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.config.server.http_listen_port }}{{ .Values.config.alertmanager.external_url }}/"
             {{- end }}
             {{- if and (eq .Values.config.storage.engine "blocks") (not .Values.config.store_gateway.sharding_enabled) }}
             - "-querier.store-gateway-addresses=dns+{{ template "cortex-store-gateway.headlessname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.config.server.grpc_listen_port }}"
