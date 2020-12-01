@@ -497,16 +497,17 @@ ingester:
     ##
     # storageClass: "-"
 
-  livenessProbe:
-    failureThreshold: 20 # 10 minutes failure threshold
-    httpGet:
-      path: /ready
-      port: http-metrics
-      scheme: HTTP
-    initialDelaySeconds: 180
-    periodSeconds: 30
-    successThreshold: 1
-    timeoutSeconds: 1
+  livenessProbe: {}
+    ## It is not recommended to set liveness probe - see production documentation
+    #failureThreshold: 20 # 10 minutes failure threshold
+    #httpGet:
+    #  path: /ready
+    #  port: http-metrics
+    #  scheme: HTTP
+    #initialDelaySeconds: 180
+    #periodSeconds: 30
+    #successThreshold: 1
+    #timeoutSeconds: 1
   readinessProbe:
     httpGet:
       path: /ready
@@ -523,7 +524,7 @@ ingester:
   statefulStrategy:
     type: RollingUpdate
 
-  terminationGracePeriodSeconds: 240
+  terminationGracePeriodSeconds: 2400
 
   tolerations: []
   podDisruptionBudget: {}
