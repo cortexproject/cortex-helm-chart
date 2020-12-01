@@ -55,7 +55,7 @@ spec:
             - name: config
               mountPath: /etc/nginx
           ports:
-            - name: http-metrics
+            - name: http
               containerPort: {{ .Values.nginx.http_listen_port }}
               protocol: TCP
           livenessProbe:

@@ -14,7 +14,7 @@ spec:
   ports:
     - port: {{ .Values.nginx.http_listen_port }}
       protocol: TCP
-      name: http-metrics
-      targetPort: http-metrics
+      name: http
+      targetPort: http
   selector: {{ include "cortex-nginx.matchLabels" . | nindent 4 }}
 {{- end }}
