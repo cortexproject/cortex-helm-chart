@@ -8,8 +8,20 @@ dependencies:
 - name: memcached
   repository: https://charts.helm.sh/stable
   version: 3.2.3
+- name: memcached
+  repository: https://charts.helm.sh/stable
+  version: 3.2.3
+- name: memcached
+  repository: https://charts.helm.sh/stable
+  version: 3.2.3
+- name: memcached
+  repository: https://charts.helm.sh/stable
+  version: 3.2.3
+- name: memcached
+  repository: https://charts.helm.sh/stable
+  version: 3.2.3
 - name: consul
   repository: https://helm.releases.hashicorp.com
   version: 0.27.0
-digest: sha256:ba612f3dbf63a53141f77fd9cbfc4e2e41e722f4ff5671473255035fe4590dd3
-generated: "2020-11-30T14:25:13.667947+01:00"
+digest: sha256:850e164f65bdb8765d1a16dd3dc69a0d02034b743e396b2d388bfb6d0f8f3144
+generated: "2020-12-02T12:59:15.860371+01:00"
