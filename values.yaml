@@ -61,7 +61,7 @@ config:
 
   schema:
     configs:
-      - from: 2019-07-29
+      - from: 2020-11-01
         store: cassandra
         object_store: cassandra
         schema: v10
@@ -70,6 +70,9 @@ config:
           period: 168h
         index:
           prefix: index_
+          period: 168h
+        chunks:
+          prefix: chunks_
           period: 168h
 
   server:
