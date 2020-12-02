@@ -1,0 +1,11 @@
+{{- if .Values.configs.podDisruptionBudget -}}
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ template "cortex-configs.fullname" . }}
+  labels: {{ include "cortex-configs.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels: {{ include "cortex-configs.matchLabels" . | nindent 6 }}
+{{ toYaml .Values.configs.podDisruptionBudget | indent 2 }}
+{{- end -}}

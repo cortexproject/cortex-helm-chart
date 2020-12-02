@@ -1,0 +1,11 @@
+{{- if .Values.alertmanager.podDisruptionBudget -}}
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ template "cortex-alertmanager.fullname" . }}
+  labels: {{ include "cortex-alertmanager.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels: {{ include "cortex-alertmanager.matchLabels" . | nindent 6 }}
+{{ toYaml .Values.alertmanager.podDisruptionBudget | indent 2 }}
+{{- end -}}

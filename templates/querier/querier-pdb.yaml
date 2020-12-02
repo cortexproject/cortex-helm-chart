@@ -1,0 +1,11 @@
+{{- if .Values.querier.podDisruptionBudget -}}
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ template "cortex-querier.fullname" . }}
+  labels: {{ include "cortex-querier.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels: {{ include "cortex-querier.matchLabels" . | nindent 6 }}
+{{ toYaml .Values.querier.podDisruptionBudget | indent 2 }}
+{{- end -}}

@@ -72,6 +72,8 @@ ingester:
   replicas: 2
   statefulSet:
     enabled: true
+  podDisruptionBudget:
+    minAvailable: 1
 
 compactor:
   replicas: 2

@@ -1,0 +1,11 @@
+{{- if .Values.ingester.podDisruptionBudget -}}
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ template "cortex-ingester.fullname" . }}
+  labels: {{ include "cortex-ingester.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels: {{ include "cortex-ingester.matchLabels" . | nindent 6 }}
+{{ toYaml .Values.ingester.podDisruptionBudget | indent 2 }}
+{{- end -}}

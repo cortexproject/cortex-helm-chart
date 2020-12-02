@@ -47,8 +47,8 @@ config:
 
   ingester:
     lifecycler:
-      join_after: 0s
-      final_sleep: 0s
+      join_after: 0s  # This is the default value
+      # final_sleep: 0s
       num_tokens: 512
 
       ring:
