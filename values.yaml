@@ -62,12 +62,15 @@ config:
     reject_old_samples_max_age: 168h
   schema:
     configs:
-      - from: 2019-07-29
+      - from: 2020-11-01
         store: cassandra
         object_store: cassandra
         schema: v10
         index:
           prefix: index_
+          period: 168h
+        chunks:
+          prefix: chunks_
           period: 168h
   server:
     http_listen_port: 8080
