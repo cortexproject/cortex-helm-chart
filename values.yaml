@@ -171,6 +171,9 @@ alertmanager:
     annotations: {}
     labels: {}
 
+  serviceMonitor:
+    enabled: false
+
   resources:
     limits:
       cpu: 200m
@@ -322,6 +325,9 @@ distributor:
     annotations: {}
     labels: {}
 
+  serviceMonitor:
+    enabled: false
+
   resources:
     limits:
       cpu: 1
@@ -403,6 +409,9 @@ ingester:
   service:
     annotations: {}
     labels: {}
+
+  serviceMonitor:
+    enabled: false
 
   resources:
     limits:
@@ -525,6 +534,9 @@ ruler:
     annotations: {}
     labels: {}
 
+  serviceMonitor:
+    enabled: false
+
   resources:
     limits:
       cpu: 200m
@@ -588,6 +600,9 @@ querier:
   service:
     annotations: {}
     labels: {}
+
+  serviceMonitor:
+    enabled: false
 
   resources:
     limits:
@@ -665,6 +680,9 @@ query_frontend:
     annotations: {}
     labels: {}
 
+  serviceMonitor:
+    enabled: false
+
   resources:
     limits:
       cpu: 1
@@ -741,6 +759,9 @@ table_manager:
     annotations: {}
     labels: {}
 
+  serviceMonitor:
+    enabled: false
+
   resources:
     limits:
       cpu: 1
@@ -804,6 +825,9 @@ configs:
   service:
     annotations: {}
     labels: {}
+
+  serviceMonitor:
+    enabled: false
 
   resources:
     limits:
@@ -877,6 +901,9 @@ nginx:
     annotations: {}
     labels: {}
 
+  serviceMonitor:
+    enabled: false
+
   resources:
     limits:
       cpu: 100m
@@ -940,6 +967,9 @@ store_gateway:
   service:
     annotations: {}
     labels: {}
+
+  serviceMonitor:
+    enabled: false
 
   resources:
     limits:
@@ -1052,6 +1082,9 @@ compactor:
   service:
     annotations: {}
     labels: {}
+
+  serviceMonitor:
+    enabled: false
 
   resources:
     limits:
