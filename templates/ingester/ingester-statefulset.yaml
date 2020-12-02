@@ -97,12 +97,7 @@ spec:
           args:
             - "-target=ingester"
             - "-config.file=/etc/cortex/cortex.yaml"
-            {{- if .Values.memcached.enabled }}
-            - -store.chunks-cache.memcached.addresses=dns+{{ template "cortex.fullname" . }}-memcached.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:11211
-            {{- end }}
-            {{- if index .Values "memcached-index-write" "enabled" }}
-            - -store.index-cache-write.memcached.addresses=dns+{{ template "cortex.fullname" . }}-memcached-index-write.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:11211
-            {{- end }}
+            {{- include "cortex.memcached" . | nindent 12}}
             {{- range $key, $value := .Values.ingester.extraArgs }}
             - "-{{ $key }}={{ $value }}"
             {{- end }}

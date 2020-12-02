@@ -16,6 +16,9 @@ image:
 ## Kubernetes cluster DNS domain
 clusterDomain: cluster.local
 
+tags:
+  blocks-storage-memcached: false
+
 ingress:
   enabled: true
   annotations:
@@ -41,25 +44,21 @@ externalConfigVersion: '0'
 
 config:
   auth_enabled: true
+
   ingester:
-    max_transfer_retries: 0
     lifecycler:
       join_after: 0s
       final_sleep: 0s
       num_tokens: 512
+
       ring:
         replication_factor: 1
         kvstore:
           store: consul
-          prefix: 'collectors/'
           consul:
             host: '{{ .Release.Name }}-consul-server:8500'
-            http_client_timeout: '20s'
-            consistent_reads: true
-  limits:
-    enforce_metric_name: false
-    reject_old_samples: true
-    reject_old_samples_max_age: 168h
+            # consistent_reads: true
+
   schema:
     configs:
       - from: 2019-07-29
@@ -72,17 +71,21 @@ config:
         index:
           prefix: index_
           period: 168h
+
   server:
     http_listen_port: 8080
     grpc_listen_port: 9095
     grpc_server_max_recv_msg_size: 104857600
     grpc_server_max_send_msg_size: 104857600
     grpc_server_max_concurrent_streams: 1000
+
   ingester_client:
     grpc_client_config:
+      # Configure the client to allow messages up to 100MiB
       max_recv_msg_size: 104857600
       max_send_msg_size: 104857600
-      use_gzip_compression: true
+      grpc_compression: gzip
+
   # See https://github.com/cortexproject/cortex/blob/master/docs/configuration/config-file-reference.md#storage_config
   storage:
     engine: chunks
@@ -121,6 +124,7 @@ config:
         expiration: 1h
       memcached_client:
         timeout: 1s
+
   chunk_store:
     max_look_back_period: 0s
     chunk_cache_config:
@@ -128,21 +132,11 @@ config:
         expiration: 1h
       memcached_client:
         timeout: 1s
-  blocks_storage:
-    tsdb:
-      dir: /data/cortex-tsdb-ingester
-    bucket_store:
-      sync_dir: /data/cortex-tsdb-querier
-  table_manager:
-    retention_deletes_enabled: false
-    retention_period: 0s
-  distributor:
-    shard_by_all_labels: true
-    pool:
-      health_check_ingesters: true
+
   querier:
-    active_query_tracker_dir: /data/cortex/querier
-    query_ingesters_within: 12h
+    active_query_tracker_dir: /data/cortex-active-query-tracker
+    query_ingesters_within: 6h
+
   query_range:
     split_queries_by_interval: 24h
     align_queries_with_step: true
@@ -153,16 +147,40 @@ config:
           expiration: 1h
         memcached_client:
           timeout: 1s
+
+  blocks_storage:
+    tsdb:
+      dir: /data/cortex-tsdb-ingester
+    bucket_store:
+      sync_dir: /data/cortex-tsdb-querier
+
+  table_manager:
+    retention_deletes_enabled: false
+    retention_period: 0s
+
+  distributor: {}
+
   ruler:
-    enable_alertmanager_discovery: false
+    enable_alertmanager_v2: true
+
   alertmanager:
     external_url: '/api/prom/alertmanager'
+
   frontend:
     #max_outstanding_per_tenant: 1000
     log_queries_longer_than: 10s
     compress_responses: true
+
+  compactor:
+    data_dir: /data/cortex-compactor
+
   store_gateway:
     sharding_enabled: false  # this is also default but allows for this to be used the templates
+
+  limits: {}
+    # enforce_metric_name: false
+    # reject_old_samples: true
+    # reject_old_samples_max_age: 168h
 
 rbac:
   create: true
@@ -1296,6 +1314,75 @@ memcached-index-write:
   #             operator: In
   #             values:
   #             - cortex-memcached
+
+memcached-frontend:
+  enabled: false
+  replicaCount: 2
+  memcached:
+    maxItemMemory: 3840
+    extraArgs:
+      - -I 32m
+    threads: 32
+  resources:
+    requests:
+      memory: 1Gi
+      cpu: 10m
+    limits:
+      memory: 4Gi
+      cpu: 1
+  metrics:
+    enabled: true
+
+memcached-index:
+  replicaCount: 2
+  memcached:
+    maxItemMemory: 3840
+    extraArgs:
+      - -I 32m
+    threads: 32
+  resources:
+    requests:
+      memory: 1Gi
+      cpu: 10m
+    limits:
+      memory: 4Gi
+      cpu: 1
+  metrics:
+    enabled: true
+
+memcached-chunks:
+  replicaCount: 2
+  memcached:
+    maxItemMemory: 3840
+    extraArgs:
+      - -I 32m
+    threads: 32
+  resources:
+    requests:
+      memory: 1Gi
+      cpu: 10m
+    limits:
+      memory: 4Gi
+      cpu: 1
+  metrics:
+    enabled: true
+
+memcached-metadata:
+  replicaCount: 2
+  memcached:
+    maxItemMemory: 3840
+    extraArgs:
+      - -I 32m
+    threads: 32
+  resources:
+    requests:
+      memory: 1Gi
+      cpu: 10m
+    limits:
+      memory: 4Gi
+      cpu: 1
+  metrics:
+    enabled: true
 
 configsdb_postgresql:
   enabled: false

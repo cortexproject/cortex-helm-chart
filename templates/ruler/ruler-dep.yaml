@@ -60,10 +60,7 @@ spec:
             {{- if and (eq .Values.config.storage.engine "blocks") (not .Values.config.store_gateway.sharding_enabled) }}
             - "-querier.store-gateway-addresses=dns+{{ template "cortex-store-gateway.headlessname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.config.server.grpc_listen_port }}"
             {{- end }}
-            {{- if .Values.memcached.enabled }}
-            - -store.chunks-cache.memcached.addresses=dns+{{ template "cortex.fullname" . }}-memcached.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:11211
-            - -store.chunks-cache.memcached.timeout=100ms
-            {{- end }}
+            {{- include "cortex.memcached" . | nindent 12}}
           {{- range $key, $value := .Values.ruler.extraArgs }}
             - "-{{ $key }}={{ $value }}"
           {{- end }}
