@@ -162,6 +162,7 @@ config:
 
   ruler:
     enable_alertmanager_v2: true
+    rule_path: /data/cortex-rules
 
   alertmanager:
     external_url: '/api/prom/alertmanager'
