@@ -350,10 +350,6 @@ alertmanager:
   # Extra env variables to pass to the cortex container
   env: []
 
-  # Enable service monitor CRD from Prometheus Operator
-  serviceMonitor:
-    enabled: false
-
 distributor:
   replicas: 2
 
@@ -432,8 +428,6 @@ distributor:
   extraVolumeMounts: []
   extraPorts: []
   env: []
-  serviceMonitor:
-    enabled: false
 
 ingester:
   replicas: 3
@@ -565,8 +559,6 @@ ingester:
   extraVolumeMounts: []
   extraPorts: []
   env: []
-  serviceMonitor:
-    enabled: false
 
 ruler:
   replicas: 1
@@ -634,8 +626,6 @@ ruler:
   extraVolumeMounts: []
   extraPorts: []
   env: []
-  serviceMonitor:
-    enabled: false
 
 querier:
   replicas: 2
@@ -715,8 +705,6 @@ querier:
   extraVolumeMounts: []
   extraPorts: []
   env: []
-  serviceMonitor:
-    enabled: false
 
 query_frontend:
   replicas: 2
@@ -796,8 +784,6 @@ query_frontend:
   extraVolumeMounts: []
   extraPorts: []
   env: []
-  serviceMonitor:
-    enabled: false
 
 table_manager:
   replicas: 1
@@ -865,9 +851,6 @@ table_manager:
   extraVolumeMounts: []
   extraPorts: []
   env: []
-
-  serviceMonitor:
-    enabled: false
 
 configs:
   enabled: true
@@ -937,8 +920,6 @@ configs:
   extraVolumeMounts: []
   extraPorts: []
   env: []
-  serviceMonitor:
-    enabled: false
 
 nginx:
   enabled: true
@@ -1128,8 +1109,6 @@ store_gateway:
   extraVolumeMounts: []
   extraPorts: []
   env: []
-  serviceMonitor:
-    enabled: false
 
 compactor:
   enabled: true
@@ -1245,8 +1224,6 @@ compactor:
   extraVolumeMounts: []
   extraPorts: []
   env: []
-  serviceMonitor:
-    enabled: false
 
 # chunk caching
 memcached:
