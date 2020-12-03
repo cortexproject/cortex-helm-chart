@@ -26,6 +26,7 @@ config:
 
   ruler:
     enable_sharding: true
+    enable_api: true
     ring:
       kvstore:
         store: consul
@@ -37,6 +38,7 @@ config:
         directory: '/tmp'
 
   alertmanager:
+    enable_api: true
     storage:
       type: 'local'
       local:
