@@ -153,9 +153,9 @@ config:
 
   blocks_storage:
     tsdb:
-      dir: /data/cortex-tsdb-ingester
+      dir: /data/tsdb
     bucket_store:
-      sync_dir: /data/cortex-tsdb-querier
+      sync_dir: /data/tsdb
 
   table_manager:
     retention_deletes_enabled: false
@@ -1112,7 +1112,7 @@ store_gateway:
 
 compactor:
   enabled: true
-  replicas: 1
+  replicas: 2
 
   service:
     annotations: {}
@@ -1333,16 +1333,16 @@ memcached-frontend:
   enabled: false
   replicaCount: 2
   memcached:
-    maxItemMemory: 3840
+    maxItemMemory: 1024
     extraArgs:
-      - -I 32m
-    threads: 32
+      - -I 5m
+      - -c 1024
   resources:
     requests:
-      memory: 1Gi
-      cpu: 10m
+      memory: 1329Mi
+      cpu: 500m
     limits:
-      memory: 4Gi
+      memory: 1536Mi
       cpu: 1
   metrics:
     enabled: true
@@ -1350,16 +1350,16 @@ memcached-frontend:
 memcached-index:
   replicaCount: 2
   memcached:
-    maxItemMemory: 3840
+    maxItemMemory: 1024
     extraArgs:
-      - -I 32m
-    threads: 32
+      - -I 5m
+      - -c 1024
   resources:
     requests:
-      memory: 1Gi
-      cpu: 10m
+      memory: 1329Mi
+      cpu: 500m
     limits:
-      memory: 4Gi
+      memory: 1536Mi
       cpu: 1
   metrics:
     enabled: true
@@ -1367,33 +1367,33 @@ memcached-index:
 memcached-chunks:
   replicaCount: 2
   memcached:
-    maxItemMemory: 3840
+    maxItemMemory: 6144
     extraArgs:
-      - -I 32m
-    threads: 32
-  resources:
-    requests:
-      memory: 1Gi
-      cpu: 10m
-    limits:
-      memory: 4Gi
-      cpu: 1
+      - -I 1m
+      - -c 4096
+  resources: {}
+    #requests:
+    #  memory: 6552Mi
+    #  cpu: 500m
+    #limits:
+    #  memory: 9Gi
+    #  cpu: 1
   metrics:
     enabled: true
 
 memcached-metadata:
   replicaCount: 2
   memcached:
-    maxItemMemory: 3840
+    maxItemMemory: 512
     extraArgs:
-      - -I 32m
-    threads: 32
+      - -I 1m
+      - -c 1024
   resources:
     requests:
-      memory: 1Gi
-      cpu: 10m
+      memory: 715Mi
+      cpu: 500m
     limits:
-      memory: 4Gi
+      memory: 768Mi
       cpu: 1
   metrics:
     enabled: true
