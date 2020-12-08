@@ -1,0 +1,11 @@
+{{- if .Values.table_manager.podDisruptionBudget -}}
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ template "cortex-table-manager.fullname" . }}
+  labels: {{ include "cortex-table-manager.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels: {{ include "cortex-table-manager.matchLabels" . | nindent 6 }}
+{{ toYaml .Values.table_manager.podDisruptionBudget | indent 2 }}
+{{- end -}}

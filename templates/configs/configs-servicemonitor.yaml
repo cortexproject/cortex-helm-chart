@@ -1,0 +1,28 @@
+{{- if and .Values.configs.enabled .Values.configs.serviceMonitor.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ template "cortex-configs.fullname" . }}
+  labels: {{ include "cortex-configs.labels" . | nindent 4 }}
+    {{- if .Values.configs.serviceMonitor.additionalLabels }}
+{{ toYaml .Values.configs.serviceMonitor.additionalLabels | indent 4 }}
+    {{- end }}
+  {{- if .Values.configs.serviceMonitor.annotations }}
+  annotations:
+{{ toYaml .Values.configs.serviceMonitor.annotations | indent 4 }}
+  {{- end }}
+spec:
+  selector:
+    matchLabels: {{ include "cortex-configs.matchLabels" . | nindent 6 }}
+  namespaceSelector:
+    matchNames:
+      - {{ .Release.Namespace | quote }}
+  endpoints:
+  - port: http-metrics
+    {{- if .Values.configs.serviceMonitor.interval }}
+    interval: {{ .Values.configs.serviceMonitor.interval }}
+    {{- end }}
+    {{- if .Values.configs.serviceMonitor.scrapeTimeout }}
+    scrapeTimeout: {{ .Values.configs.serviceMonitor.scrapeTimeout }}
+    {{- end }}
+{{- end }}

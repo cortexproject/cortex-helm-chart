@@ -1,0 +1,85 @@
+# Containing example values for deploying Cortex with blocks storage enabled
+
+tags:
+  blocks-storage-memcached: true
+
+config:
+  distributor:
+    shard_by_all_labels: true
+
+  ingester:
+    lifecycler:
+      ring:
+        replication_factor: 2
+
+  blocks_storage:
+    backend: s3
+
+    #  To install minio:
+    # helm upgrade -i --set accessKey=ssRtFvgGMdtc2b8vcPZ4 --set secretKey=3P1yXv2bnVjKx8yaLvXkcCRje0tK9rONFWRxB1gZ --set 'buckets[0].name=cortex,buckets[0].policy=none,buckets[0].purge=false' minio minio/minio
+    s3:
+      endpoint: minio.default.svc:9000
+      bucket_name: cortex
+      secret_access_key: '3P1yXv2bnVjKx8yaLvXkcCRje0tK9rONFWRxB1gZ'
+      access_key_id: 'ssRtFvgGMdtc2b8vcPZ4'
+      insecure: true
+
+  ruler:
+    enable_sharding: true
+    enable_api: true
+    ring:
+      kvstore:
+        store: consul
+        consul:
+          host: '{{ .Release.Name }}-consul-server:8500'
+    storage:
+      type: 'local'
+      local:
+        directory: '/tmp'
+
+  alertmanager:
+    enable_api: true
+    storage:
+      type: 'local'
+      local:
+        path: '/tmp'
+
+  storage:
+    engine: blocks
+
+  compactor:
+    sharding_enabled: true
+    sharding_ring:
+      kvstore:
+        store: consul
+        consul:
+          host: '{{ .Release.Name }}-consul-server:8500'
+
+  store_gateway:
+    sharding_enabled: true
+    sharding_ring:
+      replication_factor: 1
+      heartbeat_period:   5s
+      heartbeat_timeout:  15s
+      kvstore:
+        store: consul
+        consul:
+          host: '{{ .Release.Name }}-consul-server:8500'
+
+configs:
+  enabled: false
+
+ingester:
+  replicas: 2
+  statefulSet:
+    enabled: true
+  podDisruptionBudget:
+    minAvailable: 1
+
+compactor:
+  replicas: 2
+
+consul:
+  server:
+    replicas: 1
+    bootstrapExpect: 1

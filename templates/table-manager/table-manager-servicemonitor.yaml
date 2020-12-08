@@ -1,0 +1,28 @@
+{{- if and (ne .Values.config.storage.engine "blocks") .Values.table_manager.serviceMonitor.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ template "cortex-table-manager.fullname" . }}
+  labels: {{ include "cortex-table-manager.labels" . | nindent 4 }}
+    {{- if .Values.table_manager.serviceMonitor.additionalLabels }}
+{{ toYaml .Values.table_manager.serviceMonitor.additionalLabels | indent 4 }}
+    {{- end }}
+  {{- if .Values.table_manager.serviceMonitor.annotations }}
+  annotations:
+{{ toYaml .Values.table_manager.serviceMonitor.annotations | indent 4 }}
+  {{- end }}
+spec:
+  selector:
+    matchLabels: {{ include "cortex-table-manager.matchLabels" . | nindent 6 }}
+  namespaceSelector:
+    matchNames:
+      - {{ .Release.Namespace | quote }}
+  endpoints:
+  - port: http-metrics
+    {{- if .Values.table_manager.serviceMonitor.interval }}
+    interval: {{ .Values.table_manager.serviceMonitor.interval }}
+    {{- end }}
+    {{- if .Values.table_manager.serviceMonitor.scrapeTimeout }}
+    scrapeTimeout: {{ .Values.table_manager.serviceMonitor.scrapeTimeout }}
+    {{- end }}
+{{- end }}

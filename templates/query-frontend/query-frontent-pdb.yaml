@@ -1,0 +1,11 @@
+{{- if .Values.query_frontend.podDisruptionBudget -}}
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ template "cortex-query-frontend.fullname" . }}
+  labels: {{ include "cortex-query-frontend.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels: {{ include "cortex-query-frontend.matchLabels" . | nindent 6 }}
+{{ toYaml .Values.query_frontend.podDisruptionBudget | indent 2 }}
+{{- end -}}
