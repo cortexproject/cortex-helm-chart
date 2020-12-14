@@ -48,7 +48,7 @@ spec:
           args:
             - "-target=querier"
             - "-config.file=/etc/cortex/cortex.yaml"
-            - "-querier.frontend-address={{ template "cortex-query-frontend.headlessname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.config.server.grpc_listen_port }}"
+            - "-querier.frontend-address={{ template "cortex-query-frontend.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.config.server.grpc_listen_port }}"
             {{- if and (eq .Values.config.storage.engine "blocks") (not .Values.config.store_gateway.sharding_enabled) }}
             - "-querier.store-gateway-addresses=dns+{{ template "cortex-store-gateway.headlessname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.config.server.grpc_listen_port }}"
             {{- end }}
