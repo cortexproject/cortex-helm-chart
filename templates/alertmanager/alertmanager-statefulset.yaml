@@ -13,7 +13,7 @@ spec:
     matchLabels: {{ include "cortex-alertmanager.matchLabels" . | nindent 6 }}
   updateStrategy:
     {{- toYaml .Values.alertmanager.statefulStrategy | nindent 4 }}
-  serviceName: {{ template "cortex.fullname" . }}-alertmanager
+  serviceName: {{ template "cortex-alertmanager.headlessname" . }}
   {{- if .Values.alertmanager.persistentVolume.enabled }}
   volumeClaimTemplates:
     - metadata:
