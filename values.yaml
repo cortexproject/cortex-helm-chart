@@ -56,6 +56,10 @@ config:
             host: 'consul:8500'
             http_client_timeout: '20s'
             consistent_reads: true
+  memberlist:  # Only usable if ingester.statefulSet.enabled = true
+    bind_port: 7946
+    join_members:
+      - dns+cortex-ingester-headless:7946
   limits:
     enforce_metric_name: false
     reject_old_samples: true

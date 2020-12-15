@@ -1,0 +1,32 @@
+{{- if .Values.ingester.statefulSet.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "cortex.fullname" . }}-ingester-headless
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ template "cortex.name" . }}-ingester
+    chart: {{ template "cortex.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    {{- with .Values.ingester.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  annotations:
+    {{- toYaml .Values.ingester.annotations | nindent 4 }}
+spec:
+  type: ClusterIP
+  clusterIP: None
+  ports:
+    - port: {{ .Values.config.server.http_listen_port }}
+      protocol: TCP
+      name: http-metrics
+      targetPort: http-metrics
+    - port: {{ .Values.config.memberlist.bind_port }}
+      protocol: TCP
+      name: gossip
+      targetPort: gossip
+  selector:
+    app: {{ template "cortex.name" . }}-ingester
+    release: {{ .Release.Name }}
+{{- end  -}}
