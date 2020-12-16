@@ -136,6 +136,21 @@ config:
       memcached_client:
         timeout: 1s
 
+  table_manager:
+    retention_deletes_enabled: false
+    retention_period: 0s
+
+  distributor:
+    shard_by_all_labels: true
+    pool:
+      health_check_ingesters: true
+
+  memberlist:
+    join_members: []
+    ## add here the service name of the ingesters
+    ## if using memberlist discovery, eg:
+    #  - cortex-ingester-headless
+
   querier:
     active_query_tracker_dir: /data/cortex-active-query-tracker
     query_ingesters_within: 6h
@@ -156,12 +171,6 @@ config:
       dir: /data/tsdb
     bucket_store:
       sync_dir: /data/tsdb
-
-  table_manager:
-    retention_deletes_enabled: false
-    retention_period: 0s
-
-  distributor: {}
 
   ruler:
     enable_alertmanager_v2: true

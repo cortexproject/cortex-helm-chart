@@ -12,7 +12,7 @@ spec:
     matchLabels: {{ include "cortex-ingester.matchLabels" . | nindent 6 }}
   updateStrategy:
     {{- toYaml .Values.ingester.statefulStrategy | nindent 4 }}          
-  serviceName: {{ template "cortex.fullname" . }}-ingester
+  serviceName: {{ template "cortex-ingester.fullname" . }}
   {{- if .Values.ingester.persistentVolume.enabled }}
   volumeClaimTemplates:
     - metadata:
