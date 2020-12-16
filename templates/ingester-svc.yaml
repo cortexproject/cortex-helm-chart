@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "cortex.fullname" . }}-ingester
+  name: {{ template "cortex.fullname" . }}-ingester-headless
   namespace: {{ .Release.Namespace }}
   labels:
     app: {{ template "cortex.name" . }}-ingester
@@ -15,6 +15,7 @@ metadata:
     {{- toYaml .Values.ingester.annotations | nindent 4 }}
 spec:
   type: ClusterIP
+  clusterIP: None
   ports:
     - port: {{ .Values.config.server.http_listen_port }}
       protocol: TCP
