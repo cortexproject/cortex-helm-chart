@@ -1,3 +1,5 @@
+{{- if eq .Values.config.storage.engine "blocks" -}}
+{{- if .Values.compactor.enabled -}}
 apiVersion: v1
 kind: Service
 metadata:
@@ -23,3 +25,5 @@ spec:
   selector:
     app: {{ template "cortex.name" . }}-compactor
     release: {{ .Release.Name }}
+{{- end -}}
+{{- end -}}

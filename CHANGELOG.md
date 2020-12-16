@@ -1,5 +1,9 @@
 # Changelog
 
+## master / unreleased
+
+* [ENHANCEMENT] Compactor service is no longer created if compactor is disabled. #82
+
 ## 0.2.0 / 2020-10-25
 
 * [FEATURE] Add support for Blocks storage backend of Cortex. #52
