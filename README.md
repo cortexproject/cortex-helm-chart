@@ -6,7 +6,7 @@ after cloning this repository.
 
 ## Dependencies
 
-### Key-Value store
+### Key-Value store
 
 Cortex requires an externally provided key-value store, such as [etcd](https://etcd.io/) or [Consul](https://www.consul.io/).
 
