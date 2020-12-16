@@ -20,7 +20,7 @@ spec:
       release: {{ .Release.Name }}
   updateStrategy:
     {{- toYaml .Values.alertmanager.statefulStrategy | nindent 4 }}
-  serviceName: {{ template "cortex.fullname" . }}-alertmanager
+  serviceName: {{ template "cortex.fullname" . }}-alertmanager-headless
   {{- if .Values.alertmanager.persistentVolume.enabled }}
   volumeClaimTemplates:
     - metadata:
@@ -112,7 +112,7 @@ spec:
             - "-alertmanager.configs.url=http://{{ template "cortex.fullname" . }}-configs.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.config.server.http_listen_port }}"
             {{- if gt (.Values.alertmanager.replicas | int) 1 }}
             {{- range $n := until (.Values.alertmanager.replicas |int ) }}
-            - -cluster.peer={{ template "cortex.fullname" $ }}-alertmanager-{{ $n }}.{{ template "cortex.fullname" $ }}-alertmanager.{{ $.Release.Namespace }}.svc.{{ $.Values.clusterDomain }}:{{ $clusterPort }}
+            - -cluster.peer={{ template "cortex.fullname" $ }}-alertmanager-{{ $n }}.{{ template "cortex.fullname" $ }}-alertmanager-headless.{{ $.Release.Namespace }}.svc.{{ $.Values.clusterDomain }}:{{ $clusterPort }}
             {{- end }}
             {{- end }}
             {{- range $key, $value := .Values.alertmanager.extraArgs }}
