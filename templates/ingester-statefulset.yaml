@@ -19,7 +19,7 @@ spec:
       release: {{ .Release.Name }}
   updateStrategy:
     {{- toYaml .Values.ingester.statefulStrategy | nindent 4 }}          
-  serviceName: {{ template "cortex.fullname" . }}-ingester
+  serviceName: {{ template "cortex.fullname" . }}-ingester-headless
   {{- if .Values.ingester.persistentVolume.enabled }}
   volumeClaimTemplates:
     - metadata:
