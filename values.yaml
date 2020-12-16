@@ -135,6 +135,11 @@ config:
     shard_by_all_labels: true
     pool:
       health_check_ingesters: true
+  memberlist:
+    join_members: []
+    ## add here the service name of the ingesters
+    ## if using memberlist discovery, eg:
+    #  - cortex-ingester-headless
   querier:
     active_query_tracker_dir: /data/cortex/querier
     query_ingesters_within: 12h
