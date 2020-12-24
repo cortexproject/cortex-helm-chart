@@ -1,3 +1,4 @@
+{{- if .Values.alertmanager.statefulSet.enabled -}}
 {{- $clusterPort := regexReplaceAll ".+[:]" (default "0.0.0.0:9094" .Values.config.alertmanager.cluster_bind_address) "" -}}
 apiVersion: v1
 kind: Service
@@ -28,3 +29,4 @@ spec:
   selector:
     app: {{ template "cortex.name" . }}-alertmanager
     release: {{ .Release.Name }}
+{{- end -}}
