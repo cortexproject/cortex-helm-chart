@@ -16,6 +16,9 @@ image:
 ## Kubernetes cluster DNS domain
 clusterDomain: cluster.local
 
+tags:
+  blocks-storage-memcached: false
+
 ingress:
   enabled: true
   annotations:
@@ -1301,6 +1304,86 @@ memcached-index-write:
   #             operator: In
   #             values:
   #             - cortex-memcached
+
+memcached-frontend:
+  enabled: false
+  replicaCount: 2
+  #dpdbMinAvailable: 1
+  #image: memcached:1.5.7-alpine
+  memcached:
+    maxItemMemory: 3840
+    extraArgs:
+      - -I 32m
+    threads: 32
+  resources:
+    requests:
+      memory: 1Gi
+      cpu: 10m
+    limits:
+      memory: 4Gi
+      cpu: 1
+  metrics:
+    enabled: true
+
+memcached-blocks-index:
+  # enabled/disabled via the tags.blocks-storage-memcached boolean
+  replicaCount: 2
+  #dpdbMinAvailable: 1
+  #image: memcached:1.5.7-alpine
+  memcached:
+    maxItemMemory: 3840
+    extraArgs:
+      - -I 32m
+    threads: 32
+  resources:
+    requests:
+      memory: 1Gi
+      cpu: 10m
+    limits:
+      memory: 4Gi
+      cpu: 1
+  metrics:
+    enabled: true
+
+memcached-blocks:
+  # enabled/disabled via the tags.blocks-storage-memcached boolean
+  replicaCount: 2
+  #dpdbMinAvailable: 1
+  #image: memcached:1.5.7-alpine
+  memcached:
+    maxItemMemory: 3840
+    extraArgs:
+      - -I 32m
+    threads: 32
+  resources:
+    requests:
+      memory: 1Gi
+      cpu: 10m
+    limits:
+      memory: 4Gi
+      cpu: 1
+  metrics:
+    enabled: true
+
+memcached-blocks-metadata:
+  # enabled/disabled via the tags.blocks-storage-memcached boolean
+  replicaCount: 2
+  #dpdbMinAvailable: 1
+  #image: memcached:1.5.7-alpine
+  memcached:
+    maxItemMemory: 3840
+    extraArgs:
+      - -I 32m
+    threads: 32
+  resources:
+    requests:
+      memory: 1Gi
+      cpu: 10m
+    limits:
+      memory: 4Gi
+      cpu: 1
+  metrics:
+    enabled: true
 
 configsdb_postgresql:
   enabled: false
