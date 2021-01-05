@@ -4,9 +4,9 @@
 
 * [ENHANCEMENT] Compactor service is no longer created if compactor is disabled. #82
 * [ENHANCEMENT] Headless service for alert manager is only enabled when the alert manager is deployed as a stateful set. #91
+* [ENHANCEMENT] Improved memcached configuration template, with support for both chunks & block storage caches. #92
 * [ENHANCEMENT] Update apiVersion: networking.k8s.io/v1beta1 -> networking.k8s.io/v1 for Kubernetes versions 1.19+  #94
 * [BUGFIX] Update repository URL for memcache dependency charts. #96
-
 ## 0.2.0 / 2020-10-25
 
 * [FEATURE] Add support for Blocks storage backend of Cortex. #52

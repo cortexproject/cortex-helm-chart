@@ -66,10 +66,7 @@ spec:
             {{- else }}
             - "-ruler.alertmanager-url=http://{{ template "cortex.fullname" . }}-alertmanager.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.config.server.http_listen_port }}/api/prom/alertmanager/"
             {{- end }}
-            {{- if .Values.memcached.enabled }}
-            - -store.chunks-cache.memcached.addresses=dns+{{ template "cortex.fullname" . }}-memcached.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:11211
-            - -store.chunks-cache.memcached.timeout=100ms
-            {{- end }}
+            {{- include "cortex.memcached" . | nindent 12}}
           {{- range $key, $value := .Values.ruler.extraArgs }}
             - "-{{ $key }}={{ $value }}"
           {{- end }}
