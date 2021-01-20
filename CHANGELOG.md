@@ -2,6 +2,7 @@
 
 ## master / unreleased
 
+* [ENHANCEMENT] Expose new HTTP API paths for remote-write and Query frontend to nginx #103
 * [ENHANCEMENT] Compactor service is no longer created if compactor is disabled. #82
 * [ENHANCEMENT] Headless service for alert manager is only enabled when the alert manager is deployed as a stateful set. #91
 * [ENHANCEMENT] Improved memcached configuration template, with support for both chunks & block storage caches. #92
