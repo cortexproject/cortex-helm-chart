@@ -44,6 +44,8 @@ externalConfigVersion: '0'
 
 config:
   auth_enabled: false
+  api:
+    prometheus_http_prefix: "/prometheus"
   ingester:
     max_transfer_retries: 0
     lifecycler:
