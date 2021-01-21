@@ -51,7 +51,7 @@ config:
       final_sleep: 0s
       num_tokens: 512
       ring:
-        replication_factor: 1
+        replication_factor: 3
         kvstore:
           store: consul
           prefix: 'collectors/'
