@@ -2,6 +2,8 @@
 
 ## master / unreleased
 
+* [CHANGE] Resource requests and limits have been removed from the values.yaml file. The default resources assigned will be based on the particular k8s cluster configuration, if they are not overridden.
+
 ## 0.3.0 / 2021-01-21
 
 * [ENHANCEMENT] Expose new HTTP API paths for remote-write and Query frontend to nginx #103
