@@ -1,4 +1,6 @@
 .git
+.github
 cortex
 docs
 tools
+ct.yaml
