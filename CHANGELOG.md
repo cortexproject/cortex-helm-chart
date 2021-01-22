@@ -2,6 +2,8 @@
 
 ## master / unreleased
 
+## 0.3.0 / 2021-01-21
+
 * [ENHANCEMENT] Expose new HTTP API paths for remote-write and Query frontend to nginx #103
 * [ENHANCEMENT] Compactor service is no longer created if compactor is disabled. #82
 * [ENHANCEMENT] Headless service for alert manager is only enabled when the alert manager is deployed as a stateful set. #91
@@ -13,8 +15,6 @@
 * [BUGFIX] nginx config using non-default clusterDomain #78
 * [BUGFIX] Add cluster DNS domain value #63 
 * [BUGFIX] Fix grpc port for querier #71 
-
-
 
 ## 0.2.0 / 2020-10-25
 
