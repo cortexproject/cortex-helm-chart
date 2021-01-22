@@ -45,7 +45,7 @@ externalConfigVersion: '0'
 config:
   auth_enabled: false
   api:
-    prometheus_http_prefix: "/prometheus"
+    prometheus_http_prefix: '/prometheus'
   ingester:
     max_transfer_retries: 0
     lifecycler:
@@ -87,7 +87,6 @@ config:
     grpc_client_config:
       max_recv_msg_size: 104857600
       max_send_msg_size: 104857600
-      use_gzip_compression: true
   # See https://github.com/cortexproject/cortex/blob/master/docs/configuration/config-file-reference.md#storage_config
   storage:
     engine: chunks
