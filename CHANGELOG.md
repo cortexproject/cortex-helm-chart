@@ -1,6 +1,7 @@
 # Changelog
 
 ## master / unreleased
+* [BUGFIX] Ingress config is fixed for Kubernetes versions 1.19+ 
 
 ## 0.3.0 / 2021-01-21
 
