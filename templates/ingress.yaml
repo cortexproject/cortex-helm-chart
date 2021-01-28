@@ -1,9 +1,10 @@
 {{- if and .Values.ingress.enabled .Values.nginx.enabled -}}
 {{- $fullName := include "cortex.fullname" . -}}
 {{- $svcPort := .Values.nginx.http_listen_port -}}
-{{- if semverCompare ">=1.19-0" .Capabilities.KubeVersion.GitVersion -}}
+{{- $kubeVersion := .Capabilities.KubeVersion.GitVersion -}}
+{{- if semverCompare ">=1.19-0" $kubeVersion -}}
 apiVersion: networking.k8s.io/v1
-{{- else if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
+{{- else if semverCompare ">=1.14-0" $kubeVersion -}}
 apiVersion: networking.k8s.io/v1beta1
 {{- else -}}
 apiVersion: extensions/v1beta1
@@ -38,9 +39,19 @@ spec:
         paths:
         {{- range .paths }}
           - path: {{ . }}
+            {{- if semverCompare ">=1.19-0" $kubeVersion }}
+            pathType: "Prefix"
+            {{- end }}
             backend:
+            {{- if semverCompare ">=1.19-0" $kubeVersion }}
+              service:
+                name: {{ $fullName }}
+                port:
+                  number: {{ $svcPort }}
+            {{- else }}
               serviceName: {{ $fullName }}
               servicePort: {{ $svcPort }}
+            {{- end -}}
         {{- end }}
   {{- end }}
 {{- end }}
