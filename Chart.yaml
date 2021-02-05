@@ -37,17 +37,14 @@ dependencies:
     alias: memcached-blocks-index
     version: 3.2.3
     repository: https://charts.helm.sh/stable
-    tags:
-      - blocks-storage-memcached
+    condition: memcached-blocks-index.enabled
   - name: memcached
     alias: memcached-blocks
     version: 3.2.3
     repository: https://charts.helm.sh/stable
-    tags:
-      - blocks-storage-memcached
+    condition: memcached-blocks.enabled
   - name: memcached
     alias: memcached-blocks-metadata
     version: 3.2.3
     repository: https://charts.helm.sh/stable
-    tags:
-      - blocks-storage-memcached
+    condition: memcached-blocks-metadata.enabled

@@ -1327,7 +1327,7 @@ memcached-frontend:
     enabled: true
 
 memcached-blocks-index:
-  # enabled/disabled via the tags.blocks-storage-memcached boolean
+  enabled: false
   replicaCount: 2
   # dpdbMinAvailable: 1
   # image: memcached:1.5.7-alpine
@@ -1347,7 +1347,7 @@ memcached-blocks-index:
     enabled: true
 
 memcached-blocks:
-  # enabled/disabled via the tags.blocks-storage-memcached boolean
+  enabled: false
   replicaCount: 2
   # dpdbMinAvailable: 1
   # image: memcached:1.5.7-alpine
@@ -1367,7 +1367,7 @@ memcached-blocks:
     enabled: true
 
 memcached-blocks-metadata:
-  # enabled/disabled via the tags.blocks-storage-memcached boolean
+  enabled: false
   replicaCount: 2
   # dpdbMinAvailable: 1
   # image: memcached:1.5.7-alpine

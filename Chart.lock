@@ -20,5 +20,5 @@ dependencies:
 - name: memcached
   repository: https://charts.helm.sh/stable
   version: 3.2.3
-digest: sha256:a59f91a3faa39ae3bb3cade308a65c93ca770a4364beb65ef3ed3280eb12db23
-generated: "2021-01-21T09:25:16.322064-08:00"
+digest: sha256:5d4ba80cb900399099a1aa61686232462e3dcca4e665b0b9c8728183de135ee1
+generated: "2021-02-04T16:31:18.713362-08:00"
