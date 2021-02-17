@@ -424,6 +424,7 @@ Source code can be found [here](https://cortexmetrics.io/)
 | nginx.securityContext | object | `{}` |  |
 | nginx.service.annotations | object | `{}` |  |
 | nginx.service.labels | object | `{}` |  |
+| nginx.service.type | string | `"ClusterIP"` |  |
 | nginx.strategy.rollingUpdate.maxSurge | int | `0` |  |
 | nginx.strategy.rollingUpdate.maxUnavailable | int | `1` |  |
 | nginx.strategy.type | string | `"RollingUpdate"` |  |
