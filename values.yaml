@@ -1,9 +1,9 @@
-## Container image settings.
-## Since the image is unique for all microservices, so are image settings.
+#  Container image settings.
+#  Since the image is unique for all microservices, so are image settings.
 
 image:
   repository: quay.io/cortexproject/cortex
-  tag: v1.4.0
+  tag: v1.6.0
   pullPolicy: IfNotPresent
 
   ## Optionally specify an array of imagePullSecrets.
@@ -13,8 +13,11 @@ image:
   # pullSecrets:
   #   - myRegistrKeySecretName
 
-## Kubernetes cluster DNS domain
+# Kubernetes cluster DNS domain
 clusterDomain: cluster.local
+
+tags:
+  blocks-storage-memcached: false
 
 ingress:
   enabled: true
@@ -41,6 +44,8 @@ externalConfigVersion: '0'
 
 config:
   auth_enabled: false
+  api:
+    prometheus_http_prefix: '/prometheus'
   ingester:
     max_transfer_retries: 0
     lifecycler:
@@ -48,7 +53,7 @@ config:
       final_sleep: 0s
       num_tokens: 512
       ring:
-        replication_factor: 1
+        replication_factor: 3
         kvstore:
           store: consul
           prefix: 'collectors/'
@@ -62,12 +67,15 @@ config:
     reject_old_samples_max_age: 168h
   schema:
     configs:
-      - from: 2019-07-29
+      - from: 2020-11-01
         store: cassandra
         object_store: cassandra
         schema: v10
         index:
           prefix: index_
+          period: 168h
+        chunks:
+          prefix: chunks_
           period: 168h
   server:
     http_listen_port: 8080
@@ -79,20 +87,19 @@ config:
     grpc_client_config:
       max_recv_msg_size: 104857600
       max_send_msg_size: 104857600
-      use_gzip_compression: true
   # See https://github.com/cortexproject/cortex/blob/master/docs/configuration/config-file-reference.md#storage_config
   storage:
     engine: chunks
     cassandra:
-      addresses: # configure cassandra addresses here.
-      keyspace: cortex # configure desired keyspace here.
+      addresses:                  # configure cassandra addresses here.
+      keyspace: cortex            # configure desired keyspace here.
       auth: true
-      username: # configure cassandra user here.
-      password: # configure cassandra password here.
+      username:                   # configure cassandra user here.
+      password:                   # configure cassandra password here.
     azure:
-      container_name: # configure azure blob container name here.
-      account_name: # configure azure storage account name here.
-      account_key: # configure azure storage account key here.
+      container_name:             # configure azure blob container name here.
+      account_name:               # configure azure storage account name here.
+      account_key:                # configure azure storage account key here.
     # aws:
     #   dynamodb:
     #     dynamodb_url:
@@ -132,6 +139,11 @@ config:
     shard_by_all_labels: true
     pool:
       health_check_ingesters: true
+  memberlist:
+    join_members: []
+    ## add here the service name of the ingesters
+    ## if using memberlist discovery, eg:
+    #  - cortex-ingester-headless
   querier:
     active_query_tracker_dir: /data/cortex/querier
     query_ingesters_within: 12h
@@ -150,7 +162,7 @@ config:
   alertmanager:
     external_url: '/api/prom/alertmanager'
   frontend:
-    #max_outstanding_per_tenant: 1000
+    #  max_outstanding_per_tenant: 1000
     log_queries_longer_than: 10s
     compress_responses: true
 
@@ -171,13 +183,16 @@ alertmanager:
     annotations: {}
     labels: {}
 
-  resources:
-    limits:
-      cpu: 200m
-      memory: 256Mi
-    requests:
-      cpu: 10m
-      memory: 32Mi
+  serviceMonitor:
+    enabled: false
+
+  resources: {}
+  #  limits:
+  #    cpu: 200m
+  #    memory: 256Mi
+  #  requests:
+  #    cpu: 10m
+  #    memory: 32Mi
 
   ## Additional Cortex container arguments, e.g. log level (debug, info, warn, error)
   extraArgs:
@@ -249,10 +264,10 @@ alertmanager:
 
   securityContext:
     {}
-    #fsGroup: 10001
-    #runAsGroup: 10001
-    #runAsNonRoot: true
-    #runAsUser: 10001
+    # fsGroup: 10001
+    # runAsGroup: 10001
+    # runAsNonRoot: true
+    # runAsUser: 10001
 
   ## Tolerations for pod assignment
   ## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
@@ -322,13 +337,16 @@ distributor:
     annotations: {}
     labels: {}
 
-  resources:
-    limits:
-      cpu: 1
-      memory: 1Gi
-    requests:
-      cpu: 100m
-      memory: 512Mi
+  serviceMonitor:
+    enabled: false
+
+  resources: {}
+  #  limits:
+  #    cpu: 1
+  #    memory: 1Gi
+  #  requests:
+  #    cpu: 100m
+  #    memory: 512Mi
 
   ## Additional Cortex container arguments, e.g. log level (debug, info, warn, error)
   extraArgs:
@@ -404,18 +422,21 @@ ingester:
     annotations: {}
     labels: {}
 
-  resources:
-    limits:
-      cpu: 1
-      memory: 1Gi
-    requests:
-      cpu: 100m
-      memory: 512Mi
+  serviceMonitor:
+    enabled: false
+
+  resources: {}
+  #  limits:
+  #    cpu: 1
+  #    memory: 1Gi
+  #  requests:
+  #    cpu: 100m
+  #    memory: 512Mi
 
   ## Additional Cortex container arguments, e.g. log level (debug, info, warn, error)
   extraArgs:
     {}
-    # log.level: debug
+    #  log.level: debug
 
   ## Pod Labels
   podLabels: {}
@@ -482,7 +503,7 @@ ingester:
     # storageClass: "-"
 
   livenessProbe:
-    failureThreshold: 20 # 10 minutes failure threshold
+    failureThreshold: 20      # 10 minutes failure threshold
     httpGet:
       path: /ready
       port: http-metrics
@@ -525,13 +546,16 @@ ruler:
     annotations: {}
     labels: {}
 
-  resources:
-    limits:
-      cpu: 200m
-      memory: 256Mi
-    requests:
-      cpu: 10m
-      memory: 32Mi
+  serviceMonitor:
+    enabled: false
+
+  resources: {}
+  #  limits:
+  #    cpu: 200m
+  #    memory: 256Mi
+  #  requests:
+  #    cpu: 10m
+  #    memory: 32Mi
 
   ## Additional Cortex container arguments, e.g. log level (debug, info, warn, error)
   extraArgs:
@@ -589,13 +613,16 @@ querier:
     annotations: {}
     labels: {}
 
-  resources:
-    limits:
-      cpu: 1
-      memory: 1Gi
-    requests:
-      cpu: 50m
-      memory: 128Mi
+  serviceMonitor:
+    enabled: false
+
+  resources: {}
+  #  limits:
+  #    cpu: 1
+  #    memory: 1Gi
+  #  requests:
+  #    cpu: 50m
+  #    memory: 128Mi
 
   ## Additional Cortex container arguments, e.g. log level (debug, info, warn, error)
   extraArgs:
@@ -665,13 +692,16 @@ query_frontend:
     annotations: {}
     labels: {}
 
-  resources:
-    limits:
-      cpu: 1
-      memory: 256Mi
-    requests:
-      cpu: 10m
-      memory: 32Mi
+  serviceMonitor:
+    enabled: false
+
+  resources: {}
+  #  limits:
+  #    cpu: 1
+  #    memory: 256Mi
+  #  requests:
+  #    cpu: 10m
+  #    memory: 32Mi
 
   ## Additional Cortex container arguments, e.g. log level (debug, info, warn, error)
   extraArgs:
@@ -741,13 +771,16 @@ table_manager:
     annotations: {}
     labels: {}
 
-  resources:
-    limits:
-      cpu: 1
-      memory: 1Gi
-    requests:
-      cpu: 10m
-      memory: 32Mi
+  serviceMonitor:
+    enabled: false
+
+  resources: {}
+  #  limits:
+  #    cpu: 1
+  #    memory: 1Gi
+  #  requests:
+  #    cpu: 10m
+  #    memory: 32Mi
 
   ## Additional Cortex container arguments, e.g. log level (debug, info, warn, error)
   extraArgs:
@@ -805,13 +838,16 @@ configs:
     annotations: {}
     labels: {}
 
-  resources:
-    limits:
-      cpu: 1
-      memory: 1Gi
-    requests:
-      cpu: 10m
-      memory: 32Mi
+  serviceMonitor:
+    enabled: false
+
+  resources: {}
+  #  limits:
+  #    cpu: 1
+  #    memory: 1Gi
+  #  requests:
+  #    cpu: 10m
+  #    memory: 32Mi
 
   ## Additional Cortex container arguments, e.g. log level (debug, info, warn, error)
   extraArgs:
@@ -877,13 +913,16 @@ nginx:
     annotations: {}
     labels: {}
 
-  resources:
-    limits:
-      cpu: 100m
-      memory: 128Mi
-    requests:
-      cpu: 10m
-      memory: 16Mi
+  serviceMonitor:
+    enabled: false
+
+  resources: {}
+  #  limits:
+  #    cpu: 100m
+  #    memory: 128Mi
+  #  requests:
+  #    cpu: 10m
+  #    memory: 16Mi
 
   ## Additional Cortex container arguments, e.g. log level (debug, info, warn, error)
   extraArgs:
@@ -941,18 +980,21 @@ store_gateway:
     annotations: {}
     labels: {}
 
-  resources:
-    limits:
-      cpu: 1
-      memory: 1Gi
-    requests:
-      cpu: 100m
-      memory: 512Mi
+  serviceMonitor:
+    enabled: false
+
+  resources: {}
+  #  limits:
+  #    cpu: 1
+  #    memory: 1Gi
+  #  requests:
+  #    cpu: 100m
+  #    memory: 512Mi
 
   ## Additional Cortex container arguments, e.g. log level (debug, info, warn, error)
   extraArgs:
     {}
-    # log.level: debug
+  # log.level: debug
 
   ## Pod Labels
   podLabels: {}
@@ -1014,7 +1056,7 @@ store_gateway:
     # storageClass: "-"
 
   livenessProbe:
-    failureThreshold: 20 # 10 minutes failure threshold
+    failureThreshold: 20      # 10 minutes failure threshold
     httpGet:
       path: /ready
       port: http-metrics
@@ -1053,18 +1095,21 @@ compactor:
     annotations: {}
     labels: {}
 
-  resources:
-    limits:
-      cpu: 1
-      memory: 1Gi
-    requests:
-      cpu: 100m
-      memory: 512Mi
+  serviceMonitor:
+    enabled: false
+
+  resources: {}
+  #  limits:
+  #    cpu: 1
+  #    memory: 1Gi
+  #  requests:
+  #    cpu: 100m
+  #    memory: 512Mi
 
   ## Additional Cortex container arguments, e.g. log level (debug, info, warn, error)
   extraArgs:
     {}
-    # log.level: debug
+    #  log.level: debug
 
   ## Pod Labels
   podLabels: {}
@@ -1126,7 +1171,7 @@ compactor:
     # storageClass: "-"
 
   livenessProbe:
-    failureThreshold: 20 # 10 minutes failure threshold
+    failureThreshold: 20      # 10 minutes failure threshold
     httpGet:
       path: /ready
       port: http-metrics
@@ -1167,86 +1212,16 @@ memcached:
     extraArgs:
       - -I 32m
     threads: 32
-  resources:
-    requests:
-      memory: 1Gi
-      cpu: 10m
-    limits:
-      memory: 4Gi
-      cpu: 1
+  resources: {}
+  #  requests:
+  #    memory: 1Gi
+  #    cpu: 10m
+  #  limits:
+  #    memory: 4Gi
+  #    cpu: 1
   metrics:
     enabled: true
-  #tolerations: {}
-  # - key: "dedicated"
-  #   operator: "Equal"
-  #   value: "cortex-memcached"
-  #   effect: "NoSchedule"
-  #affinity: {}
-  #   nodeAffinity:
-  #     requiredDuringSchedulingIgnoredDuringExecution:
-  #         nodeSelectorTerms:
-  #         - matchExpressions:
-  #           - key: dedicated
-  #             operator: In
-  #             values:
-  #             - cortex-memcached
-
-# index read caching
-memcached-index-read:
-  enabled: false
-  replicaCount: 2
-  #pdbMinAvailable: 1
-  #image: memcached:1.5.7-alpine
-  memcached:
-    maxItemMemory: 3840
-    extraArgs:
-      - -I 32m
-    threads: 32
-  resources:
-    requests:
-      memory: 1Gi
-      cpu: 10m
-    limits:
-      memory: 4Gi
-      cpu: 1
-  metrics:
-    enabled: true
-  #tolerations: []
-  # - key: "dedicated"
-  #   operator: "Equal"
-  #   value: "cortex-memcached"
-  #   effect: "NoSchedule"
-  #affinity: {}
-  #   nodeAffinity:
-  #     requiredDuringSchedulingIgnoredDuringExecution:
-  #         nodeSelectorTerms:
-  #         - matchExpressions:
-  #           - key: dedicated
-  #             operator: In
-  #             values:
-  #             - cortex-memcached
-
-# index write caching
-memcached-index-write:
-  enabled: false
-  replicaCount: 2
-  #dpdbMinAvailable: 1
-  #image: memcached:1.5.7-alpine
-  memcached:
-    maxItemMemory: 3840
-    extraArgs:
-      - -I 32m
-    threads: 32
-  resources:
-    requests:
-      memory: 1Gi
-      cpu: 10m
-    limits:
-      memory: 4Gi
-      cpu: 1
-  metrics:
-    enabled: true
-  #tolerations: []
+  # tolerations: {}
   # - key: "dedicated"
   #   operator: "Equal"
   #   value: "cortex-memcached"
@@ -1260,6 +1235,156 @@ memcached-index-write:
   #             operator: In
   #             values:
   #             - cortex-memcached
+
+# index read caching
+memcached-index-read:
+  enabled: false
+  replicaCount: 2
+  # pdbMinAvailable: 1
+  # image: memcached:1.5.7-alpine
+  memcached:
+    maxItemMemory: 3840
+    extraArgs:
+      - -I 32m
+    threads: 32
+  resources: {}
+  #  requests:
+  #    memory: 1Gi
+  #    cpu: 10m
+  #  limits:
+  #    memory: 4Gi
+  #    cpu: 1
+  metrics:
+    enabled: true
+  # tolerations: []
+  # - key: "dedicated"
+  #   operator: "Equal"
+  #   value: "cortex-memcached"
+  #   effect: "NoSchedule"
+  # affinity: {}
+  #   nodeAffinity:
+  #     requiredDuringSchedulingIgnoredDuringExecution:
+  #         nodeSelectorTerms:
+  #         - matchExpressions:
+  #           - key: dedicated
+  #             operator: In
+  #             values:
+  #             - cortex-memcached
+
+# index write caching
+memcached-index-write:
+  enabled: false
+  replicaCount: 2
+  # dpdbMinAvailable: 1
+  # image: memcached:1.5.7-alpine
+  memcached:
+    maxItemMemory: 3840
+    extraArgs:
+      - -I 32m
+    threads: 32
+  resources: {}
+  #  requests:
+  #    memory: 1Gi
+  #    cpu: 10m
+  #  limits:
+  #    memory: 4Gi
+  #    cpu: 1
+  metrics:
+    enabled: true
+  # tolerations: []
+  # - key: "dedicated"
+  #   operator: "Equal"
+  #   value: "cortex-memcached"
+  #   effect: "NoSchedule"
+  # affinity: {}
+  #   nodeAffinity:
+  #     requiredDuringSchedulingIgnoredDuringExecution:
+  #         nodeSelectorTerms:
+  #         - matchExpressions:
+  #           - key: dedicated
+  #             operator: In
+  #             values:
+  #             - cortex-memcached
+
+memcached-frontend:
+  enabled: false
+  replicaCount: 2
+  # dpdbMinAvailable: 1
+  # image: memcached:1.5.7-alpine
+  memcached:
+    maxItemMemory: 3840
+    extraArgs:
+      - -I 32m
+    threads: 32
+  resources: {}
+  #  requests:
+  #    memory: 1Gi
+  #    cpu: 10m
+  #  limits:
+  #    memory: 4Gi
+  #    cpu: 1
+  metrics:
+    enabled: true
+
+memcached-blocks-index:
+  # enabled/disabled via the tags.blocks-storage-memcached boolean
+  replicaCount: 2
+  # dpdbMinAvailable: 1
+  # image: memcached:1.5.7-alpine
+  memcached:
+    maxItemMemory: 3840
+    extraArgs:
+      - -I 32m
+    threads: 32
+  resources: {}
+  #  requests:
+  #    memory: 1Gi
+  #    cpu: 10m
+  #  limits:
+  #    memory: 4Gi
+  #    cpu: 1
+  metrics:
+    enabled: true
+
+memcached-blocks:
+  # enabled/disabled via the tags.blocks-storage-memcached boolean
+  replicaCount: 2
+  # dpdbMinAvailable: 1
+  # image: memcached:1.5.7-alpine
+  memcached:
+    maxItemMemory: 3840
+    extraArgs:
+      - -I 32m
+    threads: 32
+  resources: {}
+  #  requests:
+  #    memory: 1Gi
+  #    cpu: 10m
+  #  limits:
+  #    memory: 4Gi
+  #    cpu: 1
+  metrics:
+    enabled: true
+
+memcached-blocks-metadata:
+  # enabled/disabled via the tags.blocks-storage-memcached boolean
+  replicaCount: 2
+  # dpdbMinAvailable: 1
+  # image: memcached:1.5.7-alpine
+  memcached:
+    maxItemMemory: 3840
+    extraArgs:
+      - -I 32m
+    threads: 32
+  resources: {}
+  #  requests:
+  #    memory: 1Gi
+  #    cpu: 10m
+  #  limits:
+  #    memory: 4Gi
+  #    cpu: 1
+  metrics:
+    enabled: true
 
 configsdb_postgresql:
   enabled: false

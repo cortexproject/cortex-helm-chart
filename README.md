@@ -6,7 +6,7 @@ after cloning this repository.
 
 ## Dependencies
 
-### Key-Value store
+### Key-Value store
 
 Cortex requires an externally provided key-value store, such as [etcd](https://etcd.io/) or [Consul](https://www.consul.io/).
 
@@ -164,6 +164,7 @@ Source code can be found [here](https://cortexmetrics.io/)
 | compactor.terminationGracePeriodSeconds | int | `240` |  |
 | compactor.tolerations | list | `[]` |  |
 | config.alertmanager.external_url | string | `"/api/prom/alertmanager"` |  |
+| config.api.prometheus_http_prefix | string | `"/prometheus"` |  |
 | config.auth_enabled | bool | `false` |  |
 | config.chunk_store.chunk_cache_config.memcached.expiration | string | `"1h"` |  |
 | config.chunk_store.chunk_cache_config.memcached_client.timeout | string | `"1s"` |  |
@@ -301,7 +302,7 @@ Source code can be found [here](https://cortexmetrics.io/)
 | externalConfigVersion | string | `"0"` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | image.repository | string | `"quay.io/cortexproject/cortex"` |  |
-| image.tag | string | `"v1.1.0"` |  |
+| image.tag | string | `"v1.4.0"` |  |
 | ingester.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].podAffinityTerm.labelSelector.matchExpressions[0].key | string | `"target"` |  |
 | ingester.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].podAffinityTerm.labelSelector.matchExpressions[0].operator | string | `"In"` |  |
 | ingester.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].podAffinityTerm.labelSelector.matchExpressions[0].values[0] | string | `"ingester"` |  |
