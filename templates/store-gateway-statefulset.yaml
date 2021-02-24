@@ -19,7 +19,7 @@ spec:
       release: {{ .Release.Name }}
   updateStrategy:
     {{- toYaml .Values.store_gateway.strategy | nindent 4 }}      
-  serviceName: {{ template "cortex.fullname" . }}-store-gateway
+  serviceName: {{ template "cortex.fullname" . }}-store-gateway-headless
   {{- if .Values.store_gateway.persistentVolume.enabled }}
   volumeClaimTemplates:
     - metadata:
