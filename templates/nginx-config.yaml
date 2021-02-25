@@ -40,7 +40,7 @@ data:
 
         {{- if .Values.nginx.config.basicAuth.enabled }}
         auth_basic "Cortex";
-        auth_basic_user_file {{ .Values.nginx.config.basicAuth.htpasswdPath }}
+        auth_basic_user_file {{ .Values.nginx.config.basicAuth.htpasswdPath }};
         {{- end }}
 
         location = /healthz {
