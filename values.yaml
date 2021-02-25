@@ -973,6 +973,10 @@ nginx:
   extraPorts: []
   env: []
 
+  reverseProxy:
+    setHeaders: {}
+      # X-Scope-OrgID: 0
+
 store_gateway:
   replicas: 1
 
