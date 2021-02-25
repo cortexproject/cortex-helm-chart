@@ -904,6 +904,10 @@ nginx:
   http_listen_port: 80
   config:
     dnsResolver: kube-dns.kube-system.svc.cluster.local
+    basicAuth:
+      enabled: false
+      # use extraVolumes and extraVolumeMounts to set the file
+      htpasswdPath: ""
   image:
     repository: nginx
     tag: 1.17
