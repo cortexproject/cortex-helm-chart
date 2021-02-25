@@ -38,7 +38,7 @@ data:
         proxy_read_timeout 300s;
         proxy_http_version 1.1;
 
-        {{- range $key, $value := .Values.nginx.reverseProxy.setHeaders }}
+        {{- range $key, $value := .Values.nginx.config.setHeaders }}
         proxy_set_header {{ $key }} {{ $value }};
         {{- end }}
 
