@@ -1205,6 +1205,7 @@ compactor:
 # chunk caching
 memcached:
   enabled: false
+  architecture: "high-availability"
   replicaCount: 2
   pdbMinAvailable: 1
   memcached:
@@ -1239,6 +1240,7 @@ memcached:
 # index read caching
 memcached-index-read:
   enabled: false
+  architecture: "high-availability"
   replicaCount: 2
   # pdbMinAvailable: 1
   # image: memcached:1.5.7-alpine
@@ -1274,6 +1276,7 @@ memcached-index-read:
 # index write caching
 memcached-index-write:
   enabled: false
+  architecture: "high-availability"
   replicaCount: 2
   # dpdbMinAvailable: 1
   # image: memcached:1.5.7-alpine
@@ -1308,6 +1311,7 @@ memcached-index-write:
 
 memcached-frontend:
   enabled: false
+  architecture: "high-availability"
   replicaCount: 2
   # dpdbMinAvailable: 1
   # image: memcached:1.5.7-alpine
@@ -1328,6 +1332,7 @@ memcached-frontend:
 
 memcached-blocks-index:
   # enabled/disabled via the tags.blocks-storage-memcached boolean
+  architecture: "high-availability"
   replicaCount: 2
   # dpdbMinAvailable: 1
   # image: memcached:1.5.7-alpine
@@ -1348,6 +1353,7 @@ memcached-blocks-index:
 
 memcached-blocks:
   # enabled/disabled via the tags.blocks-storage-memcached boolean
+  architecture: "high-availability"
   replicaCount: 2
   # dpdbMinAvailable: 1
   # image: memcached:1.5.7-alpine
@@ -1368,6 +1374,7 @@ memcached-blocks:
 
 memcached-blocks-metadata:
   # enabled/disabled via the tags.blocks-storage-memcached boolean
+  architecture: "high-availability"
   replicaCount: 2
   # dpdbMinAvailable: 1
   # image: memcached:1.5.7-alpine
