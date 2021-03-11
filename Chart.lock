@@ -1,27 +1,27 @@
 dependencies:
 - name: memcached
-  repository: https://charts.helm.sh/stable
-  version: 3.2.3
+  repository: https://charts.bitnami.com/bitnami
+  version: 5.5.1
 - name: memcached
-  repository: https://charts.helm.sh/stable
-  version: 3.2.3
+  repository: https://charts.bitnami.com/bitnami
+  version: 5.5.1
 - name: memcached
-  repository: https://charts.helm.sh/stable
-  version: 3.2.3
+  repository: https://charts.bitnami.com/bitnami
+  version: 5.5.1
 - name: memcached
-  repository: https://charts.helm.sh/stable
-  version: 3.2.3
+  repository: https://charts.bitnami.com/bitnami
+  version: 5.5.1
 - name: memcached
-  repository: https://charts.helm.sh/stable
-  version: 3.2.3
+  repository: https://charts.bitnami.com/bitnami
+  version: 5.5.1
 - name: memcached
-  repository: https://charts.helm.sh/stable
-  version: 3.2.3
+  repository: https://charts.bitnami.com/bitnami
+  version: 5.5.1
 - name: memcached
-  repository: https://charts.helm.sh/stable
-  version: 3.2.3
+  repository: https://charts.bitnami.com/bitnami
+  version: 5.5.1
 - name: consul
   repository: https://helm.releases.hashicorp.com
   version: 0.27.0
-digest: sha256:850e164f65bdb8765d1a16dd3dc69a0d02034b743e396b2d388bfb6d0f8f3144
-generated: "2020-12-02T12:59:15.860371+01:00"
+digest: sha256:1916f91a844dea3842bc344c0aad7100f61a735ad44a1393f63c77463c4bde04
+generated: "2021-03-11T08:09:17.5417+01:00"

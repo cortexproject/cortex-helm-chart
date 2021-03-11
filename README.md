@@ -164,6 +164,7 @@ Source code can be found [here](https://cortexmetrics.io/)
 | compactor.terminationGracePeriodSeconds | int | `240` |  |
 | compactor.tolerations | list | `[]` |  |
 | config.alertmanager.external_url | string | `"/api/prom/alertmanager"` |  |
+| config.api.prometheus_http_prefix | string | `"/prometheus"` |  |
 | config.auth_enabled | bool | `false` |  |
 | config.chunk_store.chunk_cache_config.memcached.expiration | string | `"1h"` |  |
 | config.chunk_store.chunk_cache_config.memcached_client.timeout | string | `"1s"` |  |

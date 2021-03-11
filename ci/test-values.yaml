@@ -1,0 +1,56 @@
+ingress:
+  enabled: true
+
+config:
+  ingester:
+    lifecycler:
+      join_after: 30s
+      final_sleep: 30s
+      tokens_file_path: "/data/tokens"
+      ring:
+        replication_factor: 1
+        kvstore:
+          store: "memberlist"
+    walconfig:
+      wal_enabled: true
+      recover_from_wal: true
+      wal_dir: "/data/wal"
+
+  # See https://github.com/cortexproject/cortex/blob/master/docs/configuration/config-file-reference.md#storage_config
+  storage:
+    engine: blocks
+  blocks_storage:
+    backend: "filesystem"
+    tsdb:
+      dir: "/data/tsdb"
+    bucket_store:
+      sync_dir: "/data/tsdb-sync"
+    filesystem:
+      dir: "/data/store"
+
+  distributor:
+    ring:
+      kvstore:
+        store: memberlist
+
+  ruler:
+    ring:
+      kvstore:
+        store: memberlist
+  querier:
+    store_gateway_addresses: "dns+cortex-store-gateway-headless:9095"
+
+  memberlist:
+    join_members:
+    - "cortex-ingester-headless.cortex-green"
+
+ingester:
+  replicas: 1
+  statefulSet:
+    enabled: true
+distributor:
+  replicas: 1
+nginx:
+  replicas: 1
+consul:
+  enabled: false

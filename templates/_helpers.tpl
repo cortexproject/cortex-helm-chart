@@ -78,6 +78,24 @@ Resolve the actual image tag to use.
 {{- end }}
 
 {{/*
+Create the app name of cortex clients. Defaults to the same logic as "cortex.fullname", and default client expects "prometheus".
+*/}}
+{{- define "client.name" -}}
+{{- if .Values.client.name -}}
+{{- .Values.client.name -}}
+{{- else if .Values.client.fullnameOverride -}}
+{{- .Values.client.fullnameOverride | trunc 63 | trimSuffix "-" -}}
+{{- else -}}
+{{- $name := default "prometheus" .Values.client.nameOverride -}}
+{{- if contains $name .Release.Name -}}
+{{- .Release.Name | trunc 63 | trimSuffix "-" -}}
+{{- else -}}
+{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
 Create configuration parameters for memcached configuration
 */}}
 {{- define "cortex.memcached" -}}
@@ -106,23 +124,5 @@ Create configuration for frontend memcached configuration
 {{- define "cortex.frontend-memcached" -}}
 {{- if index .Values "memcached-frontend" "enabled" }}
 - "-frontend.memcached.addresses=dns+{{ template "cortex.fullname" . }}-memcached-frontend.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:11211"
-{{- end -}}
-{{- end -}}
-
-{{/*
-Create the app name of cortex clients. Defaults to the same logic as "cortex.fullname", and default client expects "prometheus".
-*/}}
-{{- define "client.name" -}}
-{{- if .Values.client.name -}}
-{{- .Values.client.name -}}
-{{- else if .Values.client.fullnameOverride -}}
-{{- .Values.client.fullnameOverride | trunc 63 | trimSuffix "-" -}}
-{{- else -}}
-{{- $name := default "prometheus" .Values.client.nameOverride -}}
-{{- if contains $name .Release.Name -}}
-{{- .Release.Name | trunc 63 | trimSuffix "-" -}}
-{{- else -}}
-{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
-{{- end -}}
 {{- end -}}
 {{- end -}}
