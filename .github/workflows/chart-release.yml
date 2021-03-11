@@ -1,0 +1,20 @@
+name: release-chart
+on:
+  push:
+    tags: 'chart-*'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Publish Helm chart
+        uses: stefanprodan/helm-gh-pages@master
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          charts_dir: .
+          charts_url: https://neticdk.github.io/cortex-helm-chart
+          owner: neticdk
+          repository: cortex-helm-chart
+          branch: gh-pages
+          linting: off
