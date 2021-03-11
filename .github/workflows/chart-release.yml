@@ -12,7 +12,7 @@ jobs:
         uses: stefanprodan/helm-gh-pages@master
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          charts_dir: .
+          charts_dir: ..
           charts_url: https://neticdk.github.io/cortex-helm-chart
           owner: neticdk
           repository: cortex-helm-chart
