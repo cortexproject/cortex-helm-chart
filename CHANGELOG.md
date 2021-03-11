@@ -2,10 +2,25 @@
 
 ## master / unreleased
 
+## 0.4.0 / 2021-03-01
+
+* [CHANGE] Resource requests and limits have been removed from the values.yaml file. The default resources assigned will be based on the particular k8s cluster configuration, if they are not overridden. #112
+* [CHANGE] Change memcached chart references from deprecated stable repo to bitnami source. #124
+* [BUGFIX] Corrected structural issues found in ingress resource yaml for kube versions 1.19+. #112
+
+## 0.3.0 / 2021-01-21
+
+* [ENHANCEMENT] Expose new HTTP API paths for remote-write and Query frontend to nginx #103
 * [ENHANCEMENT] Compactor service is no longer created if compactor is disabled. #82
 * [ENHANCEMENT] Headless service for alert manager is only enabled when the alert manager is deployed as a stateful set. #91
+* [ENHANCEMENT] Improved memcached configuration template, with support for both chunks & block storage caches. #92
 * [ENHANCEMENT] Update apiVersion: networking.k8s.io/v1beta1 -> networking.k8s.io/v1 for Kubernetes versions 1.19+  #94
+* [ENHANCEMENT] Service Monitors and Compactor Service #68, #80
+* [ENHANCEMENT] Updated default replication factor to match documentation
 * [BUGFIX] Update repository URL for memcache dependency charts. #96
+* [BUGFIX] nginx config using non-default clusterDomain #78
+* [BUGFIX] Add cluster DNS domain value #63
+* [BUGFIX] Fix grpc port for querier #71
 
 ## 0.2.0 / 2020-10-25
 

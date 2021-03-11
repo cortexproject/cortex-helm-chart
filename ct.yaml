@@ -1,0 +1,9 @@
+# See https://github.com/helm/chart-testing#configuration
+remote: origin
+validate-maintainers: false  # ct requires the maintainers to be a github name, which is not valid for this chart.
+charts:
+  - "./"
+chart-repos:
+  - base-charts=https://charts.helm.sh/stable
+  - bitnami=https://charts.bitnami.com/bitnami
+helm-extra-args: --timeout 600s
