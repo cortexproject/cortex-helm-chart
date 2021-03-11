@@ -44,7 +44,8 @@ externalConfigVersion: '0'
 
 config:
   auth_enabled: true
-
+  api:
+    prometheus_http_prefix: '/prometheus'  # default but this makes it available for nginx reverse-proxy configuration
   ingester:
     lifecycler:
       join_after: 0s  # This is the default value
