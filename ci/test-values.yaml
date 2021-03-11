@@ -52,3 +52,5 @@ distributor:
   replicas: 1
 nginx:
   replicas: 1
+consul:
+  enabled: false
