@@ -66,9 +66,6 @@ config:
         store: cassandra
         object_store: cassandra
         schema: v10
-        chunks:
-          prefix: chunks_
-          period: 168h
         index:
           prefix: index_
           period: 168h
@@ -534,15 +531,15 @@ ingester:
 
   livenessProbe: {}
     ## It is not recommended to set liveness probe - see production documentation
-    #failureThreshold: 20 # 10 minutes failure threshold
-    #httpGet:
-    #  path: /ready
-    #  port: http-metrics
-    #  scheme: HTTP
-    #initialDelaySeconds: 180
-    #periodSeconds: 30
-    #successThreshold: 1
-    #timeoutSeconds: 1
+    # failureThreshold: 20 # 10 minutes failure threshold
+    # httpGet:
+    #   path: /ready
+    #   port: http-metrics
+    #   scheme: HTTP
+    # initialDelaySeconds: 180
+    # periodSeconds: 30
+    # successThreshold: 1
+    # timeoutSeconds: 1
   readinessProbe:
     httpGet:
       path: /ready
