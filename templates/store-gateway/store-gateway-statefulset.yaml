@@ -12,7 +12,7 @@ spec:
     matchLabels: {{ include "cortex-store-gateway.matchLabels" . | nindent 6 }}
   updateStrategy:
     {{- toYaml .Values.store_gateway.strategy | nindent 4 }}      
-  serviceName: {{ template "cortex.fullname" . }}-store-gateway
+  serviceName: {{ template "cortex-store-gateway.headlessname" . }}
   {{- if .Values.store_gateway.persistentVolume.enabled }}
   volumeClaimTemplates:
     - metadata:

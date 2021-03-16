@@ -37,17 +37,15 @@ config:
     ring:
       kvstore:
         store: memberlist
-  querier:
-    store_gateway_addresses: "dns+cortex-store-gateway-headless:9095"
 
   memberlist:
     join_members:
-    - "cortex-ingester-headless.cortex-green"
+    - "{{ .Release.Name }}-ingester"
 
 ingester:
   replicas: 1
   statefulSet:
-    enabled: true
+    enabled: false
 distributor:
   replicas: 1
 nginx:
