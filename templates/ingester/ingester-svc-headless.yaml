@@ -1,8 +1,8 @@
-{{- if not .Values.ingester.statefulSet.enabled -}}
+{{- if .Values.ingester.statefulSet.enabled -}}
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "cortex-ingester.fullname" . }}
+  name: {{ template "cortex-ingester.headlessname" . }}
   labels: {{ include "cortex-ingester.labels" . | nindent 4 }}
 {{- with .Values.ingester.labels }}
 {{- toYaml . | indent 4 }}
@@ -11,6 +11,7 @@ metadata:
     {{- toYaml .Values.ingester.annotations | nindent 4 }}
 spec:
   type: ClusterIP
+  clusterIP: None
   ports:
     - port: {{ .Values.config.server.http_listen_port }}
       protocol: TCP
