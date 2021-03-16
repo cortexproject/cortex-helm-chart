@@ -22,9 +22,9 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- define "cortex-store-gateway.headlessname" -}}
 {{- $name := default .Chart.Name .Values.nameOverride -}}
 {{- if contains $name .Release.Name -}}
-{{- printf "%s-%s" .Release.Name "store-gateway-headless" | trunc 63 | trimSuffix "-" -}}
+{{- printf "%s-%s" .Release.Name "store-gateway" | trunc 63 | trimSuffix "-" -}}
 {{- else -}}
-{{- printf "%s-%s-%s" .Release.Name $name "store-gateway-headless" | trunc 63 | trimSuffix "-" -}}
+{{- printf "%s-%s-%s" .Release.Name $name "store-gateway" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 {{- end -}}
 
