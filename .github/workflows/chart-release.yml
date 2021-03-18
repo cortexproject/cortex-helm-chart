@@ -1,7 +1,9 @@
 name: release-chart
+
 on:
   push:
-    tags: 'chart-*'
+    branches:
+      - master
 
 jobs:
   publish:
@@ -20,7 +22,12 @@ jobs:
       - name: Install Helm
         uses: azure/setup-helm@v1
         with:
-          version: v3.4.0
+          version: v3.5.3
+
+      - name: Add dependency chart repos
+        run: |
+          helm repo add hashicorp https://helm.releases.hashicorp.com
+          helm repo add bitnami https://charts.bitnami.com/bitnami
 
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1.2.0
