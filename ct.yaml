@@ -1,8 +1,7 @@
 # See https://github.com/helm/chart-testing#configuration
 remote: origin
 validate-maintainers: false  # ct requires the maintainers to be a github name, which is not valid for this chart.
-charts:
-  - "./"
+target-branch: main
 chart-repos:
   - hashicorp=https://helm.releases.hashicorp.com
   - bitnami=https://charts.bitnami.com/bitnami

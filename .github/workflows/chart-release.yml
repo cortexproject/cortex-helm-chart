@@ -3,7 +3,7 @@ name: release-chart
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   publish:
@@ -31,7 +31,5 @@ jobs:
 
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1.2.0
-        with:
-          charts_dir: ..
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
