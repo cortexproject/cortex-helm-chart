@@ -904,6 +904,8 @@ nginx:
   http_listen_port: 80
   config:
     dnsResolver: kube-dns.kube-system.svc.cluster.local
+    setHeaders: {}
+      # X-Scope-OrgID: 0
   image:
     repository: nginx
     tag: 1.17

@@ -2,7 +2,10 @@
 
 ## master / unreleased
 
+* [ENHANCEMENT] Adding option to add custom headers (ex. X-Scope-OrgID) to NGINX from values.yaml (key `nginx.config.setHeaders`). #127
+
 ## 0.4.1 / 2021-03-22
+
 
 ## 0.4.0 / 2021-03-01
 
