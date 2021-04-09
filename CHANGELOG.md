@@ -2,8 +2,16 @@
 
 ## master / unreleased
 
-* [CHANGE] Resource requests and limits have been removed from the values.yaml file. The default resources assigned will be based on the particular k8s cluster configuration, if they are not overridden.
-* [BUGFIX] Corrected structural issues found in ingress resource yaml for kube versions 1.19+
+* [ENHANCEMENT] Adding option to add custom headers (ex. X-Scope-OrgID) to NGINX from values.yaml (key `nginx.config.setHeaders`). #127
+
+## 0.4.1 / 2021-03-22
+
+
+## 0.4.0 / 2021-03-01
+
+* [CHANGE] Resource requests and limits have been removed from the values.yaml file. The default resources assigned will be based on the particular k8s cluster configuration, if they are not overridden. #112
+* [CHANGE] Change memcached chart references from deprecated stable repo to bitnami source. #124
+* [BUGFIX] Corrected structural issues found in ingress resource yaml for kube versions 1.19+. #112
 
 ## 0.3.0 / 2021-01-21
 

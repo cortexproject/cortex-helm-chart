@@ -3,7 +3,7 @@
 
 image:
   repository: quay.io/cortexproject/cortex
-  tag: v1.6.0
+  tag: v1.7.0
   pullPolicy: IfNotPresent
 
   ## Optionally specify an array of imagePullSecrets.
@@ -904,6 +904,8 @@ nginx:
   http_listen_port: 80
   config:
     dnsResolver: kube-dns.kube-system.svc.cluster.local
+    setHeaders: {}
+      # X-Scope-OrgID: 0
   image:
     repository: nginx
     tag: 1.17
