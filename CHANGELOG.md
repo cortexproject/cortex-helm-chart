@@ -3,6 +3,11 @@
 ## master / unreleased
 
 * [ENHANCEMENT] Expose `client_max_body_size` config for nginx max request body size #137
+* [ENHANCEMENT] Adding option to add custom headers (ex. X-Scope-OrgID) to NGINX from values.yaml (key `nginx.config.setHeaders`). #127
+
+## 0.4.1 / 2021-03-22
+
+
 ## 0.4.0 / 2021-03-01
 
 * [CHANGE] Resource requests and limits have been removed from the values.yaml file. The default resources assigned will be based on the particular k8s cluster configuration, if they are not overridden. #112

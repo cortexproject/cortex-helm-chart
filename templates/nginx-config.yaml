@@ -34,11 +34,14 @@ data:
 
       server { # simple reverse-proxy
         listen {{ .Values.nginx.http_listen_port }};
-        #proxy_set_header X-Scope-OrgID 0;
         proxy_connect_timeout 300s;
         proxy_send_timeout 300s;
         proxy_read_timeout 300s;
         proxy_http_version 1.1;
+
+        {{- range $key, $value := .Values.nginx.config.setHeaders }}
+        proxy_set_header {{ $key }} {{ $value }};
+        {{- end }}
 
         location = /healthz {
           return 200 'alive';

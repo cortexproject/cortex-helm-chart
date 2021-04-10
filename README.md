@@ -67,9 +67,13 @@ Source code can be found [here](https://cortexmetrics.io/)
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://kubernetes-charts.storage.googleapis.com/ | memcached | 3.2.3 |
-| https://kubernetes-charts.storage.googleapis.com/ | memcached | 3.2.3 |
-| https://kubernetes-charts.storage.googleapis.com/ | memcached | 3.2.3 |
+| https://charts.bitnami.com/bitnami | memcached | 5.5.1 |
+| https://charts.bitnami.com/bitnami | memcached | 5.5.1 |
+| https://charts.bitnami.com/bitnami | memcached | 5.5.1 |
+| https://charts.bitnami.com/bitnami | memcached | 5.5.1 |
+| https://charts.bitnami.com/bitnami | memcached | 5.5.1 |
+| https://charts.bitnami.com/bitnami | memcached | 5.5.1 |
+| https://charts.bitnami.com/bitnami | memcached | 5.5.1 |
 
 ## Chart Values
 
@@ -102,13 +106,11 @@ Source code can be found [here](https://cortexmetrics.io/)
 | alertmanager.readinessProbe.httpGet.port | string | `"http-metrics"` |  |
 | alertmanager.readinessProbe.initialDelaySeconds | int | `45` |  |
 | alertmanager.replicas | int | `1` |  |
-| alertmanager.resources.limits.cpu | string | `"200m"` |  |
-| alertmanager.resources.limits.memory | string | `"256Mi"` |  |
-| alertmanager.resources.requests.cpu | string | `"10m"` |  |
-| alertmanager.resources.requests.memory | string | `"32Mi"` |  |
+| alertmanager.resources | object | `{}` |  |
 | alertmanager.securityContext | object | `{}` |  |
 | alertmanager.service.annotations | object | `{}` |  |
 | alertmanager.service.labels | object | `{}` |  |
+| alertmanager.serviceMonitor.enabled | bool | `false` |  |
 | alertmanager.statefulSet.enabled | bool | `false` |  |
 | alertmanager.statefulStrategy.type | string | `"RollingUpdate"` |  |
 | alertmanager.strategy.rollingUpdate.maxSurge | int | `0` |  |
@@ -153,13 +155,11 @@ Source code can be found [here](https://cortexmetrics.io/)
 | compactor.readinessProbe.httpGet.port | string | `"http-metrics"` |  |
 | compactor.readinessProbe.initialDelaySeconds | int | `60` |  |
 | compactor.replicas | int | `1` |  |
-| compactor.resources.limits.cpu | int | `1` |  |
-| compactor.resources.limits.memory | string | `"1Gi"` |  |
-| compactor.resources.requests.cpu | string | `"100m"` |  |
-| compactor.resources.requests.memory | string | `"512Mi"` |  |
+| compactor.resources | object | `{}` |  |
 | compactor.securityContext | object | `{}` |  |
 | compactor.service.annotations | object | `{}` |  |
 | compactor.service.labels | object | `{}` |  |
+| compactor.serviceMonitor.enabled | bool | `false` |  |
 | compactor.strategy.type | string | `"RollingUpdate"` |  |
 | compactor.terminationGracePeriodSeconds | int | `240` |  |
 | compactor.tolerations | list | `[]` |  |
@@ -181,14 +181,14 @@ Source code can be found [here](https://cortexmetrics.io/)
 | config.ingester.lifecycler.ring.kvstore.consul.http_client_timeout | string | `"20s"` |  |
 | config.ingester.lifecycler.ring.kvstore.prefix | string | `"collectors/"` |  |
 | config.ingester.lifecycler.ring.kvstore.store | string | `"consul"` |  |
-| config.ingester.lifecycler.ring.replication_factor | int | `1` |  |
+| config.ingester.lifecycler.ring.replication_factor | int | `3` |  |
 | config.ingester.max_transfer_retries | int | `0` |  |
 | config.ingester_client.grpc_client_config.max_recv_msg_size | int | `104857600` |  |
 | config.ingester_client.grpc_client_config.max_send_msg_size | int | `104857600` |  |
-| config.ingester_client.grpc_client_config.use_gzip_compression | bool | `true` |  |
 | config.limits.enforce_metric_name | bool | `false` |  |
 | config.limits.reject_old_samples | bool | `true` |  |
 | config.limits.reject_old_samples_max_age | string | `"168h"` |  |
+| config.memberlist.join_members | list | `[]` |  |
 | config.querier.active_query_tracker_dir | string | `"/data/cortex/querier"` |  |
 | config.querier.query_ingesters_within | string | `"12h"` |  |
 | config.query_range.align_queries_with_step | bool | `true` |  |
@@ -197,7 +197,9 @@ Source code can be found [here](https://cortexmetrics.io/)
 | config.query_range.results_cache.cache.memcached_client.timeout | string | `"1s"` |  |
 | config.query_range.split_queries_by_interval | string | `"24h"` |  |
 | config.ruler.enable_alertmanager_discovery | bool | `false` |  |
-| config.schema.configs[0].from | string | `"2019-07-29"` |  |
+| config.schema.configs[0].chunks.period | string | `"168h"` |  |
+| config.schema.configs[0].chunks.prefix | string | `"chunks_"` |  |
+| config.schema.configs[0].from | string | `"2020-11-01"` |  |
 | config.schema.configs[0].index.period | string | `"168h"` |  |
 | config.schema.configs[0].index.prefix | string | `"index_"` |  |
 | config.schema.configs[0].object_store | string | `"cassandra"` |  |
@@ -243,13 +245,11 @@ Source code can be found [here](https://cortexmetrics.io/)
 | configs.readinessProbe.httpGet.port | string | `"http-metrics"` |  |
 | configs.readinessProbe.initialDelaySeconds | int | `45` |  |
 | configs.replicas | int | `1` |  |
-| configs.resources.limits.cpu | int | `1` |  |
-| configs.resources.limits.memory | string | `"1Gi"` |  |
-| configs.resources.requests.cpu | string | `"10m"` |  |
-| configs.resources.requests.memory | string | `"32Mi"` |  |
+| configs.resources | object | `{}` |  |
 | configs.securityContext | object | `{}` |  |
 | configs.service.annotations | object | `{}` |  |
 | configs.service.labels | object | `{}` |  |
+| configs.serviceMonitor.enabled | bool | `false` |  |
 | configs.strategy.rollingUpdate.maxSurge | int | `0` |  |
 | configs.strategy.rollingUpdate.maxUnavailable | int | `1` |  |
 | configs.strategy.type | string | `"RollingUpdate"` |  |
@@ -286,13 +286,11 @@ Source code can be found [here](https://cortexmetrics.io/)
 | distributor.readinessProbe.httpGet.port | string | `"http-metrics"` |  |
 | distributor.readinessProbe.initialDelaySeconds | int | `45` |  |
 | distributor.replicas | int | `2` |  |
-| distributor.resources.limits.cpu | int | `1` |  |
-| distributor.resources.limits.memory | string | `"1Gi"` |  |
-| distributor.resources.requests.cpu | string | `"100m"` |  |
-| distributor.resources.requests.memory | string | `"512Mi"` |  |
+| distributor.resources | object | `{}` |  |
 | distributor.securityContext | object | `{}` |  |
 | distributor.service.annotations | object | `{}` |  |
 | distributor.service.labels | object | `{}` |  |
+| distributor.serviceMonitor.enabled | bool | `false` |  |
 | distributor.strategy.rollingUpdate.maxSurge | int | `0` |  |
 | distributor.strategy.rollingUpdate.maxUnavailable | int | `1` |  |
 | distributor.strategy.type | string | `"RollingUpdate"` |  |
@@ -302,7 +300,7 @@ Source code can be found [here](https://cortexmetrics.io/)
 | externalConfigVersion | string | `"0"` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | image.repository | string | `"quay.io/cortexproject/cortex"` |  |
-| image.tag | string | `"v1.4.0"` |  |
+| image.tag | string | `"v1.7.0"` |  |
 | ingester.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].podAffinityTerm.labelSelector.matchExpressions[0].key | string | `"target"` |  |
 | ingester.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].podAffinityTerm.labelSelector.matchExpressions[0].operator | string | `"In"` |  |
 | ingester.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].podAffinityTerm.labelSelector.matchExpressions[0].values[0] | string | `"ingester"` |  |
@@ -339,13 +337,11 @@ Source code can be found [here](https://cortexmetrics.io/)
 | ingester.readinessProbe.httpGet.port | string | `"http-metrics"` |  |
 | ingester.readinessProbe.initialDelaySeconds | int | `60` |  |
 | ingester.replicas | int | `3` |  |
-| ingester.resources.limits.cpu | int | `1` |  |
-| ingester.resources.limits.memory | string | `"1Gi"` |  |
-| ingester.resources.requests.cpu | string | `"100m"` |  |
-| ingester.resources.requests.memory | string | `"512Mi"` |  |
+| ingester.resources | object | `{}` |  |
 | ingester.securityContext | object | `{}` |  |
 | ingester.service.annotations | object | `{}` |  |
 | ingester.service.labels | object | `{}` |  |
+| ingester.serviceMonitor.enabled | bool | `false` |  |
 | ingester.statefulSet.enabled | bool | `false` |  |
 | ingester.statefulStrategy.type | string | `"RollingUpdate"` |  |
 | ingester.strategy.rollingUpdate.maxSurge | int | `0` |  |
@@ -358,26 +354,52 @@ Source code can be found [here](https://cortexmetrics.io/)
 | ingress.hosts[0].host | string | `"chart-example.local"` |  |
 | ingress.hosts[0].paths[0] | string | `"/"` |  |
 | ingress.tls | list | `[]` |  |
+| memcached-blocks-index.architecture | string | `"high-availability"` |  |
+| memcached-blocks-index.memcached.extraArgs[0] | string | `"-I 32m"` |  |
+| memcached-blocks-index.memcached.maxItemMemory | int | `3840` |  |
+| memcached-blocks-index.memcached.threads | int | `32` |  |
+| memcached-blocks-index.metrics.enabled | bool | `true` |  |
+| memcached-blocks-index.replicaCount | int | `2` |  |
+| memcached-blocks-index.resources | object | `{}` |  |
+| memcached-blocks-metadata.architecture | string | `"high-availability"` |  |
+| memcached-blocks-metadata.memcached.extraArgs[0] | string | `"-I 32m"` |  |
+| memcached-blocks-metadata.memcached.maxItemMemory | int | `3840` |  |
+| memcached-blocks-metadata.memcached.threads | int | `32` |  |
+| memcached-blocks-metadata.metrics.enabled | bool | `true` |  |
+| memcached-blocks-metadata.replicaCount | int | `2` |  |
+| memcached-blocks-metadata.resources | object | `{}` |  |
+| memcached-blocks.architecture | string | `"high-availability"` |  |
+| memcached-blocks.memcached.extraArgs[0] | string | `"-I 32m"` |  |
+| memcached-blocks.memcached.maxItemMemory | int | `3840` |  |
+| memcached-blocks.memcached.threads | int | `32` |  |
+| memcached-blocks.metrics.enabled | bool | `true` |  |
+| memcached-blocks.replicaCount | int | `2` |  |
+| memcached-blocks.resources | object | `{}` |  |
+| memcached-frontend.architecture | string | `"high-availability"` |  |
+| memcached-frontend.enabled | bool | `false` |  |
+| memcached-frontend.memcached.extraArgs[0] | string | `"-I 32m"` |  |
+| memcached-frontend.memcached.maxItemMemory | int | `3840` |  |
+| memcached-frontend.memcached.threads | int | `32` |  |
+| memcached-frontend.metrics.enabled | bool | `true` |  |
+| memcached-frontend.replicaCount | int | `2` |  |
+| memcached-frontend.resources | object | `{}` |  |
+| memcached-index-read.architecture | string | `"high-availability"` |  |
 | memcached-index-read.enabled | bool | `false` |  |
 | memcached-index-read.memcached.extraArgs[0] | string | `"-I 32m"` |  |
 | memcached-index-read.memcached.maxItemMemory | int | `3840` |  |
 | memcached-index-read.memcached.threads | int | `32` |  |
 | memcached-index-read.metrics.enabled | bool | `true` |  |
 | memcached-index-read.replicaCount | int | `2` |  |
-| memcached-index-read.resources.limits.cpu | int | `1` |  |
-| memcached-index-read.resources.limits.memory | string | `"4Gi"` |  |
-| memcached-index-read.resources.requests.cpu | string | `"10m"` |  |
-| memcached-index-read.resources.requests.memory | string | `"1Gi"` |  |
+| memcached-index-read.resources | object | `{}` |  |
+| memcached-index-write.architecture | string | `"high-availability"` |  |
 | memcached-index-write.enabled | bool | `false` |  |
 | memcached-index-write.memcached.extraArgs[0] | string | `"-I 32m"` |  |
 | memcached-index-write.memcached.maxItemMemory | int | `3840` |  |
 | memcached-index-write.memcached.threads | int | `32` |  |
 | memcached-index-write.metrics.enabled | bool | `true` |  |
 | memcached-index-write.replicaCount | int | `2` |  |
-| memcached-index-write.resources.limits.cpu | int | `1` |  |
-| memcached-index-write.resources.limits.memory | string | `"4Gi"` |  |
-| memcached-index-write.resources.requests.cpu | string | `"10m"` |  |
-| memcached-index-write.resources.requests.memory | string | `"1Gi"` |  |
+| memcached-index-write.resources | object | `{}` |  |
+| memcached.architecture | string | `"high-availability"` |  |
 | memcached.enabled | bool | `false` |  |
 | memcached.memcached.extraArgs[0] | string | `"-I 32m"` |  |
 | memcached.memcached.maxItemMemory | int | `3840` |  |
@@ -385,13 +407,11 @@ Source code can be found [here](https://cortexmetrics.io/)
 | memcached.metrics.enabled | bool | `true` |  |
 | memcached.pdbMinAvailable | int | `1` |  |
 | memcached.replicaCount | int | `2` |  |
-| memcached.resources.limits.cpu | int | `1` |  |
-| memcached.resources.limits.memory | string | `"4Gi"` |  |
-| memcached.resources.requests.cpu | string | `"10m"` |  |
-| memcached.resources.requests.memory | string | `"1Gi"` |  |
+| memcached.resources | object | `{}` |  |
 | nginx.affinity | object | `{}` |  |
 | nginx.annotations | object | `{}` |  |
 | nginx.config.dnsResolver | string | `"kube-dns.kube-system.svc.cluster.local"` |  |
+| nginx.config.setHeaders | object | `{}` |  |
 | nginx.enabled | bool | `true` |  |
 | nginx.env | list | `[]` |  |
 | nginx.extraArgs | object | `{}` |  |
@@ -417,13 +437,12 @@ Source code can be found [here](https://cortexmetrics.io/)
 | nginx.readinessProbe.httpGet.port | string | `"http-metrics"` |  |
 | nginx.readinessProbe.initialDelaySeconds | int | `10` |  |
 | nginx.replicas | int | `2` |  |
-| nginx.resources.limits.cpu | string | `"100m"` |  |
-| nginx.resources.limits.memory | string | `"128Mi"` |  |
-| nginx.resources.requests.cpu | string | `"10m"` |  |
-| nginx.resources.requests.memory | string | `"16Mi"` |  |
+| nginx.resources | object | `{}` |  |
 | nginx.securityContext | object | `{}` |  |
 | nginx.service.annotations | object | `{}` |  |
 | nginx.service.labels | object | `{}` |  |
+| nginx.service.type | string | `"ClusterIP"` |  |
+| nginx.serviceMonitor.enabled | bool | `false` |  |
 | nginx.strategy.rollingUpdate.maxSurge | int | `0` |  |
 | nginx.strategy.rollingUpdate.maxUnavailable | int | `1` |  |
 | nginx.strategy.type | string | `"RollingUpdate"` |  |
@@ -455,13 +474,11 @@ Source code can be found [here](https://cortexmetrics.io/)
 | querier.readinessProbe.httpGet.port | string | `"http-metrics"` |  |
 | querier.readinessProbe.initialDelaySeconds | int | `45` |  |
 | querier.replicas | int | `2` |  |
-| querier.resources.limits.cpu | int | `1` |  |
-| querier.resources.limits.memory | string | `"1Gi"` |  |
-| querier.resources.requests.cpu | string | `"50m"` |  |
-| querier.resources.requests.memory | string | `"128Mi"` |  |
+| querier.resources | object | `{}` |  |
 | querier.securityContext | object | `{}` |  |
 | querier.service.annotations | object | `{}` |  |
 | querier.service.labels | object | `{}` |  |
+| querier.serviceMonitor.enabled | bool | `false` |  |
 | querier.strategy.rollingUpdate.maxSurge | int | `0` |  |
 | querier.strategy.rollingUpdate.maxUnavailable | int | `1` |  |
 | querier.strategy.type | string | `"RollingUpdate"` |  |
@@ -493,13 +510,11 @@ Source code can be found [here](https://cortexmetrics.io/)
 | query_frontend.readinessProbe.httpGet.port | string | `"http-metrics"` |  |
 | query_frontend.readinessProbe.initialDelaySeconds | int | `45` |  |
 | query_frontend.replicas | int | `2` |  |
-| query_frontend.resources.limits.cpu | int | `1` |  |
-| query_frontend.resources.limits.memory | string | `"256Mi"` |  |
-| query_frontend.resources.requests.cpu | string | `"10m"` |  |
-| query_frontend.resources.requests.memory | string | `"32Mi"` |  |
+| query_frontend.resources | object | `{}` |  |
 | query_frontend.securityContext | object | `{}` |  |
 | query_frontend.service.annotations | object | `{}` |  |
 | query_frontend.service.labels | object | `{}` |  |
+| query_frontend.serviceMonitor.enabled | bool | `false` |  |
 | query_frontend.strategy.rollingUpdate.maxSurge | int | `0` |  |
 | query_frontend.strategy.rollingUpdate.maxUnavailable | int | `1` |  |
 | query_frontend.strategy.type | string | `"RollingUpdate"` |  |
@@ -529,13 +544,11 @@ Source code can be found [here](https://cortexmetrics.io/)
 | ruler.readinessProbe.httpGet.port | string | `"http-metrics"` |  |
 | ruler.readinessProbe.initialDelaySeconds | int | `45` |  |
 | ruler.replicas | int | `1` |  |
-| ruler.resources.limits.cpu | string | `"200m"` |  |
-| ruler.resources.limits.memory | string | `"256Mi"` |  |
-| ruler.resources.requests.cpu | string | `"10m"` |  |
-| ruler.resources.requests.memory | string | `"32Mi"` |  |
+| ruler.resources | object | `{}` |  |
 | ruler.securityContext | object | `{}` |  |
 | ruler.service.annotations | object | `{}` |  |
 | ruler.service.labels | object | `{}` |  |
+| ruler.serviceMonitor.enabled | bool | `false` |  |
 | ruler.strategy.rollingUpdate.maxSurge | int | `0` |  |
 | ruler.strategy.rollingUpdate.maxUnavailable | int | `1` |  |
 | ruler.strategy.type | string | `"RollingUpdate"` |  |
@@ -579,13 +592,11 @@ Source code can be found [here](https://cortexmetrics.io/)
 | store_gateway.readinessProbe.httpGet.port | string | `"http-metrics"` |  |
 | store_gateway.readinessProbe.initialDelaySeconds | int | `60` |  |
 | store_gateway.replicas | int | `1` |  |
-| store_gateway.resources.limits.cpu | int | `1` |  |
-| store_gateway.resources.limits.memory | string | `"1Gi"` |  |
-| store_gateway.resources.requests.cpu | string | `"100m"` |  |
-| store_gateway.resources.requests.memory | string | `"512Mi"` |  |
+| store_gateway.resources | object | `{}` |  |
 | store_gateway.securityContext | object | `{}` |  |
 | store_gateway.service.annotations | object | `{}` |  |
 | store_gateway.service.labels | object | `{}` |  |
+| store_gateway.serviceMonitor.enabled | bool | `false` |  |
 | store_gateway.strategy.type | string | `"RollingUpdate"` |  |
 | store_gateway.terminationGracePeriodSeconds | int | `240` |  |
 | store_gateway.tolerations | list | `[]` |  |
@@ -611,16 +622,15 @@ Source code can be found [here](https://cortexmetrics.io/)
 | table_manager.readinessProbe.httpGet.port | string | `"http-metrics"` |  |
 | table_manager.readinessProbe.initialDelaySeconds | int | `45` |  |
 | table_manager.replicas | int | `1` |  |
-| table_manager.resources.limits.cpu | int | `1` |  |
-| table_manager.resources.limits.memory | string | `"1Gi"` |  |
-| table_manager.resources.requests.cpu | string | `"10m"` |  |
-| table_manager.resources.requests.memory | string | `"32Mi"` |  |
+| table_manager.resources | object | `{}` |  |
 | table_manager.securityContext | object | `{}` |  |
 | table_manager.service.annotations | object | `{}` |  |
 | table_manager.service.labels | object | `{}` |  |
+| table_manager.serviceMonitor.enabled | bool | `false` |  |
 | table_manager.strategy.rollingUpdate.maxSurge | int | `0` |  |
 | table_manager.strategy.rollingUpdate.maxUnavailable | int | `1` |  |
 | table_manager.strategy.type | string | `"RollingUpdate"` |  |
 | table_manager.terminationGracePeriodSeconds | int | `180` |  |
 | table_manager.tolerations | list | `[]` |  |
+| tags.blocks-storage-memcached | bool | `false` |  |
 | useExternalConfig | bool | `false` |  |
