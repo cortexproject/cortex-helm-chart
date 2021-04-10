@@ -912,6 +912,7 @@ nginx:
     pullPolicy: IfNotPresent
 
   service:
+    type: ClusterIP
     annotations: {}
     labels: {}
 
