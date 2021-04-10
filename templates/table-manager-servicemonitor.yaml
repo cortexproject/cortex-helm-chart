@@ -31,4 +31,8 @@ spec:
     {{- if .Values.table_manager.serviceMonitor.scrapeTimeout }}
     scrapeTimeout: {{ .Values.table_manager.serviceMonitor.scrapeTimeout }}
     {{- end }}
+    {{- if .Values.table_manager.serviceMonitor.relabelings }}
+    relabelings:
+{{ toYaml .Values.table_manager.serviceMonitor.relabelings | indent 6 }}
+    {{- end }}
 {{- end }}

@@ -31,4 +31,8 @@ spec:
     {{- if .Values.alertmanager.serviceMonitor.scrapeTimeout }}
     scrapeTimeout: {{ .Values.alertmanager.serviceMonitor.scrapeTimeout }}
     {{- end }}
+    {{- if .Values.alertmanager.serviceMonitor.relabelings }}
+    relabelings:
+{{ toYaml .Values.alertmanager.serviceMonitor.relabelings | indent 6 }}
+    {{- end }}
 {{- end }}
