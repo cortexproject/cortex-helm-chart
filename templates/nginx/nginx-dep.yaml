@@ -29,7 +29,7 @@ spec:
         {{- toYaml . | nindent 8 }}
         {{- end }}
       annotations:
-        checksum/config: {{ include (print $.Template.BasePath "/nginx-config.yaml") . | sha256sum }}
+        checksum/config: {{ include (print $.Template.BasePath "/nginx/nginx-config.yaml") . | sha256sum }}
         {{- with .Values.nginx.podAnnotations }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
