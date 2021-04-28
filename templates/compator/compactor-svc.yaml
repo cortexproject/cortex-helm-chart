@@ -3,13 +3,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "cortex.fullname" . }}-compactor
-  namespace: {{ .Release.Namespace }}
+  name: {{ include "cortex.compatorFullname" . }}
   labels:
-    app: {{ template "cortex.name" . }}-compactor
-    chart: {{ template "cortex.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+    {{- include "cortex.compatorLabels" . | nindent 4 }}
     {{- with .Values.compactor.service.labels }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
@@ -23,7 +19,6 @@ spec:
       name: http-metrics
       targetPort: http-metrics
   selector:
-    app: {{ template "cortex.name" . }}-compactor
-    release: {{ .Release.Name }}
+    {{- include "cortex.compatorSelectorLabels" . | nindent 4 }}
 {{- end -}}
 {{- end -}}

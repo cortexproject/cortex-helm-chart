@@ -2,13 +2,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "cortex.fullname" . }}
-  namespace: {{ .Release.Namespace }}
+  name: {{ include "cortex.nginxFullname" . }}
   labels:
-    app: {{ template "cortex.name" . }}-nginx
-    chart: {{ template "cortex.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+    {{- include "cortex.nginxLabels" . | nindent 4 }}
     {{- with .Values.nginx.labels }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
@@ -22,6 +18,5 @@ spec:
       name: http-metrics
       targetPort: http-metrics
   selector:
-    app: {{ template "cortex.name" . }}-nginx
-    release: {{ .Release.Name }}
+    {{- include "cortex.nginxSelectorLabels" . | nindent 4 }}
 {{- end }}

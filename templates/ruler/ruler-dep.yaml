@@ -1,30 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ template "cortex.fullname" . }}-ruler
-  namespace: {{ .Release.Namespace }}
+  name: {{ include "cortex.rulerFullname" . }}
   labels:
-    app: {{ template "cortex.name" . }}-ruler
-    chart: {{ template "cortex.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+    {{- include "cortex.rulerLabels" . | nindent 4 }}
   annotations:
     {{- toYaml .Values.ruler.annotations | nindent 4 }}
 spec:
   replicas: {{ .Values.ruler.replicas }}
   selector:
     matchLabels:
-      app: {{ template "cortex.name" . }}-ruler
-      release: {{ .Release.Name }}
+      {{- include "cortex.rulerSelectorLabels" . | nindent 6 }}
   strategy:
     {{- toYaml .Values.ruler.strategy | nindent 4 }}
   template:
     metadata:
       labels:
-        app: {{ template "cortex.name" . }}-ruler
-        name: {{ template "cortex.name" . }}-ruler
-        target: ruler
-        release: {{ .Release.Name }}
+        {{- include "cortex.rulerLabels" . | nindent 8 }}
         {{- with .Values.ruler.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}

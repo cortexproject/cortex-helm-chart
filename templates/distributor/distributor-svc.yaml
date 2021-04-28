@@ -1,13 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "cortex.fullname" . }}-distributor
-  namespace: {{ .Release.Namespace }}
+  name: {{ include "cortex.distributorFullname" . }}
   labels:
-    app: {{ template "cortex.name" . }}-distributor
-    chart: {{ template "cortex.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+    {{- include "cortex.distributorLabels" . | nindent 4 }}
     {{- with .Values.distributor.labels }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
@@ -21,5 +17,4 @@ spec:
       name: http-metrics
       targetPort: http-metrics
   selector:
-    app: {{ template "cortex.name" . }}-distributor
-    release: {{ .Release.Name }}
+    {{- include "cortex.distributorSelectorLabels" . | nindent 4 }}

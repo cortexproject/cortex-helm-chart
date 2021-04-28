@@ -2,21 +2,16 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: {{ template "cortex.fullname" . }}-store-gateway
-  namespace: {{ .Release.Namespace }}
+  name: {{ include "cortex.storeGatewayFullname" . }}
   labels:
-    app: {{ template "cortex.name" . }}-store-gateway
-    chart: {{ template "cortex.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+    {{- include "cortex.storeGatewayLabels" . | nindent 4 }}
   annotations:
     {{- toYaml .Values.store_gateway.annotations | nindent 4 }}
 spec:
   replicas: {{ .Values.store_gateway.replicas }}
   selector:
     matchLabels:
-      app: {{ template "cortex.name" . }}-store-gateway
-      release: {{ .Release.Name }}
+      {{- include "cortex.storeGatewaySelectorLabels" . | nindent 6 }}
   updateStrategy:
     {{- toYaml .Values.store_gateway.strategy | nindent 4 }}      
   serviceName: {{ template "cortex.fullname" . }}-store-gateway-headless
@@ -45,10 +40,7 @@ spec:
   template:
     metadata:
       labels:
-        app: {{ template "cortex.name" . }}-store-gateway
-        name: {{ template "cortex.name" . }}-store-gateway
-        target: store-gateway
-        release: {{ .Release.Name }}
+        {{- include "cortex.storeGatewayLabels" . | nindent 8 }}
         {{- with .Values.store_gateway.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}

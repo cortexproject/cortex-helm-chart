@@ -2,12 +2,9 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: {{ template "cortex.fullname" . }}-store-gateway
+  name: {{ include "cortex.storeGatewayFullname" . }}
   labels:
-    app: {{ template "cortex.name" . }}
-    chart: {{ template "cortex.chart" . }}
-    heritage: {{ .Release.Service }}
-    release: {{ .Release.Name }}
+    {{- include "cortex.storeGatewayLabels" . | nindent 4 }}
     {{- if .Values.store_gateway.serviceMonitor.additionalLabels }}
 {{ toYaml .Values.store_gateway.serviceMonitor.additionalLabels | indent 4 }}
     {{- end }}
@@ -18,8 +15,7 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: {{ template "cortex.name" . }}-store-gateway
-      release: {{ .Release.Name | quote }}
+      {{- include "cortex.storeGatewaySelectorLabels" . | nindent 6 }}
   namespaceSelector:
     matchNames:
       - {{ .Release.Namespace | quote }}

@@ -2,13 +2,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "cortex.fullname" . }}-table-manager
-  namespace: {{ .Release.Namespace }}
+  name: {{ include "cortex.tableManagerFullname" . }}
   labels:
-    app: {{ template "cortex.name" . }}-table-manager
-    chart: {{ template "cortex.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+    {{- include "cortex.tableManagerLabels" . | nindent 4 }}
     {{- with .Values.table_manager.labels }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
@@ -22,6 +18,5 @@ spec:
       name: http-metrics
       targetPort: http-metrics
   selector:
-    app: {{ template "cortex.name" . }}-table-manager
-    release: {{ .Release.Name }}
+    {{- include "cortex.tableManagerSelectorLabels" . | nindent 4 }}
 {{- end -}}

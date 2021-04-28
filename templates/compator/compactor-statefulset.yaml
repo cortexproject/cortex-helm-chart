@@ -3,21 +3,16 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: {{ template "cortex.fullname" . }}-compactor
-  namespace: {{ .Release.Namespace }}
+  name: {{ include "cortex.compatorFullname" . }}
   labels:
-    app: {{ template "cortex.name" . }}-compactor
-    chart: {{ template "cortex.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+    {{- include "cortex.compatorLabels" . | nindent 4 }}
   annotations:
     {{- toYaml .Values.compactor.annotations | nindent 4 }}
 spec:
   replicas: {{ .Values.compactor.replicas }}
   selector:
     matchLabels:
-      app: {{ template "cortex.name" . }}-compactor
-      release: {{ .Release.Name }}
+      {{- include "cortex.compatorSelectorLabels" . | nindent 6 }}
   updateStrategy:
     {{- toYaml .Values.compactor.strategy | nindent 4 }}            
   serviceName: {{ template "cortex.fullname" . }}-compactor
@@ -46,10 +41,7 @@ spec:
   template:
     metadata:
       labels:
-        app: {{ template "cortex.name" . }}-compactor
-        name: {{ template "cortex.name" . }}-compactor
-        target: compactor
-        release: {{ .Release.Name }}
+        {{- include "cortex.compatorLabels" . | nindent 8 }}
         {{- with .Values.compactor.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}

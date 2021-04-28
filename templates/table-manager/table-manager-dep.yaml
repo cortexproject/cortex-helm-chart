@@ -2,30 +2,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ template "cortex.fullname" . }}-table-manager
-  namespace: {{ .Release.Namespace }}
+  name: {{ include "cortex.tableManagerFullname" . }}
   labels:
-    app: {{ template "cortex.name" . }}-table-manager
-    chart: {{ template "cortex.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+    {{- include "cortex.tableManagerLabels" . | nindent 4 }}
   annotations:
     {{- toYaml .Values.table_manager.annotations | nindent 4 }}
 spec:
   replicas: {{ .Values.table_manager.replicas }}
   selector:
     matchLabels:
-      app: {{ template "cortex.name" . }}-table-manager
-      release: {{ .Release.Name }}
+      {{- include "cortex.tableManagerSelectorLabels" . | nindent 6 }}
   strategy:
     {{- toYaml .Values.table_manager.strategy | nindent 4 }}
   template:
     metadata:
       labels:
-        app: {{ template "cortex.name" . }}-table-manager
-        name: {{ template "cortex.name" . }}-table-manager
-        target: table-manager
-        release: {{ .Release.Name }}
+        {{- include "cortex.tableManagerLabels" . | nindent 8 }}
         {{- with .Values.table_manager.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}

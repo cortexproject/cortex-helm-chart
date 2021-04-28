@@ -1,13 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "cortex.fullname" . }}-ingester-headless
-  namespace: {{ .Release.Namespace }}
+  name: {{ include "cortex.ingesterFullname" . }}
   labels:
-    app: {{ template "cortex.name" . }}-ingester
-    chart: {{ template "cortex.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+    {{- include "cortex.ingesterLabels" . | nindent 4 }}
     {{- with .Values.ingester.labels }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
@@ -22,5 +18,4 @@ spec:
       name: http-metrics
       targetPort: http-metrics
   selector:
-    app: {{ template "cortex.name" . }}-ingester
-    release: {{ .Release.Name }}
+    {{- include "cortex.ingesterSelectorLabels" . | nindent 4 }}

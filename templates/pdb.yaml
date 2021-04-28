@@ -3,15 +3,11 @@ apiVersion: policy/v1beta1
 kind: PodDisruptionBudget
 metadata:
   name: {{ template "cortex.fullname" . }}
-  namespace: {{ .Release.Namespace }}
   labels:
-    app: {{ template "cortex.name" . }}
-    heritage: {{ .Release.Service }}
-    release: {{ .Release.Name }}
-    chart: {{ template "cortex.chart" . }}
+    {{- include "cortex.labels" . | nindent 4 }}
 spec:
   selector:
     matchLabels:
-      app: {{ template "cortex.name" . }}
+      {{- include "cortex.selectorLabels" . | nindent 4 }}
 {{ toYaml .Values.podDisruptionBudget | indent 2 }}
 {{- end -}}

@@ -2,30 +2,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ template "cortex.fullname" . }}-alertmanager
-  namespace: {{ .Release.Namespace }}
+  name: {{ include "cortex.alertmanagerFullname" . }}
   labels:
-    app: {{ template "cortex.name" . }}-alertmanager
-    chart: {{ template "cortex.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+    {{- include "cortex.alertmanagerLabels" . | nindent 4 }}
   annotations:
     {{- toYaml .Values.alertmanager.annotations | nindent 4 }}
 spec:
   replicas: {{ .Values.alertmanager.replicas }}
   selector:
     matchLabels:
-      app: {{ template "cortex.name" . }}-alertmanager
-      release: {{ .Release.Name }}
+      {{- include "cortex.alertmanagerSelectorLabels" . | nindent 6 }}
   strategy:
     {{- toYaml .Values.alertmanager.strategy | nindent 4 }}
   template:
     metadata:
       labels:
-        app: {{ template "cortex.name" . }}-alertmanager
-        name: {{ template "cortex.name" . }}-alertmanager
-        target: alertmanager
-        release: {{ .Release.Name }}
+        {{- include "cortex.alertmanagerLabels" . | nindent 8 }}
         {{- with .Values.alertmanager.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}

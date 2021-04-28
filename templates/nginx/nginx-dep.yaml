@@ -2,29 +2,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ template "cortex.fullname" . }}-nginx
-  namespace: {{ .Release.Namespace }}
+  name: {{ include "cortex.nginxFullname" . }}
   labels:
-    app: {{ template "cortex.name" . }}-nginx
-    chart: {{ template "cortex.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+    {{- include "cortex.nginxLabels" . | nindent 4 }}
   annotations:
     {{- toYaml .Values.nginx.annotations | nindent 4 }}
 spec:
   replicas: {{ .Values.nginx.replicas }}
   selector:
     matchLabels:
-      app: {{ template "cortex.name" . }}-nginx
-      release: {{ .Release.Name }}
+      {{- include "cortex.nginxSelectorLabels" . | nindent 6 }}
   strategy:
     {{- toYaml .Values.nginx.strategy | nindent 4 }}
   template:
     metadata:
       labels:
-        app: {{ template "cortex.name" . }}-nginx
-        name: {{ template "cortex.name" . }}-nginx
-        release: {{ .Release.Name }}
+        {{- include "cortex.nginxLabels" . | nindent 8 }}
         {{- with .Values.nginx.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}

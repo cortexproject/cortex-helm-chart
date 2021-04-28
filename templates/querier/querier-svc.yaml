@@ -1,13 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "cortex.fullname" . }}-querier
-  namespace: {{ .Release.Namespace }}
+  name: {{ include "cortex.querierFullname" . }}
   labels:
-    app: {{ template "cortex.name" . }}-querier
-    chart: {{ template "cortex.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+    {{- include "cortex.querierLabels" . | nindent 4 }}
     {{- with .Values.querier.labels }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
@@ -21,5 +17,4 @@ spec:
       name: http-metrics
       targetPort: http-metrics
   selector:
-    app: {{ template "cortex.name" . }}-querier
-    release: {{ .Release.Name }}
+    {{- include "cortex.querierSelectorLabels" . | nindent 4 }}

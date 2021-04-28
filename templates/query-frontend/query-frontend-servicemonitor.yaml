@@ -2,12 +2,9 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: {{ template "cortex.fullname" . }}-query-frontend
+  name: {{ include "cortex.queryFrontendFullname" . }}
   labels:
-    app: {{ template "cortex.name" . }}
-    chart: {{ template "cortex.chart" . }}
-    heritage: {{ .Release.Service }}
-    release: {{ .Release.Name }}
+    {{- include "cortex.queryFrontendLabels" . | nindent 4 }}
     {{- if .Values.query_frontend.serviceMonitor.additionalLabels }}
 {{ toYaml .Values.query_frontend.serviceMonitor.additionalLabels | indent 4 }}
     {{- end }}
@@ -18,8 +15,7 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: {{ template "cortex.name" . }}-query-frontend
-      release: {{ .Release.Name | quote }}
+      {{- include "cortex.queryFrontendSelectorLabels" . | nindent 6 }}
   namespaceSelector:
     matchNames:
       - {{ .Release.Namespace | quote }}
