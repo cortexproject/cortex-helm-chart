@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "cortex.queryFrontendFullname" . }}-headless
+  labels:
+    {{- include "cortex.queryFrontendLabels" . | nindent 4 }}
+    {{- with .Values.query_frontend.service.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  annotations:
+    {{- toYaml .Values.query_frontend.service.annotations | nindent 4 }}
+spec:
+  type: ClusterIP
+  clusterIP: None
+  publishNotReadyAddresses: true
+  ports:
+    - port: {{ .Values.config.server.http_listen_port }}
+      protocol: TCP
+      name: http-metrics
+      targetPort: http-metrics
+    - port: {{ .Values.config.server.grpc_listen_port }}
+      protocol: TCP
+      name: grpclb
+      targetPort: grpc
+  selector:
+    {{- include "cortex.queryFrontendSelectorLabels" . | nindent 4 }}

@@ -3,7 +3,7 @@
 
 image:
   repository: quay.io/cortexproject/cortex
-  tag: v1.7.0
+  tag: v1.8.1
   pullPolicy: IfNotPresent
 
   ## Optionally specify an array of imagePullSecrets.
@@ -141,9 +141,9 @@ config:
       health_check_ingesters: true
   memberlist:
     join_members: []
-    ## add here the service name of the ingesters
+    ## add here the service name of the memberlist
     ## if using memberlist discovery, eg:
-    #  - cortex-ingester-headless
+    #  - cortex-memberlist
   querier:
     active_query_tracker_dir: /data/cortex/querier
     query_ingesters_within: 12h
@@ -171,6 +171,7 @@ rbac:
   pspEnabled: true
 
 alertmanager:
+  enabled: true
   replicas: 1
 
   statefulSet:
@@ -540,6 +541,7 @@ ingester:
   env: []
 
 ruler:
+  enabled: true
   replicas: 1
 
   service:
@@ -605,6 +607,25 @@ ruler:
   extraVolumeMounts: []
   extraPorts: []
   env: []
+  # allow configuring rules via configmap in case you don't want to use the configs db
+  directories: {}
+    # tenant_foo:
+    #   rules1.txt: |
+    #     groups:
+    #       - name: should_fire
+    #         rules:
+    #           - alert: HighPercentageError
+    #             expr: |
+    #               sum(rate({app="foo", env="production"} |= "error" [5m])) by (job)
+    #                 /
+    #               sum(rate({app="foo", env="production"}[5m])) by (job)
+    #                 > 0.05
+    #             for: 10m
+    #             labels:
+    #               severity: warning
+    #             annotations:
+    #               summary: High error rate
+
 
 querier:
   replicas: 2
@@ -832,6 +853,7 @@ table_manager:
   env: []
 
 configs:
+  enabled: true
   replicas: 1
 
   service:

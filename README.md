@@ -83,6 +83,7 @@ Source code can be found [here](https://cortexmetrics.io/)
 | alertmanager.annotations | object | `{}` |  |
 | alertmanager.env | list | `[]` |  |
 | alertmanager.extraArgs | object | `{}` |  |
+| alertmanager.enabled | bool | `true` |  |
 | alertmanager.extraContainers | list | `[]` |  |
 | alertmanager.extraPorts | list | `[]` |  |
 | alertmanager.extraVolumeMounts | list | `[]` |  |
@@ -225,6 +226,7 @@ Source code can be found [here](https://cortexmetrics.io/)
 | config.table_manager.retention_period | string | `"0s"` |  |
 | configs.affinity | object | `{}` |  |
 | configs.annotations | object | `{}` |  |
+| configs.enabled | bool | `true` |  |
 | configs.env | list | `[]` |  |
 | configs.extraArgs | object | `{}` |  |
 | configs.extraContainers | list | `[]` |  |
@@ -523,7 +525,9 @@ Source code can be found [here](https://cortexmetrics.io/)
 | rbac.create | bool | `true` |  |
 | rbac.pspEnabled | bool | `true` |  |
 | ruler.affinity | object | `{}` |  |
+| ruler.enabled | bool | `true` |  |
 | ruler.annotations | object | `{}` |  |
+| ruler.directories | object | `{}` |  |
 | ruler.env | list | `[]` |  |
 | ruler.extraArgs | object | `{}` |  |
 | ruler.extraContainers | list | `[]` |  |
