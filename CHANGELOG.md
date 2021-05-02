@@ -5,6 +5,10 @@
 * [ENHANCEMENT] Expose `client_max_body_size` config for nginx max request body size #137
 * [ENHANCEMENT] Adding option to add custom headers (ex. X-Scope-OrgID) to NGINX from values.yaml (key `nginx.config.setHeaders`). #127
 
+## 0.4.2 / 2021-05-03
+
+* [BUGFIX] Added missing ServiceMonitors `additionalLabels` placeholders in `values.yaml`.
+
 ## 0.4.1 / 2021-03-22
 
 
@@ -22,11 +26,11 @@
 * [ENHANCEMENT] Improved memcached configuration template, with support for both chunks & block storage caches. #92
 * [ENHANCEMENT] Update apiVersion: networking.k8s.io/v1beta1 -> networking.k8s.io/v1 for Kubernetes versions 1.19+  #94
 * [ENHANCEMENT] Service Monitors and Compactor Service #68, #80
-* [ENHANCEMENT] Updated default replication factor to match documentation 
+* [ENHANCEMENT] Updated default replication factor to match documentation
 * [BUGFIX] Update repository URL for memcache dependency charts. #96
 * [BUGFIX] nginx config using non-default clusterDomain #78
-* [BUGFIX] Add cluster DNS domain value #63 
-* [BUGFIX] Fix grpc port for querier #71 
+* [BUGFIX] Add cluster DNS domain value #63
+* [BUGFIX] Fix grpc port for querier #71
 
 ## 0.2.0 / 2020-10-25
 
