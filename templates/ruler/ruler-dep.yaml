@@ -75,8 +75,10 @@ spec:
             - name: config
               mountPath: /etc/cortex
             - name: storage
-              mountPath: "/data"
+              mountPath: /data
               subPath: {{ .Values.ruler.persistence.subPath }}
+            - name: tmp
+              mountPath: /rules
             {{- range $dir, $_ := .Values.ruler.directories }}
             - name: {{ include "cortex.rulerRulesDirName" $dir }}
               mountPath: /etc/cortex/rules/{{ $dir }}
@@ -115,6 +117,8 @@ spec:
             {{- else }}
             secretName: {{ template "cortex.fullname" . }}
             {{- end }}
+        - name: tmp
+          emptyDir: {}
         {{- range $dir, $_ := .Values.ruler.directories }}
         - name: {{ include "cortex.rulerRulesDirName" $dir }}
           configMap:
