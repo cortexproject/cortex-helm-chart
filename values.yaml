@@ -1406,3 +1406,75 @@ configsdb_postgresql:
     existing_secret:
       name:
       key:
+
+## Sidecars that collect the configmaps with specified label and stores the included files them into the respective folders
+sidecar:
+  image:
+    repository: quay.io/kiwigrid/k8s-sidecar
+    tag: 1.10.7
+    sha: ""
+  imagePullPolicy: IfNotPresent
+  resources: {}
+  #   limits:
+  #     cpu: 100m
+  #     memory: 100Mi
+  #   requests:
+  #     cpu: 50m
+  #     memory: 50Mi
+  # skipTlsVerify Set to true to skip tls verification for kube api calls
+  # skipTlsVerify: true
+  enableUniqueFilenames: false
+  rules:
+    enabled: false
+    SCProvider: true
+    # label that the configmaps with rules are marked with
+    label: cortex_rules
+    watchMethod: null
+    # value of label that the configmaps with rules are set to
+    labelValue: null
+    # folder in the pod that should hold the collected rules (unless `defaultFolderName` is set)
+    folder: /tmp/rules
+    # The default folder name, it will create a subfolder under the `folder` and put rules in there instead
+    defaultFolderName: null
+    # If specified, the sidecar will search for rules config-maps inside this namespace.
+    # Otherwise the namespace in which the sidecar is running will be used.
+    # It's also possible to specify ALL to search in all namespaces
+    searchNamespace: null
+    # If specified, the sidecar will look for annotation with this name to create folder and put graph here.
+    # You can use this parameter together with `provider.foldersFromFilesStructure`to annotate configmaps and create folder structure.
+    folderAnnotation: null
+    securityContext:
+      runAsUser: 0
+    # running the sidecar will also run as root
+    # provider configuration that lets cortex manage the rules
+    provider:
+      # name of the provider, should be unique
+      name: sidecarProvider
+      # orgid as configured in grafana
+      orgid: 1
+      # folder in which the rules should be imported in cortex
+      folder: ''
+      # type of the provider
+      type: file
+      # disableDelete to activate a import-only behaviour
+      disableDelete: false
+      allowUiUpdates: false
+  alertmanager:
+    enabled: false
+    SCProvider: true
+    label: cortex_alertmanager
+    watchMethod: null
+    labelValue: null
+    folder: /data
+    defaultFolderName: null
+    searchNamespace: null
+    folderAnnotation: null
+    securityContext:
+      runAsUser: 0
+    provider:
+      name: sidecarProvider
+      orgid: 1
+      folder: ''
+      type: file
+      disableDelete: false
+      allowUiUpdates: false

@@ -16,5 +16,10 @@ rules:
   verbs:          ['use']
   resourceNames:  [{{ template "cortex.fullname" . }}]
 {{- end }}
+{{- if or .Values.sidecar.rules.enabled .Values.sidecar.alertmanager.enabled }}
+- apiGroups: [""] # "" indicates the core API group
+  resources: ["configmaps", "secrets"]
+  verbs: ["get", "watch", "list"]
+{{- end }}
 {{- end }}
 

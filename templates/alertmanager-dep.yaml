@@ -54,6 +54,54 @@ spec:
       {{- end}}
       {{- end }}
       containers:
+        {{- if .Values.sidecar.alertmanager.enabled }}
+        - name: {{ template "cortex.name" . }}-sc-alertmanager
+          {{- if .Values.sidecar.image.sha }}
+          image: "{{ .Values.sidecar.image.repository }}:{{ .Values.sidecar.image.tag }}@sha256:{{ .Values.sidecar.image.sha }}"
+          {{- else }}
+          image: "{{ .Values.sidecar.image.repository }}:{{ .Values.sidecar.image.tag }}"
+          {{- end }}
+          imagePullPolicy: {{ .Values.sidecar.imagePullPolicy }}
+          env:
+            {{- if .Values.sidecar.alertmanager.watchMethod }}
+            - name: METHOD
+              value: {{ .Values.sidecar.alertmanager.watchMethod }}
+            {{ end }}
+            - name: LABEL
+              value: "{{ .Values.sidecar.alertmanager.label }}"
+            {{- if .Values.sidecar.alertmanager.labelValue }}
+            - name: LABEL_VALUE
+              value: {{ quote .Values.sidecar.alertmanager.labelValue }}
+            {{- end }}
+            - name: FOLDER
+              value: "{{ .Values.sidecar.alertmanager.folder }}{{- with .Values.sidecar.alertmanager.defaultFolderName }}/{{ . }}{{- end }}"
+            - name: RESOURCE
+              value: "both"
+            {{- if .Values.sidecar.enableUniqueFilenames }}
+            - name: UNIQUE_FILENAMES
+              value: "{{ .Values.sidecar.enableUniqueFilenames }}"
+            {{- end }}
+            {{- if .Values.sidecar.alertmanager.searchNamespace }}
+            - name: NAMESPACE
+              value: "{{ .Values.sidecar.alertmanager.searchNamespace }}"
+            {{- end }}
+            {{- if .Values.sidecar.skipTlsVerify }}
+            - name: SKIP_TLS_VERIFY
+              value: "{{ .Values.sidecar.skipTlsVerify }}"
+            {{- end }}
+            {{- if .Values.sidecar.alertmanager.folderAnnotation }}
+            - name: FOLDER_ANNOTATION
+              value: "{{ .Values.sidecar.alertmanager.folderAnnotation }}"
+          {{- end }}
+          resources:
+            {{- toYaml .Values.sidecar.resources | nindent 12 }}
+          securityContext:
+            {{- toYaml .Values.sidecar.alertmanager.securityContext | nindent 12 }}
+          volumeMounts:
+            - name: storage
+              mountPath: "/data"
+              subPath: {{ .Values.alertmanager.persistence.subPath }}
+        {{- end}}
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
