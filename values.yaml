@@ -125,7 +125,6 @@ config:
       memcached_client:
         timeout: 1s
   chunk_store:
-    max_look_back_period: 0s
     chunk_cache_config:
       memcached:
         expiration: 1h
@@ -163,7 +162,6 @@ config:
   frontend:
     #max_outstanding_per_tenant: 1000
     log_queries_longer_than: 10s
-    compress_responses: true
 
 rbac:
   create: true
