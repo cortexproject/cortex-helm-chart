@@ -23,6 +23,7 @@ data:
 
     http {
       default_type application/octet-stream;
+      client_max_body_size {{.Values.nginx.config.client_max_body_size}};
       log_format   main '$remote_addr - $remote_user [$time_local]  $status '
         '"$request" $body_bytes_sent "$http_referer" '
         '"$http_user_agent" "$http_x_forwarded_for" $http_x_scope_orgid';
@@ -33,10 +34,14 @@ data:
 
       server { # simple reverse-proxy
         listen {{ .Values.nginx.http_listen_port }};
-        #proxy_set_header X-Scope-OrgID 0;
         proxy_connect_timeout 300s;
         proxy_send_timeout 300s;
         proxy_read_timeout 300s;
+        proxy_http_version 1.1;
+
+        {{- range $key, $value := .Values.nginx.config.setHeaders }}
+        proxy_set_header {{ $key }} {{ $value }};
+        {{- end }}
 
         location = /healthz {
           return 200 'alive';
@@ -54,6 +59,12 @@ data:
         location = /api/prom/push {
           proxy_pass      http://{{ template "cortex.fullname" . }}-distributor.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.config.server.http_listen_port }}$request_uri;
         }
+
+        ## New Remote write API. Ref: https://cortexmetrics.io/docs/api/#remote-write
+        location = /api/v1/push {
+          proxy_pass      http://{{ template "cortex.fullname" . }}-distributor.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.config.server.http_listen_port }}$request_uri;
+        }
+
 
         # Alertmanager Config
         location ~ /api/prom/alertmanager/.* {
@@ -86,6 +97,16 @@ data:
         location ~ /api/prom/.* {
           proxy_pass      http://{{ template "cortex.fullname" . }}-query-frontend.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.config.server.http_listen_port }}$request_uri;
         }
+
+        ## New Query frontend APIs as per https://cortexmetrics.io/docs/api/#querier--query-frontend
+        location ~ ^{{.Values.config.api.prometheus_http_prefix}}/api/v1/(read|metadata|labels|series|query_range|query) {
+          proxy_pass      http://{{ template "cortex.fullname" . }}-query-frontend.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.config.server.http_listen_port }}$request_uri;
+        }
+
+        location ~ {{.Values.config.api.prometheus_http_prefix}}/api/v1/label/.* {
+          proxy_pass      http://{{ template "cortex.fullname" . }}-query-frontend.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.config.server.http_listen_port }}$request_uri;
+        }
+
       }
     }
 {{- end }}
