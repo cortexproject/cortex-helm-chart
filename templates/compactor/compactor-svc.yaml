@@ -3,9 +3,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "cortex.compatorFullname" . }}
+  name: {{ include "cortex.compactorFullname" . }}
   labels:
-    {{- include "cortex.compatorLabels" . | nindent 4 }}
+    {{- include "cortex.compactorLabels" . | nindent 4 }}
     {{- with .Values.compactor.service.labels }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
@@ -19,6 +19,6 @@ spec:
       name: http-metrics
       targetPort: http-metrics
   selector:
-    {{- include "cortex.compatorSelectorLabels" . | nindent 4 }}
+    {{- include "cortex.compactorSelectorLabels" . | nindent 4 }}
 {{- end -}}
 {{- end -}}

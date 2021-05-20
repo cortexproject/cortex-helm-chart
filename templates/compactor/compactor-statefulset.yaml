@@ -3,9 +3,9 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: {{ include "cortex.compatorFullname" . }}
+  name: {{ include "cortex.compactorFullname" . }}
   labels:
-    {{- include "cortex.compatorLabels" . | nindent 4 }}
+    {{- include "cortex.compactorLabels" . | nindent 4 }}
     app.kubernetes.io/part-of: memberlist
   annotations:
     {{- toYaml .Values.compactor.annotations | nindent 4 }}
@@ -13,7 +13,7 @@ spec:
   replicas: {{ .Values.compactor.replicas }}
   selector:
     matchLabels:
-      {{- include "cortex.compatorSelectorLabels" . | nindent 6 }}
+      {{- include "cortex.compactorSelectorLabels" . | nindent 6 }}
   updateStrategy:
     {{- toYaml .Values.compactor.strategy | nindent 4 }}            
   serviceName: {{ template "cortex.fullname" . }}-compactor
@@ -42,7 +42,7 @@ spec:
   template:
     metadata:
       labels:
-        {{- include "cortex.compatorLabels" . | nindent 8 }}
+        {{- include "cortex.compactorLabels" . | nindent 8 }}
         app.kubernetes.io/part-of: memberlist
         {{- with .Values.compactor.podLabels }}
         {{- toYaml . | nindent 8 }}
