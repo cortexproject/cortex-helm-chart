@@ -104,21 +104,28 @@ consul:
 
 memcached:
   replicaCount: 1
+  resources: {}
 
 memcached-index-read:
   replicaCount: 1
+  resources: {}
 
 memcached-index-write:
   replicaCount: 1
+  resources: {}
 
 memcached-frontend:
   replicaCount: 1
+  resources: {}
 
 memcached-index:
   replicaCount: 1
+  resources: {}
 
 memcached-chunks:
   replicaCount: 1
+  resources: {}
 
 memcached-metadata:
   replicaCount: 1
+  resources: {}
