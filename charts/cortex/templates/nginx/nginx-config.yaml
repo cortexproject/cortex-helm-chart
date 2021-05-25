@@ -18,6 +18,7 @@ data:
 
     http {
       default_type application/octet-stream;
+      client_max_body_size {{.Values.nginx.config.client_max_body_size}};
       log_format   main '$remote_addr - $remote_user [$time_local]  $status '
         '"$request" $body_bytes_sent "$http_referer" '
         '"$http_user_agent" "$http_x_forwarded_for" $http_x_scope_orgid';
@@ -28,11 +29,14 @@ data:
 
       server { # simple reverse-proxy
         listen {{ .Values.nginx.http_listen_port }};
-        proxy_set_header X-Scope-OrgID 'dummy';
         proxy_connect_timeout 300s;
         proxy_send_timeout 300s;
         proxy_read_timeout 300s;
         proxy_http_version 1.1;
+
+        {{- range $key, $value := .Values.nginx.config.setHeaders }}
+        proxy_set_header {{ $key }} {{ $value }};
+        {{- end }}
 
         location = /healthz {
           return 200 'alive';
