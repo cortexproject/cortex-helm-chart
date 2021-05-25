@@ -104,28 +104,42 @@ consul:
 
 memcached:
   replicaCount: 1
-  resources: {}
+  resources: null
+  metrics:
+    enabled: false
 
 memcached-index-read:
   replicaCount: 1
-  resources: {}
+  resources: null
+  metrics:
+    enabled: false
 
 memcached-index-write:
   replicaCount: 1
-  resources: {}
+  resources: null
+  metrics:
+    enabled: false
 
 memcached-frontend:
   replicaCount: 1
-  resources: {}
+  resources: null
+  metrics:
+    enabled: false
 
 memcached-index:
   replicaCount: 1
-  resources: {}
+  resources: null
+  metrics:
+    enabled: false
 
 memcached-chunks:
   replicaCount: 1
-  resources: {}
+  resources: null
+  metrics:
+    enabled: false
 
 memcached-metadata:
   replicaCount: 1
-  resources: {}
+  resources: null
+  metrics:
+    enabled: false
