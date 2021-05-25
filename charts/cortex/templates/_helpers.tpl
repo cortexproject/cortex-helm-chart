@@ -101,7 +101,7 @@ Create configuration parameters for memcached configuration
 {{- define "cortex.memcached" -}}
 {{- if and (eq .Values.config.storage.engine "blocks") (index .Values "tags" "blocks-storage-memcached") }}
 - "-blocks-storage.bucket-store.index-cache.backend=memcached"
-- "-blocks-storage.bucket-store.index-cache.memcached.addresses=dnssrvnoa+_memcache._tcp.{{ template "cortex.fullname" . }}-memcached-index:11211"
+- "-blocks-storage.bucket-store.index-cache.memcached.addresses=dnssrvnoa+_memcache._tcp.{{ template "cortex.fullname" . }}-memcached-index.{{ .Release.Namespace }}.svc:11211"
 - "-blocks-storage.bucket-store.chunks-cache.backend=memcached"
 - "-blocks-storage.bucket-store.chunks-cache.memcached.addresses=dns+{{ template "cortex.fullname" . }}-memcached-chunks:11211"
 - "-blocks-storage.bucket-store.metadata-cache.backend=memcached"
