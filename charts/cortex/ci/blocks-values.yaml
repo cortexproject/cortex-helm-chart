@@ -10,7 +10,11 @@ config:
   ingester:
     lifecycler:
       ring:
-        replication_factor: 2
+        replication_factor: 1
+        kvstore:
+          store: consul
+          consul:
+            host: 'consul-consul-server.default.svc:8500'
 
   blocks_storage:
     backend: s3
@@ -31,7 +35,7 @@ config:
       kvstore:
         store: consul
         consul:
-          host: '{{ .Release.Name }}-consul-server:8500'
+          host: 'consul-consul-server.default.svc:8500'
     storage:
       type: 'local'
       local:
@@ -53,7 +57,7 @@ config:
       kvstore:
         store: consul
         consul:
-          host: '{{ .Release.Name }}-consul-server:8500'
+          host: 'consul-consul-server.default.svc:8500'
 
   store_gateway:
     sharding_enabled: true
@@ -64,7 +68,7 @@ config:
       kvstore:
         store: consul
         consul:
-          host: '{{ .Release.Name }}-consul-server:8500'
+          host: 'consul-consul-server.default.svc:8500'
 
 configs:
   enabled: false
@@ -79,11 +83,12 @@ query_frontend:
   replicas: 1
 
 ingester:
-  replicas: 2
+  replicas: 1
   statefulSet:
     enabled: true
   podDisruptionBudget:
     minAvailable: 1
+  terminationGracePeriodSeconds: 120
 
 compactor:
   replicas: 1
@@ -92,6 +97,7 @@ nginx:
   enabled: false
 
 consul:
+  enabled: false
   server:
     replicas: 1
     bootstrapExpect: 1
