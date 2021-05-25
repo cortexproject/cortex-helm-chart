@@ -69,6 +69,15 @@ config:
 configs:
   enabled: false
 
+distributor:
+  replicas: 1
+
+querier:
+  replicas: 1
+
+query_frontend:
+  replicas: 1
+
 ingester:
   replicas: 2
   statefulSet:
@@ -77,9 +86,33 @@ ingester:
     minAvailable: 1
 
 compactor:
-  replicas: 2
+  replicas: 1
+
+nginx:
+  enabled: false
 
 consul:
   server:
     replicas: 1
     bootstrapExpect: 1
+
+memcached:
+  replicaCount: 1
+
+memcached-index-read:
+  replicaCount: 1
+
+memcached-index-write:
+  replicaCount: 1
+
+memcached-frontend:
+  replicaCount: 1
+
+memcached-index:
+  replicaCount: 1
+
+memcached-chunks:
+  replicaCount: 1
+
+memcached-metadata:
+  replicaCount: 1
