@@ -38,5 +38,10 @@ jobs:
       - name: Create kind cluster
         uses: helm/kind-action@v1.1.0
 
+      - name: Install minio in cluster
+        run: |
+          helm repo add minio https://operator.min.io/
+          helm install --set accessKey=ssRtFvgGMdtc2b8vcPZ4 --set secretKey=3P1yXv2bnVjKx8yaLvXkcCRje0tK9rONFWRxB1gZ --set 'buckets[0].name=cortex,buckets[0].policy=none,buckets[0].purge=false' minio minio/minio
+
       - name: Run chart-testing (install)
         run: ct install --config ct.yaml
