@@ -10,7 +10,11 @@ config:
   ingester:
     lifecycler:
       ring:
-        replication_factor: 2
+        replication_factor: 1
+        kvstore:
+          store: consul
+          consul:
+            host: 'consul-consul-server.default.svc:8500'
 
   blocks_storage:
     backend: s3
@@ -31,7 +35,7 @@ config:
       kvstore:
         store: consul
         consul:
-          host: '{{ .Release.Name }}-consul-server:8500'
+          host: 'consul-consul-server.default.svc:8500'
     storage:
       type: 'local'
       local:
@@ -53,33 +57,89 @@ config:
       kvstore:
         store: consul
         consul:
-          host: '{{ .Release.Name }}-consul-server:8500'
+          host: 'consul-consul-server.default.svc:8500'
 
   store_gateway:
     sharding_enabled: true
     sharding_ring:
       replication_factor: 1
-      heartbeat_period:   5s
-      heartbeat_timeout:  15s
+      heartbeat_period: 5s
+      heartbeat_timeout: 15s
       kvstore:
         store: consul
         consul:
-          host: '{{ .Release.Name }}-consul-server:8500'
+          host: 'consul-consul-server.default.svc:8500'
 
 configs:
   enabled: false
 
+distributor:
+  replicas: 1
+
+querier:
+  replicas: 1
+
+query_frontend:
+  replicas: 1
+
 ingester:
-  replicas: 2
+  replicas: 1
   statefulSet:
     enabled: true
   podDisruptionBudget:
     minAvailable: 1
+  terminationGracePeriodSeconds: 120
 
 compactor:
-  replicas: 2
+  replicas: 1
+
+nginx:
+  enabled: false
 
 consul:
+  enabled: false
   server:
     replicas: 1
     bootstrapExpect: 1
+
+memcached:
+  replicaCount: 1
+  resources: null
+  metrics:
+    enabled: false
+
+memcached-index-read:
+  replicaCount: 1
+  resources: null
+  metrics:
+    enabled: false
+
+memcached-index-write:
+  replicaCount: 1
+  resources: null
+  metrics:
+    enabled: false
+
+memcached-frontend:
+  replicaCount: 1
+  resources: null
+  metrics:
+    enabled: false
+
+memcached-index:
+  replicaCount: 1
+  resources: null
+  metrics:
+    enabled: false
+
+memcached-chunks:
+  replicaCount: 1
+  resources: null
+  metrics:
+    enabled: false
+
+memcached-metadata:
+  replicaCount: 1
+  resources: null
+  metrics:
+    enabled: false
