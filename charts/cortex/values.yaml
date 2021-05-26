@@ -152,7 +152,6 @@ config:
   querier:
     active_query_tracker_dir: /data/cortex-active-query-tracker
     query_ingesters_within: 6h
-    max_query_lookback: 0s
 
   query_range:
     split_queries_by_interval: 24h
