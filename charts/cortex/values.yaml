@@ -46,6 +46,7 @@ config:
   auth_enabled: true
   api:
     prometheus_http_prefix: '/prometheus'  # default but this makes it available for nginx reverse-proxy configuration
+    response_compression_enabled: true
   ingester:
     lifecycler:
       join_after: 0s  # This is the default value
@@ -127,7 +128,6 @@ config:
         timeout: 1s
 
   chunk_store:
-    max_look_back_period: 0s
     chunk_cache_config:
       memcached:
         expiration: 1h
@@ -152,6 +152,7 @@ config:
   querier:
     active_query_tracker_dir: /data/cortex-active-query-tracker
     query_ingesters_within: 6h
+    max_query_lookback: 0s
 
   query_range:
     split_queries_by_interval: 24h
@@ -180,7 +181,6 @@ config:
   frontend:
     #  max_outstanding_per_tenant: 1000
     log_queries_longer_than: 10s
-    compress_responses: true
 
   compactor:
     data_dir: /data/cortex-compactor
