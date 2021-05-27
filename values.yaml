@@ -127,7 +127,6 @@ config:
       memcached_client:
         timeout: 1s
   chunk_store:
-    max_look_back_period: 0s
     chunk_cache_config:
       memcached:
         expiration: 1h
@@ -148,6 +147,7 @@ config:
   querier:
     active_query_tracker_dir: /data/cortex/querier
     query_ingesters_within: 12h
+    max_query_lookback: 0s
   query_range:
     split_queries_by_interval: 24h
     align_queries_with_step: true
