@@ -103,7 +103,7 @@ spec:
             {{- end }}
             {{- if gt (.Values.alertmanager.replicas | int) 1 }}
             {{- range $n := until (.Values.alertmanager.replicas |int ) }}
-            - -cluster.peer={{ template "cortex-alertmanager.fullname" $ }}-{{ $n }}.{{ template "cortex-alertmanager.headlessname" $ }}.{{ $.Release.Namespace }}.svc.{{ $.Values.clusterDomain }}:{{ $clusterPort }}
+            - -alertmanager.cluster.peers={{ template "cortex-alertmanager.fullname" $ }}-{{ $n }}.{{ template "cortex-alertmanager.headlessname" $ }}.{{ $.Release.Namespace }}.svc.{{ $.Values.clusterDomain }}:{{ $clusterPort }}
             {{- end }}
             {{- end }}
             {{- range $key, $value := .Values.alertmanager.extraArgs }}
