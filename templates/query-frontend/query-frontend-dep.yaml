@@ -68,6 +68,10 @@ spec:
             - name: grpc
               containerPort: {{ .Values.config.server.grpc_listen_port }}
               protocol: TCP
+          {{- if semverCompare ">=1.20-0" .Capabilities.KubeVersion.GitVersion }}
+          startupProbe:
+            {{- toYaml .Values.query_frontend.startupProbe | nindent 12 }}
+          {{- end }}
           livenessProbe:
             {{- toYaml .Values.query_frontend.livenessProbe | nindent 12 }}
           readinessProbe:

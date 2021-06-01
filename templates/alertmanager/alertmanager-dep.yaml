@@ -74,6 +74,10 @@ spec:
             - name: http-metrics
               containerPort: {{ .Values.config.server.http_listen_port }}
               protocol: TCP
+          {{- if semverCompare ">=1.20-0" .Capabilities.KubeVersion.GitVersion }}
+          startupProbe:
+            {{- toYaml .Values.alertmanager.startupProbe | nindent 12 }}
+          {{- end }}
           livenessProbe:
             {{- toYaml .Values.alertmanager.livenessProbe | nindent 12 }}
           readinessProbe:

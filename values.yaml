@@ -251,6 +251,11 @@ alertmanager:
     ##
     # storageClass: "-"
 
+  startupProbe:
+    httpGet:
+      path: /ready
+      port: http-metrics
+    failureThreshold: 10
   livenessProbe:
     httpGet:
       path: /ready
@@ -379,6 +384,11 @@ distributor:
   persistence:
     subPath:
 
+  startupProbe:
+    httpGet:
+      path: /ready
+      port: http-metrics
+    failureThreshold: 10
   livenessProbe:
     httpGet:
       path: /ready
@@ -502,6 +512,16 @@ ingester:
     ##
     # storageClass: "-"
 
+  startupProbe:
+    failureThreshold: 200      # 60 minutes failure threshold
+    httpGet:
+      path: /ready
+      port: http-metrics
+      scheme: HTTP
+    initialDelaySeconds: 180
+    periodSeconds: 30
+    successThreshold: 1
+    timeoutSeconds: 1
   livenessProbe:
     failureThreshold: 20      # 10 minutes failure threshold
     httpGet:
@@ -577,6 +597,11 @@ ruler:
   persistence:
     subPath:
 
+  startupProbe:
+    httpGet:
+      path: /ready
+      port: http-metrics
+    failureThreshold: 10
   livenessProbe:
     httpGet:
       path: /ready
@@ -675,6 +700,11 @@ querier:
   persistence:
     subPath:
 
+  startupProbe:
+    httpGet:
+      path: /ready
+      port: http-metrics
+    failureThreshold: 10
   livenessProbe:
     httpGet:
       path: /ready
@@ -754,6 +784,11 @@ query_frontend:
   persistence:
     subPath:
 
+  startupProbe:
+    httpGet:
+      path: /ready
+      port: http-metrics
+    failureThreshold: 10
   livenessProbe:
     httpGet:
       path: /ready
@@ -821,6 +856,11 @@ table_manager:
   persistence:
     subPath:
 
+  startupProbe:
+    httpGet:
+      path: /ready
+      port: http-metrics
+    failureThreshold: 10
   livenessProbe:
     httpGet:
       path: /ready
@@ -889,6 +929,11 @@ configs:
   persistence:
     subPath:
 
+  startupProbe:
+    httpGet:
+      path: /ready
+      port: http-metrics
+    failureThreshold: 10
   livenessProbe:
     httpGet:
       path: /ready
@@ -969,6 +1014,11 @@ nginx:
   persistence:
     subPath:
 
+  startupProbe:
+    httpGet:
+      path: /healthz
+      port: http-metrics
+    failureThreshold: 10
   livenessProbe:
     httpGet:
       path: /healthz
@@ -1081,6 +1131,16 @@ store_gateway:
     ##
     # storageClass: "-"
 
+  startupProbe:
+    failureThreshold: 60      # 30 minutes failure threshold
+    httpGet:
+      path: /ready
+      port: http-metrics
+      scheme: HTTP
+    initialDelaySeconds: 180
+    periodSeconds: 30
+    successThreshold: 1
+    timeoutSeconds: 1
   livenessProbe:
     failureThreshold: 20      # 10 minutes failure threshold
     httpGet:
@@ -1196,6 +1256,16 @@ compactor:
     ##
     # storageClass: "-"
 
+  startupProbe:
+    failureThreshold: 60      # 30 minutes failure threshold
+    httpGet:
+      path: /ready
+      port: http-metrics
+      scheme: HTTP
+    initialDelaySeconds: 180
+    periodSeconds: 30
+    successThreshold: 1
+    timeoutSeconds: 1
   livenessProbe:
     failureThreshold: 20      # 10 minutes failure threshold
     httpGet:
