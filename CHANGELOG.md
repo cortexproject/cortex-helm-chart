@@ -4,7 +4,7 @@
 
 * [ENHANCEMENT] Expose `client_max_body_size` config for nginx max request body size #137
 * [ENHANCEMENT] Adding option to add custom headers (ex. X-Scope-OrgID) to NGINX from values.yaml (key `nginx.config.setHeaders`). #127
-* [ENHANCEMENT] Headless service for distributor to allow GRPC load balancing
+* [ENHANCEMENT] Headless service for distributor to allow GRPC load balancing #148
 
 ## 0.4.1 / 2021-03-22
 
