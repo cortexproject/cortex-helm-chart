@@ -1,0 +1,17 @@
+{{- if .Values.store_gateway.podDisruptionBudget -}}
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ template "cortex.fullname" . }}-store-gateway
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ template "cortex.name" . }}-store-gateway
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
+    chart: {{ template "cortex.chart" . }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ template "cortex.name" . }}-store-gateway
+{{ toYaml .Values.store_gateway.podDisruptionBudget | indent 2 }}
+{{- end -}}

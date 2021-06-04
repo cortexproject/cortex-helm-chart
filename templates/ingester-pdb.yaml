@@ -1,17 +1,17 @@
-{{- if .Values.podDisruptionBudget -}}
+{{- if .Values.ingester.podDisruptionBudget -}}
 apiVersion: policy/v1beta1
 kind: PodDisruptionBudget
 metadata:
-  name: {{ template "cortex.fullname" . }}
+  name: {{ template "cortex.fullname" . }}-ingester
   namespace: {{ .Release.Namespace }}
   labels:
-    app: {{ template "cortex.name" . }}
+    app: {{ template "cortex.name" . }}-ingester
     heritage: {{ .Release.Service }}
     release: {{ .Release.Name }}
     chart: {{ template "cortex.chart" . }}
 spec:
   selector:
     matchLabels:
-      app: {{ template "cortex.name" . }}
-{{ toYaml .Values.podDisruptionBudget | indent 2 }}
+      app: {{ template "cortex.name" . }}-ingester
+{{ toYaml .Values.ingester.podDisruptionBudget | indent 2 }}
 {{- end -}}

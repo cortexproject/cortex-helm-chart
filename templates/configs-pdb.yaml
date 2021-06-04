@@ -1,0 +1,17 @@
+{{- if .Values.configs.podDisruptionBudget -}}
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ template "cortex.fullname" . }}-configs
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ template "cortex.name" . }}-configs
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
+    chart: {{ template "cortex.chart" . }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ template "cortex.name" . }}-configs
+{{ toYaml .Values.configs.podDisruptionBudget | indent 2 }}
+{{- end -}}

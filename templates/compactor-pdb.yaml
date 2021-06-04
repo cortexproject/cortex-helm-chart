@@ -1,0 +1,17 @@
+{{- if .Values.compactor.podDisruptionBudget -}}
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ template "cortex.fullname" . }}-compactor
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ template "cortex.name" . }}-compactor
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
+    chart: {{ template "cortex.chart" . }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ template "cortex.name" . }}-compactor
+{{ toYaml .Values.compactor.podDisruptionBudget | indent 2 }}
+{{- end -}}

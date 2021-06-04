@@ -1,0 +1,17 @@
+{{- if .Values.nginx.podDisruptionBudget -}}
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ template "cortex.fullname" . }}-nginx
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ template "cortex.name" . }}-nginx
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
+    chart: {{ template "cortex.chart" . }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ template "cortex.name" . }}-nginx
+{{ toYaml .Values.nginx.podDisruptionBudget | indent 2 }}
+{{- end -}}
