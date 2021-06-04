@@ -8,6 +8,7 @@
 * [BUGFIX] Fixed `priorityClassName` in alertmanager deployment configuration. #155
 * [BUGFIX] Replacing deprecated (in Cortex 1.9) configuration with appropriate replacements (max_look_back_period -> max_query_lookback & compress_responses -> response_compression_enabled). #154
 * [BUGFIX] Added missing ServiceMonitors `additionalLabels` placeholders in `values.yaml`. #146
+* [BUGFIX] Fix PodDisruptionBudget templates. #156
 
 ## 0.4.1 / 2021-03-22
 
