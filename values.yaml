@@ -1406,3 +1406,10 @@ configsdb_postgresql:
     existing_secret:
       name:
       key:
+
+# Add tenant level overrides
+# ref: https://cortexmetrics.io/docs/guides/overrides-exporter/
+tenantOverridesConfig:
+  enabled: false
+  overridesYaml:
+    overrides: {}
