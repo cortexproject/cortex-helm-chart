@@ -35,8 +35,9 @@ spec:
     {{- if .Values.table_manager.priorityClassName }}
       priorityClassName: {{ .Values.table_manager.priorityClassName }}
     {{- end }}
-      securityContext:
-        {{- toYaml .Values.table_manager.securityContext | nindent 8 }}
+      {{- if .Values.table_manager.securityContext.enabled }}
+      securityContext: {{- omit .Values.table_manager.securityContext "enabled" | toYaml | nindent 8 }}
+      {{- end }}
       initContainers:
         {{- toYaml .Values.table_manager.initContainers | nindent 8 }}
       {{- if .Values.image.pullSecrets }}

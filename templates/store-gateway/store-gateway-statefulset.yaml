@@ -60,8 +60,9 @@ spec:
       {{- if .Values.store_gateway.priorityClassName }}
       priorityClassName: {{ .Values.store_gateway.priorityClassName }}
       {{- end }}
-      securityContext:
-        {{- toYaml .Values.store_gateway.securityContext | nindent 8 }}
+      {{- if .Values.store_gateway.securityContext.enabled }}
+      securityContext: {{- omit .Values.store_gateway.securityContext "enabled" | toYaml | nindent 8 }}
+      {{- end }}
       initContainers:
         {{- toYaml .Values.store_gateway.initContainers | nindent 8 }}
       {{- if .Values.image.pullSecrets }}

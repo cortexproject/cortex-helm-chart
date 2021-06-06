@@ -34,8 +34,9 @@ spec:
     {{- if .Values.querier.priorityClassName }}
       priorityClassName: {{ .Values.querier.priorityClassName }}
     {{- end }}
-      securityContext:
-        {{- toYaml .Values.querier.securityContext | nindent 8 }}
+      {{- if .Values.querier.securityContext.enabled }}
+      securityContext: {{- omit .Values.querier.securityContext "enabled" | toYaml | nindent 8 }}
+      {{- end }}
       initContainers:
         {{- toYaml .Values.querier.initContainers | nindent 8 }}
       {{- if .Values.image.pullSecrets }}

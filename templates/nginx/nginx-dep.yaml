@@ -31,8 +31,9 @@ spec:
     {{- if .Values.nginx.priorityClassName }}
       priorityClassName: {{ .Values.nginx.priorityClassName }}
     {{- end }}
-      securityContext:
-        {{- toYaml .Values.nginx.securityContext | nindent 8 }}
+      {{- if .Values.nginx.securityContext.enabled }}
+      securityContext: {{- omit .Values.nginx.securityContext "enabled" | toYaml | nindent 8 }}
+      {{- end }}
       initContainers:
         {{- toYaml .Values.nginx.initContainers | nindent 8 }}
       {{- if .Values.image.pullSecrets }}

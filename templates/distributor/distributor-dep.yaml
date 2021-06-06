@@ -36,8 +36,9 @@ spec:
     {{- if .Values.distributor.priorityClassName }}
       priorityClassName: {{ .Values.distributor.priorityClassName }}
     {{- end }}
-      securityContext:
-        {{- toYaml .Values.distributor.securityContext | nindent 8 }}
+      {{- if .Values.distributor.securityContext.enabled }}
+      securityContext: {{- omit .Values.distributor.securityContext "enabled" | toYaml | nindent 8 }}
+      {{- end }}
       initContainers:
         {{- toYaml .Values.distributor.initContainers | nindent 8 }}
       {{- if .Values.image.pullSecrets }}

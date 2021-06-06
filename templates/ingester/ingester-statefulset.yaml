@@ -60,8 +60,10 @@ spec:
       {{- if .Values.ingester.priorityClassName }}
       priorityClassName: {{ .Values.ingester.priorityClassName }}
       {{- end }}
+      {{- if .Values.ingester.securityContext.enabled }}
       securityContext:
-        {{- toYaml .Values.ingester.securityContext | nindent 8 }}
+        {{- omit .Values.ingester.securityContext "enabled" | toYaml | nindent 8 }}
+      {{- end }}
       initContainers:
         {{- toYaml .Values.ingester.initContainers | nindent 8 }}
       {{- if .Values.image.pullSecrets }}
