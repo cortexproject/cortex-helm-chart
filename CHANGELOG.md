@@ -26,7 +26,7 @@
 * [ENHANCEMENT] Improved memcached configuration template, with support for both chunks & block storage caches. #92
 * [ENHANCEMENT] Update apiVersion: networking.k8s.io/v1beta1 -> networking.k8s.io/v1 for Kubernetes versions 1.19+  #94
 * [ENHANCEMENT] Service Monitors and Compactor Service #68, #80
-* [ENHANCEMENT] Updated default replication factor to match documentation
+* [ENHANCEMENT] Updated default replication factor to match documentation #102
 * [BUGFIX] Update repository URL for memcache dependency charts. #96
 * [BUGFIX] nginx config using non-default clusterDomain #78
 * [BUGFIX] Add cluster DNS domain value #63
