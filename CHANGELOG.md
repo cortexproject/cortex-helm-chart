@@ -7,6 +7,7 @@
 * [ENHANCEMENT] Headless service for distributor to allow GRPC load balancing #148
 * [BUGFIX] Fixed `priorityClassName` in alertmanager deployment configuration. #155
 * [BUGFIX] Replacing deprecated (in Cortex 1.9) configuration with appropriate replacements (max_look_back_period -> max_query_lookback & compress_responses -> response_compression_enabled). #154
+* [BUGFIX] Added missing ServiceMonitors `additionalLabels` placeholders in `values.yaml`. #146
 
 ## 0.4.1 / 2021-03-22
 
@@ -25,11 +26,11 @@
 * [ENHANCEMENT] Improved memcached configuration template, with support for both chunks & block storage caches. #92
 * [ENHANCEMENT] Update apiVersion: networking.k8s.io/v1beta1 -> networking.k8s.io/v1 for Kubernetes versions 1.19+  #94
 * [ENHANCEMENT] Service Monitors and Compactor Service #68, #80
-* [ENHANCEMENT] Updated default replication factor to match documentation 
+* [ENHANCEMENT] Updated default replication factor to match documentation #102
 * [BUGFIX] Update repository URL for memcache dependency charts. #96
 * [BUGFIX] nginx config using non-default clusterDomain #78
-* [BUGFIX] Add cluster DNS domain value #63 
-* [BUGFIX] Fix grpc port for querier #71 
+* [BUGFIX] Add cluster DNS domain value #63
+* [BUGFIX] Fix grpc port for querier #71
 
 ## 0.2.0 / 2020-10-25
 

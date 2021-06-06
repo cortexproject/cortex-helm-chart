@@ -185,6 +185,7 @@ alertmanager:
 
   serviceMonitor:
     enabled: false
+    additionalLabels: {}
 
   resources: {}
   #  limits:
@@ -339,6 +340,7 @@ distributor:
 
   serviceMonitor:
     enabled: false
+    additionalLabels: {}
 
   resources: {}
   #  limits:
@@ -424,6 +426,7 @@ ingester:
 
   serviceMonitor:
     enabled: false
+    additionalLabels: {}
 
   resources: {}
   #  limits:
@@ -548,6 +551,7 @@ ruler:
 
   serviceMonitor:
     enabled: false
+    additionalLabels: {}
 
   resources: {}
   #  limits:
@@ -615,6 +619,7 @@ querier:
 
   serviceMonitor:
     enabled: false
+    additionalLabels: {}
 
   resources: {}
   #  limits:
@@ -694,6 +699,7 @@ query_frontend:
 
   serviceMonitor:
     enabled: false
+    additionalLabels: {}
 
   resources: {}
   #  limits:
@@ -773,6 +779,7 @@ table_manager:
 
   serviceMonitor:
     enabled: false
+    additionalLabels: {}
 
   resources: {}
   #  limits:
@@ -840,6 +847,7 @@ configs:
 
   serviceMonitor:
     enabled: false
+    additionalLabels: {}
 
   resources: {}
   #  limits:
@@ -920,6 +928,7 @@ nginx:
 
   serviceMonitor:
     enabled: false
+    additionalLabels: {}
 
   resources: {}
   #  limits:
@@ -987,6 +996,7 @@ store_gateway:
 
   serviceMonitor:
     enabled: false
+    additionalLabels: {}
 
   resources: {}
   #  limits:
@@ -1102,6 +1112,7 @@ compactor:
 
   serviceMonitor:
     enabled: false
+    additionalLabels: {}
 
   resources: {}
   #  limits:
