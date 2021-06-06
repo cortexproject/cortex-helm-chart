@@ -4,7 +4,10 @@
 
 * [ENHANCEMENT] Expose `client_max_body_size` config for nginx max request body size #137
 * [ENHANCEMENT] Adding option to add custom headers (ex. X-Scope-OrgID) to NGINX from values.yaml (key `nginx.config.setHeaders`). #127
-* [BUGFIX] Added missing ServiceMonitors `additionalLabels` placeholders in `values.yaml`.
+* [ENHANCEMENT] Headless service for distributor to allow GRPC load balancing #148
+* [BUGFIX] Fixed `priorityClassName` in alertmanager deployment configuration. #155
+* [BUGFIX] Replacing deprecated (in Cortex 1.9) configuration with appropriate replacements (max_look_back_period -> max_query_lookback & compress_responses -> response_compression_enabled). #154
+* [BUGFIX] Added missing ServiceMonitors `additionalLabels` placeholders in `values.yaml`. #146
 
 ## 0.4.1 / 2021-03-22
 

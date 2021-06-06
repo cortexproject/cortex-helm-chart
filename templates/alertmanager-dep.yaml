@@ -41,7 +41,7 @@ spec:
     spec:
       serviceAccountName: {{ template "cortex.serviceAccountName" . }}
     {{- if .Values.alertmanager.priorityClassName }}
-      priorityClassName: {{ .Values.query_frontend.priorityClassName }}
+      priorityClassName: {{ .Values.alertmanager.priorityClassName }}
     {{- end }}
       securityContext:
         {{- toYaml .Values.alertmanager.securityContext | nindent 8 }}
