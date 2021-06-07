@@ -166,10 +166,6 @@ config:
     #  max_outstanding_per_tenant: 1000
     log_queries_longer_than: 10s
 
-rbac:
-  create: true
-  pspEnabled: true
-
 alertmanager:
   enabled: true
   replicas: 1
