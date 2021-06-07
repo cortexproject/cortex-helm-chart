@@ -136,8 +136,8 @@ spec:
             {{- toYaml .Values.store_gateway.readinessProbe | nindent 12 }}
           resources:
             {{- toYaml .Values.store_gateway.resources | nindent 12 }}
-          {{- if .Values.store_gateway.podSecurityContext.enabled }}
-          securityContext: {{- omit .Values.store_gateway.podSecurityContext "enabled" | toYaml | nindent 8 }}
+          {{- if .Values.store_gateway.containerSecurityContext.enabled }}
+          securityContext: {{- omit .Values.store_gateway.containerSecurityContext "enabled" | toYaml | nindent 8 }}
           {{- end }}
           env:
             {{- if .Values.store_gateway.env }}

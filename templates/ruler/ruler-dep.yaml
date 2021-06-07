@@ -99,8 +99,8 @@ spec:
             {{- toYaml .Values.ruler.readinessProbe | nindent 12 }}
           resources:
             {{- toYaml .Values.ruler.resources | nindent 12 }}
-          {{- if .Values.ruler.podSecurityContext.enabled }}
-          securityContext: {{- omit .Values.ruler.podSecurityContext "enabled" | toYaml | nindent 8 }}
+          {{- if .Values.ruler.containerSecurityContext.enabled }}
+          securityContext: {{- omit .Values.ruler.containerSecurityContext "enabled" | toYaml | nindent 8 }}
           {{- end }}
           env:
             {{- if .Values.ruler.env }}

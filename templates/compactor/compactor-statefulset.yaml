@@ -134,8 +134,8 @@ spec:
             {{- toYaml .Values.compactor.readinessProbe | nindent 12 }}
           resources:
             {{- toYaml .Values.compactor.resources | nindent 12 }}
-          {{- if .Values.compactor.podSecurityContext.enabled }}
-          securityContext: {{- omit .Values.compactor.podSecurityContext "enabled" | toYaml | nindent 8 }}
+          {{- if .Values.compactor.containerSecurityContext.enabled }}
+          securityContext: {{- omit .Values.compactor.containerSecurityContext "enabled" | toYaml | nindent 8 }}
           {{- end }}
           env:
             {{- if .Values.compactor.env }}

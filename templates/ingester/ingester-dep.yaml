@@ -90,8 +90,8 @@ spec:
             {{- toYaml .Values.ingester.readinessProbe | nindent 12 }}
           resources:
             {{- toYaml .Values.ingester.resources | nindent 12 }}
-          {{- if .Values.ingester.podSecurityContext.enabled }}
-          securityContext: {{- omit .Values.ingester.podSecurityContext "enabled" | toYaml | nindent 8 }}
+          {{- if .Values.ingester.containerSecurityContext.enabled }}
+          securityContext: {{- omit .Values.ingester.containerSecurityContext "enabled" | toYaml | nindent 8 }}
           {{- end }}
           env:
             {{- if .Values.ingester.env }}
