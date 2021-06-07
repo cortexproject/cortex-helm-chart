@@ -8,10 +8,10 @@ spec:
   type: ClusterIP
   clusterIP: None
   ports:
-    - port: 7946
+    - port: {{ .Values.config.memberlist.bind_port }}
       protocol: TCP
-      name: http-metrics
-      targetPort: http-metrics
+      name: grpc
+      targetPort: grpc
   selector:
     {{- include "cortex.selectorLabels" . | nindent 4 }}
     app.kubernetes.io/part-of: memberlist

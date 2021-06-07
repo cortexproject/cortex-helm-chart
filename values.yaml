@@ -141,6 +141,7 @@ config:
     pool:
       health_check_ingesters: true
   memberlist:
+    bind_port: 7946
     join_members: []
     ## add here the service name of the memberlist
     ## if using memberlist discovery, eg:
