@@ -81,8 +81,9 @@ spec:
             {{- toYaml .Values.distributor.readinessProbe | nindent 12 }}
           resources:
             {{- toYaml .Values.distributor.resources | nindent 12 }}
-          securityContext:
-            readOnlyRootFilesystem: true
+          {{- if .Values.distributor.podSecurityContext.enabled }}
+          securityContext: {{- omit .Values.distributor.podSecurityContext "enabled" | toYaml | nindent 8 }}
+          {{- end }}
           env:
             {{- if .Values.distributor.env }}
               {{- toYaml .Values.distributor.env | nindent 12 }}

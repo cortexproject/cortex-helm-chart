@@ -90,8 +90,9 @@ spec:
             {{- toYaml .Values.ingester.readinessProbe | nindent 12 }}
           resources:
             {{- toYaml .Values.ingester.resources | nindent 12 }}
-          securityContext:
-            readOnlyRootFilesystem: true
+          {{- if .Values.ingester.podSecurityContext.enabled }}
+          securityContext: {{- omit .Values.ingester.podSecurityContext "enabled" | toYaml | nindent 8 }}
+          {{- end }}
           env:
             {{- if .Values.ingester.env }}
             {{ toYaml .Values.ingester.env | nindent 12 }}

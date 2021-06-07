@@ -77,8 +77,9 @@ spec:
             {{- toYaml .Values.table_manager.readinessProbe | nindent 12 }}
           resources:
             {{- toYaml .Values.table_manager.resources | nindent 12 }}
-          securityContext:
-            readOnlyRootFilesystem: true
+          {{- if .Values.table_manager.podSecurityContext.enabled }}
+          securityContext: {{- omit .Values.table_manager.podSecurityContext "enabled" | toYaml | nindent 8 }}
+          {{- end }}
           env:
             {{- if .Values.table_manager.env }}
               {{- toYaml .Values.table_manager.env | nindent 12 }}

@@ -70,8 +70,9 @@ spec:
             {{- toYaml .Values.nginx.readinessProbe | nindent 12 }}
           resources:
             {{- toYaml .Values.nginx.resources | nindent 12 }}
-          securityContext:
-            readOnlyRootFilesystem: false
+          {{- if .Values.nginx.podSecurityContext.enabled }}
+          securityContext: {{- omit .Values.nginx.podSecurityContext "enabled" | toYaml | nindent 8 }}
+          {{- end }}
           env:
             {{- if .Values.nginx.env }}
               {{- toYaml .Values.nginx.env | nindent 12 }}

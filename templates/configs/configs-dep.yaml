@@ -89,8 +89,9 @@ spec:
             {{- toYaml .Values.configs.readinessProbe | nindent 12 }}
           resources:
             {{- toYaml .Values.configs.resources | nindent 12 }}
-          securityContext:
-            readOnlyRootFilesystem: true
+          {{- if .Values.configs.podSecurityContext.enabled }}
+          securityContext: {{- omit .Values.configs.podSecurityContext "enabled" | toYaml | nindent 8 }}
+          {{- end }}
           env:
             {{- if .Values.configs.env }}
               {{- toYaml .Values.configs.env | nindent 12 }}

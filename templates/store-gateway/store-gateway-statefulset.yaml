@@ -14,7 +14,7 @@ spec:
     matchLabels:
       {{- include "cortex.storeGatewaySelectorLabels" . | nindent 6 }}
   updateStrategy:
-    {{- toYaml .Values.store_gateway.strategy | nindent 4 }}      
+    {{- toYaml .Values.store_gateway.strategy | nindent 4 }}
   serviceName: {{ template "cortex.fullname" . }}-store-gateway-headless
   {{- if .Values.store_gateway.persistentVolume.enabled }}
   volumeClaimTemplates:
@@ -116,7 +116,7 @@ spec:
             - name: storage
               mountPath: "/data"
               {{- if .Values.store_gateway.persistentVolume.subPath }}
-              subPath: {{ .Values.store_gateway.persistentVolume.subPath }}             
+              subPath: {{ .Values.store_gateway.persistentVolume.subPath }}
               {{- end }}
           ports:
             - name: http-metrics
@@ -136,8 +136,9 @@ spec:
             {{- toYaml .Values.store_gateway.readinessProbe | nindent 12 }}
           resources:
             {{- toYaml .Values.store_gateway.resources | nindent 12 }}
-          securityContext:
-            readOnlyRootFilesystem: true
+          {{- if .Values.store_gateway.podSecurityContext.enabled }}
+          securityContext: {{- omit .Values.store_gateway.podSecurityContext "enabled" | toYaml | nindent 8 }}
+          {{- end }}
           env:
             {{- if .Values.store_gateway.env }}
               {{- toYaml .Values.store_gateway.env | nindent 12 }}

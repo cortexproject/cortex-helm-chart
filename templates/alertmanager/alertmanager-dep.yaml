@@ -86,8 +86,9 @@ spec:
             {{- toYaml .Values.alertmanager.readinessProbe | nindent 12 }}
           resources:
             {{- toYaml .Values.alertmanager.resources | nindent 12 }}
-          securityContext:
-            readOnlyRootFilesystem: true
+          {{- if .Values.alertmanager.podSecurityContext.enabled }}
+          securityContext: {{- omit .Values.alertmanager.podSecurityContext "enabled" | toYaml | nindent 8 }}
+          {{- end }}
           env:
             {{- if .Values.alertmanager.env }}
               {{- toYaml .Values.alertmanager.env | nindent 12 }}
