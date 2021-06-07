@@ -12,7 +12,6 @@
 * [ENHANCEMENT] startupProbe has been added to all Pods and the default values for `livenessProbe` and `readinessProbe` has been adjusted #144
 * [ENHANCEMENT] You can now disable the alertmanager and ruler deployment by setting `ruler.enabled` or `alertmanager.enabled` to `false` #144
 * [ENHANCEMENT] Rules for the ruler can now be provisioned via values. Check `ruler.directories` in the default `values.yaml` for more information. #144
->>>>>>> master
 * [ENHANCEMENT] Expose `client_max_body_size` config for nginx max request body size #137
 * [ENHANCEMENT] Adding option to add custom headers (ex. X-Scope-OrgID) to NGINX from values.yaml (key `nginx.config.setHeaders`). #127
 * [ENHANCEMENT] Headless service for distributor to allow GRPC load balancing #148
