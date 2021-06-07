@@ -37,12 +37,23 @@ config:
     ring:
       kvstore:
         store: memberlist
+
+  ruler_storage:
+    backend: "filesystem"
+    filesystem:
+      dir: "/data/store"
+
+  alertmanager_storage:
+    backend: "filesystem"
+    filesystem:
+      dir: "/data/store"
+
   querier:
     store_gateway_addresses: "dns+cortex-store-gateway-headless:9095"
 
   memberlist:
     join_members:
-    - "cortex-ingester-headless.cortex-green"
+    - "cortex-memberlist.cortex"
 
 ingester:
   replicas: 1

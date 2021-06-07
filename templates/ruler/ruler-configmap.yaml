@@ -1,0 +1,13 @@
+{{- if .Values.ruler.enabled }}
+{{- range $dir, $files := .Values.ruler.directories }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "cortex.rulerFullname" $ }}-{{ include "cortex.rulerRulesDirName" $dir }}
+  labels:
+    {{- include "cortex.rulerLabels" $ | nindent 4 }}
+data:
+  {{- toYaml $files | nindent 2}}
+{{- end }}
+{{- end }}

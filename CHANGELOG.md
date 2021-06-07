@@ -2,6 +2,15 @@
 
 ## master / unreleased
 
+* [CHANGE] **Labels has been updated to latest best practices**. This means that **you cannot do a rolling update from an older version of this chart**. Either change the labels of your existing deployment by hand to make the transition as seamless as possible or uninstall the old release and install the new release with a short downtime. #144
+* [CHANGE] Minimum Kubernetes Version of this Chart is now 1.18 #144
+* [CHANGE] A new dedicated service is now available for the memberlist. Check `config.memberlist.join_members` in the default `values.yaml` for more information. #144
+* [CHANGE] Ingress is now disabled by default. You can re-enable it by setting `ingress.enabled` to `true` #144
+* [CHANGE] Configs is now disabled by default. You can re-enable it by setting `configs.enabled` to `true` #144
+* [CHANGE] PodDisruptionBudget is now enabled by default for all microservices once you have more than 1 replicas #144
+* [ENHANCEMENT] startupProbe has been added to all Pods and the default values for `livenessProbe` and `readinessProbe` has been adjusted #144
+* [ENHANCEMENT] You can now disable the alertmanager and ruler deployment by setting `ruler.enabled` or `alertmanager.enabled` to `false` #144
+* [ENHANCEMENT] Rules for the ruler can now be provisioned via values. Check `ruler.directories` in the default `values.yaml` for more information. #144
 * [ENHANCEMENT] Expose `client_max_body_size` config for nginx max request body size #137
 * [ENHANCEMENT] Adding option to add custom headers (ex. X-Scope-OrgID) to NGINX from values.yaml (key `nginx.config.setHeaders`). #127
 * [ENHANCEMENT] Headless service for distributor to allow GRPC load balancing #148
