@@ -38,7 +38,6 @@ spec:
     {{- if .Values.alertmanager.priorityClassName }}
       priorityClassName: {{ .Values.alertmanager.priorityClassName }}
     {{- end }}
-
       {{- if .Values.alertmanager.securityContext.enabled }}
       securityContext: {{- omit .Values.alertmanager.securityContext "enabled" | toYaml | nindent 8 }}
       {{- end }}
