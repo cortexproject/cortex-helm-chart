@@ -10,8 +10,8 @@ spec:
   ports:
     - port: {{ .Values.config.memberlist.bind_port }}
       protocol: TCP
-      name: grpc
-      targetPort: grpc
+      name: gossip
+      targetPort: gossip
   selector:
     {{- include "cortex.selectorLabels" . | nindent 4 }}
     app.kubernetes.io/part-of: memberlist

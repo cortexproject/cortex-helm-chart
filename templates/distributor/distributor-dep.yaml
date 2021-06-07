@@ -69,7 +69,7 @@ spec:
             - name: http-metrics
               containerPort: {{ .Values.config.server.http_listen_port }}
               protocol: TCP
-            - name: grpc
+            - name: gossip
               containerPort: {{ .Values.config.memberlist.bind_port }}
               protocol: TCP
           {{- if semverCompare ">=1.20-0" .Capabilities.KubeVersion.GitVersion }}
