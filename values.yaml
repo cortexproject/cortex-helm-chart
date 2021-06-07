@@ -259,12 +259,10 @@ alertmanager:
     httpGet:
       path: /ready
       port: http-metrics
-    initialDelaySeconds: 45
   readinessProbe:
     httpGet:
       path: /ready
       port: http-metrics
-    initialDelaySeconds: 45
 
   securityContext:
     {}
@@ -391,12 +389,10 @@ distributor:
     httpGet:
       path: /ready
       port: http-metrics
-    initialDelaySeconds: 45
   readinessProbe:
     httpGet:
       path: /ready
       port: http-metrics
-    initialDelaySeconds: 45
 
   securityContext: {}
 
@@ -513,30 +509,23 @@ ingester:
     # storageClass: "-"
 
   startupProbe:
-    failureThreshold: 200      # 60 minutes failure threshold
+    # WAL Replay can take a long time. Increasing failureThreshold for ~30 min of time until killed
+    failureThreshold: 60
+    initialDelaySeconds: 120
+    periodSeconds: 30
     httpGet:
       path: /ready
       port: http-metrics
       scheme: HTTP
-    initialDelaySeconds: 180
-    periodSeconds: 30
-    successThreshold: 1
-    timeoutSeconds: 1
   livenessProbe:
-    failureThreshold: 20      # 10 minutes failure threshold
     httpGet:
       path: /ready
       port: http-metrics
       scheme: HTTP
-    initialDelaySeconds: 180
-    periodSeconds: 30
-    successThreshold: 1
-    timeoutSeconds: 1
   readinessProbe:
     httpGet:
       path: /ready
       port: http-metrics
-    initialDelaySeconds: 60
 
   securityContext: {}
 
@@ -608,12 +597,10 @@ ruler:
     httpGet:
       path: /ready
       port: http-metrics
-    initialDelaySeconds: 45
   readinessProbe:
     httpGet:
       path: /ready
       port: http-metrics
-    initialDelaySeconds: 45
 
   securityContext: {}
 
@@ -713,12 +700,10 @@ querier:
     httpGet:
       path: /ready
       port: http-metrics
-    initialDelaySeconds: 45
   readinessProbe:
     httpGet:
       path: /ready
       port: http-metrics
-    initialDelaySeconds: 45
 
   securityContext: {}
 
@@ -799,12 +784,10 @@ query_frontend:
     httpGet:
       path: /ready
       port: http-metrics
-    initialDelaySeconds: 45
   readinessProbe:
     httpGet:
       path: /ready
       port: http-metrics
-    initialDelaySeconds: 45
 
   securityContext: {}
 
@@ -873,12 +856,10 @@ table_manager:
     httpGet:
       path: /ready
       port: http-metrics
-    initialDelaySeconds: 45
   readinessProbe:
     httpGet:
       path: /ready
       port: http-metrics
-    initialDelaySeconds: 45
 
   securityContext: {}
 
@@ -948,12 +929,10 @@ configs:
     httpGet:
       path: /ready
       port: http-metrics
-    initialDelaySeconds: 45
   readinessProbe:
     httpGet:
       path: /ready
       port: http-metrics
-    initialDelaySeconds: 45
 
   securityContext: {}
 
@@ -1035,12 +1014,10 @@ nginx:
     httpGet:
       path: /healthz
       port: http-metrics
-    initialDelaySeconds: 10
   readinessProbe:
     httpGet:
       path: /healthz
       port: http-metrics
-    initialDelaySeconds: 10
 
   securityContext: {}
 
@@ -1146,30 +1123,23 @@ store_gateway:
     # storageClass: "-"
 
   startupProbe:
-    failureThreshold: 60      # 30 minutes failure threshold
+    # Increasing failureThreshold for ~30 min of time until killed
+    failureThreshold: 60
+    initialDelaySeconds: 120
+    periodSeconds: 30
     httpGet:
       path: /ready
       port: http-metrics
       scheme: HTTP
-    initialDelaySeconds: 180
-    periodSeconds: 30
-    successThreshold: 1
-    timeoutSeconds: 1
   livenessProbe:
-    failureThreshold: 20      # 10 minutes failure threshold
     httpGet:
       path: /ready
       port: http-metrics
       scheme: HTTP
-    initialDelaySeconds: 180
-    periodSeconds: 30
-    successThreshold: 1
-    timeoutSeconds: 1
   readinessProbe:
     httpGet:
       path: /ready
       port: http-metrics
-    initialDelaySeconds: 60
 
   securityContext: {}
 
@@ -1273,30 +1243,23 @@ compactor:
     # storageClass: "-"
 
   startupProbe:
-    failureThreshold: 60      # 30 minutes failure threshold
+    # Increasing failureThreshold for ~30 min of time until killed
+    failureThreshold: 60
+    initialDelaySeconds: 120
+    periodSeconds: 30
     httpGet:
       path: /ready
       port: http-metrics
       scheme: HTTP
-    initialDelaySeconds: 180
-    periodSeconds: 30
-    successThreshold: 1
-    timeoutSeconds: 1
   livenessProbe:
-    failureThreshold: 20      # 10 minutes failure threshold
     httpGet:
       path: /ready
       port: http-metrics
       scheme: HTTP
-    initialDelaySeconds: 180
-    periodSeconds: 30
-    successThreshold: 1
-    timeoutSeconds: 1
   readinessProbe:
     httpGet:
       path: /ready
       port: http-metrics
-    initialDelaySeconds: 60
 
   securityContext: {}
 
