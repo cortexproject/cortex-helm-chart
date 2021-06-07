@@ -1,23 +1,17 @@
 {{- if and .Values.ingress.enabled .Values.nginx.enabled -}}
-{{- $fullName := include "cortex.fullname" . -}}
-{{- $svcPort := .Values.nginx.http_listen_port -}}
 {{- $kubeVersion := .Capabilities.KubeVersion.GitVersion -}}
 {{- if semverCompare ">=1.19-0" $kubeVersion -}}
 apiVersion: networking.k8s.io/v1
-{{- else if semverCompare ">=1.14-0" $kubeVersion -}}
-apiVersion: networking.k8s.io/v1beta1
 {{- else -}}
 apiVersion: extensions/v1beta1
 {{- end }}
 kind: Ingress
 metadata:
-  name: {{ $fullName }}
+  name: {{ include "cortex.nginxFullname" . }}
   labels:
-    {{- include "cortex.labels" . | nindent 4 }}
-  {{- with .Values.ingress.annotations }}
+    {{- include "cortex.nginxLabels" . | nindent 4 }}
   annotations:
-    {{- toYaml . | nindent 4 }}
-  {{- end }}
+    {{- toYaml .Values.ingress.annotations | nindent 4 }}
 spec:
 {{- if .Values.ingress.tls }}
   tls:
@@ -42,12 +36,12 @@ spec:
             backend:
             {{- if semverCompare ">=1.19-0" $kubeVersion }}
               service:
-                name: {{ $fullName }}
+                name: {{ include "cortex.nginxFullname" $ }}
                 port:
-                  number: {{ $svcPort }}
+                  number: {{ $.Values.nginx.http_listen_port }}
             {{- else }}
-              serviceName: {{ $fullName }}
-              servicePort: {{ $svcPort }}
+              serviceName: {{ include "cortex.nginxFullname" $ }}
+              servicePort: {{ $.Values.nginx.http_listen_port }}
             {{- end -}}
         {{- end }}
   {{- end }}
