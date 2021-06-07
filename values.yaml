@@ -277,11 +277,9 @@ alertmanager:
   ## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
   tolerations: []
 
-  # The values to set in the PodDisruptionBudget spec
   # If not set then a PodDisruptionBudget will not be created
-  podDisruptionBudget: {}
-  # minAvailable: 1
-  # maxUnavailable: 1
+  podDisruptionBudget:
+    maxUnavailable: 1
 
   strategy:
     type: RollingUpdate
@@ -411,7 +409,8 @@ distributor:
   terminationGracePeriodSeconds: 60
 
   tolerations: []
-  podDisruptionBudget: {}
+  podDisruptionBudget:
+    maxUnavailable: 1
   initContainers: []
   extraContainers: []
   extraVolumes: []
@@ -552,7 +551,8 @@ ingester:
   terminationGracePeriodSeconds: 240
 
   tolerations: []
-  podDisruptionBudget: {}
+  podDisruptionBudget:
+    maxUnavailable: 1
   initContainers: []
   extraContainers: []
   extraVolumes: []
@@ -626,7 +626,8 @@ ruler:
   terminationGracePeriodSeconds: 180
 
   tolerations: []
-  podDisruptionBudget: {}
+  podDisruptionBudget:
+    maxUnavailable: 1
   initContainers: []
   extraContainers: []
   extraVolumes: []
@@ -730,7 +731,8 @@ querier:
   terminationGracePeriodSeconds: 180
 
   tolerations: []
-  podDisruptionBudget: {}
+  podDisruptionBudget:
+    maxUnavailable: 1
   initContainers: []
   extraContainers: []
   extraVolumes: []
@@ -815,7 +817,8 @@ query_frontend:
   terminationGracePeriodSeconds: 180
 
   tolerations: []
-  podDisruptionBudget: {}
+  podDisruptionBudget:
+    maxUnavailable: 1
   initContainers: []
   extraContainers: []
   extraVolumes: []
@@ -888,7 +891,8 @@ table_manager:
   terminationGracePeriodSeconds: 180
 
   tolerations: []
-  podDisruptionBudget: {}
+  podDisruptionBudget:
+    maxUnavailable: 1
   initContainers: []
   extraContainers: []
   extraVolumes: []
@@ -962,7 +966,8 @@ configs:
   terminationGracePeriodSeconds: 180
 
   tolerations: []
-  podDisruptionBudget: {}
+  podDisruptionBudget:
+    maxUnavailable: 1
   initContainers: []
   extraContainers: []
   extraVolumes: []
@@ -1048,7 +1053,8 @@ nginx:
   terminationGracePeriodSeconds: 10
 
   tolerations: []
-  podDisruptionBudget: {}
+  podDisruptionBudget:
+    maxUnavailable: 1
   initContainers: []
   extraContainers: []
   extraVolumes: []
@@ -1173,7 +1179,8 @@ store_gateway:
   terminationGracePeriodSeconds: 240
 
   tolerations: []
-  podDisruptionBudget: {}
+  podDisruptionBudget:
+    maxUnavailable: 1
   initContainers: []
   extraContainers: []
   extraVolumes: []
@@ -1299,7 +1306,8 @@ compactor:
   terminationGracePeriodSeconds: 240
 
   tolerations: []
-  podDisruptionBudget: {}
+  podDisruptionBudget:
+    maxUnavailable: 1
   initContainers: []
   extraContainers: []
   extraVolumes: []
