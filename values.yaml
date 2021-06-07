@@ -3,7 +3,7 @@
 
 image:
   repository: quay.io/cortexproject/cortex
-  tag: v1.7.0
+  tag: v1.9.0
   pullPolicy: IfNotPresent
 
   ## Optionally specify an array of imagePullSecrets.
@@ -20,9 +20,9 @@ tags:
   blocks-storage-memcached: false
 
 ingress:
-  enabled: true
+  enabled: false
   annotations:
-    kubernetes.io/ingress.class: nginx
+    # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
     - host: chart-example.local
@@ -141,10 +141,11 @@ config:
     pool:
       health_check_ingesters: true
   memberlist:
+    bind_port: 7946
     join_members: []
-    ## add here the service name of the ingesters
+    ## add here the service name of the memberlist
     ## if using memberlist discovery, eg:
-    #  - cortex-ingester-headless
+    #  - cortex-memberlist
   querier:
     active_query_tracker_dir: /data/cortex/querier
     query_ingesters_within: 12h
@@ -166,11 +167,8 @@ config:
     #  max_outstanding_per_tenant: 1000
     log_queries_longer_than: 10s
 
-rbac:
-  create: true
-  pspEnabled: true
-
 alertmanager:
+  enabled: true
   replicas: 1
 
   statefulSet:
@@ -252,16 +250,19 @@ alertmanager:
     ##
     # storageClass: "-"
 
+  startupProbe:
+    httpGet:
+      path: /ready
+      port: http-metrics
+    failureThreshold: 10
   livenessProbe:
     httpGet:
       path: /ready
       port: http-metrics
-    initialDelaySeconds: 45
   readinessProbe:
     httpGet:
       path: /ready
       port: http-metrics
-    initialDelaySeconds: 45
 
   securityContext:
     {}
@@ -274,11 +275,9 @@ alertmanager:
   ## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
   tolerations: []
 
-  # The values to set in the PodDisruptionBudget spec
   # If not set then a PodDisruptionBudget will not be created
-  podDisruptionBudget: {}
-  # minAvailable: 1
-  # maxUnavailable: 1
+  podDisruptionBudget:
+    maxUnavailable: 1
 
   strategy:
     type: RollingUpdate
@@ -381,16 +380,19 @@ distributor:
   persistence:
     subPath:
 
+  startupProbe:
+    httpGet:
+      path: /ready
+      port: http-metrics
+    failureThreshold: 10
   livenessProbe:
     httpGet:
       path: /ready
       port: http-metrics
-    initialDelaySeconds: 45
   readinessProbe:
     httpGet:
       path: /ready
       port: http-metrics
-    initialDelaySeconds: 45
 
   securityContext: {}
 
@@ -403,7 +405,8 @@ distributor:
   terminationGracePeriodSeconds: 60
 
   tolerations: []
-  podDisruptionBudget: {}
+  podDisruptionBudget:
+    maxUnavailable: 1
   initContainers: []
   extraContainers: []
   extraVolumes: []
@@ -505,21 +508,24 @@ ingester:
     ##
     # storageClass: "-"
 
-  livenessProbe:
-    failureThreshold: 20      # 10 minutes failure threshold
+  startupProbe:
+    # WAL Replay can take a long time. Increasing failureThreshold for ~30 min of time until killed
+    failureThreshold: 60
+    initialDelaySeconds: 120
+    periodSeconds: 30
     httpGet:
       path: /ready
       port: http-metrics
       scheme: HTTP
-    initialDelaySeconds: 180
-    periodSeconds: 30
-    successThreshold: 1
-    timeoutSeconds: 1
+  livenessProbe:
+    httpGet:
+      path: /ready
+      port: http-metrics
+      scheme: HTTP
   readinessProbe:
     httpGet:
       path: /ready
       port: http-metrics
-    initialDelaySeconds: 60
 
   securityContext: {}
 
@@ -534,7 +540,8 @@ ingester:
   terminationGracePeriodSeconds: 240
 
   tolerations: []
-  podDisruptionBudget: {}
+  podDisruptionBudget:
+    maxUnavailable: 1
   initContainers: []
   extraContainers: []
   extraVolumes: []
@@ -543,6 +550,7 @@ ingester:
   env: []
 
 ruler:
+  enabled: true
   replicas: 1
 
   service:
@@ -580,16 +588,19 @@ ruler:
   persistence:
     subPath:
 
+  startupProbe:
+    httpGet:
+      path: /ready
+      port: http-metrics
+    failureThreshold: 10
   livenessProbe:
     httpGet:
       path: /ready
       port: http-metrics
-    initialDelaySeconds: 45
   readinessProbe:
     httpGet:
       path: /ready
       port: http-metrics
-    initialDelaySeconds: 45
 
   securityContext: {}
 
@@ -602,13 +613,33 @@ ruler:
   terminationGracePeriodSeconds: 180
 
   tolerations: []
-  podDisruptionBudget: {}
+  podDisruptionBudget:
+    maxUnavailable: 1
   initContainers: []
   extraContainers: []
   extraVolumes: []
   extraVolumeMounts: []
   extraPorts: []
   env: []
+  # allow configuring rules via configmap in case you don't want to use the configs db
+  directories: {}
+    # tenant_foo:
+    #   rules1.txt: |
+    #     groups:
+    #       - name: should_fire
+    #         rules:
+    #           - alert: HighPercentageError
+    #             expr: |
+    #               sum(rate({app="foo", env="production"} |= "error" [5m])) by (job)
+    #                 /
+    #               sum(rate({app="foo", env="production"}[5m])) by (job)
+    #                 > 0.05
+    #             for: 10m
+    #             labels:
+    #               severity: warning
+    #             annotations:
+    #               summary: High error rate
+
 
 querier:
   replicas: 2
@@ -660,16 +691,19 @@ querier:
   persistence:
     subPath:
 
+  startupProbe:
+    httpGet:
+      path: /ready
+      port: http-metrics
+    failureThreshold: 10
   livenessProbe:
     httpGet:
       path: /ready
       port: http-metrics
-    initialDelaySeconds: 45
   readinessProbe:
     httpGet:
       path: /ready
       port: http-metrics
-    initialDelaySeconds: 45
 
   securityContext: {}
 
@@ -682,7 +716,8 @@ querier:
   terminationGracePeriodSeconds: 180
 
   tolerations: []
-  podDisruptionBudget: {}
+  podDisruptionBudget:
+    maxUnavailable: 1
   initContainers: []
   extraContainers: []
   extraVolumes: []
@@ -740,16 +775,19 @@ query_frontend:
   persistence:
     subPath:
 
+  startupProbe:
+    httpGet:
+      path: /ready
+      port: http-metrics
+    failureThreshold: 10
   livenessProbe:
     httpGet:
       path: /ready
       port: http-metrics
-    initialDelaySeconds: 45
   readinessProbe:
     httpGet:
       path: /ready
       port: http-metrics
-    initialDelaySeconds: 45
 
   securityContext: {}
 
@@ -762,7 +800,8 @@ query_frontend:
   terminationGracePeriodSeconds: 180
 
   tolerations: []
-  podDisruptionBudget: {}
+  podDisruptionBudget:
+    maxUnavailable: 1
   initContainers: []
   extraContainers: []
   extraVolumes: []
@@ -808,16 +847,19 @@ table_manager:
   persistence:
     subPath:
 
+  startupProbe:
+    httpGet:
+      path: /ready
+      port: http-metrics
+    failureThreshold: 10
   livenessProbe:
     httpGet:
       path: /ready
       port: http-metrics
-    initialDelaySeconds: 45
   readinessProbe:
     httpGet:
       path: /ready
       port: http-metrics
-    initialDelaySeconds: 45
 
   securityContext: {}
 
@@ -830,7 +872,8 @@ table_manager:
   terminationGracePeriodSeconds: 180
 
   tolerations: []
-  podDisruptionBudget: {}
+  podDisruptionBudget:
+    maxUnavailable: 1
   initContainers: []
   extraContainers: []
   extraVolumes: []
@@ -839,6 +882,7 @@ table_manager:
   env: []
 
 configs:
+  enabled: false
   replicas: 1
 
   service:
@@ -876,16 +920,19 @@ configs:
   persistence:
     subPath:
 
+  startupProbe:
+    httpGet:
+      path: /ready
+      port: http-metrics
+    failureThreshold: 10
   livenessProbe:
     httpGet:
       path: /ready
       port: http-metrics
-    initialDelaySeconds: 45
   readinessProbe:
     httpGet:
       path: /ready
       port: http-metrics
-    initialDelaySeconds: 45
 
   securityContext: {}
 
@@ -898,7 +945,8 @@ configs:
   terminationGracePeriodSeconds: 180
 
   tolerations: []
-  podDisruptionBudget: {}
+  podDisruptionBudget:
+    maxUnavailable: 1
   initContainers: []
   extraContainers: []
   extraVolumes: []
@@ -918,7 +966,7 @@ nginx:
       # X-Scope-OrgID: 0
   image:
     repository: nginx
-    tag: 1.17
+    tag: 1.21
     pullPolicy: IfNotPresent
 
   service:
@@ -957,16 +1005,19 @@ nginx:
   persistence:
     subPath:
 
+  startupProbe:
+    httpGet:
+      path: /healthz
+      port: http-metrics
+    failureThreshold: 10
   livenessProbe:
     httpGet:
       path: /healthz
       port: http-metrics
-    initialDelaySeconds: 10
   readinessProbe:
     httpGet:
       path: /healthz
       port: http-metrics
-    initialDelaySeconds: 10
 
   securityContext: {}
 
@@ -979,7 +1030,8 @@ nginx:
   terminationGracePeriodSeconds: 10
 
   tolerations: []
-  podDisruptionBudget: {}
+  podDisruptionBudget:
+    maxUnavailable: 1
   initContainers: []
   extraContainers: []
   extraVolumes: []
@@ -1070,21 +1122,24 @@ store_gateway:
     ##
     # storageClass: "-"
 
-  livenessProbe:
-    failureThreshold: 20      # 10 minutes failure threshold
+  startupProbe:
+    # Increasing failureThreshold for ~30 min of time until killed
+    failureThreshold: 60
+    initialDelaySeconds: 120
+    periodSeconds: 30
     httpGet:
       path: /ready
       port: http-metrics
       scheme: HTTP
-    initialDelaySeconds: 180
-    periodSeconds: 30
-    successThreshold: 1
-    timeoutSeconds: 1
+  livenessProbe:
+    httpGet:
+      path: /ready
+      port: http-metrics
+      scheme: HTTP
   readinessProbe:
     httpGet:
       path: /ready
       port: http-metrics
-    initialDelaySeconds: 60
 
   securityContext: {}
 
@@ -1094,7 +1149,8 @@ store_gateway:
   terminationGracePeriodSeconds: 240
 
   tolerations: []
-  podDisruptionBudget: {}
+  podDisruptionBudget:
+    maxUnavailable: 1
   initContainers: []
   extraContainers: []
   extraVolumes: []
@@ -1186,21 +1242,24 @@ compactor:
     ##
     # storageClass: "-"
 
-  livenessProbe:
-    failureThreshold: 20      # 10 minutes failure threshold
+  startupProbe:
+    # Increasing failureThreshold for ~30 min of time until killed
+    failureThreshold: 60
+    initialDelaySeconds: 120
+    periodSeconds: 30
     httpGet:
       path: /ready
       port: http-metrics
       scheme: HTTP
-    initialDelaySeconds: 180
-    periodSeconds: 30
-    successThreshold: 1
-    timeoutSeconds: 1
+  livenessProbe:
+    httpGet:
+      path: /ready
+      port: http-metrics
+      scheme: HTTP
   readinessProbe:
     httpGet:
       path: /ready
       port: http-metrics
-    initialDelaySeconds: 60
 
   securityContext: {}
 
@@ -1210,7 +1269,8 @@ compactor:
   terminationGracePeriodSeconds: 240
 
   tolerations: []
-  podDisruptionBudget: {}
+  podDisruptionBudget:
+    maxUnavailable: 1
   initContainers: []
   extraContainers: []
   extraVolumes: []

@@ -1,0 +1,188 @@
+{{- if .Values.ruler.enabled -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "cortex.rulerFullname" . }}
+  labels:
+    {{- include "cortex.rulerLabels" . | nindent 4 }}
+    app.kubernetes.io/part-of: memberlist
+  annotations:
+    {{- toYaml .Values.ruler.annotations | nindent 4 }}
+spec:
+  replicas: {{ .Values.ruler.replicas }}
+  selector:
+    matchLabels:
+      {{- include "cortex.rulerSelectorLabels" . | nindent 6 }}
+  strategy:
+    {{- toYaml .Values.ruler.strategy | nindent 4 }}
+  template:
+    metadata:
+      labels:
+        {{- include "cortex.rulerLabels" . | nindent 8 }}
+        app.kubernetes.io/part-of: memberlist
+        {{- with .Values.ruler.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      annotations:
+{{- if .Values.useExternalConfig }}
+        checksum/config: {{ .Values.externalConfigVersion }}
+{{- else }}
+        checksum/config: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+{{- end}}
+        {{- with .Values.ruler.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      serviceAccountName: {{ template "cortex.serviceAccountName" . }}
+    {{- if .Values.ruler.priorityClassName }}
+      priorityClassName: {{ .Values.ruler.priorityClassName }}
+    {{- end }}
+      securityContext:
+        {{- toYaml .Values.ruler.securityContext | nindent 8 }}
+      initContainers:
+        {{- toYaml .Values.ruler.initContainers | nindent 8 }}
+      {{- if .Values.image.pullSecrets }}
+      imagePullSecrets:
+      {{- range .Values.image.pullSecrets }}
+        - name: {{ . }}
+      {{- end}}
+      {{- end }}
+      containers:
+        {{- if .Values.sidecar.rules.enabled }}
+        - name: {{ template "cortex.name" . }}-sc-rules
+          {{- if .Values.sidecar.image.sha }}
+          image: "{{ .Values.sidecar.image.repository }}:{{ .Values.sidecar.image.tag }}@sha256:{{ .Values.sidecar.image.sha }}"
+          {{- else }}
+          image: "{{ .Values.sidecar.image.repository }}:{{ .Values.sidecar.image.tag }}"
+          {{- end }}
+          imagePullPolicy: {{ .Values.sidecar.imagePullPolicy }}
+          env:
+            {{- if .Values.sidecar.rules.watchMethod }}
+            - name: METHOD
+              value: {{ .Values.sidecar.rules.watchMethod }}
+            {{ end }}
+            - name: LABEL
+              value: "{{ .Values.sidecar.rules.label }}"
+            {{- if .Values.sidecar.rules.labelValue }}
+            - name: LABEL_VALUE
+              value: {{ quote .Values.sidecar.rules.labelValue }}
+            {{- end }}
+            - name: FOLDER
+              value: "{{ .Values.sidecar.rules.folder }}{{- with .Values.sidecar.rules.defaultFolderName }}/{{ . }}{{- end }}"
+            - name: RESOURCE
+              value: "both"
+            {{- if .Values.sidecar.enableUniqueFilenames }}
+            - name: UNIQUE_FILENAMES
+              value: "{{ .Values.sidecar.enableUniqueFilenames }}"
+            {{- end }}
+            {{- if .Values.sidecar.rules.searchNamespace }}
+            - name: NAMESPACE
+              value: "{{ .Values.sidecar.rules.searchNamespace }}"
+            {{- end }}
+            {{- if .Values.sidecar.skipTlsVerify }}
+            - name: SKIP_TLS_VERIFY
+              value: "{{ .Values.sidecar.skipTlsVerify }}"
+            {{- end }}
+            {{- if .Values.sidecar.rules.folderAnnotation }}
+            - name: FOLDER_ANNOTATION
+              value: "{{ .Values.sidecar.rules.folderAnnotation }}"
+          {{- end }}
+          resources:
+            {{- toYaml .Values.sidecar.resources | nindent 12 }}
+          securityContext:
+            {{- toYaml .Values.sidecar.rules.securityContext | nindent 12 }}
+          volumeMounts:
+            - name: sc-rules-volume
+              mountPath: {{ .Values.sidecar.rules.folder | quote }}
+        {{- end}}
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args:
+            - "-target=ruler"
+            - "-config.file=/etc/cortex/cortex.yaml"
+            {{- if .Values.configs.enabled }}
+            - "-ruler.configs.url=http://{{ template "cortex.configsFullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.config.server.http_listen_port }}"
+            {{- end }}
+            {{- if not .Values.config.ruler.alertmanager_url }}
+            {{- if .Values.config.ruler.enable_alertmanager_discovery }}
+            - "-ruler.alertmanager-url=http://_http-metrics._tcp.{{ template "cortex.name" . }}-alertmanager-headless/api/prom/alertmanager/"
+            {{- else }}
+            - "-ruler.alertmanager-url=http://{{ template "cortex.alertmanagerFullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.config.server.http_listen_port }}/api/prom/alertmanager/"
+            {{- end }}
+            {{- end }}
+            {{- include "cortex.memcached" . | nindent 12}}
+          {{- range $key, $value := .Values.ruler.extraArgs }}
+            - "-{{ $key }}={{ $value }}"
+          {{- end }}
+          volumeMounts:
+            {{- if .Values.ruler.extraVolumeMounts }}
+              {{ toYaml .Values.ruler.extraVolumeMounts | nindent 12}}
+            {{- end }}
+            {{- if .Values.sidecar.rules.enabled }}
+            - name: sc-rules-volume
+              mountPath: {{ .Values.sidecar.rules.folder | quote }}
+            {{ end }}
+            - name: config
+              mountPath: /etc/cortex
+            - name: storage
+              mountPath: /data
+              subPath: {{ .Values.ruler.persistence.subPath }}
+            - name: tmp
+              mountPath: /rules
+            {{- range $dir, $_ := .Values.ruler.directories }}
+            - name: {{ include "cortex.rulerRulesDirName" $dir }}
+              mountPath: /etc/cortex/rules/{{ $dir }}
+            {{- end }}
+          ports:
+            - name: http-metrics
+              containerPort: {{ .Values.config.server.http_listen_port }}
+              protocol: TCP
+            - name: gossip
+              containerPort: {{ .Values.config.memberlist.bind_port }}
+              protocol: TCP
+          startupProbe:
+            {{- toYaml .Values.ruler.startupProbe | nindent 12 }}
+          livenessProbe:
+            {{- toYaml .Values.ruler.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.ruler.readinessProbe | nindent 12 }}
+          resources:
+            {{- toYaml .Values.ruler.resources | nindent 12 }}
+          securityContext:
+            readOnlyRootFilesystem: true
+          env:
+            {{- if .Values.ruler.env }}
+              {{- toYaml .Values.ruler.env | nindent 12 }}
+            {{- end }}
+{{- if .Values.ruler.extraContainers }}
+{{ toYaml .Values.ruler.extraContainers | indent 8}}
+{{- end }}
+      nodeSelector:
+        {{- toYaml .Values.ruler.nodeSelector | nindent 8 }}
+      affinity:
+        {{- toYaml .Values.ruler.affinity | nindent 8 }}
+      tolerations:
+        {{- toYaml .Values.ruler.tolerations | nindent 8 }}
+      terminationGracePeriodSeconds: {{ .Values.ruler.terminationGracePeriodSeconds }}
+      volumes:
+        - name: config
+          secret:
+            {{- if .Values.useExternalConfig }}
+            secretName: {{ .Values.externalConfigSecretName }}
+            {{- else }}
+            secretName: {{ template "cortex.fullname" . }}
+            {{- end }}
+        - name: tmp
+          emptyDir: {}
+        {{- range $dir, $_ := .Values.ruler.directories }}
+        - name: {{ include "cortex.rulerRulesDirName" $dir }}
+          configMap:
+            name: {{ include "cortex.rulerFullname" $ }}-{{ include "cortex.rulerRulesDirName" $dir }}
+        {{- end }}
+{{- if .Values.ruler.extraVolumes }}
+{{ toYaml .Values.ruler.extraVolumes | indent 8}}
+{{- end }}
+        - name: storage
+          emptyDir: {}
+{{- end }}

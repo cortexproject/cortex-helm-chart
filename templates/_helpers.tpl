@@ -60,6 +60,27 @@ Create the app name of cortex clients. Defaults to the same logic as "cortex.ful
 {{- end -}}
 {{- end -}}
 
+
+{{/*
+Common labels
+*/}}
+{{- define "cortex.labels" -}}
+helm.sh/chart: {{ include "cortex.chart" . }}
+{{ include "cortex.selectorLabels" . }}
+{{- if .Chart.AppVersion }}
+app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+{{- end }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- end }}
+
+{{/*
+Selector labels
+*/}}
+{{- define "cortex.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "cortex.name" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}
+
 {{/*
 Create configuration parameters for memcached configuration
 */}}

@@ -1,0 +1,29 @@
+{{- if .Values.alertmanager.enabled -}}
+{{- if .Values.alertmanager.statefulSet.enabled -}}
+{{- $clusterPort := regexReplaceAll ".+[:]" (default "0.0.0.0:9094" .Values.config.alertmanager.cluster_bind_address) "" -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "cortex.alertmanagerFullname" . }}-headless
+  labels:
+    {{- include "cortex.alertmanagerLabels" . | nindent 4 }}
+    {{- with .Values.alertmanager.service.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  annotations:
+    {{- toYaml .Values.alertmanager.service.annotations | nindent 4 }}
+spec:
+  type: ClusterIP
+  clusterIP: None
+  publishNotReadyAddresses: true
+  ports:
+    - port: {{ .Values.config.server.http_listen_port }}
+      protocol: TCP
+      name: http-metrics
+    - port: {{ $clusterPort }}
+      protocol: TCP
+      name: cluster
+  selector:
+    {{- include "cortex.alertmanagerSelectorLabels" . | nindent 4 }}
+{{- end -}}
+{{- end -}}

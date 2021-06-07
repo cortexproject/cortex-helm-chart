@@ -1,0 +1,30 @@
+{{- if .Values.query_frontend.serviceMonitor.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "cortex.queryFrontendFullname" . }}
+  labels:
+    {{- include "cortex.queryFrontendLabels" . | nindent 4 }}
+    {{- if .Values.query_frontend.serviceMonitor.additionalLabels }}
+{{ toYaml .Values.query_frontend.serviceMonitor.additionalLabels | indent 4 }}
+    {{- end }}
+  {{- if .Values.query_frontend.serviceMonitor.annotations }}
+  annotations:
+{{ toYaml .Values.query_frontend.serviceMonitor.annotations | indent 4 }}
+  {{- end }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "cortex.queryFrontendSelectorLabels" . | nindent 6 }}
+  namespaceSelector:
+    matchNames:
+      - {{ .Release.Namespace | quote }}
+  endpoints:
+  - port: http-metrics
+    {{- if .Values.query_frontend.serviceMonitor.interval }}
+    interval: {{ .Values.query_frontend.serviceMonitor.interval }}
+    {{- end }}
+    {{- if .Values.query_frontend.serviceMonitor.scrapeTimeout }}
+    scrapeTimeout: {{ .Values.query_frontend.serviceMonitor.scrapeTimeout }}
+    {{- end }}
+{{- end }}
