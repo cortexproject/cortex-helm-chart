@@ -897,7 +897,7 @@ table_manager:
   env: []
 
 configs:
-  enabled: true
+  enabled: false
   replicas: 1
 
   service:
