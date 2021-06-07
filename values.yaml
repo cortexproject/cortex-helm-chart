@@ -46,6 +46,7 @@ config:
   auth_enabled: false
   api:
     prometheus_http_prefix: '/prometheus'
+    response_compression_enabled: true
   ingester:
     max_transfer_retries: 0
     lifecycler:
@@ -65,6 +66,7 @@ config:
     enforce_metric_name: false
     reject_old_samples: true
     reject_old_samples_max_age: 168h
+    max_query_lookback: 0s
   schema:
     configs:
       - from: 2020-11-01
@@ -126,7 +128,6 @@ config:
       memcached_client:
         timeout: 1s
   chunk_store:
-    max_look_back_period: 0s
     chunk_cache_config:
       memcached:
         expiration: 1h
@@ -164,7 +165,6 @@ config:
   frontend:
     #  max_outstanding_per_tenant: 1000
     log_queries_longer_than: 10s
-    compress_responses: true
 
 rbac:
   create: true
@@ -185,6 +185,7 @@ alertmanager:
 
   serviceMonitor:
     enabled: false
+    additionalLabels: {}
 
   resources: {}
   #  limits:
@@ -339,6 +340,7 @@ distributor:
 
   serviceMonitor:
     enabled: false
+    additionalLabels: {}
 
   resources: {}
   #  limits:
@@ -424,6 +426,7 @@ ingester:
 
   serviceMonitor:
     enabled: false
+    additionalLabels: {}
 
   resources: {}
   #  limits:
@@ -548,6 +551,7 @@ ruler:
 
   serviceMonitor:
     enabled: false
+    additionalLabels: {}
 
   resources: {}
   #  limits:
@@ -615,6 +619,7 @@ querier:
 
   serviceMonitor:
     enabled: false
+    additionalLabels: {}
 
   resources: {}
   #  limits:
@@ -694,6 +699,7 @@ query_frontend:
 
   serviceMonitor:
     enabled: false
+    additionalLabels: {}
 
   resources: {}
   #  limits:
@@ -773,6 +779,7 @@ table_manager:
 
   serviceMonitor:
     enabled: false
+    additionalLabels: {}
 
   resources: {}
   #  limits:
@@ -840,6 +847,7 @@ configs:
 
   serviceMonitor:
     enabled: false
+    additionalLabels: {}
 
   resources: {}
   #  limits:
@@ -920,6 +928,7 @@ nginx:
 
   serviceMonitor:
     enabled: false
+    additionalLabels: {}
 
   resources: {}
   #  limits:
@@ -987,6 +996,7 @@ store_gateway:
 
   serviceMonitor:
     enabled: false
+    additionalLabels: {}
 
   resources: {}
   #  limits:
@@ -1102,6 +1112,7 @@ compactor:
 
   serviceMonitor:
     enabled: false
+    additionalLabels: {}
 
   resources: {}
   #  limits:
