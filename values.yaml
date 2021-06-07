@@ -1301,6 +1301,9 @@ compactor:
       port: http-metrics
 
   securityContext: {}
+  podSecurityContext:
+    enabled: true
+    readOnlyRootFilesystem: true
 
   strategy:
     type: RollingUpdate

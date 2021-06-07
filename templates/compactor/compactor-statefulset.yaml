@@ -15,7 +15,7 @@ spec:
     matchLabels:
       {{- include "cortex.compactorSelectorLabels" . | nindent 6 }}
   updateStrategy:
-    {{- toYaml .Values.compactor.strategy | nindent 4 }}            
+    {{- toYaml .Values.compactor.strategy | nindent 4 }}
   serviceName: {{ template "cortex.fullname" . }}-compactor
   {{- if .Values.compactor.persistentVolume.enabled }}
   volumeClaimTemplates:
@@ -117,7 +117,7 @@ spec:
             - name: storage
               mountPath: "/data"
               {{- if .Values.compactor.persistentVolume.subPath }}
-              subPath: {{ .Values.compactor.persistentVolume.subPath }}              
+              subPath: {{ .Values.compactor.persistentVolume.subPath }}
               {{- end }}
           ports:
             - name: http-metrics
@@ -134,8 +134,9 @@ spec:
             {{- toYaml .Values.compactor.readinessProbe | nindent 12 }}
           resources:
             {{- toYaml .Values.compactor.resources | nindent 12 }}
-          securityContext:
-            readOnlyRootFilesystem: true
+          {{- if .Values.compactor.podSecurityContext.enabled }}
+          securityContext: {{- omit .Values.compactor.podSecurityContext "enabled" | toYaml | nindent 8 }}
+          {{- end }}
           env:
             {{- if .Values.compactor.env }}
               {{- toYaml .Values.compactor.env | nindent 12 }}
