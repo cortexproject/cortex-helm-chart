@@ -2,8 +2,10 @@
 
 ## master / unreleased
 
+## 0.5.0 / 2021-06-08
+
 * [CHANGE] **Labels has been updated to latest best practices**. This means that **you cannot do a rolling update from an older version of this chart**. Either change the labels of your existing deployment by hand to make the transition as seamless as possible or uninstall the old release and install the new release with a short downtime. #144
-* [CHANGE] Minimum Kubernetes Version of this Chart is now 1.18 #144
+* [CHANGE] Minimum Kubernetes Version of this Chart is now 1.19 #144
 * [CHANGE] A new dedicated service is now available for the memberlist. Check `config.memberlist.join_members` in the default `values.yaml` for more information. #144
 * [CHANGE] Ingress is now disabled by default. You can re-enable it by setting `ingress.enabled` to `true` #144
 * [CHANGE] Configs is now disabled by default. You can re-enable it by setting `configs.enabled` to `true` #144
@@ -20,6 +22,7 @@
 
 ## 0.4.1 / 2021-03-22
 
+* [BUGFIX] Fix dependencies in charts dir to reflect recent update in 0.4.0 #139
 
 ## 0.4.0 / 2021-03-01
 
