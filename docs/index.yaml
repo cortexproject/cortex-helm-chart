@@ -3,7 +3,7 @@ entries:
   cortex:
   - apiVersion: v2
     appVersion: v1.9.0
-    created: "2021-06-08T09:35:00.786803895+02:00"
+    created: "2021-06-08T10:30:58.898750613+02:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -43,8 +43,9 @@ entries:
       tags:
       - blocks-storage-memcached
       version: 5.5.1
-    description: Cortex
-    digest: 3d508f9a30fe73b728be425222ce564e62fb9b8bce7561e3d13213889ad11672
+    description: Horizontally scalable, highly available, multi-tenant, long term
+      Prometheus.
+    digest: e0e77c0ad09b3f1e56e6d13ab1382f95ac32ea1d56944597f94bdacbe8fdf3d2
     home: https://cortexmetrics.io/
     icon: https://avatars2.githubusercontent.com/u/43045022?s=200&v=4
     kubeVersion: ^1.19.0-0
@@ -59,7 +60,7 @@ entries:
     version: 0.5.0
   - apiVersion: v2
     appVersion: v1.7.0
-    created: "2021-06-08T09:35:00.783489998+02:00"
+    created: "2021-06-08T10:30:58.895139082+02:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -115,7 +116,7 @@ entries:
     version: 0.4.1
   - apiVersion: v2
     appVersion: v1.7.0
-    created: "2021-06-08T09:35:00.779598945+02:00"
+    created: "2021-06-08T10:30:58.891779477+02:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -171,7 +172,7 @@ entries:
     version: 0.4.0
   - apiVersion: v2
     appVersion: v1.6.0
-    created: "2021-06-08T09:35:00.775273344+02:00"
+    created: "2021-06-08T10:30:58.887937988+02:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -227,7 +228,7 @@ entries:
     version: 0.3.0
   - apiVersion: v2
     appVersion: v1.4.0
-    created: "2021-06-08T09:35:00.769120347+02:00"
+    created: "2021-06-08T10:30:58.883272548+02:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -258,4 +259,4 @@ entries:
     urls:
     - https://cortexproject.github.io/cortex-helm-chart/cortex-0.2.0.tgz
     version: 0.2.0
-generated: "2021-06-08T09:35:00.759440874+02:00"
+generated: "2021-06-08T10:30:58.873137315+02:00"
