@@ -1,8 +1,16 @@
-# Introduction
+# cortex
 
-Repository for the [Cortex](https://github.com/cortexproject/cortex) Helm chart.
-Follow the instructions below to install/upgrade Cortex in your Kubernetes cluster
-after cloning this repository.
+![Version: 0.5.0](https://img.shields.io/badge/Version-0.5.0-informational?style=flat-square) ![AppVersion: v1.9.0](https://img.shields.io/badge/AppVersion-v1.9.0-informational?style=flat-square)
+
+Horizontally scalable, highly available, multi-tenant, long term Prometheus.
+
+**Homepage:** <https://cortexmetrics.io/>
+
+## Maintainers
+
+| Name | Email | Url |
+| ---- | ------ | --- |
+| Cortex Maintainers | cortex-team@googlegroups.com |  |
 
 ## Dependencies
 
@@ -51,7 +59,6 @@ As part of this chart many different pods and services are installed which all
 have varying resource requirements. Please make sure that you have sufficient
 resources (CPU/memory) available in your cluster before installing Cortex Helm
 chart.
-
 
 ## Upgrades
 
@@ -119,26 +126,29 @@ data:
 ```
 
 ## Chart Dependencies
+## Requirements
+
+Kubernetes: `^1.19.0-0`
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://charts.bitnami.com/bitnami | memcached | 5.5.1 |
-| https://charts.bitnami.com/bitnami | memcached | 5.5.1 |
-| https://charts.bitnami.com/bitnami | memcached | 5.5.1 |
-| https://charts.bitnami.com/bitnami | memcached | 5.5.1 |
-| https://charts.bitnami.com/bitnami | memcached | 5.5.1 |
-| https://charts.bitnami.com/bitnami | memcached | 5.5.1 |
-| https://charts.bitnami.com/bitnami | memcached | 5.5.1 |
+| https://charts.bitnami.com/bitnami | memcached(memcached) | 5.5.1 |
+| https://charts.bitnami.com/bitnami | memcached-index-read(memcached) | 5.5.1 |
+| https://charts.bitnami.com/bitnami | memcached-index-write(memcached) | 5.5.1 |
+| https://charts.bitnami.com/bitnami | memcached-frontend(memcached) | 5.5.1 |
+| https://charts.bitnami.com/bitnami | memcached-blocks-index(memcached) | 5.5.1 |
+| https://charts.bitnami.com/bitnami | memcached-blocks(memcached) | 5.5.1 |
+| https://charts.bitnami.com/bitnami | memcached-blocks-metadata(memcached) | 5.5.1 |
 
-## Chart Values
+## Values
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | alertmanager.affinity | object | `{}` |  |
 | alertmanager.annotations | object | `{}` |  |
+| alertmanager.enabled | bool | `true` |  |
 | alertmanager.env | list | `[]` |  |
 | alertmanager.extraArgs | object | `{}` |  |
-| alertmanager.enabled | bool | `true` |  |
 | alertmanager.extraContainers | list | `[]` |  |
 | alertmanager.extraPorts | list | `[]` |  |
 | alertmanager.extraVolumeMounts | list | `[]` |  |
@@ -146,7 +156,6 @@ data:
 | alertmanager.initContainers | list | `[]` |  |
 | alertmanager.livenessProbe.httpGet.path | string | `"/ready"` |  |
 | alertmanager.livenessProbe.httpGet.port | string | `"http-metrics"` |  |
-| alertmanager.livenessProbe.initialDelaySeconds | int | `45` |  |
 | alertmanager.nodeSelector | object | `{}` |  |
 | alertmanager.persistence.subPath | string | `nil` |  |
 | alertmanager.persistentVolume.accessModes[0] | string | `"ReadWriteOnce"` |  |
@@ -156,17 +165,20 @@ data:
 | alertmanager.persistentVolume.subPath | string | `""` |  |
 | alertmanager.podAnnotations."prometheus.io/port" | string | `"http-metrics"` |  |
 | alertmanager.podAnnotations."prometheus.io/scrape" | string | `"true"` |  |
-| alertmanager.podDisruptionBudget | object | `{}` |  |
+| alertmanager.podDisruptionBudget.maxUnavailable | int | `1` |  |
 | alertmanager.podLabels | object | `{}` |  |
 | alertmanager.readinessProbe.httpGet.path | string | `"/ready"` |  |
 | alertmanager.readinessProbe.httpGet.port | string | `"http-metrics"` |  |
-| alertmanager.readinessProbe.initialDelaySeconds | int | `45` |  |
 | alertmanager.replicas | int | `1` |  |
 | alertmanager.resources | object | `{}` |  |
 | alertmanager.securityContext | object | `{}` |  |
 | alertmanager.service.annotations | object | `{}` |  |
 | alertmanager.service.labels | object | `{}` |  |
+| alertmanager.serviceMonitor.additionalLabels | object | `{}` |  |
 | alertmanager.serviceMonitor.enabled | bool | `false` |  |
+| alertmanager.startupProbe.failureThreshold | int | `10` |  |
+| alertmanager.startupProbe.httpGet.path | string | `"/ready"` |  |
+| alertmanager.startupProbe.httpGet.port | string | `"http-metrics"` |  |
 | alertmanager.statefulSet.enabled | bool | `false` |  |
 | alertmanager.statefulStrategy.type | string | `"RollingUpdate"` |  |
 | alertmanager.strategy.rollingUpdate.maxSurge | int | `0` |  |
@@ -189,14 +201,9 @@ data:
 | compactor.extraVolumeMounts | list | `[]` |  |
 | compactor.extraVolumes | list | `[]` |  |
 | compactor.initContainers | list | `[]` |  |
-| compactor.livenessProbe.failureThreshold | int | `20` |  |
 | compactor.livenessProbe.httpGet.path | string | `"/ready"` |  |
 | compactor.livenessProbe.httpGet.port | string | `"http-metrics"` |  |
 | compactor.livenessProbe.httpGet.scheme | string | `"HTTP"` |  |
-| compactor.livenessProbe.initialDelaySeconds | int | `180` |  |
-| compactor.livenessProbe.periodSeconds | int | `30` |  |
-| compactor.livenessProbe.successThreshold | int | `1` |  |
-| compactor.livenessProbe.timeoutSeconds | int | `1` |  |
 | compactor.nodeSelector | object | `{}` |  |
 | compactor.persistentVolume.accessModes[0] | string | `"ReadWriteOnce"` |  |
 | compactor.persistentVolume.annotations | object | `{}` |  |
@@ -205,29 +212,34 @@ data:
 | compactor.persistentVolume.subPath | string | `""` |  |
 | compactor.podAnnotations."prometheus.io/port" | string | `"http-metrics"` |  |
 | compactor.podAnnotations."prometheus.io/scrape" | string | `"true"` |  |
-| compactor.podDisruptionBudget | object | `{}` |  |
+| compactor.podDisruptionBudget.maxUnavailable | int | `1` |  |
 | compactor.podLabels | object | `{}` |  |
 | compactor.readinessProbe.httpGet.path | string | `"/ready"` |  |
 | compactor.readinessProbe.httpGet.port | string | `"http-metrics"` |  |
-| compactor.readinessProbe.initialDelaySeconds | int | `60` |  |
 | compactor.replicas | int | `1` |  |
 | compactor.resources | object | `{}` |  |
 | compactor.securityContext | object | `{}` |  |
 | compactor.service.annotations | object | `{}` |  |
 | compactor.service.labels | object | `{}` |  |
+| compactor.serviceMonitor.additionalLabels | object | `{}` |  |
 | compactor.serviceMonitor.enabled | bool | `false` |  |
+| compactor.startupProbe.failureThreshold | int | `60` |  |
+| compactor.startupProbe.httpGet.path | string | `"/ready"` |  |
+| compactor.startupProbe.httpGet.port | string | `"http-metrics"` |  |
+| compactor.startupProbe.httpGet.scheme | string | `"HTTP"` |  |
+| compactor.startupProbe.initialDelaySeconds | int | `120` |  |
+| compactor.startupProbe.periodSeconds | int | `30` |  |
 | compactor.strategy.type | string | `"RollingUpdate"` |  |
 | compactor.terminationGracePeriodSeconds | int | `240` |  |
 | compactor.tolerations | list | `[]` |  |
 | config.alertmanager.external_url | string | `"/api/prom/alertmanager"` |  |
 | config.api.prometheus_http_prefix | string | `"/prometheus"` |  |
+| config.api.response_compression_enabled | bool | `true` |  |
 | config.auth_enabled | bool | `false` |  |
 | config.chunk_store.chunk_cache_config.memcached.expiration | string | `"1h"` |  |
 | config.chunk_store.chunk_cache_config.memcached_client.timeout | string | `"1s"` |  |
-| config.chunk_store.max_look_back_period | string | `"0s"` |  |
 | config.distributor.pool.health_check_ingesters | bool | `true` |  |
 | config.distributor.shard_by_all_labels | bool | `true` |  |
-| config.frontend.compress_responses | bool | `true` |  |
 | config.frontend.log_queries_longer_than | string | `"10s"` |  |
 | config.ingester.lifecycler.final_sleep | string | `"0s"` |  |
 | config.ingester.lifecycler.join_after | string | `"0s"` |  |
@@ -242,8 +254,10 @@ data:
 | config.ingester_client.grpc_client_config.max_recv_msg_size | int | `104857600` |  |
 | config.ingester_client.grpc_client_config.max_send_msg_size | int | `104857600` |  |
 | config.limits.enforce_metric_name | bool | `false` |  |
+| config.limits.max_query_lookback | string | `"0s"` |  |
 | config.limits.reject_old_samples | bool | `true` |  |
 | config.limits.reject_old_samples_max_age | string | `"168h"` |  |
+| config.memberlist.bind_port | int | `7946` |  |
 | config.memberlist.join_members | list | `[]` |  |
 | config.querier.active_query_tracker_dir | string | `"/data/cortex/querier"` |  |
 | config.querier.query_ingesters_within | string | `"12h"` |  |
@@ -281,7 +295,7 @@ data:
 | config.table_manager.retention_period | string | `"0s"` |  |
 | configs.affinity | object | `{}` |  |
 | configs.annotations | object | `{}` |  |
-| configs.enabled | bool | `true` |  |
+| configs.enabled | bool | `false` |  |
 | configs.env | list | `[]` |  |
 | configs.extraArgs | object | `{}` |  |
 | configs.extraContainers | list | `[]` |  |
@@ -291,22 +305,24 @@ data:
 | configs.initContainers | list | `[]` |  |
 | configs.livenessProbe.httpGet.path | string | `"/ready"` |  |
 | configs.livenessProbe.httpGet.port | string | `"http-metrics"` |  |
-| configs.livenessProbe.initialDelaySeconds | int | `45` |  |
 | configs.nodeSelector | object | `{}` |  |
 | configs.persistence.subPath | string | `nil` |  |
 | configs.podAnnotations."prometheus.io/port" | string | `"http-metrics"` |  |
 | configs.podAnnotations."prometheus.io/scrape" | string | `"true"` |  |
-| configs.podDisruptionBudget | object | `{}` |  |
+| configs.podDisruptionBudget.maxUnavailable | int | `1` |  |
 | configs.podLabels | object | `{}` |  |
 | configs.readinessProbe.httpGet.path | string | `"/ready"` |  |
 | configs.readinessProbe.httpGet.port | string | `"http-metrics"` |  |
-| configs.readinessProbe.initialDelaySeconds | int | `45` |  |
 | configs.replicas | int | `1` |  |
 | configs.resources | object | `{}` |  |
 | configs.securityContext | object | `{}` |  |
 | configs.service.annotations | object | `{}` |  |
 | configs.service.labels | object | `{}` |  |
+| configs.serviceMonitor.additionalLabels | object | `{}` |  |
 | configs.serviceMonitor.enabled | bool | `false` |  |
+| configs.startupProbe.failureThreshold | int | `10` |  |
+| configs.startupProbe.httpGet.path | string | `"/ready"` |  |
+| configs.startupProbe.httpGet.port | string | `"http-metrics"` |  |
 | configs.strategy.rollingUpdate.maxSurge | int | `0` |  |
 | configs.strategy.rollingUpdate.maxUnavailable | int | `1` |  |
 | configs.strategy.type | string | `"RollingUpdate"` |  |
@@ -332,22 +348,24 @@ data:
 | distributor.initContainers | list | `[]` |  |
 | distributor.livenessProbe.httpGet.path | string | `"/ready"` |  |
 | distributor.livenessProbe.httpGet.port | string | `"http-metrics"` |  |
-| distributor.livenessProbe.initialDelaySeconds | int | `45` |  |
 | distributor.nodeSelector | object | `{}` |  |
 | distributor.persistence.subPath | string | `nil` |  |
 | distributor.podAnnotations."prometheus.io/port" | string | `"http-metrics"` |  |
 | distributor.podAnnotations."prometheus.io/scrape" | string | `"true"` |  |
-| distributor.podDisruptionBudget | object | `{}` |  |
+| distributor.podDisruptionBudget.maxUnavailable | int | `1` |  |
 | distributor.podLabels | object | `{}` |  |
 | distributor.readinessProbe.httpGet.path | string | `"/ready"` |  |
 | distributor.readinessProbe.httpGet.port | string | `"http-metrics"` |  |
-| distributor.readinessProbe.initialDelaySeconds | int | `45` |  |
 | distributor.replicas | int | `2` |  |
 | distributor.resources | object | `{}` |  |
 | distributor.securityContext | object | `{}` |  |
 | distributor.service.annotations | object | `{}` |  |
 | distributor.service.labels | object | `{}` |  |
+| distributor.serviceMonitor.additionalLabels | object | `{}` |  |
 | distributor.serviceMonitor.enabled | bool | `false` |  |
+| distributor.startupProbe.failureThreshold | int | `10` |  |
+| distributor.startupProbe.httpGet.path | string | `"/ready"` |  |
+| distributor.startupProbe.httpGet.port | string | `"http-metrics"` |  |
 | distributor.strategy.rollingUpdate.maxSurge | int | `0` |  |
 | distributor.strategy.rollingUpdate.maxUnavailable | int | `1` |  |
 | distributor.strategy.type | string | `"RollingUpdate"` |  |
@@ -357,7 +375,7 @@ data:
 | externalConfigVersion | string | `"0"` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | image.repository | string | `"quay.io/cortexproject/cortex"` |  |
-| image.tag | string | `"v1.7.0"` |  |
+| image.tag | string | `"v1.9.0"` |  |
 | ingester.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].podAffinityTerm.labelSelector.matchExpressions[0].key | string | `"target"` |  |
 | ingester.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].podAffinityTerm.labelSelector.matchExpressions[0].operator | string | `"In"` |  |
 | ingester.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].podAffinityTerm.labelSelector.matchExpressions[0].values[0] | string | `"ingester"` |  |
@@ -371,14 +389,9 @@ data:
 | ingester.extraVolumeMounts | list | `[]` |  |
 | ingester.extraVolumes | list | `[]` |  |
 | ingester.initContainers | list | `[]` |  |
-| ingester.livenessProbe.failureThreshold | int | `20` |  |
 | ingester.livenessProbe.httpGet.path | string | `"/ready"` |  |
 | ingester.livenessProbe.httpGet.port | string | `"http-metrics"` |  |
 | ingester.livenessProbe.httpGet.scheme | string | `"HTTP"` |  |
-| ingester.livenessProbe.initialDelaySeconds | int | `180` |  |
-| ingester.livenessProbe.periodSeconds | int | `30` |  |
-| ingester.livenessProbe.successThreshold | int | `1` |  |
-| ingester.livenessProbe.timeoutSeconds | int | `1` |  |
 | ingester.nodeSelector | object | `{}` |  |
 | ingester.persistence.subPath | string | `nil` |  |
 | ingester.persistentVolume.accessModes[0] | string | `"ReadWriteOnce"` |  |
@@ -388,17 +401,23 @@ data:
 | ingester.persistentVolume.subPath | string | `""` |  |
 | ingester.podAnnotations."prometheus.io/port" | string | `"http-metrics"` |  |
 | ingester.podAnnotations."prometheus.io/scrape" | string | `"true"` |  |
-| ingester.podDisruptionBudget | object | `{}` |  |
+| ingester.podDisruptionBudget.maxUnavailable | int | `1` |  |
 | ingester.podLabels | object | `{}` |  |
 | ingester.readinessProbe.httpGet.path | string | `"/ready"` |  |
 | ingester.readinessProbe.httpGet.port | string | `"http-metrics"` |  |
-| ingester.readinessProbe.initialDelaySeconds | int | `60` |  |
 | ingester.replicas | int | `3` |  |
 | ingester.resources | object | `{}` |  |
 | ingester.securityContext | object | `{}` |  |
 | ingester.service.annotations | object | `{}` |  |
 | ingester.service.labels | object | `{}` |  |
+| ingester.serviceMonitor.additionalLabels | object | `{}` |  |
 | ingester.serviceMonitor.enabled | bool | `false` |  |
+| ingester.startupProbe.failureThreshold | int | `60` |  |
+| ingester.startupProbe.httpGet.path | string | `"/ready"` |  |
+| ingester.startupProbe.httpGet.port | string | `"http-metrics"` |  |
+| ingester.startupProbe.httpGet.scheme | string | `"HTTP"` |  |
+| ingester.startupProbe.initialDelaySeconds | int | `120` |  |
+| ingester.startupProbe.periodSeconds | int | `30` |  |
 | ingester.statefulSet.enabled | bool | `false` |  |
 | ingester.statefulStrategy.type | string | `"RollingUpdate"` |  |
 | ingester.strategy.rollingUpdate.maxSurge | int | `0` |  |
@@ -406,8 +425,8 @@ data:
 | ingester.strategy.type | string | `"RollingUpdate"` |  |
 | ingester.terminationGracePeriodSeconds | int | `240` |  |
 | ingester.tolerations | list | `[]` |  |
-| ingress.annotations."kubernetes.io/ingress.class" | string | `"nginx"` |  |
-| ingress.enabled | bool | `true` |  |
+| ingress.annotations | string | `nil` |  |
+| ingress.enabled | bool | `false` |  |
 | ingress.hosts[0].host | string | `"chart-example.local"` |  |
 | ingress.hosts[0].paths[0] | string | `"/"` |  |
 | ingress.tls | list | `[]` |  |
@@ -467,6 +486,7 @@ data:
 | memcached.resources | object | `{}` |  |
 | nginx.affinity | object | `{}` |  |
 | nginx.annotations | object | `{}` |  |
+| nginx.config.client_max_body_size | string | `"1M"` |  |
 | nginx.config.dnsResolver | string | `"kube-dns.kube-system.svc.cluster.local"` |  |
 | nginx.config.setHeaders | object | `{}` |  |
 | nginx.enabled | bool | `true` |  |
@@ -479,27 +499,29 @@ data:
 | nginx.http_listen_port | int | `80` |  |
 | nginx.image.pullPolicy | string | `"IfNotPresent"` |  |
 | nginx.image.repository | string | `"nginx"` |  |
-| nginx.image.tag | float | `1.17` |  |
+| nginx.image.tag | float | `1.21` |  |
 | nginx.initContainers | list | `[]` |  |
 | nginx.livenessProbe.httpGet.path | string | `"/healthz"` |  |
 | nginx.livenessProbe.httpGet.port | string | `"http-metrics"` |  |
-| nginx.livenessProbe.initialDelaySeconds | int | `10` |  |
 | nginx.nodeSelector | object | `{}` |  |
 | nginx.persistence.subPath | string | `nil` |  |
 | nginx.podAnnotations."prometheus.io/port" | string | `"http-metrics"` |  |
 | nginx.podAnnotations."prometheus.io/scrape" | string | `""` |  |
-| nginx.podDisruptionBudget | object | `{}` |  |
+| nginx.podDisruptionBudget.maxUnavailable | int | `1` |  |
 | nginx.podLabels | object | `{}` |  |
 | nginx.readinessProbe.httpGet.path | string | `"/healthz"` |  |
 | nginx.readinessProbe.httpGet.port | string | `"http-metrics"` |  |
-| nginx.readinessProbe.initialDelaySeconds | int | `10` |  |
 | nginx.replicas | int | `2` |  |
 | nginx.resources | object | `{}` |  |
 | nginx.securityContext | object | `{}` |  |
 | nginx.service.annotations | object | `{}` |  |
 | nginx.service.labels | object | `{}` |  |
 | nginx.service.type | string | `"ClusterIP"` |  |
+| nginx.serviceMonitor.additionalLabels | object | `{}` |  |
 | nginx.serviceMonitor.enabled | bool | `false` |  |
+| nginx.startupProbe.failureThreshold | int | `10` |  |
+| nginx.startupProbe.httpGet.path | string | `"/healthz"` |  |
+| nginx.startupProbe.httpGet.port | string | `"http-metrics"` |  |
 | nginx.strategy.rollingUpdate.maxSurge | int | `0` |  |
 | nginx.strategy.rollingUpdate.maxUnavailable | int | `1` |  |
 | nginx.strategy.type | string | `"RollingUpdate"` |  |
@@ -520,22 +542,24 @@ data:
 | querier.initContainers | list | `[]` |  |
 | querier.livenessProbe.httpGet.path | string | `"/ready"` |  |
 | querier.livenessProbe.httpGet.port | string | `"http-metrics"` |  |
-| querier.livenessProbe.initialDelaySeconds | int | `45` |  |
 | querier.nodeSelector | object | `{}` |  |
 | querier.persistence.subPath | string | `nil` |  |
 | querier.podAnnotations."prometheus.io/port" | string | `"http-metrics"` |  |
 | querier.podAnnotations."prometheus.io/scrape" | string | `"true"` |  |
-| querier.podDisruptionBudget | object | `{}` |  |
+| querier.podDisruptionBudget.maxUnavailable | int | `1` |  |
 | querier.podLabels | object | `{}` |  |
 | querier.readinessProbe.httpGet.path | string | `"/ready"` |  |
 | querier.readinessProbe.httpGet.port | string | `"http-metrics"` |  |
-| querier.readinessProbe.initialDelaySeconds | int | `45` |  |
 | querier.replicas | int | `2` |  |
 | querier.resources | object | `{}` |  |
 | querier.securityContext | object | `{}` |  |
 | querier.service.annotations | object | `{}` |  |
 | querier.service.labels | object | `{}` |  |
+| querier.serviceMonitor.additionalLabels | object | `{}` |  |
 | querier.serviceMonitor.enabled | bool | `false` |  |
+| querier.startupProbe.failureThreshold | int | `10` |  |
+| querier.startupProbe.httpGet.path | string | `"/ready"` |  |
+| querier.startupProbe.httpGet.port | string | `"http-metrics"` |  |
 | querier.strategy.rollingUpdate.maxSurge | int | `0` |  |
 | querier.strategy.rollingUpdate.maxUnavailable | int | `1` |  |
 | querier.strategy.type | string | `"RollingUpdate"` |  |
@@ -556,33 +580,33 @@ data:
 | query_frontend.initContainers | list | `[]` |  |
 | query_frontend.livenessProbe.httpGet.path | string | `"/ready"` |  |
 | query_frontend.livenessProbe.httpGet.port | string | `"http-metrics"` |  |
-| query_frontend.livenessProbe.initialDelaySeconds | int | `45` |  |
 | query_frontend.nodeSelector | object | `{}` |  |
 | query_frontend.persistence.subPath | string | `nil` |  |
 | query_frontend.podAnnotations."prometheus.io/port" | string | `"http-metrics"` |  |
 | query_frontend.podAnnotations."prometheus.io/scrape" | string | `"true"` |  |
-| query_frontend.podDisruptionBudget | object | `{}` |  |
+| query_frontend.podDisruptionBudget.maxUnavailable | int | `1` |  |
 | query_frontend.podLabels | object | `{}` |  |
 | query_frontend.readinessProbe.httpGet.path | string | `"/ready"` |  |
 | query_frontend.readinessProbe.httpGet.port | string | `"http-metrics"` |  |
-| query_frontend.readinessProbe.initialDelaySeconds | int | `45` |  |
 | query_frontend.replicas | int | `2` |  |
 | query_frontend.resources | object | `{}` |  |
 | query_frontend.securityContext | object | `{}` |  |
 | query_frontend.service.annotations | object | `{}` |  |
 | query_frontend.service.labels | object | `{}` |  |
+| query_frontend.serviceMonitor.additionalLabels | object | `{}` |  |
 | query_frontend.serviceMonitor.enabled | bool | `false` |  |
+| query_frontend.startupProbe.failureThreshold | int | `10` |  |
+| query_frontend.startupProbe.httpGet.path | string | `"/ready"` |  |
+| query_frontend.startupProbe.httpGet.port | string | `"http-metrics"` |  |
 | query_frontend.strategy.rollingUpdate.maxSurge | int | `0` |  |
 | query_frontend.strategy.rollingUpdate.maxUnavailable | int | `1` |  |
 | query_frontend.strategy.type | string | `"RollingUpdate"` |  |
 | query_frontend.terminationGracePeriodSeconds | int | `180` |  |
 | query_frontend.tolerations | list | `[]` |  |
-| rbac.create | bool | `true` |  |
-| rbac.pspEnabled | bool | `true` |  |
 | ruler.affinity | object | `{}` |  |
-| ruler.enabled | bool | `true` |  |
 | ruler.annotations | object | `{}` |  |
 | ruler.directories | object | `{}` |  |
+| ruler.enabled | bool | `true` |  |
 | ruler.env | list | `[]` |  |
 | ruler.extraArgs | object | `{}` |  |
 | ruler.extraContainers | list | `[]` |  |
@@ -592,22 +616,24 @@ data:
 | ruler.initContainers | list | `[]` |  |
 | ruler.livenessProbe.httpGet.path | string | `"/ready"` |  |
 | ruler.livenessProbe.httpGet.port | string | `"http-metrics"` |  |
-| ruler.livenessProbe.initialDelaySeconds | int | `45` |  |
 | ruler.nodeSelector | object | `{}` |  |
 | ruler.persistence.subPath | string | `nil` |  |
 | ruler.podAnnotations."prometheus.io/port" | string | `"http-metrics"` |  |
 | ruler.podAnnotations."prometheus.io/scrape" | string | `"true"` |  |
-| ruler.podDisruptionBudget | object | `{}` |  |
+| ruler.podDisruptionBudget.maxUnavailable | int | `1` |  |
 | ruler.podLabels | object | `{}` |  |
 | ruler.readinessProbe.httpGet.path | string | `"/ready"` |  |
 | ruler.readinessProbe.httpGet.port | string | `"http-metrics"` |  |
-| ruler.readinessProbe.initialDelaySeconds | int | `45` |  |
 | ruler.replicas | int | `1` |  |
 | ruler.resources | object | `{}` |  |
 | ruler.securityContext | object | `{}` |  |
 | ruler.service.annotations | object | `{}` |  |
 | ruler.service.labels | object | `{}` |  |
+| ruler.serviceMonitor.additionalLabels | object | `{}` |  |
 | ruler.serviceMonitor.enabled | bool | `false` |  |
+| ruler.startupProbe.failureThreshold | int | `10` |  |
+| ruler.startupProbe.httpGet.path | string | `"/ready"` |  |
+| ruler.startupProbe.httpGet.port | string | `"http-metrics"` |  |
 | ruler.strategy.rollingUpdate.maxSurge | int | `0` |  |
 | ruler.strategy.rollingUpdate.maxUnavailable | int | `1` |  |
 | ruler.strategy.type | string | `"RollingUpdate"` |  |
@@ -629,14 +655,9 @@ data:
 | store_gateway.extraVolumeMounts | list | `[]` |  |
 | store_gateway.extraVolumes | list | `[]` |  |
 | store_gateway.initContainers | list | `[]` |  |
-| store_gateway.livenessProbe.failureThreshold | int | `20` |  |
 | store_gateway.livenessProbe.httpGet.path | string | `"/ready"` |  |
 | store_gateway.livenessProbe.httpGet.port | string | `"http-metrics"` |  |
 | store_gateway.livenessProbe.httpGet.scheme | string | `"HTTP"` |  |
-| store_gateway.livenessProbe.initialDelaySeconds | int | `180` |  |
-| store_gateway.livenessProbe.periodSeconds | int | `30` |  |
-| store_gateway.livenessProbe.successThreshold | int | `1` |  |
-| store_gateway.livenessProbe.timeoutSeconds | int | `1` |  |
 | store_gateway.nodeSelector | object | `{}` |  |
 | store_gateway.persistentVolume.accessModes[0] | string | `"ReadWriteOnce"` |  |
 | store_gateway.persistentVolume.annotations | object | `{}` |  |
@@ -645,17 +666,23 @@ data:
 | store_gateway.persistentVolume.subPath | string | `""` |  |
 | store_gateway.podAnnotations."prometheus.io/port" | string | `"http-metrics"` |  |
 | store_gateway.podAnnotations."prometheus.io/scrape" | string | `"true"` |  |
-| store_gateway.podDisruptionBudget | object | `{}` |  |
+| store_gateway.podDisruptionBudget.maxUnavailable | int | `1` |  |
 | store_gateway.podLabels | object | `{}` |  |
 | store_gateway.readinessProbe.httpGet.path | string | `"/ready"` |  |
 | store_gateway.readinessProbe.httpGet.port | string | `"http-metrics"` |  |
-| store_gateway.readinessProbe.initialDelaySeconds | int | `60` |  |
 | store_gateway.replicas | int | `1` |  |
 | store_gateway.resources | object | `{}` |  |
 | store_gateway.securityContext | object | `{}` |  |
 | store_gateway.service.annotations | object | `{}` |  |
 | store_gateway.service.labels | object | `{}` |  |
+| store_gateway.serviceMonitor.additionalLabels | object | `{}` |  |
 | store_gateway.serviceMonitor.enabled | bool | `false` |  |
+| store_gateway.startupProbe.failureThreshold | int | `60` |  |
+| store_gateway.startupProbe.httpGet.path | string | `"/ready"` |  |
+| store_gateway.startupProbe.httpGet.port | string | `"http-metrics"` |  |
+| store_gateway.startupProbe.httpGet.scheme | string | `"HTTP"` |  |
+| store_gateway.startupProbe.initialDelaySeconds | int | `120` |  |
+| store_gateway.startupProbe.periodSeconds | int | `30` |  |
 | store_gateway.strategy.type | string | `"RollingUpdate"` |  |
 | store_gateway.terminationGracePeriodSeconds | int | `240` |  |
 | store_gateway.tolerations | list | `[]` |  |
@@ -670,22 +697,24 @@ data:
 | table_manager.initContainers | list | `[]` |  |
 | table_manager.livenessProbe.httpGet.path | string | `"/ready"` |  |
 | table_manager.livenessProbe.httpGet.port | string | `"http-metrics"` |  |
-| table_manager.livenessProbe.initialDelaySeconds | int | `45` |  |
 | table_manager.nodeSelector | object | `{}` |  |
 | table_manager.persistence.subPath | string | `nil` |  |
 | table_manager.podAnnotations."prometheus.io/port" | string | `"http-metrics"` |  |
 | table_manager.podAnnotations."prometheus.io/scrape" | string | `"true"` |  |
-| table_manager.podDisruptionBudget | object | `{}` |  |
+| table_manager.podDisruptionBudget.maxUnavailable | int | `1` |  |
 | table_manager.podLabels | object | `{}` |  |
 | table_manager.readinessProbe.httpGet.path | string | `"/ready"` |  |
 | table_manager.readinessProbe.httpGet.port | string | `"http-metrics"` |  |
-| table_manager.readinessProbe.initialDelaySeconds | int | `45` |  |
 | table_manager.replicas | int | `1` |  |
 | table_manager.resources | object | `{}` |  |
 | table_manager.securityContext | object | `{}` |  |
 | table_manager.service.annotations | object | `{}` |  |
 | table_manager.service.labels | object | `{}` |  |
+| table_manager.serviceMonitor.additionalLabels | object | `{}` |  |
 | table_manager.serviceMonitor.enabled | bool | `false` |  |
+| table_manager.startupProbe.failureThreshold | int | `10` |  |
+| table_manager.startupProbe.httpGet.path | string | `"/ready"` |  |
+| table_manager.startupProbe.httpGet.port | string | `"http-metrics"` |  |
 | table_manager.strategy.rollingUpdate.maxSurge | int | `0` |  |
 | table_manager.strategy.rollingUpdate.maxUnavailable | int | `1` |  |
 | table_manager.strategy.type | string | `"RollingUpdate"` |  |
