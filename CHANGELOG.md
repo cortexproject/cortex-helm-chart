@@ -2,6 +2,28 @@
 
 ## master / unreleased
 
+## 0.5.0 / 2021-06-08
+
+* [CHANGE] **Labels has been updated to latest best practices**. This means that **you cannot do a rolling update from an older version of this chart**. Either change the labels of your existing deployment by hand to make the transition as seamless as possible or uninstall the old release and install the new release with a short downtime. #144
+* [CHANGE] Minimum Kubernetes Version of this Chart is now 1.19 #144
+* [CHANGE] A new dedicated service is now available for the memberlist. Check `config.memberlist.join_members` in the default `values.yaml` for more information. #144
+* [CHANGE] Ingress is now disabled by default. You can re-enable it by setting `ingress.enabled` to `true` #144
+* [CHANGE] Configs is now disabled by default. You can re-enable it by setting `configs.enabled` to `true` #144
+* [CHANGE] PodDisruptionBudget is now enabled by default for all microservices once you have more than 1 replicas #144
+* [ENHANCEMENT] startupProbe has been added to all Pods and the default values for `livenessProbe` and `readinessProbe` has been adjusted #144
+* [ENHANCEMENT] You can now disable the alertmanager and ruler deployment by setting `ruler.enabled` or `alertmanager.enabled` to `false` #144
+* [ENHANCEMENT] Rules for the ruler can now be provisioned via values. Check `ruler.directories` in the default `values.yaml` for more information. #144
+* [ENHANCEMENT] Expose `client_max_body_size` config for nginx max request body size #137
+* [ENHANCEMENT] Adding option to add custom headers (ex. X-Scope-OrgID) to NGINX from values.yaml (key `nginx.config.setHeaders`). #127
+* [ENHANCEMENT] Headless service for distributor to allow GRPC load balancing #148
+* [BUGFIX] Fixed `priorityClassName` in alertmanager deployment configuration. #155
+* [BUGFIX] Replacing deprecated (in Cortex 1.9) configuration with appropriate replacements (max_look_back_period -> max_query_lookback & compress_responses -> response_compression_enabled). #154
+* [BUGFIX] Added missing ServiceMonitors `additionalLabels` placeholders in `values.yaml`. #146
+
+## 0.4.1 / 2021-03-22
+
+* [BUGFIX] Fix dependencies in charts dir to reflect recent update in 0.4.0 #139
+
 ## 0.4.0 / 2021-03-01
 
 * [CHANGE] Resource requests and limits have been removed from the values.yaml file. The default resources assigned will be based on the particular k8s cluster configuration, if they are not overridden. #112
@@ -16,11 +38,11 @@
 * [ENHANCEMENT] Improved memcached configuration template, with support for both chunks & block storage caches. #92
 * [ENHANCEMENT] Update apiVersion: networking.k8s.io/v1beta1 -> networking.k8s.io/v1 for Kubernetes versions 1.19+  #94
 * [ENHANCEMENT] Service Monitors and Compactor Service #68, #80
-* [ENHANCEMENT] Updated default replication factor to match documentation 
+* [ENHANCEMENT] Updated default replication factor to match documentation #102
 * [BUGFIX] Update repository URL for memcache dependency charts. #96
 * [BUGFIX] nginx config using non-default clusterDomain #78
-* [BUGFIX] Add cluster DNS domain value #63 
-* [BUGFIX] Fix grpc port for querier #71 
+* [BUGFIX] Add cluster DNS domain value #63
+* [BUGFIX] Fix grpc port for querier #71
 
 ## 0.2.0 / 2020-10-25
 
