@@ -125,7 +125,6 @@ data:
 
 ```
 
-## Chart Dependencies
 ## Requirements
 
 Kubernetes: `^1.19.0-0`
