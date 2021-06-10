@@ -1518,18 +1518,6 @@ sidecar:
       runAsUser: 0
     # running the sidecar will also run as root
     # provider configuration that lets cortex manage the rules
-    provider:
-      # name of the provider, should be unique
-      name: sidecarProvider
-      # orgid as configured in grafana
-      orgid: 1
-      # folder in which the rules should be imported in cortex
-      folder: ''
-      # type of the provider
-      type: file
-      # disableDelete to activate a import-only behaviour
-      disableDelete: false
-      allowUiUpdates: false
   alertmanager:
     enabled: false
     SCProvider: true
@@ -1542,10 +1530,3 @@ sidecar:
     folderAnnotation: null
     securityContext:
       runAsUser: 0
-    provider:
-      name: sidecarProvider
-      orgid: 1
-      folder: ''
-      type: file
-      disableDelete: false
-      allowUiUpdates: false
