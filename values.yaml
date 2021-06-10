@@ -1497,7 +1497,6 @@ sidecar:
   enableUniqueFilenames: false
   rules:
     enabled: false
-    SCProvider: true
     # label that the configmaps with rules are marked with
     label: cortex_rules
     watchMethod: null
@@ -1520,7 +1519,6 @@ sidecar:
     # provider configuration that lets cortex manage the rules
   alertmanager:
     enabled: false
-    SCProvider: true
     label: cortex_alertmanager
     watchMethod: null
     labelValue: null
