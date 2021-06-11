@@ -108,6 +108,8 @@ kind: ConfigMap
 metadata:
   annotations:
     k8s-sidecar-target-directory: /tmp/rules/fake
+  name: rules-cortex-9f99md47tc
+  namespace: cortex-rules
 apiVersion: v1
 data:
   fake.yaml: |-
