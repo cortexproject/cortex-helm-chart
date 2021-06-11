@@ -370,7 +370,7 @@ distributor:
           podAffinityTerm:
             labelSelector:
               matchExpressions:
-                - key: target
+                - key: app.kubernetes.io/component
                   operator: In
                   values:
                     - distributor
@@ -460,7 +460,7 @@ ingester:
           podAffinityTerm:
             labelSelector:
               matchExpressions:
-                - key: target
+                - key: app.kubernetes.io/component
                   operator: In
                   values:
                     - ingester
@@ -681,7 +681,7 @@ querier:
           podAffinityTerm:
             labelSelector:
               matchExpressions:
-                - key: target
+                - key: app.kubernetes.io/component
                   operator: In
                   values:
                     - querier
@@ -765,7 +765,7 @@ query_frontend:
           podAffinityTerm:
             labelSelector:
               matchExpressions:
-                - key: target
+                - key: app.kubernetes.io/component
                   operator: In
                   values:
                     - query-frontend
@@ -1079,7 +1079,7 @@ store_gateway:
           podAffinityTerm:
             labelSelector:
               matchExpressions:
-                - key: target
+                - key: app.kubernetes.io/component
                   operator: In
                   values:
                     - store-gateway
@@ -1199,7 +1199,7 @@ compactor:
           podAffinityTerm:
             labelSelector:
               matchExpressions:
-                - key: target
+                - key: app.kubernetes.io/component
                   operator: In
                   values:
                     - compactor
