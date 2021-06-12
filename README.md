@@ -108,6 +108,9 @@ kind: ConfigMap
 metadata:
   annotations:
     k8s-sidecar-target-directory: /tmp/rules/fake
+  labels:
+    # Label cortex_rules must exist unless overridden by sidecar.rules.label
+    cortex_rules: "1"
   name: rules-cortex-9f99md47tc
   namespace: cortex-rules
 apiVersion: v1
