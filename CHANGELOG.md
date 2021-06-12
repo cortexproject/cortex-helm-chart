@@ -1,6 +1,7 @@
 # Changelog
 
 ## master / unreleased
+* [CHANGE] Removed dnssrvnoa resolution from block memcached (probably oversight) and moved back to simple dns resolution
 * [ENHANCEMENT] Enable/Disable security & container security context #158
 * [BUGFIX] Fixed the default label used in pod affinity expression #162
 * [BUGFIX] Fix label and annotation overrides for services (thanks @kwangil-ha)
