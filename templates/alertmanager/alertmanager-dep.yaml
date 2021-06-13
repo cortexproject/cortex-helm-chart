@@ -38,8 +38,9 @@ spec:
     {{- if .Values.alertmanager.priorityClassName }}
       priorityClassName: {{ .Values.alertmanager.priorityClassName }}
     {{- end }}
-      securityContext:
-        {{- toYaml .Values.alertmanager.securityContext | nindent 8 }}
+      {{- if .Values.alertmanager.securityContext.enabled }}
+      securityContext: {{- omit .Values.alertmanager.securityContext "enabled" | toYaml | nindent 8 }}
+      {{- end }}
       initContainers:
         {{- toYaml .Values.alertmanager.initContainers | nindent 8 }}
       {{- if .Values.image.pullSecrets }}
@@ -85,8 +86,9 @@ spec:
             {{- toYaml .Values.alertmanager.readinessProbe | nindent 12 }}
           resources:
             {{- toYaml .Values.alertmanager.resources | nindent 12 }}
-          securityContext:
-            readOnlyRootFilesystem: true
+          {{- if .Values.alertmanager.containerSecurityContext.enabled }}
+          securityContext: {{- omit .Values.alertmanager.containerSecurityContext "enabled" | toYaml | nindent 12 }}
+          {{- end }}
           env:
             {{- if .Values.alertmanager.env }}
               {{- toYaml .Values.alertmanager.env | nindent 12 }}

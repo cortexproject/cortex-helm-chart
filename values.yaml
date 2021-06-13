@@ -271,6 +271,10 @@ alertmanager:
     # runAsNonRoot: true
     # runAsUser: 10001
 
+  containerSecurityContext:
+    enabled: true
+    readOnlyRootFilesystem: true
+
   ## Tolerations for pod assignment
   ## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
   tolerations: []
@@ -395,6 +399,10 @@ distributor:
       port: http-metrics
 
   securityContext: {}
+
+  containerSecurityContext:
+    enabled: true
+    readOnlyRootFilesystem: true
 
   strategy:
     type: RollingUpdate
@@ -529,6 +537,10 @@ ingester:
 
   securityContext: {}
 
+  containerSecurityContext:
+    enabled: true
+    readOnlyRootFilesystem: true
+
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -603,6 +615,10 @@ ruler:
       port: http-metrics
 
   securityContext: {}
+
+  containerSecurityContext:
+    enabled: true
+    readOnlyRootFilesystem: true
 
   strategy:
     type: RollingUpdate
@@ -707,6 +723,10 @@ querier:
 
   securityContext: {}
 
+  containerSecurityContext:
+    enabled: true
+    readOnlyRootFilesystem: true
+
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -790,6 +810,9 @@ query_frontend:
       port: http-metrics
 
   securityContext: {}
+  containerSecurityContext:
+    enabled: true
+    readOnlyRootFilesystem: true
 
   strategy:
     type: RollingUpdate
@@ -863,6 +886,10 @@ table_manager:
 
   securityContext: {}
 
+  containerSecurityContext:
+    enabled: true
+    readOnlyRootFilesystem: true
+
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -935,6 +962,10 @@ configs:
       port: http-metrics
 
   securityContext: {}
+
+  containerSecurityContext:
+    enabled: true
+    readOnlyRootFilesystem: true
 
   strategy:
     type: RollingUpdate
@@ -1020,6 +1051,10 @@ nginx:
       port: http-metrics
 
   securityContext: {}
+
+  containerSecurityContext:
+    enabled: true
+    readOnlyRootFilesystem: false
 
   strategy:
     type: RollingUpdate
@@ -1143,6 +1178,10 @@ store_gateway:
 
   securityContext: {}
 
+  containerSecurityContext:
+    enabled: true
+    readOnlyRootFilesystem: true
+
   strategy:
     type: RollingUpdate
 
@@ -1262,6 +1301,9 @@ compactor:
       port: http-metrics
 
   securityContext: {}
+  containerSecurityContext:
+    enabled: true
+    readOnlyRootFilesystem: true
 
   strategy:
     type: RollingUpdate

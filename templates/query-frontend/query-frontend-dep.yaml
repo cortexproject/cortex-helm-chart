@@ -34,8 +34,9 @@ spec:
     {{- if .Values.query_frontend.priorityClassName }}
       priorityClassName: {{ .Values.query_frontend.priorityClassName }}
     {{- end }}
-      securityContext:
-        {{- toYaml .Values.query_frontend.securityContext | nindent 8 }}
+      {{- if .Values.query_frontend.securityContext.enabled }}
+      securityContext: {{- omit .Values.query_frontend.securityContext "enabled" | toYaml | nindent 8 }}
+      {{- end }}
       initContainers:
         {{- toYaml .Values.query_frontend.initContainers | nindent 8 }}
       {{- if .Values.image.pullSecrets }}
@@ -76,8 +77,9 @@ spec:
             {{- toYaml .Values.query_frontend.readinessProbe | nindent 12 }}
           resources:
             {{- toYaml .Values.query_frontend.resources | nindent 12 }}
-          securityContext:
-            readOnlyRootFilesystem: true
+          {{- if .Values.query_frontend.containerSecurityContext.enabled }}
+          securityContext: {{- omit .Values.query_frontend.containerSecurityContext "enabled" | toYaml | nindent 12 }}
+          {{- end }}
           env:
             {{- if .Values.query_frontend.env }}
               {{- toYaml .Values.query_frontend.env | nindent 12 }}

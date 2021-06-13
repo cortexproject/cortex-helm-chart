@@ -36,8 +36,9 @@ spec:
     {{- if .Values.distributor.priorityClassName }}
       priorityClassName: {{ .Values.distributor.priorityClassName }}
     {{- end }}
-      securityContext:
-        {{- toYaml .Values.distributor.securityContext | nindent 8 }}
+      {{- if .Values.distributor.securityContext.enabled }}
+      securityContext: {{- omit .Values.distributor.securityContext "enabled" | toYaml | nindent 8 }}
+      {{- end }}
       initContainers:
         {{- toYaml .Values.distributor.initContainers | nindent 8 }}
       {{- if .Values.image.pullSecrets }}
@@ -80,8 +81,9 @@ spec:
             {{- toYaml .Values.distributor.readinessProbe | nindent 12 }}
           resources:
             {{- toYaml .Values.distributor.resources | nindent 12 }}
-          securityContext:
-            readOnlyRootFilesystem: true
+          {{- if .Values.distributor.containerSecurityContext.enabled }}
+          securityContext: {{- omit .Values.distributor.containerSecurityContext "enabled" | toYaml | nindent 12 }}
+          {{- end }}
           env:
             {{- if .Values.distributor.env }}
               {{- toYaml .Values.distributor.env | nindent 12 }}
