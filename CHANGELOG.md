@@ -1,8 +1,8 @@
 # Changelog
 
 ## master / unreleased
-* [BUGFIX] Fixed the default label used in pod affinity expression #162
 * [ENHANCEMENT] Enable/Disable security & container security context #158
+* [BUGFIX] Fixed the default label used in pod affinity expression #162
 
 ## 0.5.0 / 2021-06-08
 
