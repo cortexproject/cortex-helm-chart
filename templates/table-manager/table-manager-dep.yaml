@@ -78,7 +78,7 @@ spec:
           resources:
             {{- toYaml .Values.table_manager.resources | nindent 12 }}
           {{- if .Values.table_manager.containerSecurityContext.enabled }}
-          securityContext: {{- omit .Values.table_manager.containerSecurityContext "enabled" | toYaml | nindent 8 }}
+          securityContext: {{- omit .Values.table_manager.containerSecurityContext "enabled" | toYaml | nindent 12 }}
           {{- end }}
           env:
             {{- if .Values.table_manager.env }}

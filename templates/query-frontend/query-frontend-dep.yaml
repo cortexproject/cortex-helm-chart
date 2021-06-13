@@ -78,7 +78,7 @@ spec:
           resources:
             {{- toYaml .Values.query_frontend.resources | nindent 12 }}
           {{- if .Values.query_frontend.containerSecurityContext.enabled }}
-          securityContext: {{- omit .Values.query_frontend.containerSecurityContext "enabled" | toYaml | nindent 8 }}
+          securityContext: {{- omit .Values.query_frontend.containerSecurityContext "enabled" | toYaml | nindent 12 }}
           {{- end }}
           env:
             {{- if .Values.query_frontend.env }}

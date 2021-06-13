@@ -100,7 +100,7 @@ spec:
           resources:
             {{- toYaml .Values.ruler.resources | nindent 12 }}
           {{- if .Values.ruler.containerSecurityContext.enabled }}
-          securityContext: {{- omit .Values.ruler.containerSecurityContext "enabled" | toYaml | nindent 8 }}
+          securityContext: {{- omit .Values.ruler.containerSecurityContext "enabled" | toYaml | nindent 12 }}
           {{- end }}
           env:
             {{- if .Values.ruler.env }}

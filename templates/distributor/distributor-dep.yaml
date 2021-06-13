@@ -82,7 +82,7 @@ spec:
           resources:
             {{- toYaml .Values.distributor.resources | nindent 12 }}
           {{- if .Values.distributor.containerSecurityContext.enabled }}
-          securityContext: {{- omit .Values.distributor.containerSecurityContext "enabled" | toYaml | nindent 8 }}
+          securityContext: {{- omit .Values.distributor.containerSecurityContext "enabled" | toYaml | nindent 12 }}
           {{- end }}
           env:
             {{- if .Values.distributor.env }}

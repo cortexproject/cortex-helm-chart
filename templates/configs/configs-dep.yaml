@@ -90,7 +90,7 @@ spec:
           resources:
             {{- toYaml .Values.configs.resources | nindent 12 }}
           {{- if .Values.configs.containerSecurityContext.enabled }}
-          securityContext: {{- omit .Values.configs.containerSecurityContext "enabled" | toYaml | nindent 8 }}
+          securityContext: {{- omit .Values.configs.containerSecurityContext "enabled" | toYaml | nindent 12 }}
           {{- end }}
           env:
             {{- if .Values.configs.env }}

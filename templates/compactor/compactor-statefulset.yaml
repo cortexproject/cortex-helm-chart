@@ -135,7 +135,7 @@ spec:
           resources:
             {{- toYaml .Values.compactor.resources | nindent 12 }}
           {{- if .Values.compactor.containerSecurityContext.enabled }}
-          securityContext: {{- omit .Values.compactor.containerSecurityContext "enabled" | toYaml | nindent 8 }}
+          securityContext: {{- omit .Values.compactor.containerSecurityContext "enabled" | toYaml | nindent 12 }}
           {{- end }}
           env:
             {{- if .Values.compactor.env }}

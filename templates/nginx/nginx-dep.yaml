@@ -71,7 +71,7 @@ spec:
           resources:
             {{- toYaml .Values.nginx.resources | nindent 12 }}
           {{- if .Values.nginx.containerSecurityContext.enabled }}
-          securityContext: {{- omit .Values.nginx.containerSecurityContext "enabled" | toYaml | nindent 8 }}
+          securityContext: {{- omit .Values.nginx.containerSecurityContext "enabled" | toYaml | nindent 12 }}
           {{- end }}
           env:
             {{- if .Values.nginx.env }}

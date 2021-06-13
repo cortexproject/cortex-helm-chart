@@ -87,7 +87,7 @@ spec:
           resources:
             {{- toYaml .Values.alertmanager.resources | nindent 12 }}
           {{- if .Values.alertmanager.containerSecurityContext.enabled }}
-          securityContext: {{- omit .Values.alertmanager.containerSecurityContext "enabled" | toYaml | nindent 8 }}
+          securityContext: {{- omit .Values.alertmanager.containerSecurityContext "enabled" | toYaml | nindent 12 }}
           {{- end }}
           env:
             {{- if .Values.alertmanager.env }}
