@@ -1054,7 +1054,7 @@ nginx:
 
   containerSecurityContext:
     enabled: true
-    readOnlyRootFilesystem: true
+    readOnlyRootFilesystem: false
 
   strategy:
     type: RollingUpdate
