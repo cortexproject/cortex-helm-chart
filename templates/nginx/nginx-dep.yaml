@@ -31,8 +31,9 @@ spec:
     {{- if .Values.nginx.priorityClassName }}
       priorityClassName: {{ .Values.nginx.priorityClassName }}
     {{- end }}
-      securityContext:
-        {{- toYaml .Values.nginx.securityContext | nindent 8 }}
+      {{- if .Values.nginx.securityContext.enabled }}
+      securityContext: {{- omit .Values.nginx.securityContext "enabled" | toYaml | nindent 8 }}
+      {{- end }}
       initContainers:
         {{- toYaml .Values.nginx.initContainers | nindent 8 }}
       {{- if .Values.image.pullSecrets }}
@@ -69,8 +70,9 @@ spec:
             {{- toYaml .Values.nginx.readinessProbe | nindent 12 }}
           resources:
             {{- toYaml .Values.nginx.resources | nindent 12 }}
-          securityContext:
-            readOnlyRootFilesystem: false
+          {{- if .Values.nginx.containerSecurityContext.enabled }}
+          securityContext: {{- omit .Values.nginx.containerSecurityContext "enabled" | toYaml | nindent 12 }}
+          {{- end }}
           env:
             {{- if .Values.nginx.env }}
               {{- toYaml .Values.nginx.env | nindent 12 }}
