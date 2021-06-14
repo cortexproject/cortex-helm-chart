@@ -4,11 +4,11 @@ metadata:
   name: {{ include "cortex.distributorFullname" . }}-headless
   labels:
     {{- include "cortex.distributorLabels" . | nindent 4 }}
-    {{- with .Values.distributor.labels }}
+    {{- with .Values.distributor.service.labels }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
   annotations:
-    {{- toYaml .Values.distributor.annotations | nindent 4 }}
+    {{- toYaml .Values.distributor.service.annotations | nindent 4 }}
 spec:
   type: ClusterIP
   clusterIP: None
