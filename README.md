@@ -77,11 +77,13 @@ Put ConfigMaps into the specified namespace, and they are automatically detected
 This feature is disabled by default. Here is a simple example:
 
 ```yaml
-sidecar:
-  rules:
+ruler:
+  sidecar:
     enabled: true
     searchNamespace: cortex-rules
-  alertmanager:
+
+alertmanager:
+  sidecar:
     enabled: true
     searchNamespace: cortex-alertmanager
 ```
@@ -109,7 +111,7 @@ metadata:
   annotations:
     k8s-sidecar-target-directory: /tmp/rules/fake
   labels:
-    # Label cortex_rules must exist unless overridden by sidecar.rules.label
+    # Label cortex_rules must exist unless overridden by ruler.sidecar.label
     cortex_rules: "1"
   name: rules-cortex-9f99md47tc
   namespace: cortex-rules

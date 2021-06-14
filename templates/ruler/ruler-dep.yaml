@@ -48,52 +48,52 @@ spec:
       {{- end}}
       {{- end }}
       containers:
-        {{- if .Values.sidecar.rules.enabled }}
+        {{- if .Values.ruler.sidecar.enabled }}
         - name: {{ template "cortex.name" . }}-sc-rules
-          {{- if .Values.sidecar.image.sha }}
-          image: "{{ .Values.sidecar.image.repository }}:{{ .Values.sidecar.image.tag }}@sha256:{{ .Values.sidecar.image.sha }}"
+          {{- if .Values.ruler.sidecar.image.sha }}
+          image: "{{ .Values.ruler.sidecar.image.repository }}:{{ .Values.ruler.sidecar.image.tag }}@sha256:{{ .Values.ruler.sidecar.image.sha }}"
           {{- else }}
-          image: "{{ .Values.sidecar.image.repository }}:{{ .Values.sidecar.image.tag }}"
+          image: "{{ .Values.ruler.sidecar.image.repository }}:{{ .Values.ruler.sidecar.image.tag }}"
           {{- end }}
-          imagePullPolicy: {{ .Values.sidecar.imagePullPolicy }}
+          imagePullPolicy: {{ .Values.ruler.sidecar.imagePullPolicy }}
           env:
-            {{- if .Values.sidecar.rules.watchMethod }}
+            {{- if .Values.ruler.sidecar.watchMethod }}
             - name: METHOD
-              value: {{ .Values.sidecar.rules.watchMethod }}
+              value: {{ .Values.ruler.sidecar.watchMethod }}
             {{ end }}
             - name: LABEL
-              value: "{{ .Values.sidecar.rules.label }}"
-            {{- if .Values.sidecar.rules.labelValue }}
+              value: "{{ .Values.ruler.sidecar.label }}"
+            {{- if .Values.ruler.sidecar.labelValue }}
             - name: LABEL_VALUE
-              value: {{ quote .Values.sidecar.rules.labelValue }}
+              value: {{ quote .Values.ruler.sidecar.labelValue }}
             {{- end }}
             - name: FOLDER
-              value: "{{ .Values.sidecar.rules.folder }}{{- with .Values.sidecar.rules.defaultFolderName }}/{{ . }}{{- end }}"
+              value: "{{ .Values.ruler.sidecar.folder }}{{- with .Values.ruler.sidecar.defaultFolderName }}/{{ . }}{{- end }}"
             - name: RESOURCE
               value: "both"
-            {{- if .Values.sidecar.enableUniqueFilenames }}
+            {{- if .Values.ruler.sidecar.enableUniqueFilenames }}
             - name: UNIQUE_FILENAMES
               value: "{{ .Values.sidecar.enableUniqueFilenames }}"
             {{- end }}
-            {{- if .Values.sidecar.rules.searchNamespace }}
+            {{- if .Values.ruler.sidecar.searchNamespace }}
             - name: NAMESPACE
-              value: "{{ .Values.sidecar.rules.searchNamespace }}"
+              value: "{{ .Values.ruler.sidecar.searchNamespace }}"
             {{- end }}
-            {{- if .Values.sidecar.skipTlsVerify }}
+            {{- if .Values.ruler.sidecar.skipTlsVerify }}
             - name: SKIP_TLS_VERIFY
               value: "{{ .Values.sidecar.skipTlsVerify }}"
             {{- end }}
-            {{- if .Values.sidecar.rules.folderAnnotation }}
+            {{- if .Values.ruler.sidecar.folderAnnotation }}
             - name: FOLDER_ANNOTATION
-              value: "{{ .Values.sidecar.rules.folderAnnotation }}"
+              value: "{{ .Values.ruler.sidecar.folderAnnotation }}"
           {{- end }}
           resources:
-            {{- toYaml .Values.sidecar.resources | nindent 12 }}
+            {{- toYaml .Values.ruler.sidecar.resources | nindent 12 }}
           securityContext:
-            {{- toYaml .Values.sidecar.rules.securityContext | nindent 12 }}
+            {{- toYaml .Values.ruler.sidecar.securityContext | nindent 12 }}
           volumeMounts:
             - name: sc-rules-volume
-              mountPath: {{ .Values.sidecar.rules.folder | quote }}
+              mountPath: {{ .Values.ruler.sidecar.folder | quote }}
         {{- end}}
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -119,9 +119,9 @@ spec:
             {{- if .Values.ruler.extraVolumeMounts }}
               {{ toYaml .Values.ruler.extraVolumeMounts | nindent 12}}
             {{- end }}
-            {{- if .Values.sidecar.rules.enabled }}
+            {{- if .Values.ruler.sidecar.enabled }}
             - name: sc-rules-volume
-              mountPath: {{ .Values.sidecar.rules.folder | quote }}
+              mountPath: {{ .Values.ruler.sidecar.folder | quote }}
             {{ end }}
             - name: config
               mountPath: /etc/cortex
@@ -185,7 +185,7 @@ spec:
 {{- end }}
         - name: storage
           emptyDir: {}
-{{- if .Values.sidecar.rules.enabled }}
+{{- if .Values.ruler.sidecar.enabled }}
         - name: sc-rules-volume
           emptyDir: {}
 {{- end }}
