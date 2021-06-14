@@ -5,11 +5,11 @@ metadata:
   name: {{ include "cortex.nginxFullname" . }}
   labels:
     {{- include "cortex.nginxLabels" . | nindent 4 }}
-    {{- with .Values.nginx.labels }}
+    {{- with .Values.nginx.service.labels }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
   annotations:
-    {{- toYaml .Values.nginx.annotations | nindent 4 }}
+    {{- toYaml .Values.nginx.service.annotations | nindent 4 }}
 spec:
   type: {{ .Values.nginx.service.type }}
   ports:

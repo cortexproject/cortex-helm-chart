@@ -178,6 +178,7 @@ Kubernetes: `^1.19.0-0`
 | alertmanager.replicas | int | `1` |  |
 | alertmanager.resources | object | `{}` |  |
 | alertmanager.securityContext | object | `{}` |  |
+| alertmanager.containerSecurityContext | object | `{ "enabled": true, "readOnlyRootFilesystem": true  }` |  |
 | alertmanager.service.annotations | object | `{}` |  |
 | alertmanager.service.labels | object | `{}` |  |
 | alertmanager.serviceMonitor.additionalLabels | object | `{}` |  |
@@ -225,6 +226,7 @@ Kubernetes: `^1.19.0-0`
 | compactor.replicas | int | `1` |  |
 | compactor.resources | object | `{}` |  |
 | compactor.securityContext | object | `{}` |  |
+| compactor.containerSecurityContext | object | `{ "enabled": true, "readOnlyRootFilesystem": true  }` |  |
 | compactor.service.annotations | object | `{}` |  |
 | compactor.service.labels | object | `{}` |  |
 | compactor.serviceMonitor.additionalLabels | object | `{}` |  |
@@ -322,6 +324,7 @@ Kubernetes: `^1.19.0-0`
 | configs.replicas | int | `1` |  |
 | configs.resources | object | `{}` |  |
 | configs.securityContext | object | `{}` |  |
+| configs.containerSecurityContext | object | `{ "enabled": true, "readOnlyRootFilesystem": true  }` |  |
 | configs.service.annotations | object | `{}` |  |
 | configs.service.labels | object | `{}` |  |
 | configs.serviceMonitor.additionalLabels | object | `{}` |  |
@@ -365,6 +368,7 @@ Kubernetes: `^1.19.0-0`
 | distributor.replicas | int | `2` |  |
 | distributor.resources | object | `{}` |  |
 | distributor.securityContext | object | `{}` |  |
+| distributor.containerSecurityContext | object | `{ "enabled": true, "readOnlyRootFilesystem": true  }` |  |
 | distributor.service.annotations | object | `{}` |  |
 | distributor.service.labels | object | `{}` |  |
 | distributor.serviceMonitor.additionalLabels | object | `{}` |  |
@@ -414,6 +418,7 @@ Kubernetes: `^1.19.0-0`
 | ingester.replicas | int | `3` |  |
 | ingester.resources | object | `{}` |  |
 | ingester.securityContext | object | `{}` |  |
+| ingester.containerSecurityContext | object | `{ "enabled": true, "readOnlyRootFilesystem": true  }` |  |
 | ingester.service.annotations | object | `{}` |  |
 | ingester.service.labels | object | `{}` |  |
 | ingester.serviceMonitor.additionalLabels | object | `{}` |  |
@@ -520,6 +525,7 @@ Kubernetes: `^1.19.0-0`
 | nginx.replicas | int | `2` |  |
 | nginx.resources | object | `{}` |  |
 | nginx.securityContext | object | `{}` |  |
+| nginx.containerSecurityContext | object | `{ "enabled": true, "readOnlyRootFilesystem": true  }` |  |
 | nginx.service.annotations | object | `{}` |  |
 | nginx.service.labels | object | `{}` |  |
 | nginx.service.type | string | `"ClusterIP"` |  |
@@ -559,6 +565,7 @@ Kubernetes: `^1.19.0-0`
 | querier.replicas | int | `2` |  |
 | querier.resources | object | `{}` |  |
 | querier.securityContext | object | `{}` |  |
+| querier.containerSecurityContext | object | `{ "enabled": true, "readOnlyRootFilesystem": true  }` |  |
 | querier.service.annotations | object | `{}` |  |
 | querier.service.labels | object | `{}` |  |
 | querier.serviceMonitor.additionalLabels | object | `{}` |  |
@@ -597,6 +604,7 @@ Kubernetes: `^1.19.0-0`
 | query_frontend.replicas | int | `2` |  |
 | query_frontend.resources | object | `{}` |  |
 | query_frontend.securityContext | object | `{}` |  |
+| query_frontend.containerSecurityContext | object | `{ "enabled": true, "readOnlyRootFilesystem": true  }` |  |
 | query_frontend.service.annotations | object | `{}` |  |
 | query_frontend.service.labels | object | `{}` |  |
 | query_frontend.serviceMonitor.additionalLabels | object | `{}` |  |
@@ -633,6 +641,7 @@ Kubernetes: `^1.19.0-0`
 | ruler.replicas | int | `1` |  |
 | ruler.resources | object | `{}` |  |
 | ruler.securityContext | object | `{}` |  |
+| ruler.containerSecurityContext | object | `{ "enabled": true, "readOnlyRootFilesystem": true  }` |  |
 | ruler.service.annotations | object | `{}` |  |
 | ruler.service.labels | object | `{}` |  |
 | ruler.serviceMonitor.additionalLabels | object | `{}` |  |
@@ -679,6 +688,7 @@ Kubernetes: `^1.19.0-0`
 | store_gateway.replicas | int | `1` |  |
 | store_gateway.resources | object | `{}` |  |
 | store_gateway.securityContext | object | `{}` |  |
+| store_gateway.containerSecurityContext | object | `{ "enabled": true, "readOnlyRootFilesystem": true  }` |  |
 | store_gateway.service.annotations | object | `{}` |  |
 | store_gateway.service.labels | object | `{}` |  |
 | store_gateway.serviceMonitor.additionalLabels | object | `{}` |  |
@@ -714,6 +724,7 @@ Kubernetes: `^1.19.0-0`
 | table_manager.replicas | int | `1` |  |
 | table_manager.resources | object | `{}` |  |
 | table_manager.securityContext | object | `{}` |  |
+| table_manager.containerSecurityContext | object | `{ "enabled": true, "readOnlyRootFilesystem": true  }` |  |
 | table_manager.service.annotations | object | `{}` |  |
 | table_manager.service.labels | object | `{}` |  |
 | table_manager.serviceMonitor.additionalLabels | object | `{}` |  |

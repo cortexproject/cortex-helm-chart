@@ -271,6 +271,10 @@ alertmanager:
     # runAsNonRoot: true
     # runAsUser: 10001
 
+  containerSecurityContext:
+    enabled: true
+    readOnlyRootFilesystem: true
+
   ## Tolerations for pod assignment
   ## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
   tolerations: []
@@ -398,7 +402,7 @@ distributor:
           podAffinityTerm:
             labelSelector:
               matchExpressions:
-                - key: target
+                - key: app.kubernetes.io/component
                   operator: In
                   values:
                     - distributor
@@ -423,6 +427,10 @@ distributor:
       port: http-metrics
 
   securityContext: {}
+
+  containerSecurityContext:
+    enabled: true
+    readOnlyRootFilesystem: true
 
   strategy:
     type: RollingUpdate
@@ -488,7 +496,7 @@ ingester:
           podAffinityTerm:
             labelSelector:
               matchExpressions:
-                - key: target
+                - key: app.kubernetes.io/component
                   operator: In
                   values:
                     - ingester
@@ -556,6 +564,10 @@ ingester:
       port: http-metrics
 
   securityContext: {}
+
+  containerSecurityContext:
+    enabled: true
+    readOnlyRootFilesystem: true
 
   strategy:
     type: RollingUpdate
@@ -631,6 +643,10 @@ ruler:
       port: http-metrics
 
   securityContext: {}
+
+  containerSecurityContext:
+    enabled: true
+    readOnlyRootFilesystem: true
 
   strategy:
     type: RollingUpdate
@@ -748,7 +764,7 @@ querier:
           podAffinityTerm:
             labelSelector:
               matchExpressions:
-                - key: target
+                - key: app.kubernetes.io/component
                   operator: In
                   values:
                     - querier
@@ -773,6 +789,10 @@ querier:
       port: http-metrics
 
   securityContext: {}
+
+  containerSecurityContext:
+    enabled: true
+    readOnlyRootFilesystem: true
 
   strategy:
     type: RollingUpdate
@@ -832,7 +852,7 @@ query_frontend:
           podAffinityTerm:
             labelSelector:
               matchExpressions:
-                - key: target
+                - key: app.kubernetes.io/component
                   operator: In
                   values:
                     - query-frontend
@@ -857,6 +877,9 @@ query_frontend:
       port: http-metrics
 
   securityContext: {}
+  containerSecurityContext:
+    enabled: true
+    readOnlyRootFilesystem: true
 
   strategy:
     type: RollingUpdate
@@ -930,6 +953,10 @@ table_manager:
 
   securityContext: {}
 
+  containerSecurityContext:
+    enabled: true
+    readOnlyRootFilesystem: true
+
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -1002,6 +1029,10 @@ configs:
       port: http-metrics
 
   securityContext: {}
+
+  containerSecurityContext:
+    enabled: true
+    readOnlyRootFilesystem: true
 
   strategy:
     type: RollingUpdate
@@ -1088,6 +1119,10 @@ nginx:
 
   securityContext: {}
 
+  containerSecurityContext:
+    enabled: true
+    readOnlyRootFilesystem: false
+
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -1146,7 +1181,7 @@ store_gateway:
           podAffinityTerm:
             labelSelector:
               matchExpressions:
-                - key: target
+                - key: app.kubernetes.io/component
                   operator: In
                   values:
                     - store-gateway
@@ -1210,6 +1245,10 @@ store_gateway:
 
   securityContext: {}
 
+  containerSecurityContext:
+    enabled: true
+    readOnlyRootFilesystem: true
+
   strategy:
     type: RollingUpdate
 
@@ -1266,7 +1305,7 @@ compactor:
           podAffinityTerm:
             labelSelector:
               matchExpressions:
-                - key: target
+                - key: app.kubernetes.io/component
                   operator: In
                   values:
                     - compactor
@@ -1329,6 +1368,9 @@ compactor:
       port: http-metrics
 
   securityContext: {}
+  containerSecurityContext:
+    enabled: true
+    readOnlyRootFilesystem: true
 
   strategy:
     type: RollingUpdate
