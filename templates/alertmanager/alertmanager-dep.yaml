@@ -96,7 +96,6 @@ spec:
           volumeMounts:
             - name: storage
               mountPath: "/data"
-              subPath: {{ .Values.alertmanager.persistence.subPath }}
         {{- end}}
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
