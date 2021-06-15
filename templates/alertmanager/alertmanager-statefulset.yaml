@@ -124,7 +124,7 @@ spec:
               value: "both"
             {{- if .Values.alertmanager.sidecar.enableUniqueFilenames }}
             - name: UNIQUE_FILENAMES
-              value: "{{ .Values.sidecar.enableUniqueFilenames }}"
+              value: "{{ .Values.alertmanager.sidecar.enableUniqueFilenames }}"
             {{- end }}
             {{- if .Values.alertmanager.sidecar.searchNamespace }}
             - name: NAMESPACE
@@ -132,7 +132,7 @@ spec:
             {{- end }}
             {{- if .Values.alertmanager.sidecar.skipTlsVerify }}
             - name: SKIP_TLS_VERIFY
-              value: "{{ .Values.sidecar.skipTlsVerify }}"
+              value: "{{ .Values.alertmanager.sidecar.skipTlsVerify }}"
             {{- end }}
             {{- if .Values.alertmanager.sidecar.folderAnnotation }}
             - name: FOLDER_ANNOTATION

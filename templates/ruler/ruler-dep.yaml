@@ -74,7 +74,7 @@ spec:
               value: "both"
             {{- if .Values.ruler.sidecar.enableUniqueFilenames }}
             - name: UNIQUE_FILENAMES
-              value: "{{ .Values.sidecar.enableUniqueFilenames }}"
+              value: "{{ .Values.ruler.sidecar.enableUniqueFilenames }}"
             {{- end }}
             {{- if .Values.ruler.sidecar.searchNamespace }}
             - name: NAMESPACE
@@ -82,7 +82,7 @@ spec:
             {{- end }}
             {{- if .Values.ruler.sidecar.skipTlsVerify }}
             - name: SKIP_TLS_VERIFY
-              value: "{{ .Values.sidecar.skipTlsVerify }}"
+              value: "{{ .Values.ruler.sidecar.skipTlsVerify }}"
             {{- end }}
             {{- if .Values.ruler.sidecar.folderAnnotation }}
             - name: FOLDER_ANNOTATION
