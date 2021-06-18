@@ -333,7 +333,7 @@ alertmanager:
 
   # Extra env variables to pass to the cortex container
   env: []
-  
+
   ## Sidecars that collect the configmaps with specified label and stores the included files them into the respective folders
   sidecar:
     image:
@@ -341,7 +341,7 @@ alertmanager:
       tag: 1.10.7
       sha: ""
     imagePullPolicy: IfNotPresent
-    resources: { }
+    resources: {}
     #   limits:
     #     cpu: 100m
     #     memory: 100Mi
@@ -683,7 +683,7 @@ ruler:
     #               severity: warning
     #             annotations:
     #               summary: High error rate
-  
+
   ## Sidecars that collect the configmaps with specified label and stores the included files them into the respective folders
   sidecar:
     image:
@@ -691,7 +691,7 @@ ruler:
       tag: 1.10.7
       sha: ""
     imagePullPolicy: IfNotPresent
-    resources: { }
+    resources: {}
     #   limits:
     #     cpu: 100m
     #     memory: 100Mi
