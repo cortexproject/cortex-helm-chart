@@ -27,4 +27,13 @@ spec:
     {{- if .Values.table_manager.serviceMonitor.scrapeTimeout }}
     scrapeTimeout: {{ .Values.table_manager.serviceMonitor.scrapeTimeout }}
     {{- end }}
+    honorLabels: true
+    {{- if .Values.table_manager.serviceMonitor.relabelings }}
+    relabelings:
+    {{- toYaml .Values.table_manager.serviceMonitor.relabelings | nindent 4 }}
+    {{- end }}
+    {{- if .Values.table_manager.serviceMonitor.metricRelabelings }}
+    metricRelabelings:
+    {{- toYaml .Values.table_manager.serviceMonitor.metricRelabelings | nindent 4 }}
+    {{- end }}
 {{- end }}
