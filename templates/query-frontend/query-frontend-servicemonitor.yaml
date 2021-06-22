@@ -27,7 +27,6 @@ spec:
     {{- if .Values.query_frontend.serviceMonitor.scrapeTimeout }}
     scrapeTimeout: {{ .Values.query_frontend.serviceMonitor.scrapeTimeout }}
     {{- end }}
-    honorLabels: true
     {{- if .Values.query_frontend.serviceMonitor.relabelings }}
     relabelings:
     {{- toYaml .Values.query_frontend.serviceMonitor.relabelings | nindent 4 }}

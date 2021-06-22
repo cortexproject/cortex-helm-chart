@@ -27,7 +27,6 @@ spec:
     {{- if .Values.ruler.serviceMonitor.scrapeTimeout }}
     scrapeTimeout: {{ .Values.ruler.serviceMonitor.scrapeTimeout }}
     {{- end }}
-    honorLabels: true
     {{- if .Values.ruler.serviceMonitor.relabelings }}
     relabelings:
     {{- toYaml .Values.ruler.serviceMonitor.relabelings | nindent 4 }}
