@@ -27,4 +27,12 @@ spec:
     {{- if .Values.compactor.serviceMonitor.scrapeTimeout }}
     scrapeTimeout: {{ .Values.compactor.serviceMonitor.scrapeTimeout }}
     {{- end }}
+    {{- if .Values.compactor.serviceMonitor.relabelings }}
+    relabelings:
+    {{- toYaml .Values.compactor.serviceMonitor.relabelings | nindent 4 }}
+    {{- end }}
+    {{- if .Values.compactor.serviceMonitor.metricRelabelings }}
+    metricRelabelings:
+    {{- toYaml .Values.compactor.serviceMonitor.metricRelabelings | nindent 4 }}
+    {{- end }}
 {{- end }}
