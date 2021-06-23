@@ -17,9 +17,6 @@ spec:
   clusterIP: None
   publishNotReadyAddresses: true
   ports:
-    - port: {{ .Values.config.server.http_listen_port }}
-      protocol: TCP
-      name: http-metrics
     - port: {{ $clusterPort }}
       protocol: TCP
       name: cluster
