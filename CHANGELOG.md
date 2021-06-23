@@ -2,7 +2,7 @@
 
 ## master / unreleased
 * [CHANGE] Removed dnssrvnoa resolution from block memcached (probably oversight) and moved back to simple dns resolution #164
-* [CHANGE] Removed http-metrics port from every headless service and added ClusterIP service with http-metrics port to every component who before only had an headless service before
+* [CHANGE] Removed http-metrics port from every headless service and added ClusterIP service with http-metrics port to every component who before only had an headless service before #169
 * [FEATURE] Support dynamic configuration of Ruler and AlertManager using sidecar #150
 * [ENHANCEMENT] Enable/Disable security & container security context #158
 * [ENHANCEMENT] ServiceMonitors: add options to configure metricRelabelings and relabelings #165
