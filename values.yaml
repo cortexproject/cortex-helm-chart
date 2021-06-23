@@ -37,6 +37,7 @@ serviceAccount:
   create: true
   name:
   annotations: {}
+  automountServiceAccountToken: true
 
 useExternalConfig: false
 externalConfigSecretName: 'secret-with-config.yaml'
