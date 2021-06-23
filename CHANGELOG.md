@@ -5,6 +5,7 @@
 * [FEATURE] Support dynamic configuration of Ruler and AlertManager using sidecar #150
 * [ENHANCEMENT] Enable/Disable security & container security context #158
 * [ENHANCEMENT] ServiceMonitors: add options to configure metricRelabelings and relabelings #165
+* [ENHANCEMENT] Support specification of whether service accounts should automount token by adding value for Cortex service account and upgrading memcached dependency to version which includes same change #142
 * [BUGFIX] Fixed the default label used in pod affinity expression #162
 * [BUGFIX] Fix label and annotation overrides for services (thanks @kwangil-ha) #164
 * [BUGFIX] Fix store gateway service name regression introduced in (#144) #166
