@@ -84,6 +84,11 @@ data:
           proxy_pass      http://{{ template "cortex.fullname" . }}-ruler.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.config.server.http_listen_port }}$request_uri;
         }
 
+        # Store Gateway
+        location ~ /store-gateway/.* {
+          proxy_pass      http://{{ template "cortex.fullname" . }}-store-gateway.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.config.server.http_listen_port }}$request_uri;
+        }
+        
         # Config Config
         location ~ /api/prom/configs/.* {
           proxy_pass      http://{{ template "cortex.fullname" . }}-configs.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.config.server.http_listen_port }}$request_uri;
