@@ -20,6 +20,7 @@ spec:
     - port: {{ $clusterPort }}
       protocol: TCP
       name: cluster
+      targetPort: cluster
   selector:
     {{- include "cortex.alertmanagerSelectorLabels" . | nindent 4 }}
 {{- end -}}
