@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "cortex.ingesterFullname" . }}-headless
+  name: {{ include "cortex.ingesterFullname" . }}
   labels:
     {{- include "cortex.ingesterLabels" . | nindent 4 }}
     {{- with .Values.ingester.service.labels }}
@@ -11,11 +11,10 @@ metadata:
     {{- toYaml .Values.ingester.service.annotations | nindent 4 }}
 spec:
   type: ClusterIP
-  clusterIP: None
   ports:
-    - port: {{ .Values.config.server.grpc_listen_port }}
+    - port: {{ .Values.config.server.http_listen_port }}
       protocol: TCP
-      name: grpc
-      targetPort: grpc
+      name: http-metrics
+      targetPort: http-metrics
   selector:
     {{- include "cortex.ingesterSelectorLabels" . | nindent 4 }}
