@@ -186,6 +186,9 @@ spec:
             - name: gossip
               containerPort: {{ .Values.config.memberlist.bind_port }}
               protocol: TCP
+            - name: cluster
+              containerPort: {{ $clusterPort }}
+              protocol: TCP
           startupProbe:
             {{- toYaml .Values.alertmanager.startupProbe | nindent 12 }}
           livenessProbe:
