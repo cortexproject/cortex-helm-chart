@@ -67,11 +67,12 @@ To upgrade Cortex use the following command:
 ```bash
   helm upgrade cortex -f my-cortex-values.yaml cortex-helm/cortex
 ```
+Note that it might be necessary to use `--reset-values` since some default values in the values.yaml might have changed or were removed.
 
 Source code can be found [here](https://cortexmetrics.io/)
 
-### Usage
-#### Rules and AlertManager configuration
+## Usage
+### Rules and AlertManager configuration
 Cortex can be configured to use a sidecar container in the Ruler and AlertManager to dynamically discover rules and AlertManager config/templates that are declared as ConfigMaps to allow easy and extensible configuration that avoids having to store state in the Cortex system itself (via config service, etc).
 Put ConfigMaps into the specified namespace, and they are automatically detected and added as files to the Ruler and/or AlertManager containers, both of which are polling for changes on the filesystem and will make the new configurations go live dynamically.
 This feature is disabled by default. Here is a simple example:
@@ -138,13 +139,13 @@ Kubernetes: `^1.19.0-0`
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://charts.bitnami.com/bitnami | memcached(memcached) | 5.5.1 |
-| https://charts.bitnami.com/bitnami | memcached-index-read(memcached) | 5.5.1 |
-| https://charts.bitnami.com/bitnami | memcached-index-write(memcached) | 5.5.1 |
-| https://charts.bitnami.com/bitnami | memcached-frontend(memcached) | 5.5.1 |
-| https://charts.bitnami.com/bitnami | memcached-blocks-index(memcached) | 5.5.1 |
-| https://charts.bitnami.com/bitnami | memcached-blocks(memcached) | 5.5.1 |
-| https://charts.bitnami.com/bitnami | memcached-blocks-metadata(memcached) | 5.5.1 |
+| https://charts.bitnami.com/bitnami | memcached(memcached) | 5.13.0 |
+| https://charts.bitnami.com/bitnami | memcached-index-read(memcached) | 5.13.0 |
+| https://charts.bitnami.com/bitnami | memcached-index-write(memcached) | 5.13.0 |
+| https://charts.bitnami.com/bitnami | memcached-frontend(memcached) | 5.13.0 |
+| https://charts.bitnami.com/bitnami | memcached-blocks-index(memcached) | 5.13.0 |
+| https://charts.bitnami.com/bitnami | memcached-blocks(memcached) | 5.13.0 |
+| https://charts.bitnami.com/bitnami | memcached-blocks-metadata(memcached) | 5.13.0 |
 
 ## Values
 
@@ -152,6 +153,8 @@ Kubernetes: `^1.19.0-0`
 |-----|------|---------|-------------|
 | alertmanager.affinity | object | `{}` |  |
 | alertmanager.annotations | object | `{}` |  |
+| alertmanager.containerSecurityContext.enabled | bool | `true` |  |
+| alertmanager.containerSecurityContext.readOnlyRootFilesystem | bool | `true` |  |
 | alertmanager.enabled | bool | `true` |  |
 | alertmanager.env | list | `[]` |  |
 | alertmanager.extraArgs | object | `{}` |  |
@@ -178,11 +181,27 @@ Kubernetes: `^1.19.0-0`
 | alertmanager.replicas | int | `1` |  |
 | alertmanager.resources | object | `{}` |  |
 | alertmanager.securityContext | object | `{}` |  |
-| alertmanager.containerSecurityContext | object | `{ "enabled": true, "readOnlyRootFilesystem": true  }` |  |
 | alertmanager.service.annotations | object | `{}` |  |
 | alertmanager.service.labels | object | `{}` |  |
 | alertmanager.serviceMonitor.additionalLabels | object | `{}` |  |
 | alertmanager.serviceMonitor.enabled | bool | `false` |  |
+| alertmanager.serviceMonitor.metricRelabelings | list | `[]` |  |
+| alertmanager.serviceMonitor.relabelings | list | `[]` |  |
+| alertmanager.sidecar.defaultFolderName | string | `nil` |  |
+| alertmanager.sidecar.enableUniqueFilenames | bool | `false` |  |
+| alertmanager.sidecar.enabled | bool | `false` |  |
+| alertmanager.sidecar.folder | string | `"/data"` |  |
+| alertmanager.sidecar.folderAnnotation | string | `nil` |  |
+| alertmanager.sidecar.image.repository | string | `"quay.io/kiwigrid/k8s-sidecar"` |  |
+| alertmanager.sidecar.image.sha | string | `""` |  |
+| alertmanager.sidecar.image.tag | string | `"1.10.7"` |  |
+| alertmanager.sidecar.imagePullPolicy | string | `"IfNotPresent"` |  |
+| alertmanager.sidecar.label | string | `"cortex_alertmanager"` |  |
+| alertmanager.sidecar.labelValue | string | `nil` |  |
+| alertmanager.sidecar.resources | object | `{}` |  |
+| alertmanager.sidecar.searchNamespace | string | `nil` |  |
+| alertmanager.sidecar.securityContext.runAsUser | int | `0` |  |
+| alertmanager.sidecar.watchMethod | string | `nil` |  |
 | alertmanager.startupProbe.failureThreshold | int | `10` |  |
 | alertmanager.startupProbe.httpGet.path | string | `"/ready"` |  |
 | alertmanager.startupProbe.httpGet.port | string | `"http-metrics"` |  |
@@ -194,12 +213,14 @@ Kubernetes: `^1.19.0-0`
 | alertmanager.terminationGracePeriodSeconds | int | `60` |  |
 | alertmanager.tolerations | list | `[]` |  |
 | clusterDomain | string | `"cluster.local"` |  |
-| compactor.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].podAffinityTerm.labelSelector.matchExpressions[0].key | string | `"target"` |  |
+| compactor.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].podAffinityTerm.labelSelector.matchExpressions[0].key | string | `"app.kubernetes.io/component"` |  |
 | compactor.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].podAffinityTerm.labelSelector.matchExpressions[0].operator | string | `"In"` |  |
 | compactor.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].podAffinityTerm.labelSelector.matchExpressions[0].values[0] | string | `"compactor"` |  |
 | compactor.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].podAffinityTerm.topologyKey | string | `"kubernetes.io/hostname"` |  |
 | compactor.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].weight | int | `100` |  |
 | compactor.annotations | object | `{}` |  |
+| compactor.containerSecurityContext.enabled | bool | `true` |  |
+| compactor.containerSecurityContext.readOnlyRootFilesystem | bool | `true` |  |
 | compactor.enabled | bool | `true` |  |
 | compactor.env | list | `[]` |  |
 | compactor.extraArgs | object | `{}` |  |
@@ -226,11 +247,12 @@ Kubernetes: `^1.19.0-0`
 | compactor.replicas | int | `1` |  |
 | compactor.resources | object | `{}` |  |
 | compactor.securityContext | object | `{}` |  |
-| compactor.containerSecurityContext | object | `{ "enabled": true, "readOnlyRootFilesystem": true  }` |  |
 | compactor.service.annotations | object | `{}` |  |
 | compactor.service.labels | object | `{}` |  |
 | compactor.serviceMonitor.additionalLabels | object | `{}` |  |
 | compactor.serviceMonitor.enabled | bool | `false` |  |
+| compactor.serviceMonitor.metricRelabelings | list | `[]` |  |
+| compactor.serviceMonitor.relabelings | list | `[]` |  |
 | compactor.startupProbe.failureThreshold | int | `60` |  |
 | compactor.startupProbe.httpGet.path | string | `"/ready"` |  |
 | compactor.startupProbe.httpGet.port | string | `"http-metrics"` |  |
@@ -303,6 +325,8 @@ Kubernetes: `^1.19.0-0`
 | config.table_manager.retention_period | string | `"0s"` |  |
 | configs.affinity | object | `{}` |  |
 | configs.annotations | object | `{}` |  |
+| configs.containerSecurityContext.enabled | bool | `true` |  |
+| configs.containerSecurityContext.readOnlyRootFilesystem | bool | `true` |  |
 | configs.enabled | bool | `false` |  |
 | configs.env | list | `[]` |  |
 | configs.extraArgs | object | `{}` |  |
@@ -324,11 +348,12 @@ Kubernetes: `^1.19.0-0`
 | configs.replicas | int | `1` |  |
 | configs.resources | object | `{}` |  |
 | configs.securityContext | object | `{}` |  |
-| configs.containerSecurityContext | object | `{ "enabled": true, "readOnlyRootFilesystem": true  }` |  |
 | configs.service.annotations | object | `{}` |  |
 | configs.service.labels | object | `{}` |  |
 | configs.serviceMonitor.additionalLabels | object | `{}` |  |
 | configs.serviceMonitor.enabled | bool | `false` |  |
+| configs.serviceMonitor.metricRelabelings | list | `[]` |  |
+| configs.serviceMonitor.relabelings | list | `[]` |  |
 | configs.startupProbe.failureThreshold | int | `10` |  |
 | configs.startupProbe.httpGet.path | string | `"/ready"` |  |
 | configs.startupProbe.httpGet.port | string | `"http-metrics"` |  |
@@ -342,12 +367,14 @@ Kubernetes: `^1.19.0-0`
 | configsdb_postgresql.auth.password | string | `nil` |  |
 | configsdb_postgresql.enabled | bool | `false` |  |
 | configsdb_postgresql.uri | string | `nil` |  |
-| distributor.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].podAffinityTerm.labelSelector.matchExpressions[0].key | string | `"target"` |  |
+| distributor.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].podAffinityTerm.labelSelector.matchExpressions[0].key | string | `"app.kubernetes.io/component"` |  |
 | distributor.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].podAffinityTerm.labelSelector.matchExpressions[0].operator | string | `"In"` |  |
 | distributor.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].podAffinityTerm.labelSelector.matchExpressions[0].values[0] | string | `"distributor"` |  |
 | distributor.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].podAffinityTerm.topologyKey | string | `"kubernetes.io/hostname"` |  |
 | distributor.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].weight | int | `100` |  |
 | distributor.annotations | object | `{}` |  |
+| distributor.containerSecurityContext.enabled | bool | `true` |  |
+| distributor.containerSecurityContext.readOnlyRootFilesystem | bool | `true` |  |
 | distributor.env | list | `[]` |  |
 | distributor.extraArgs | object | `{}` |  |
 | distributor.extraContainers | list | `[]` |  |
@@ -368,11 +395,12 @@ Kubernetes: `^1.19.0-0`
 | distributor.replicas | int | `2` |  |
 | distributor.resources | object | `{}` |  |
 | distributor.securityContext | object | `{}` |  |
-| distributor.containerSecurityContext | object | `{ "enabled": true, "readOnlyRootFilesystem": true  }` |  |
 | distributor.service.annotations | object | `{}` |  |
 | distributor.service.labels | object | `{}` |  |
 | distributor.serviceMonitor.additionalLabels | object | `{}` |  |
 | distributor.serviceMonitor.enabled | bool | `false` |  |
+| distributor.serviceMonitor.metricRelabelings | list | `[]` |  |
+| distributor.serviceMonitor.relabelings | list | `[]` |  |
 | distributor.startupProbe.failureThreshold | int | `10` |  |
 | distributor.startupProbe.httpGet.path | string | `"/ready"` |  |
 | distributor.startupProbe.httpGet.port | string | `"http-metrics"` |  |
@@ -386,12 +414,14 @@ Kubernetes: `^1.19.0-0`
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | image.repository | string | `"quay.io/cortexproject/cortex"` |  |
 | image.tag | string | `"v1.9.0"` |  |
-| ingester.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].podAffinityTerm.labelSelector.matchExpressions[0].key | string | `"target"` |  |
+| ingester.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].podAffinityTerm.labelSelector.matchExpressions[0].key | string | `"app.kubernetes.io/component"` |  |
 | ingester.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].podAffinityTerm.labelSelector.matchExpressions[0].operator | string | `"In"` |  |
 | ingester.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].podAffinityTerm.labelSelector.matchExpressions[0].values[0] | string | `"ingester"` |  |
 | ingester.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].podAffinityTerm.topologyKey | string | `"kubernetes.io/hostname"` |  |
 | ingester.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].weight | int | `100` |  |
 | ingester.annotations | object | `{}` |  |
+| ingester.containerSecurityContext.enabled | bool | `true` |  |
+| ingester.containerSecurityContext.readOnlyRootFilesystem | bool | `true` |  |
 | ingester.env | list | `[]` |  |
 | ingester.extraArgs | object | `{}` |  |
 | ingester.extraContainers | list | `[]` |  |
@@ -418,11 +448,12 @@ Kubernetes: `^1.19.0-0`
 | ingester.replicas | int | `3` |  |
 | ingester.resources | object | `{}` |  |
 | ingester.securityContext | object | `{}` |  |
-| ingester.containerSecurityContext | object | `{ "enabled": true, "readOnlyRootFilesystem": true  }` |  |
 | ingester.service.annotations | object | `{}` |  |
 | ingester.service.labels | object | `{}` |  |
 | ingester.serviceMonitor.additionalLabels | object | `{}` |  |
 | ingester.serviceMonitor.enabled | bool | `false` |  |
+| ingester.serviceMonitor.metricRelabelings | list | `[]` |  |
+| ingester.serviceMonitor.relabelings | list | `[]` |  |
 | ingester.startupProbe.failureThreshold | int | `60` |  |
 | ingester.startupProbe.httpGet.path | string | `"/ready"` |  |
 | ingester.startupProbe.httpGet.port | string | `"http-metrics"` |  |
@@ -500,6 +531,8 @@ Kubernetes: `^1.19.0-0`
 | nginx.config.client_max_body_size | string | `"1M"` |  |
 | nginx.config.dnsResolver | string | `"kube-dns.kube-system.svc.cluster.local"` |  |
 | nginx.config.setHeaders | object | `{}` |  |
+| nginx.containerSecurityContext.enabled | bool | `true` |  |
+| nginx.containerSecurityContext.readOnlyRootFilesystem | bool | `false` |  |
 | nginx.enabled | bool | `true` |  |
 | nginx.env | list | `[]` |  |
 | nginx.extraArgs | object | `{}` |  |
@@ -525,12 +558,13 @@ Kubernetes: `^1.19.0-0`
 | nginx.replicas | int | `2` |  |
 | nginx.resources | object | `{}` |  |
 | nginx.securityContext | object | `{}` |  |
-| nginx.containerSecurityContext | object | `{ "enabled": true, "readOnlyRootFilesystem": true  }` |  |
 | nginx.service.annotations | object | `{}` |  |
 | nginx.service.labels | object | `{}` |  |
 | nginx.service.type | string | `"ClusterIP"` |  |
 | nginx.serviceMonitor.additionalLabels | object | `{}` |  |
 | nginx.serviceMonitor.enabled | bool | `false` |  |
+| nginx.serviceMonitor.metricRelabelings | list | `[]` |  |
+| nginx.serviceMonitor.relabelings | list | `[]` |  |
 | nginx.startupProbe.failureThreshold | int | `10` |  |
 | nginx.startupProbe.httpGet.path | string | `"/healthz"` |  |
 | nginx.startupProbe.httpGet.port | string | `"http-metrics"` |  |
@@ -539,12 +573,14 @@ Kubernetes: `^1.19.0-0`
 | nginx.strategy.type | string | `"RollingUpdate"` |  |
 | nginx.terminationGracePeriodSeconds | int | `10` |  |
 | nginx.tolerations | list | `[]` |  |
-| querier.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].podAffinityTerm.labelSelector.matchExpressions[0].key | string | `"target"` |  |
+| querier.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].podAffinityTerm.labelSelector.matchExpressions[0].key | string | `"app.kubernetes.io/component"` |  |
 | querier.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].podAffinityTerm.labelSelector.matchExpressions[0].operator | string | `"In"` |  |
 | querier.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].podAffinityTerm.labelSelector.matchExpressions[0].values[0] | string | `"querier"` |  |
 | querier.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].podAffinityTerm.topologyKey | string | `"kubernetes.io/hostname"` |  |
 | querier.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].weight | int | `100` |  |
 | querier.annotations | object | `{}` |  |
+| querier.containerSecurityContext.enabled | bool | `true` |  |
+| querier.containerSecurityContext.readOnlyRootFilesystem | bool | `true` |  |
 | querier.env | list | `[]` |  |
 | querier.extraArgs | object | `{}` |  |
 | querier.extraContainers | list | `[]` |  |
@@ -565,11 +601,12 @@ Kubernetes: `^1.19.0-0`
 | querier.replicas | int | `2` |  |
 | querier.resources | object | `{}` |  |
 | querier.securityContext | object | `{}` |  |
-| querier.containerSecurityContext | object | `{ "enabled": true, "readOnlyRootFilesystem": true  }` |  |
 | querier.service.annotations | object | `{}` |  |
 | querier.service.labels | object | `{}` |  |
 | querier.serviceMonitor.additionalLabels | object | `{}` |  |
 | querier.serviceMonitor.enabled | bool | `false` |  |
+| querier.serviceMonitor.metricRelabelings | list | `[]` |  |
+| querier.serviceMonitor.relabelings | list | `[]` |  |
 | querier.startupProbe.failureThreshold | int | `10` |  |
 | querier.startupProbe.httpGet.path | string | `"/ready"` |  |
 | querier.startupProbe.httpGet.port | string | `"http-metrics"` |  |
@@ -578,12 +615,14 @@ Kubernetes: `^1.19.0-0`
 | querier.strategy.type | string | `"RollingUpdate"` |  |
 | querier.terminationGracePeriodSeconds | int | `180` |  |
 | querier.tolerations | list | `[]` |  |
-| query_frontend.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].podAffinityTerm.labelSelector.matchExpressions[0].key | string | `"target"` |  |
+| query_frontend.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].podAffinityTerm.labelSelector.matchExpressions[0].key | string | `"app.kubernetes.io/component"` |  |
 | query_frontend.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].podAffinityTerm.labelSelector.matchExpressions[0].operator | string | `"In"` |  |
 | query_frontend.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].podAffinityTerm.labelSelector.matchExpressions[0].values[0] | string | `"query-frontend"` |  |
 | query_frontend.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].podAffinityTerm.topologyKey | string | `"kubernetes.io/hostname"` |  |
 | query_frontend.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].weight | int | `100` |  |
 | query_frontend.annotations | object | `{}` |  |
+| query_frontend.containerSecurityContext.enabled | bool | `true` |  |
+| query_frontend.containerSecurityContext.readOnlyRootFilesystem | bool | `true` |  |
 | query_frontend.env | list | `[]` |  |
 | query_frontend.extraArgs | object | `{}` |  |
 | query_frontend.extraContainers | list | `[]` |  |
@@ -604,11 +643,12 @@ Kubernetes: `^1.19.0-0`
 | query_frontend.replicas | int | `2` |  |
 | query_frontend.resources | object | `{}` |  |
 | query_frontend.securityContext | object | `{}` |  |
-| query_frontend.containerSecurityContext | object | `{ "enabled": true, "readOnlyRootFilesystem": true  }` |  |
 | query_frontend.service.annotations | object | `{}` |  |
 | query_frontend.service.labels | object | `{}` |  |
 | query_frontend.serviceMonitor.additionalLabels | object | `{}` |  |
 | query_frontend.serviceMonitor.enabled | bool | `false` |  |
+| query_frontend.serviceMonitor.metricRelabelings | list | `[]` |  |
+| query_frontend.serviceMonitor.relabelings | list | `[]` |  |
 | query_frontend.startupProbe.failureThreshold | int | `10` |  |
 | query_frontend.startupProbe.httpGet.path | string | `"/ready"` |  |
 | query_frontend.startupProbe.httpGet.port | string | `"http-metrics"` |  |
@@ -619,6 +659,8 @@ Kubernetes: `^1.19.0-0`
 | query_frontend.tolerations | list | `[]` |  |
 | ruler.affinity | object | `{}` |  |
 | ruler.annotations | object | `{}` |  |
+| ruler.containerSecurityContext.enabled | bool | `true` |  |
+| ruler.containerSecurityContext.readOnlyRootFilesystem | bool | `true` |  |
 | ruler.directories | object | `{}` |  |
 | ruler.enabled | bool | `true` |  |
 | ruler.env | list | `[]` |  |
@@ -641,11 +683,27 @@ Kubernetes: `^1.19.0-0`
 | ruler.replicas | int | `1` |  |
 | ruler.resources | object | `{}` |  |
 | ruler.securityContext | object | `{}` |  |
-| ruler.containerSecurityContext | object | `{ "enabled": true, "readOnlyRootFilesystem": true  }` |  |
 | ruler.service.annotations | object | `{}` |  |
 | ruler.service.labels | object | `{}` |  |
 | ruler.serviceMonitor.additionalLabels | object | `{}` |  |
 | ruler.serviceMonitor.enabled | bool | `false` |  |
+| ruler.serviceMonitor.metricRelabelings | list | `[]` |  |
+| ruler.serviceMonitor.relabelings | list | `[]` |  |
+| ruler.sidecar.defaultFolderName | string | `nil` |  |
+| ruler.sidecar.enableUniqueFilenames | bool | `false` |  |
+| ruler.sidecar.enabled | bool | `false` |  |
+| ruler.sidecar.folder | string | `"/tmp/rules"` |  |
+| ruler.sidecar.folderAnnotation | string | `nil` |  |
+| ruler.sidecar.image.repository | string | `"quay.io/kiwigrid/k8s-sidecar"` |  |
+| ruler.sidecar.image.sha | string | `""` |  |
+| ruler.sidecar.image.tag | string | `"1.10.7"` |  |
+| ruler.sidecar.imagePullPolicy | string | `"IfNotPresent"` |  |
+| ruler.sidecar.label | string | `"cortex_rules"` |  |
+| ruler.sidecar.labelValue | string | `nil` |  |
+| ruler.sidecar.resources | object | `{}` |  |
+| ruler.sidecar.searchNamespace | string | `nil` |  |
+| ruler.sidecar.securityContext.runAsUser | int | `0` |  |
+| ruler.sidecar.watchMethod | string | `nil` |  |
 | ruler.startupProbe.failureThreshold | int | `10` |  |
 | ruler.startupProbe.httpGet.path | string | `"/ready"` |  |
 | ruler.startupProbe.httpGet.port | string | `"http-metrics"` |  |
@@ -655,15 +713,17 @@ Kubernetes: `^1.19.0-0`
 | ruler.terminationGracePeriodSeconds | int | `180` |  |
 | ruler.tolerations | list | `[]` |  |
 | serviceAccount.annotations | object | `{}` |  |
+| serviceAccount.automountServiceAccountToken | bool | `true` |  |
 | serviceAccount.create | bool | `true` |  |
 | serviceAccount.name | string | `nil` |  |
-| serviceAccount.automountServiceAccountToken | bool | `true` |  |
-| store_gateway.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].podAffinityTerm.labelSelector.matchExpressions[0].key | string | `"target"` |  |
+| store_gateway.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].podAffinityTerm.labelSelector.matchExpressions[0].key | string | `"app.kubernetes.io/component"` |  |
 | store_gateway.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].podAffinityTerm.labelSelector.matchExpressions[0].operator | string | `"In"` |  |
 | store_gateway.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].podAffinityTerm.labelSelector.matchExpressions[0].values[0] | string | `"store-gateway"` |  |
 | store_gateway.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].podAffinityTerm.topologyKey | string | `"kubernetes.io/hostname"` |  |
 | store_gateway.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].weight | int | `100` |  |
 | store_gateway.annotations | object | `{}` |  |
+| store_gateway.containerSecurityContext.enabled | bool | `true` |  |
+| store_gateway.containerSecurityContext.readOnlyRootFilesystem | bool | `true` |  |
 | store_gateway.env | list | `[]` |  |
 | store_gateway.extraArgs | object | `{}` |  |
 | store_gateway.extraContainers | list | `[]` |  |
@@ -689,11 +749,12 @@ Kubernetes: `^1.19.0-0`
 | store_gateway.replicas | int | `1` |  |
 | store_gateway.resources | object | `{}` |  |
 | store_gateway.securityContext | object | `{}` |  |
-| store_gateway.containerSecurityContext | object | `{ "enabled": true, "readOnlyRootFilesystem": true  }` |  |
 | store_gateway.service.annotations | object | `{}` |  |
 | store_gateway.service.labels | object | `{}` |  |
 | store_gateway.serviceMonitor.additionalLabels | object | `{}` |  |
 | store_gateway.serviceMonitor.enabled | bool | `false` |  |
+| store_gateway.serviceMonitor.metricRelabelings | list | `[]` |  |
+| store_gateway.serviceMonitor.relabelings | list | `[]` |  |
 | store_gateway.startupProbe.failureThreshold | int | `60` |  |
 | store_gateway.startupProbe.httpGet.path | string | `"/ready"` |  |
 | store_gateway.startupProbe.httpGet.port | string | `"http-metrics"` |  |
@@ -705,6 +766,8 @@ Kubernetes: `^1.19.0-0`
 | store_gateway.tolerations | list | `[]` |  |
 | table_manager.affinity | object | `{}` |  |
 | table_manager.annotations | object | `{}` |  |
+| table_manager.containerSecurityContext.enabled | bool | `true` |  |
+| table_manager.containerSecurityContext.readOnlyRootFilesystem | bool | `true` |  |
 | table_manager.env | list | `[]` |  |
 | table_manager.extraArgs | object | `{}` |  |
 | table_manager.extraContainers | list | `[]` |  |
@@ -725,11 +788,12 @@ Kubernetes: `^1.19.0-0`
 | table_manager.replicas | int | `1` |  |
 | table_manager.resources | object | `{}` |  |
 | table_manager.securityContext | object | `{}` |  |
-| table_manager.containerSecurityContext | object | `{ "enabled": true, "readOnlyRootFilesystem": true  }` |  |
 | table_manager.service.annotations | object | `{}` |  |
 | table_manager.service.labels | object | `{}` |  |
 | table_manager.serviceMonitor.additionalLabels | object | `{}` |  |
 | table_manager.serviceMonitor.enabled | bool | `false` |  |
+| table_manager.serviceMonitor.metricRelabelings | list | `[]` |  |
+| table_manager.serviceMonitor.relabelings | list | `[]` |  |
 | table_manager.startupProbe.failureThreshold | int | `10` |  |
 | table_manager.startupProbe.httpGet.path | string | `"/ready"` |  |
 | table_manager.startupProbe.httpGet.port | string | `"http-metrics"` |  |
