@@ -2,6 +2,8 @@
 
 ## master / unreleased
 
+* [ENHANCEMENT] Use FQDN for memcached addresses #175
+
 ## 0.6.0 / 2021-06-28
 
 * [CHANGE] Removed dnssrvnoa resolution from block memcached (probably oversight) and moved back to simple dns resolution #164
