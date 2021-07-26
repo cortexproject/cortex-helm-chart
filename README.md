@@ -266,6 +266,7 @@ Kubernetes: `^1.19.0-0`
 | config.api.prometheus_http_prefix | string | `"/prometheus"` |  |
 | config.api.response_compression_enabled | bool | `true` |  |
 | config.auth_enabled | bool | `false` |  |
+| config.auth_orgs | list | `[]` | (optional) List of [auth tenants](https://cortexmetrics.io/docs/guides/auth/) to set in the nginx config |
 | config.chunk_store.chunk_cache_config.memcached.expiration | string | `"1h"` |  |
 | config.chunk_store.chunk_cache_config.memcached_client.timeout | string | `"1s"` |  |
 | config.distributor.pool.health_check_ingesters | bool | `true` |  |
