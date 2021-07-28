@@ -3,6 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "cortex.rulerFullname" . }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "cortex.rulerLabels" . | nindent 4 }}
     app.kubernetes.io/part-of: memberlist

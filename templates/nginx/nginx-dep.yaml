@@ -3,6 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "cortex.nginxFullname" . }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "cortex.nginxLabels" . | nindent 4 }}
   annotations:
