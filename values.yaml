@@ -511,6 +511,24 @@ ingester:
 
   annotations: {}
 
+  autoscaling:
+    enabled: false
+    minReplicas: 3
+    maxReplicas: 30
+    targetMemoryUtilizationPercentage: 80
+    behavior:
+      scaleDown:
+        # -- Scaledown procedure varies, so automatic scaledown is disabled
+        # Ref: https://cortexmetrics.io/docs/guides/ingesters-scaling-up-and-down/#scaling-down
+        selectPolicy: Disabled
+      scaleUp:
+        # -- This default scaleup policy allows adding 1 pod every 30 minutes.
+        # Ref: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#support-for-configurable-scaling-behavior
+        policies:
+          - type: Pods
+            value: 1
+            periodSeconds: 1800
+
   ## DEPRECATED: use persistentVolume.subPath instead
   persistence:
     subPath:
