@@ -90,18 +90,19 @@ alertmanager:
 ```
 And here are the related configuration values in AlertManager and Ruler:
 ```yaml
-alertmanager:
-  data_dir: /data/
-  storage:
-    type : local
-    local:
-      path: /data
-ruler:
-  rule_path: /data/rules
-  storage:
-    type : local
-    local:
-      directory: /tmp/rules
+config:
+  alertmanager:
+    data_dir: /data/
+    storage:
+      type : local
+      local:
+        path: /data
+  ruler:
+    rule_path: /data/rules
+    storage:
+      type : local
+      local:
+        directory: /tmp/rules
 ```
 In AlertManager, the data_dir and local storage directory should be the same.
 In the Ruler, there needs to be two separate volumes. One is read-only and serves as the location shared with the sidecar that contains all of the rules that were derived from configmaps (/tmp/rules). The other is read-write and used by the Ruler itself for its own management of rules, etc (/data).
@@ -131,6 +132,39 @@ data:
               description: Metrics from {{ $labels.job }} on {{ $labels.instance }} show CPU > 90% for 3m.
               title: Node {{ $labels.instance }} has high CPU usage
 
+```
+Example ConfigMap containing an alertmanager-config:
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  annotations:
+    k8s-sidecar-target-directory: /data/fake
+  labels:
+    cortex_alertmanager: "1"
+  name: alertmanager-example-config
+data: 
+  fake.yaml: |-
+    global:
+      resolve_timeout: 5m
+      http_config: {}
+      smtp_hello: localhost
+      smtp_require_tls: true
+    route:
+      receiver: team-X-mails
+      group_by:
+      - alertname
+      routes:
+      - receiver: "null"
+        match:
+          alertname: Watchdog
+      group_wait: 30s
+      group_interval: 5m
+      repeat_interval: 12h
+    receivers:
+    - name: 'team-X-mails'
+      email_configs:
+      - to: 'team-X+alerts@example.org'
 ```
 
 ## Requirements
@@ -263,6 +297,8 @@ Kubernetes: `^1.19.0-0`
 | compactor.terminationGracePeriodSeconds | int | `240` |  |
 | compactor.tolerations | list | `[]` |  |
 | config.alertmanager.external_url | string | `"/api/prom/alertmanager"` |  |
+| config.alertmanager.enable_api | bool | `false` | Enable the experimental alertmanager config api.  |
+| config.alertmanager.storage | object | {} | Type of backend to use to store alertmanager configs. Supported values are: "configdb", "gcs", "s3", "local". refer to: https://cortexmetrics.io/docs/configuration/configuration-file/#alertmanager_config |
 | config.api.prometheus_http_prefix | string | `"/prometheus"` |  |
 | config.api.response_compression_enabled | bool | `true` |  |
 | config.auth_enabled | bool | `false` |  |
@@ -297,6 +333,8 @@ Kubernetes: `^1.19.0-0`
 | config.query_range.results_cache.cache.memcached_client.timeout | string | `"1s"` |  |
 | config.query_range.split_queries_by_interval | string | `"24h"` |  |
 | config.ruler.enable_alertmanager_discovery | bool | `false` |  |
+| config.ruler.enable_api | bool | `false` | Enable the experimental ruler config api. |
+| config.ruler.storage | object | {} | Method to use for backend rule storage (configdb, azure, gcs, s3, swift, local) refer to https://cortexmetrics.io/docs/configuration/configuration-file/#ruler_config|
 | config.schema.configs[0].chunks.period | string | `"168h"` |  |
 | config.schema.configs[0].chunks.prefix | string | `"chunks_"` |  |
 | config.schema.configs[0].from | string | `"2020-11-01"` |  |
