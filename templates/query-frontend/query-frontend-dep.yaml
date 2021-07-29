@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "cortex.queryFrontendFullname" . }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "cortex.queryFrontendLabels" . | nindent 4 }}
   annotations:

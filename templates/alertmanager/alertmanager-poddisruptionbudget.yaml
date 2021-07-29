@@ -3,6 +3,7 @@ apiVersion: policy/v1beta1
 kind: PodDisruptionBudget
 metadata:
   name: {{ include "cortex.alertmanagerFullname" . }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "cortex.alertmanagerLabels" . | nindent 4 }}
 spec:

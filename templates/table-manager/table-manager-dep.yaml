@@ -3,6 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "cortex.tableManagerFullname" . }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "cortex.tableManagerLabels" . | nindent 4 }}
   annotations:

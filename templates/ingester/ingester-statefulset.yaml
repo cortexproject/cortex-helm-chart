@@ -3,6 +3,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: {{ include "cortex.ingesterFullname" . }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "cortex.ingesterLabels" . | nindent 4 }}
     app.kubernetes.io/part-of: memberlist

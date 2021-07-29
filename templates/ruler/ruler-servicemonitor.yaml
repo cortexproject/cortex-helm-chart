@@ -3,6 +3,7 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: {{ include "cortex.rulerFullname" . }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "cortex.rulerLabels" . | nindent 4 }}
     {{- if .Values.ruler.serviceMonitor.additionalLabels }}

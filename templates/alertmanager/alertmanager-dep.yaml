@@ -4,6 +4,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "cortex.alertmanagerFullname" . }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "cortex.alertmanagerLabels" . | nindent 4 }}
     app.kubernetes.io/part-of: memberlist
