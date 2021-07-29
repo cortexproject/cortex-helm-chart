@@ -3,6 +3,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ include "cortex.rulerFullname" . }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "cortex.rulerLabels" . | nindent 4 }}
     {{- with .Values.ruler.service.labels }}

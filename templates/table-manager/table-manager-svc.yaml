@@ -3,6 +3,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ include "cortex.tableManagerFullname" . }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "cortex.tableManagerLabels" . | nindent 4 }}
     {{- with .Values.table_manager.service.labels }}

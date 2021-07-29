@@ -4,6 +4,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: {{ include "cortex.compactorFullname" . }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "cortex.compactorLabels" . | nindent 4 }}
     app.kubernetes.io/part-of: memberlist
