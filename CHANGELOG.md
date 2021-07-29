@@ -3,7 +3,7 @@
 ## master / unreleased
 
 * [ENHANCEMENT] Use FQDN for memcached addresses #175
-* [ENHANCEMENT] Optionally generate endpoints for X-Scope-OrgID injection (multi-tenancy) #180
+* [ENHANCEMENT] Optionally generate endpoints for `X-Scope-OrgID` injection (multi-tenancy) #180
 
 ## 0.6.0 / 2021-06-28
 
