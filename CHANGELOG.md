@@ -2,6 +2,7 @@
 
 ## master / unreleased
 
+* [FEATURE] Add autoscaler for ingesters #182
 * [ENHANCEMENT] Use FQDN for memcached addresses #175
 
 ## 0.6.0 / 2021-06-28
