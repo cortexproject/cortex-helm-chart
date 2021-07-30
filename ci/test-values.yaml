@@ -57,9 +57,15 @@ config:
 
 ingester:
   replicas: 1
+  autoscaling:
+    enabled: true
+    minReplicas: 1
   statefulSet:
     enabled: true
 distributor:
   replicas: 1
+  autoscaling:
+    enabled: true
+    minReplicas: 1
 nginx:
   replicas: 1
