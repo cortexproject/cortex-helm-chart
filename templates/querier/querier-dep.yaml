@@ -8,7 +8,9 @@ metadata:
   annotations:
     {{- toYaml .Values.querier.annotations | nindent 4 }}
 spec:
+  {{- if not .Values.querier.autoscaling.enabled }}
   replicas: {{ .Values.querier.replicas }}
+  {{- end }}
   selector:
     matchLabels:
       {{- include "cortex.querierSelectorLabels" . | nindent 6 }}
