@@ -413,6 +413,12 @@ Kubernetes: `^1.19.0-0`
 | distributor.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].podAffinityTerm.topologyKey | string | `"kubernetes.io/hostname"` |  |
 | distributor.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].weight | int | `100` |  |
 | distributor.annotations | object | `{}` |  |
+| distributor.autoscaling.behavior | object | `{}` | Ref: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#support-for-configurable-scaling-behavior |
+| distributor.autoscaling.enabled | bool | `false` | Creates a HorizontalPodAutoscaler for the distributor pods. |
+| distributor.autoscaling.maxReplicas | int | `30` |  |
+| distributor.autoscaling.minReplicas | int | `2` |  |
+| distributor.autoscaling.targetCPUUtilizationPercentage | int | `80` |  |
+| distributor.autoscaling.targetMemoryUtilizationPercentage | int | `0` |  |
 | distributor.containerSecurityContext.enabled | bool | `true` |  |
 | distributor.containerSecurityContext.readOnlyRootFilesystem | bool | `true` |  |
 | distributor.env | list | `[]` |  |
