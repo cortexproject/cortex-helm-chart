@@ -45,14 +45,8 @@ externalConfigVersion: '0'
 
 config:
   auth_enabled: false
-  ## Optionally, specify auth-orgs to be automatically added to the nginx config for multi-tenant setups
-  ## This sets a X-Scope-OrgID header, for posts sent to /api/v1/push/${AUTH_ORG}, and only takes effect when auth_enabled = true
-  ## The list provided is de-duplicated, but "unique" does not care about case, so be careful
-  ## ref: https://cortexmetrics.io/docs/guides/auth/
+  # -- (optional) List of [auth tenants](https://cortexmetrics.io/docs/guides/auth/) to set in the nginx config
   auth_orgs: []
-  #   - "foo"
-  #   - "bar"
-  #   - "baz"
   api:
     prometheus_http_prefix: '/prometheus'
     response_compression_enabled: true
