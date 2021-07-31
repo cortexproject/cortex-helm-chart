@@ -9,7 +9,9 @@ metadata:
   annotations:
     {{- toYaml .Values.distributor.annotations | nindent 4 }}
 spec:
+  {{- if not .Values.distributor.autoscaling.enabled }}
   replicas: {{ .Values.distributor.replicas }}
+  {{- end }}
   selector:
     matchLabels:
       {{- include "cortex.distributorSelectorLabels" . | nindent 6 }}
