@@ -580,6 +580,7 @@ Kubernetes: `^1.19.0-0`
 | memcached.resources | object | `{}` |  |
 | nginx.affinity | object | `{}` |  |
 | nginx.annotations | object | `{}` |  |
+| nginx.config.auth_orgs | list | `[]` | (optional) List of [auth tenants](https://cortexmetrics.io/docs/guides/auth/) to set in the nginx config |
 | nginx.config.client_max_body_size | string | `"1M"` |  |
 | nginx.config.dnsResolver | string | `"kube-dns.kube-system.svc.cluster.local"` |  |
 | nginx.config.setHeaders | object | `{}` |  |
