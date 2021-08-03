@@ -632,6 +632,12 @@ Kubernetes: `^1.19.0-0`
 | querier.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].podAffinityTerm.topologyKey | string | `"kubernetes.io/hostname"` |  |
 | querier.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].weight | int | `100` |  |
 | querier.annotations | object | `{}` |  |
+| querier.autoscaling.behavior | object | `{}` | Ref: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#support-for-configurable-scaling-behavior |
+| querier.autoscaling.enabled | bool | `false` | Creates a HorizontalPodAutoscaler for the querier pods. |
+| querier.autoscaling.maxReplicas | int | `30` |  |
+| querier.autoscaling.minReplicas | int | `2` |  |
+| querier.autoscaling.targetCPUUtilizationPercentage | int | `80` |  |
+| querier.autoscaling.targetMemoryUtilizationPercentage | int | `0` |  |
 | querier.containerSecurityContext.enabled | bool | `true` |  |
 | querier.containerSecurityContext.readOnlyRootFilesystem | bool | `true` |  |
 | querier.env | list | `[]` |  |
