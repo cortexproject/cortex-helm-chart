@@ -67,5 +67,8 @@ distributor:
   autoscaling:
     enabled: true
     minReplicas: 1
+querier:
+  autoscaling:
+    enabled: true
 nginx:
   replicas: 1
