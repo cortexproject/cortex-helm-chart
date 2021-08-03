@@ -16,7 +16,7 @@ data:
 
     events {
       worker_connections  4096;  ## Default: 1024
-    } 
+    }
 
     http {
       default_type application/octet-stream;
@@ -107,7 +107,7 @@ data:
         {{- range $org := compact .Values.nginx.config.auth_orgs | uniq }}
         location = /api/v1/push/{{ $org }} {
           proxy_set_header      X-Scope-OrgID {{ $org }};
-          proxy_pass      http://{{ template "cortex.fullname" $ }}-distributor.{{ $rootDomain }}$request_uri;
+          proxy_pass      http://{{ template "cortex.fullname" $ }}-distributor.{{ $rootDomain }}/api/v1/push;
         }
         {{- end }}
         {{- end }}
