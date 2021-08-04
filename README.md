@@ -74,6 +74,11 @@ Note that it might be necessary to use `--reset-values` since some default value
 Source code can be found [here](https://cortexmetrics.io/)
 
 ## Usage
+
+### Examples
+
+Example values for various configurations can be found in [./conf](./conf)
+
 ### Rules and AlertManager configuration
 Cortex can be configured to use a sidecar container in the Ruler and AlertManager to dynamically discover rules and AlertManager config/templates that are declared as ConfigMaps to allow easy and extensible configuration that avoids having to store state in the Cortex system itself (via config service, etc).
 Put ConfigMaps into the specified namespace, and they are automatically detected and added as files to the Ruler and/or AlertManager containers, both of which are polling for changes on the filesystem and will make the new configurations go live dynamically.
