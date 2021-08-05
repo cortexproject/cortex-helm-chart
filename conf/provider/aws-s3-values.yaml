@@ -26,7 +26,7 @@ config:
     # format. This option should be set when using the blocks storage and the
     # store-gateway sharding is disabled (when enabled, the store-gateway instances
     # form a ring and addresses are picked from the ring).
-    store_gateway_addresses: cortex-store-gateway-headless.cortex.svc:9095
+    store_gateway_addresses: dns+cortex-store-gateway-headless.cortex.svc:9095
   ruler_storage:
     s3:
       bucket_name: # your bucket name
