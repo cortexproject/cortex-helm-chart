@@ -8,6 +8,7 @@
 * [ENHANCEMENT] Define namespace in templates #184
 * [ENHANCEMENT] Use FQDN for memcached addresses #175
 * [ENHANCEMENT] Optionally generate endpoints for `X-Scope-OrgID` injection (multi-tenancy) #180
+* [ENHANCEMENT] Add a nginx config to authenticate requests to query-frontend svc (multi-tenancy) #194
 * [BUGFIX] Correcting nginx config for auth orgs to right proxy_pass #192
 
 ## 0.6.0 / 2021-06-28
