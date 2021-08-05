@@ -109,6 +109,11 @@ data:
           proxy_set_header      X-Scope-OrgID {{ $org }};
           proxy_pass      http://{{ template "cortex.fullname" $ }}-distributor.{{ $rootDomain }}/api/v1/push;
         }
+        location ~ ^{{$.Values.config.api.prometheus_http_prefix}}/api/v1/{{ $org }}/(read|metadata|labels|series|query_range|query) {
+          proxy_set_header      X-Scope-OrgID {{ $org }};
+          rewrite ^(/{{$.Values.config.api.prometheus_http_prefix}}/.*)/{{ $org }}/(\w+)\.?.*$ $1/$2 last;
+          proxy_pass      http://{{ template "cortex.fullname" $ }}-query-frontend.{{ $rootDomain }}$request_uri;
+        }
         {{- end }}
         {{- end }}
       }
