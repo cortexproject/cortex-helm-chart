@@ -151,4 +151,9 @@ spec:
             {{- if .Values.ingester.env }}
               {{- toYaml .Values.ingester.env | nindent 12 }}
             {{- end }}
+          lifecycle:
+            preStop:
+              httpGet:
+                path: "/ingester/shutdown"
+                port: {{ .Values.config.server.http_listen_port }}
 {{- end -}}
