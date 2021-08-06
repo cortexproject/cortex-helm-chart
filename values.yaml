@@ -537,9 +537,14 @@ ingester:
     targetMemoryUtilizationPercentage: 80
     behavior:
       scaleDown:
-        # -- Scaledown procedure varies, so automatic scaledown is disabled
-        # Ref: https://cortexmetrics.io/docs/guides/ingesters-scaling-up-and-down/#scaling-down
-        selectPolicy: Disabled
+        # -- see https://cortexmetrics.io/docs/guides/ingesters-scaling-up-and-down/#scaling-down for scaledown details
+        policies:
+          - type: Pods
+            value: 1
+            # set to no less than 2x the maximum between -blocks-storage.bucket-store.sync-interval and -compactor.cleanup-interval
+            periodSeconds: 1800
+        # -- uses metrics from the past 1h to make scaleDown decisions
+        stabilizationWindowSeconds: 3600
       scaleUp:
         # -- This default scaleup policy allows adding 1 pod every 30 minutes.
         # Ref: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#support-for-configurable-scaling-behavior
