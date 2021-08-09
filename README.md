@@ -482,6 +482,7 @@ Kubernetes: `^1.19.0-0`
 | ingester.extraVolumeMounts | list | `[]` |  |
 | ingester.extraVolumes | list | `[]` |  |
 | ingester.initContainers | list | `[]` |  |
+| ingester.lifecycle.preStop | object | `{"httpGet":{"path":"/ingester/shutdown","port":"http-metrics"}}` | The /shutdown preStop hook is recommended as part of the ingester scaledown process, but can be removed to optimize rolling restarts in instances that will never be scaled down or when using chunks storage with WAL disabled. https://cortexmetrics.io/docs/guides/ingesters-scaling-up-and-down/#scaling-down |
 | ingester.livenessProbe.httpGet.path | string | `"/ready"` |  |
 | ingester.livenessProbe.httpGet.port | string | `"http-metrics"` |  |
 | ingester.livenessProbe.httpGet.scheme | string | `"HTTP"` |  |
