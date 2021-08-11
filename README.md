@@ -466,7 +466,8 @@ Kubernetes: `^1.19.0-0`
 | ingester.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].podAffinityTerm.topologyKey | string | `"kubernetes.io/hostname"` |  |
 | ingester.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].weight | int | `100` |  |
 | ingester.annotations | object | `{}` |  |
-| ingester.autoscaling.behavior.scaleDown.selectPolicy | string | `"Disabled"` | Scaledown procedure varies, so automatic scaledown is disabled Ref: https://cortexmetrics.io/docs/guides/ingesters-scaling-up-and-down/#scaling-down |
+| ingester.autoscaling.behavior.scaleDown.policies | list | `[{"periodSeconds":1800,"type":"Pods","value":1}]` | see https://cortexmetrics.io/docs/guides/ingesters-scaling-up-and-down/#scaling-down for scaledown details |
+| ingester.autoscaling.behavior.scaleDown.stabilizationWindowSeconds | int | `3600` | uses metrics from the past 1h to make scaleDown decisions |
 | ingester.autoscaling.behavior.scaleUp.policies | list | `[{"periodSeconds":1800,"type":"Pods","value":1}]` | This default scaleup policy allows adding 1 pod every 30 minutes. Ref: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#support-for-configurable-scaling-behavior |
 | ingester.autoscaling.enabled | bool | `false` |  |
 | ingester.autoscaling.maxReplicas | int | `30` |  |
@@ -481,6 +482,7 @@ Kubernetes: `^1.19.0-0`
 | ingester.extraVolumeMounts | list | `[]` |  |
 | ingester.extraVolumes | list | `[]` |  |
 | ingester.initContainers | list | `[]` |  |
+| ingester.lifecycle.preStop | object | `{"httpGet":{"path":"/ingester/shutdown","port":"http-metrics"}}` | The /shutdown preStop hook is recommended as part of the ingester scaledown process, but can be removed to optimize rolling restarts in instances that will never be scaled down or when using chunks storage with WAL disabled. https://cortexmetrics.io/docs/guides/ingesters-scaling-up-and-down/#scaling-down |
 | ingester.livenessProbe.httpGet.path | string | `"/ready"` |  |
 | ingester.livenessProbe.httpGet.port | string | `"http-metrics"` |  |
 | ingester.livenessProbe.httpGet.scheme | string | `"HTTP"` |  |
