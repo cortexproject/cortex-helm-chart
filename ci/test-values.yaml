@@ -72,3 +72,31 @@ querier:
     enabled: true
 nginx:
   replicas: 1
+
+tags:
+  blocks-storage-memcached: true
+memcached:
+  enabled: true
+  architecture: standalone
+  replicaCount: 1
+memcached-index-read:
+  enabled: true
+  architecture: standalone
+  replicaCount: 1
+memcached-index-write:
+  enabled: true
+  architecture: standalone
+  replicaCount: 1
+memcached-frontend:
+  enabled: true
+  architecture: standalone
+  replicaCount: 1
+memcached-blocks:
+  architecture: standalone
+  replicaCount: 1
+memcached-blocks-index:
+  architecture: standalone
+  replicaCount: 1
+memcached-blocks-metadata:
+  architecture: standalone
+  replicaCount: 1
