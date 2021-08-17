@@ -49,7 +49,7 @@ config:
       dir: "/data/store"
 
   querier:
-    store_gateway_addresses: "dns+cortex-store-gateway-headless:9095"
+    store_gateway_addresses: "dns+{{.Release.Name}}-store-gateway-headless:9095"
 
   memberlist:
     join_members:
