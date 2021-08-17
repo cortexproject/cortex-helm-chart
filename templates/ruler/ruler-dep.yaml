@@ -108,7 +108,7 @@ spec:
             {{- end }}
             {{- if not .Values.config.ruler.alertmanager_url }}
             {{- if .Values.config.ruler.enable_alertmanager_discovery }}
-            - "-ruler.alertmanager-url=http://_http-metrics._tcp.{{ template "cortex.name" . }}-alertmanager-headless/api/prom/alertmanager/"
+            - "-ruler.alertmanager-url=http://_cluster-tcp._tcp.{{ template "cortex.alertmanagerFullname" . }}-headless/api/prom/alertmanager/"
             {{- else }}
             - "-ruler.alertmanager-url=http://{{ template "cortex.alertmanagerFullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.config.server.http_listen_port }}/api/prom/alertmanager/"
             {{- end }}

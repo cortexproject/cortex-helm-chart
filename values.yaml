@@ -172,6 +172,8 @@ config:
     external_url: '/api/prom/alertmanager'
     # -- Type of backend to use to store alertmanager configs. Supported values are: "configdb", "gcs", "s3", "local". refer to: https://cortexmetrics.io/docs/configuration/configuration-file/#alertmanager_config
     storage: {}
+    cluster:
+      listen_address: "0.0.0.0:9094"
   frontend:
     #  max_outstanding_per_tenant: 1000
     log_queries_longer_than: 10s

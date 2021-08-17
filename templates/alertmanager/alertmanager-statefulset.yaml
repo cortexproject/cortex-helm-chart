@@ -1,6 +1,6 @@
 {{- if .Values.alertmanager.enabled -}}
 {{- if .Values.alertmanager.statefulSet.enabled -}}
-{{- $clusterPort := regexReplaceAll ".+[:]" (default "0.0.0.0:9094" .Values.config.alertmanager.cluster_bind_address) "" -}}
+{{- $clusterPort := regexReplaceAll ".+[:]" .Values.config.alertmanager.cluster.listen_address "" -}}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -157,16 +157,14 @@ spec:
             - "-alertmanager.configs.url=http://{{ template "cortex.fullname" . }}-configs.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.config.server.http_listen_port }}"
             {{- end }}
             {{- if gt (.Values.alertmanager.replicas | int) 1 }}
-            {{- range $n := until (.Values.alertmanager.replicas |int ) }}
-            - -alertmanager.cluster.peers={{ template "cortex.fullname" $ }}-alertmanager-{{ $n }}.{{ template "cortex.fullname" $ }}-alertmanager-headless.{{ $.Release.Namespace }}.svc.{{ $.Values.clusterDomain }}:{{ $clusterPort }}
-            {{- end }}
+            - "-alertmanager.cluster.peers={{ template "cortex.alertmanagerClusterPeerList" . }}"
             {{- end }}
             {{- range $key, $value := .Values.alertmanager.extraArgs }}
             - "-{{ $key }}={{ $value }}"
             {{- end }}
           volumeMounts:
             {{- if .Values.alertmanager.extraVolumeMounts }}
-            {{ toYaml .Values.alertmanager.extraVolumeMounts | nindent 12}}
+            {{- toYaml .Values.alertmanager.extraVolumeMounts | nindent 12}}
             {{- end }}
             - name: config
               mountPath: /etc/cortex
@@ -187,9 +185,12 @@ spec:
             - name: gossip
               containerPort: {{ .Values.config.memberlist.bind_port }}
               protocol: TCP
-            - name: cluster
+            - name: cluster-tcp
               containerPort: {{ $clusterPort }}
               protocol: TCP
+            - name: cluster-udp
+              containerPort: {{ $clusterPort }}
+              protocol: UDP
           startupProbe:
             {{- toYaml .Values.alertmanager.startupProbe | nindent 12 }}
           livenessProbe:
