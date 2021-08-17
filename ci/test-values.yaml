@@ -79,31 +79,53 @@ memcached:
   enabled: true
   architecture: standalone
   replicaCount: 1
-  resources: {}
+  resources:
+    # https://github.com/helm/helm/issues/9136
+    requests:
+      cpu: 0
+      memory: 0
 memcached-index-read:
   enabled: true
   architecture: standalone
   replicaCount: 1
-  resources: {}
+  resources:
+    requests:
+      cpu: 0
+      memory: 0
 memcached-index-write:
   enabled: true
   architecture: standalone
   replicaCount: 1
-  resources: {}
+  resources:
+    requests:
+      cpu: 0
+      memory: 0
 memcached-frontend:
   enabled: true
   architecture: standalone
   replicaCount: 1
-  resources: {}
+  resources:
+    requests:
+      cpu: 0
+      memory: 0
 memcached-blocks:
   architecture: standalone
   replicaCount: 1
-  resources: {}
+  resources:
+    requests:
+      cpu: 0
+      memory: 0
 memcached-blocks-index:
   architecture: standalone
   replicaCount: 1
-  resources: {}
+  resources:
+    requests:
+      cpu: 0
+      memory: 0
 memcached-blocks-metadata:
   architecture: standalone
   replicaCount: 1
-  resources: {}
+  resources:
+    requests:
+      cpu: 0
+      memory: 0
