@@ -1,4 +1,2 @@
-- Granville Schmidt, Aspen Mesh <granville@aspenmesh.io> (@gramidt)
-- Neeraj Poddar, Aspen Mesh <neeraj@aspenmesh.io> (@nrjpoddar)
 - Niclas Schad, plusserver GmbH <Niclas.Schad@plusserver.com> ([@ShuzZzle](https://github.com/ShuzZzle))
 - Tom Hayward, Infoblox <thayward@infoblox.com> ([@kd7lxl](https://github.com/kd7lxl))
