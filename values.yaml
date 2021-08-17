@@ -143,13 +143,18 @@ config:
       health_check_ingesters: true
   memberlist:
     bind_port: 7946
+    # -- the service name of the memberlist
+    # if using memberlist discovery
     join_members: []
-    ## add here the service name of the memberlist
-    ## if using memberlist discovery, eg:
-    #  - cortex-memberlist
+    #  - '{{ include "cortex.fullname" $ }}-memberlist'
   querier:
     active_query_tracker_dir: /data/cortex/querier
     query_ingesters_within: 12h
+    # Comma separated list of store-gateway addresses in DNS Service Discovery
+    # format. This option should be set when using the blocks storage and the
+    # store-gateway sharding is disabled (when enabled, the store-gateway instances
+    # form a ring and addresses are picked from the ring).
+    # store_gateway_addresses: 'dns+{{ include "cortex.storeGatewayFullname" $ }}-headless:9095'
   query_range:
     split_queries_by_interval: 24h
     align_queries_with_step: true
