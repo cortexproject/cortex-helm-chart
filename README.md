@@ -326,7 +326,7 @@ Kubernetes: `^1.19.0-0`
 | config.limits.reject_old_samples | bool | `true` |  |
 | config.limits.reject_old_samples_max_age | string | `"168h"` |  |
 | config.memberlist.bind_port | int | `7946` |  |
-| config.memberlist.join_members | list | `[]` |  |
+| config.memberlist.join_members | list | `[]` | the service name of the memberlist if using memberlist discovery |
 | config.querier.active_query_tracker_dir | string | `"/data/cortex/querier"` |  |
 | config.querier.query_ingesters_within | string | `"12h"` |  |
 | config.query_range.align_queries_with_step | bool | `true` |  |

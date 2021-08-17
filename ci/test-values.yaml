@@ -49,11 +49,11 @@ config:
       dir: "/data/store"
 
   querier:
-    store_gateway_addresses: "dns+{{.Release.Name}}-store-gateway-headless:9095"
+    store_gateway_addresses: 'dns+{{ include "cortex.storeGatewayFullname" $ }}-headless:9095'
 
   memberlist:
     join_members:
-      - "{{.Release.Name}}-memberlist.cortex"
+      - '{{ include "cortex.fullname" $ }}-memberlist'
 
 ingester:
   replicas: 1
