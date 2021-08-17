@@ -329,6 +329,7 @@ Kubernetes: `^1.19.0-0`
 | config.&ZeroWidthSpace;memberlist.&ZeroWidthSpace;join_members | list | `[]` | the service name of the memberlist if using memberlist discovery |
 | config.&ZeroWidthSpace;querier.&ZeroWidthSpace;active_query_tracker_dir | string | `"/data/cortex/querier"` |  |
 | config.&ZeroWidthSpace;querier.&ZeroWidthSpace;query_ingesters_within | string | `"12h"` |  |
+| config.&ZeroWidthSpace;querier.&ZeroWidthSpace;store_gateway_addresses | string | automatic | Comma separated list of store-gateway addresses in DNS Service Discovery format. This option should is set automatically when using the blocks storage and the store-gateway sharding is disabled (when enabled, the store-gateway instances form a ring and addresses are picked from the ring). |
 | config.&ZeroWidthSpace;query_range.&ZeroWidthSpace;align_queries_with_step | bool | `true` |  |
 | config.&ZeroWidthSpace;query_range.&ZeroWidthSpace;cache_results | bool | `true` |  |
 | config.&ZeroWidthSpace;query_range.&ZeroWidthSpace;results_cache.&ZeroWidthSpace;cache.&ZeroWidthSpace;memcached.&ZeroWidthSpace;expiration | string | `"1h"` |  |
@@ -361,6 +362,7 @@ Kubernetes: `^1.19.0-0`
 | config.&ZeroWidthSpace;storage.&ZeroWidthSpace;engine | string | `"chunks"` |  |
 | config.&ZeroWidthSpace;storage.&ZeroWidthSpace;index_queries_cache_config.&ZeroWidthSpace;memcached.&ZeroWidthSpace;expiration | string | `"1h"` |  |
 | config.&ZeroWidthSpace;storage.&ZeroWidthSpace;index_queries_cache_config.&ZeroWidthSpace;memcached_client.&ZeroWidthSpace;timeout | string | `"1s"` |  |
+| config.&ZeroWidthSpace;store_gateway | object | `{}` | https://cortexmetrics.io/docs/configuration/configuration-file/#store_gateway_config |
 | config.&ZeroWidthSpace;table_manager.&ZeroWidthSpace;retention_deletes_enabled | bool | `false` |  |
 | config.&ZeroWidthSpace;table_manager.&ZeroWidthSpace;retention_period | string | `"0s"` |  |
 | configs.&ZeroWidthSpace;affinity | object | `{}` |  |

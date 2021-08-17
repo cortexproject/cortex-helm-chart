@@ -134,6 +134,8 @@ config:
         expiration: 1h
       memcached_client:
         timeout: 1s
+  # -- https://cortexmetrics.io/docs/configuration/configuration-file/#store_gateway_config
+  store_gateway: {}
   table_manager:
     retention_deletes_enabled: false
     retention_period: 0s
@@ -150,11 +152,15 @@ config:
   querier:
     active_query_tracker_dir: /data/cortex/querier
     query_ingesters_within: 12h
-    # Comma separated list of store-gateway addresses in DNS Service Discovery
-    # format. This option should be set when using the blocks storage and the
+    # -- Comma separated list of store-gateway addresses in DNS Service Discovery
+    # format. This option should is set automatically when using the blocks storage and the
     # store-gateway sharding is disabled (when enabled, the store-gateway instances
     # form a ring and addresses are picked from the ring).
-    # store_gateway_addresses: 'dns+{{ include "cortex.storeGatewayFullname" $ }}-headless:9095'
+    # @default -- automatic
+    store_gateway_addresses: |-
+      {{ if and (eq .Values.config.storage.engine "blocks") (not .Values.config.store_gateway.sharding_enabled) -}}
+      dns+{{ include "cortex.storeGatewayFullname" $ }}-headless:9095
+      {{- end }}
   query_range:
     split_queries_by_interval: 24h
     align_queries_with_step: true
