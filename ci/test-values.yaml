@@ -53,7 +53,7 @@ config:
 
   memberlist:
     join_members:
-    - "cortex-memberlist.cortex"
+      - "{{.Release.Name}}-memberlist.cortex"
 
 ingester:
   replicas: 1
