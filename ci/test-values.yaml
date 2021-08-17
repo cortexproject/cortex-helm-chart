@@ -79,24 +79,31 @@ memcached:
   enabled: true
   architecture: standalone
   replicaCount: 1
+  resources: {}
 memcached-index-read:
   enabled: true
   architecture: standalone
   replicaCount: 1
+  resources: {}
 memcached-index-write:
   enabled: true
   architecture: standalone
   replicaCount: 1
+  resources: {}
 memcached-frontend:
   enabled: true
   architecture: standalone
   replicaCount: 1
+  resources: {}
 memcached-blocks:
   architecture: standalone
   replicaCount: 1
+  resources: {}
 memcached-blocks-index:
   architecture: standalone
   replicaCount: 1
+  resources: {}
 memcached-blocks-metadata:
   architecture: standalone
   replicaCount: 1
+  resources: {}
