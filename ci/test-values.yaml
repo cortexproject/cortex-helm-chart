@@ -48,9 +48,6 @@ config:
     filesystem:
       dir: "/data/store"
 
-  querier:
-    store_gateway_addresses: 'dns+{{ include "cortex.storeGatewayFullname" $ }}-headless:9095'
-
   memberlist:
     join_members:
       - '{{ include "cortex.fullname" $ }}-memberlist'
