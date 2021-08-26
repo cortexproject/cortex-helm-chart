@@ -461,7 +461,7 @@ Kubernetes: `^1.19.0-0`
 | externalConfigVersion | string | `"0"` |  |
 | image.&ZeroWidthSpace;pullPolicy | string | `"IfNotPresent"` |  |
 | image.&ZeroWidthSpace;repository | string | `"quay.io/cortexproject/cortex"` |  |
-| image.&ZeroWidthSpace;tag | string | `"v1.9.0"` |  |
+| image.&ZeroWidthSpace;tag | string | `"v1.10.0"` |  |
 | ingester.&ZeroWidthSpace;affinity.&ZeroWidthSpace;podAntiAffinity.&ZeroWidthSpace;preferredDuringSchedulingIgnoredDuringExecution[0].&ZeroWidthSpace;podAffinityTerm.&ZeroWidthSpace;labelSelector.&ZeroWidthSpace;matchExpressions[0].&ZeroWidthSpace;key | string | `"app.kubernetes.io/component"` |  |
 | ingester.&ZeroWidthSpace;affinity.&ZeroWidthSpace;podAntiAffinity.&ZeroWidthSpace;preferredDuringSchedulingIgnoredDuringExecution[0].&ZeroWidthSpace;podAffinityTerm.&ZeroWidthSpace;labelSelector.&ZeroWidthSpace;matchExpressions[0].&ZeroWidthSpace;operator | string | `"In"` |  |
 | ingester.&ZeroWidthSpace;affinity.&ZeroWidthSpace;podAntiAffinity.&ZeroWidthSpace;preferredDuringSchedulingIgnoredDuringExecution[0].&ZeroWidthSpace;podAffinityTerm.&ZeroWidthSpace;labelSelector.&ZeroWidthSpace;matchExpressions[0].&ZeroWidthSpace;values[0] | string | `"ingester"` |  |

@@ -5,6 +5,7 @@
 * [FEATURE] Add autoscaler for queriers #190
 * [FEATURE] Add autoscaler for distributors #189
 * [FEATURE] Add autoscaler for ingesters #182
+* [ENHANCEMENT] Upgrade to Cortex v1.10.0 #204
 * [ENHANCEMENT] Populate config.querier.store_gateway_addresses automatically based on other config #201
 * [ENHANCEMENT] Graceful shutdown of ingesters #195
 * [ENHANCEMENT] Define namespace in templates #184
