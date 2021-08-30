@@ -59,6 +59,11 @@ spec:
             {{- end }}
             - name: config
               mountPath: /etc/nginx
+            {{- if .Values.nginx.config.basicAuthSecretName }}
+            - name: htpasswd
+              mountPath: /etc/apache2
+              readOnly: true
+            {{- end }}
           ports:
             - name: http-metrics
               containerPort: {{ .Values.nginx.http_listen_port }}
@@ -92,6 +97,12 @@ spec:
         - name: config
           configMap:
             name: {{ template "cortex.fullname" . }}-nginx
+        {{- if .Values.nginx.config.basicAuthSecretName }}
+        - name: htpasswd
+          secret:
+            defaultMode: 420
+            secretName: {{ .Values.nginx.config.basicAuthSecretName }}
+        {{- end }}
 {{- if .Values.nginx.extraVolumes }}
 {{ toYaml .Values.nginx.extraVolumes | indent 8}}
 {{- end }}
