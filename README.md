@@ -340,6 +340,7 @@ Kubernetes: `^1.19.0-0`
 | config.&ZeroWidthSpace;ruler.&ZeroWidthSpace;enable_alertmanager_discovery | bool | `false` |  |
 | config.&ZeroWidthSpace;ruler.&ZeroWidthSpace;enable_api | bool | `false` | Enable the experimental ruler config api. |
 | config.&ZeroWidthSpace;ruler.&ZeroWidthSpace;storage | object | `{}` | Method to use for backend rule storage (configdb, azure, gcs, s3, swift, local) refer to https://cortexmetrics.io/docs/configuration/configuration-file/#ruler_config |
+| config.&ZeroWidthSpace;runtime_config.&ZeroWidthSpace;file | string | `"/etc/cortex-runtime-config/runtime_config.yaml"` |  |
 | config.&ZeroWidthSpace;schema.&ZeroWidthSpace;configs[0].&ZeroWidthSpace;chunks.&ZeroWidthSpace;period | string | `"168h"` |  |
 | config.&ZeroWidthSpace;schema.&ZeroWidthSpace;configs[0].&ZeroWidthSpace;chunks.&ZeroWidthSpace;prefix | string | `"chunks_"` |  |
 | config.&ZeroWidthSpace;schema.&ZeroWidthSpace;configs[0].&ZeroWidthSpace;from | string | `"2020-11-01"` |  |
@@ -777,6 +778,7 @@ Kubernetes: `^1.19.0-0`
 | ruler.&ZeroWidthSpace;strategy.&ZeroWidthSpace;type | string | `"RollingUpdate"` |  |
 | ruler.&ZeroWidthSpace;terminationGracePeriodSeconds | int | `180` |  |
 | ruler.&ZeroWidthSpace;tolerations | list | `[]` |  |
+| runtime_config | object | `{}` | https://cortexmetrics.io/docs/configuration/arguments/#runtime-configuration-file |
 | serviceAccount.&ZeroWidthSpace;annotations | object | `{}` |  |
 | serviceAccount.&ZeroWidthSpace;automountServiceAccountToken | bool | `true` |  |
 | serviceAccount.&ZeroWidthSpace;create | bool | `true` |  |

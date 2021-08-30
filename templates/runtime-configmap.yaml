@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "cortex.fullname" . }}-runtime-config
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "cortex.labels" . | nindent 4 }}
+data:
+  runtime_config.yaml: |
+    {{- tpl (toYaml .Values.runtime_config) . | nindent 4 }}

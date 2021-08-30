@@ -177,6 +177,8 @@ config:
     enable_api: false
     # -- Method to use for backend rule storage (configdb, azure, gcs, s3, swift, local) refer to https://cortexmetrics.io/docs/configuration/configuration-file/#ruler_config
     storage: {}
+  runtime_config:
+    file: /etc/cortex-runtime-config/runtime_config.yaml
   alertmanager:
     # -- Enable the experimental alertmanager config api.
     enable_api: false
@@ -186,6 +188,9 @@ config:
   frontend:
     #  max_outstanding_per_tenant: 1000
     log_queries_longer_than: 10s
+
+# -- https://cortexmetrics.io/docs/configuration/arguments/#runtime-configuration-file
+runtime_config: {}
 
 alertmanager:
   enabled: true

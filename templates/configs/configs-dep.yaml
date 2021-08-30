@@ -68,6 +68,8 @@ spec:
             - name: config
               mountPath: /etc/cortex
               subPath: {{ .Values.configs.persistence.subPath }}
+            - name: runtime-config
+              mountPath: /etc/cortex-runtime-config
             {{- if .Values.configsdb_postgresql.enabled }}
             - name: postgres-password
               mountPath: /etc/postgresql
@@ -123,6 +125,9 @@ spec:
               - key: {{ if .Values.configsdb_postgresql.auth.existing_secret.name }}{{ .Values.configsdb_postgresql.auth.existing_secret.key }}{{ else }}postgresql-password{{ end }}
                 path: password
         {{- end }}
+        - name: runtime-config
+          configMap:
+            name: {{ template "cortex.fullname" . }}-runtime-config
 {{- if .Values.configs.extraVolumes }}
 {{ toYaml .Values.configs.extraVolumes | indent 8}}
 {{- end }}
