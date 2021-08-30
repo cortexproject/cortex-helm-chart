@@ -18,9 +18,11 @@ Horizontally scalable, highly available, multi-tenant, long term Prometheus.
 
 ### Key-Value store
 
-Cortex requires an externally provided key-value store, such as [etcd](https://etcd.io/) or [Consul](https://www.consul.io/).
+Cortex requires a Key-Value (KV) store to store the ring. It can use traditional KV stores like [Consul](https://www.consul.io/) or [etcd](https://etcd.io/), but it can also build its own KV store on top of memberlist library using a gossip algorithm.
 
-Both services can be installed alongside Cortex, for example using helm charts available [here](https://github.com/bitnami/charts/tree/master/bitnami/etcd) and [here](https://github.com/helm/charts/tree/master/stable/consul).
+The recommended approach is to use the built-in memberlist as a KV store, where supported.
+
+External KV stores can be installed alongside Cortex using their respective helm charts https://github.com/bitnami/charts/tree/master/bitnami/etcd and https://github.com/helm/charts/tree/master/stable/consul.
 
 ### Storage
 
