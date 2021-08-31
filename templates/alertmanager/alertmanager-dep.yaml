@@ -116,6 +116,8 @@ spec:
             {{- end }}
             - name: config
               mountPath: /etc/cortex
+            - name: runtime-config
+              mountPath: /etc/cortex-runtime-config
             - name: storage
               mountPath: "/data"
               subPath: {{ .Values.alertmanager.persistence.subPath }}
@@ -162,6 +164,9 @@ spec:
 {{- if .Values.alertmanager.extraVolumes }}
 {{ toYaml .Values.alertmanager.extraVolumes | indent 8}}
 {{- end }}
+        - name: runtime-config
+          configMap:
+            name: {{ template "cortex.fullname" . }}-runtime-config
         - name: storage
           emptyDir: {}
 {{- end -}}

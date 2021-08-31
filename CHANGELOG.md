@@ -2,6 +2,7 @@
 
 ## master / unreleased
 
+* [FEATURE] Support runtime configuration #209
 * [FEATURE] Add autoscaler for queriers #190
 * [FEATURE] Add autoscaler for distributors #189
 * [FEATURE] Add autoscaler for ingesters #182

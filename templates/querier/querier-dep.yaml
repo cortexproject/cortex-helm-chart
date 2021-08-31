@@ -66,6 +66,8 @@ spec:
             {{- end }}
             - name: config
               mountPath: /etc/cortex
+            - name: runtime-config
+              mountPath: /etc/cortex-runtime-config
             - name: storage
               mountPath: "/data"
               subPath: {{ .Values.querier.persistence.subPath }}
@@ -106,6 +108,9 @@ spec:
 {{- else }}
             secretName: {{ template "cortex.fullname" . }}
 {{- end }}
+        - name: runtime-config
+          configMap:
+            name: {{ template "cortex.fullname" . }}-runtime-config
 {{- if .Values.querier.extraVolumes }}
 {{ toYaml .Values.querier.extraVolumes | indent 8}}
 {{- end }}

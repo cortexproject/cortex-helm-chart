@@ -68,6 +68,8 @@ spec:
             {{- end }}
             - name: config
               mountPath: /etc/cortex
+            - name: runtime-config
+              mountPath: /etc/cortex-runtime-config
             - name: storage
               mountPath: "/data"
               {{- if .Values.ingester.persistentVolume.subPath }}
@@ -125,6 +127,9 @@ spec:
           {{- else }}
             secretName: {{ template "cortex.fullname" . }}
           {{- end }}
+        - name: runtime-config
+          configMap:
+            name: {{ template "cortex.fullname" . }}-runtime-config
         {{- if .Values.ingester.extraVolumes }}
         {{ toYaml .Values.ingester.extraVolumes | nindent 8}}
         {{- end }}

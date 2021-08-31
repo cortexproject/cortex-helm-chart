@@ -87,6 +87,9 @@ spec:
             {{- else }}
             secretName: {{ template "cortex.fullname" . }}
             {{- end }}
+        - name: runtime-config
+          configMap:
+            name: {{ template "cortex.fullname" . }}-runtime-config
         {{- if not .Values.store_gateway.persistentVolume.enabled }}
         - name: storage
           emptyDir: {}
@@ -114,6 +117,8 @@ spec:
             {{- end }}
             - name: config
               mountPath: /etc/cortex
+            - name: runtime-config
+              mountPath: /etc/cortex-runtime-config
             - name: storage
               mountPath: "/data"
               {{- if .Values.store_gateway.persistentVolume.subPath }}
