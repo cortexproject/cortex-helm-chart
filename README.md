@@ -778,7 +778,9 @@ Kubernetes: `^1.19.0-0`
 | ruler.&ZeroWidthSpace;strategy.&ZeroWidthSpace;type | string | `"RollingUpdate"` |  |
 | ruler.&ZeroWidthSpace;terminationGracePeriodSeconds | int | `180` |  |
 | ruler.&ZeroWidthSpace;tolerations | list | `[]` |  |
-| runtime_config | object | `{}` | https://cortexmetrics.io/docs/configuration/arguments/#runtime-configuration-file |
+| runtimeconfigmap.&ZeroWidthSpace;annotations | object | `{}` |  |
+| runtimeconfigmap.&ZeroWidthSpace;create | bool | `true` | If true, a configmap for the `runtime_config` will be created. If false, the configmap _must_ exist already on the cluster or pods will fail to create. |
+| runtimeconfigmap.&ZeroWidthSpace;runtime_config | object | `{}` | https://cortexmetrics.io/docs/configuration/arguments/#runtime-configuration-file |
 | serviceAccount.&ZeroWidthSpace;annotations | object | `{}` |  |
 | serviceAccount.&ZeroWidthSpace;automountServiceAccountToken | bool | `true` |  |
 | serviceAccount.&ZeroWidthSpace;create | bool | `true` |  |
