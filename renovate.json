@@ -1,5 +1,50 @@
 {
-  "extends": [
-    "config:base"
-  ]
+    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+    "extends": [
+        "config:base",
+        ":gitSignOff"
+    ],
+    "assignees": [
+        "ShuzZzle",
+        "kd7lxl"
+    ],
+    "regexManagers": [{
+            "description": "Update cortex image in README.md",
+            "fileMatch": ["^README\\.md$"],
+            "matchStrings": [
+                "\\|\\s+image.&ZeroWidthSpace;tag\\s+\\|\\s+string\\s+\\|\\s+`\"(?<currentValue>.*?)\"`\\s+\\|\\s+\\|\\s+"
+            ],
+            "depNameTemplate": "quay.io/cortexproject/cortex",
+            "datasourceTemplate": "docker"
+        },
+        {
+            "description": "Update nginx image in README.md",
+            "fileMatch": ["^README\\.md$"],
+            "matchStrings": [
+                "\\|\\s+nginx.&ZeroWidthSpace;image.&ZeroWidthSpace;tag\\s+\\|\\s+float\\s+\\|\\s+\\`(?<currentValue>.*?)\\`\\s+\\|\\s+\\|\\s+"
+            ],
+            "depNameTemplate": "nginx",
+            "datasourceTemplate": "docker"
+        },
+        {
+            "description": "Update kiwigrid/k8s-sidecar image in README.md",
+            "fileMatch": ["^README\\.md$"],
+            "matchStrings": [
+                "\\|\\s+ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;tag\\s+\\|\\s+string\\s+\\|\\s+`\"(?<currentValue>.*?)\"`\\s+\\|\\s+\\|\\s+",
+                "\\|\\s+alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;tag\\s+\\|\\s+string\\s+\\|\\s+`\"(?<currentValue>.*?)\"`\\s+\\|\\s+\\|\\s+"
+            ],
+            "depNameTemplate": "quay.io/kiwigrid/k8s-sidecar",
+            "datasourceTemplate": "docker"
+        },
+        {
+            "description": "Update memcached image in README.md",
+            "fileMatch": ["^README\\.md$"],
+            "matchStrings": [
+                "\\|[^|]*\\|[^|]*\\(memcached\\)[^|]*\\|\\s+(?<currentValue>.*?)\\s+\\|\\s+"
+            ],
+            "depNameTemplate": "memcached",
+            "registryUrlTemplate": "https://charts.bitnami.com/bitnami",
+            "datasourceTemplate": "helm"
+        }
+    ]
 }
