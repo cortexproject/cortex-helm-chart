@@ -69,6 +69,13 @@ querier:
     enabled: true
 nginx:
   replicas: 1
+  config:
+    httpSnippet: |-
+      # http snippet
+    mainSnippet: |-
+      # main snippet
+    serverSnippet: |-
+      # server snippet
 runtimeconfigmap:
   annotations:
     foo: bar
