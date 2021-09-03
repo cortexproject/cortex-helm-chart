@@ -40,7 +40,18 @@ data:
         proxy_set_header {{ $key }} {{ $value }};
         {{- end }}
 
+        {{ if .Values.nginx.config.basicAuthSecretName -}}
+        auth_basic "Restricted Content";
+        auth_basic_user_file /etc/apache2/.htpasswd;
+        {{- end }}
+
         location = /healthz {
+          # auth_basic off is not set here, even when a basic auth directive is
+          # included in the server block, as Nginx's NGX_HTTP_REWRITE_PHASE
+          # (point when this return statement is evaluated) comes before the
+          # NGX_HTTP_ACCESS_PHASE (point when basic auth is evaluated). Thus,
+          # this return statement returns a response before basic auth is
+          # evaluated.
           return 200 'alive';
         }
 
