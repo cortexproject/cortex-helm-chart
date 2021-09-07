@@ -216,6 +216,11 @@ alertmanager:
     additionalLabels: {}
     relabelings: []
     metricRelabelings: []
+    # Retrieve metrics with TLS enabled in Cortex (https://cortexmetrics.io/docs/guides/tls/)
+    # For config see https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#tlsconfig
+    tls:
+      enabled: false
+      config: {}
 
   resources: {}
   #  limits:
@@ -406,6 +411,11 @@ distributor:
     additionalLabels: {}
     relabelings: []
     metricRelabelings: []
+    # Retrieve metrics with TLS enabled in Cortex (https://cortexmetrics.io/docs/guides/tls/)
+    # For config see https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#tlsconfig
+    tls:
+      enabled: false
+      config: {}
 
   resources: {}
   #  limits:
@@ -513,6 +523,11 @@ ingester:
     additionalLabels: {}
     relabelings: []
     metricRelabelings: []
+    # Retrieve metrics with TLS enabled in Cortex (https://cortexmetrics.io/docs/guides/tls/)
+    # For config see https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#tlsconfig
+    tls:
+      enabled: false
+      config: {}
 
   resources: {}
   #  limits:
@@ -683,6 +698,11 @@ ruler:
     additionalLabels: {}
     relabelings: []
     metricRelabelings: []
+    # Retrieve metrics with TLS enabled in Cortex (https://cortexmetrics.io/docs/guides/tls/)
+    # For config see https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#tlsconfig
+    tls:
+      enabled: false
+      config: {}
 
   resources: {}
   #  limits:
@@ -819,6 +839,11 @@ querier:
     additionalLabels: {}
     relabelings: []
     metricRelabelings: []
+    # Retrieve metrics with TLS enabled in Cortex (https://cortexmetrics.io/docs/guides/tls/)
+    # For config see https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#tlsconfig
+    tls:
+      enabled: false
+      config: {}
 
   resources: {}
   #  limits:
@@ -920,6 +945,11 @@ query_frontend:
     additionalLabels: {}
     relabelings: []
     metricRelabelings: []
+    # Retrieve metrics with TLS enabled in Cortex (https://cortexmetrics.io/docs/guides/tls/)
+    # For config see https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#tlsconfig
+    tls:
+      enabled: false
+      config: {}
 
   resources: {}
   #  limits:
@@ -1009,6 +1039,11 @@ table_manager:
     additionalLabels: {}
     relabelings: []
     metricRelabelings: []
+    # Retrieve metrics with TLS enabled in Cortex (https://cortexmetrics.io/docs/guides/tls/)
+    # For config see https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#tlsconfig
+    tls:
+      enabled: false
+      config: {}
 
   resources: {}
   #  limits:
@@ -1088,6 +1123,11 @@ configs:
     additionalLabels: {}
     relabelings: []
     metricRelabelings: []
+    # Retrieve metrics with TLS enabled in Cortex (https://cortexmetrics.io/docs/guides/tls/)
+    # For config see https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#tlsconfig
+    tls:
+      enabled: false
+      config: {}
 
   resources: {}
   #  limits:
@@ -1281,6 +1321,11 @@ store_gateway:
     additionalLabels: {}
     relabelings: []
     metricRelabelings: []
+    # Retrieve metrics with TLS enabled in Cortex (https://cortexmetrics.io/docs/guides/tls/)
+    # For config see https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#tlsconfig
+    tls:
+      enabled: false
+      config: {}
 
   resources: {}
   #  limits:
@@ -1407,6 +1452,11 @@ compactor:
     additionalLabels: {}
     relabelings: []
     metricRelabelings: []
+    # Retrieve metrics with TLS enabled in Cortex (https://cortexmetrics.io/docs/guides/tls/)
+    # For config see https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#tlsconfig
+    tls:
+      enabled: false
+      config: {}
 
   resources: {}
   #  limits:
