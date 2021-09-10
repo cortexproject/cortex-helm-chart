@@ -1,15 +1,7 @@
 name: Lint and Test Charts
 
 on:
-  push:
-    branches-ignore:
-      - master
-      - main
   pull_request:
-    paths-ignore:
-      - '*.md'
-      - 'docs/**'
-      - 'tools/**'
 
 jobs:
   lint-test:
@@ -39,6 +31,11 @@ jobs:
 
       - name: Run chart-testing (lint)
         run: ct lint --config ct.yaml
+
+      - name: Updated README.md
+        run: |
+          make README.md
+          git diff --exit-code -- README.md
 
       - name: Create kind cluster
         uses: helm/kind-action@v1.2.0
