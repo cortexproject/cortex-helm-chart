@@ -18,6 +18,10 @@ data:
       worker_connections  4096;  ## Default: 1024
     }
 
+    {{- with .Values.nginx.config.mainSnippet }}
+    {{ tpl . $ | nindent 4 }}
+    {{- end }}
+
     http {
       default_type application/octet-stream;
       client_max_body_size {{.Values.nginx.config.client_max_body_size}};
@@ -28,6 +32,10 @@ data:
       sendfile     on;
       tcp_nopush   on;
       resolver {{ default (printf "kube-dns.kube-system.svc.%s" .Values.clusterDomain ) .Values.nginx.config.dnsResolver }};
+
+      {{- with .Values.nginx.config.httpSnippet }}
+      {{ tpl . $ | nindent 6 }}
+      {{- end }}
 
       server { # simple reverse-proxy
         listen {{ .Values.nginx.http_listen_port }};
@@ -43,6 +51,10 @@ data:
         {{ if .Values.nginx.config.basicAuthSecretName -}}
         auth_basic "Restricted Content";
         auth_basic_user_file /etc/apache2/.htpasswd;
+        {{- end }}
+
+        {{- with .Values.nginx.config.serverSnippet }}
+        {{ tpl . $ | nindent 8 }}
         {{- end }}
 
         location = /healthz {
