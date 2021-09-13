@@ -1,0 +1,109 @@
+{{- if .Values.nginx.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "cortex.nginxFullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "cortex.nginxLabels" . | nindent 4 }}
+  annotations:
+    {{- toYaml .Values.nginx.annotations | nindent 4 }}
+spec:
+  replicas: {{ .Values.nginx.replicas }}
+  selector:
+    matchLabels:
+      {{- include "cortex.nginxSelectorLabels" . | nindent 6 }}
+  strategy:
+    {{- toYaml .Values.nginx.strategy | nindent 4 }}
+  template:
+    metadata:
+      labels:
+        {{- include "cortex.nginxLabels" . | nindent 8 }}
+        {{- with .Values.nginx.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/nginx/nginx-config.yaml") . | sha256sum }}
+        {{- with .Values.nginx.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      serviceAccountName: {{ template "cortex.serviceAccountName" . }}
+    {{- if .Values.nginx.priorityClassName }}
+      priorityClassName: {{ .Values.nginx.priorityClassName }}
+    {{- end }}
+      {{- if .Values.nginx.securityContext.enabled }}
+      securityContext: {{- omit .Values.nginx.securityContext "enabled" | toYaml | nindent 8 }}
+      {{- end }}
+      initContainers:
+        {{- toYaml .Values.nginx.initContainers | nindent 8 }}
+      {{- if .Values.image.pullSecrets }}
+      imagePullSecrets:
+      {{- range .Values.image.pullSecrets }}
+        - name: {{ . }}
+      {{- end}}
+      {{- end }}
+      containers:
+        - name: nginx
+          image: "{{ .Values.nginx.image.repository }}:{{ .Values.nginx.image.tag }}"
+          imagePullPolicy: {{ .Values.nginx.image.pullPolicy }}
+          {{- if .Values.nginx.extraArgs }}
+          args:
+          {{- range $key, $value := .Values.nginx.extraArgs }}
+            - "-{{ $key }}={{ $value }}"
+          {{- end }}
+          {{- end }}
+          volumeMounts:
+            {{- if .Values.nginx.extraVolumeMounts }}
+              {{ toYaml .Values.nginx.extraVolumeMounts | nindent 12}}
+            {{- end }}
+            - name: config
+              mountPath: /etc/nginx
+            {{- if .Values.nginx.config.basicAuthSecretName }}
+            - name: htpasswd
+              mountPath: /etc/apache2
+              readOnly: true
+            {{- end }}
+          ports:
+            - name: http-metrics
+              containerPort: {{ .Values.nginx.http_listen_port }}
+              protocol: TCP
+          startupProbe:
+            {{- toYaml .Values.nginx.startupProbe | nindent 12 }}
+          livenessProbe:
+            {{- toYaml .Values.nginx.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.nginx.readinessProbe | nindent 12 }}
+          resources:
+            {{- toYaml .Values.nginx.resources | nindent 12 }}
+          {{- if .Values.nginx.containerSecurityContext.enabled }}
+          securityContext: {{- omit .Values.nginx.containerSecurityContext "enabled" | toYaml | nindent 12 }}
+          {{- end }}
+          env:
+            {{- if .Values.nginx.env }}
+              {{- toYaml .Values.nginx.env | nindent 12 }}
+            {{- end }}
+{{- if .Values.nginx.extraContainers }}
+{{ toYaml .Values.nginx.extraContainers | indent 8}}
+{{- end }}
+      nodeSelector:
+        {{- toYaml .Values.nginx.nodeSelector | nindent 8 }}
+      affinity:
+        {{- toYaml .Values.nginx.affinity | nindent 8 }}
+      tolerations:
+        {{- toYaml .Values.nginx.tolerations | nindent 8 }}
+      terminationGracePeriodSeconds: {{ .Values.nginx.terminationGracePeriodSeconds }}
+      volumes:
+        - name: config
+          configMap:
+            name: {{ template "cortex.fullname" . }}-nginx
+        {{- if .Values.nginx.config.basicAuthSecretName }}
+        - name: htpasswd
+          secret:
+            defaultMode: 420
+            secretName: {{ .Values.nginx.config.basicAuthSecretName }}
+        {{- end }}
+{{- if .Values.nginx.extraVolumes }}
+{{ toYaml .Values.nginx.extraVolumes | indent 8}}
+{{- end }}
+{{- end}}

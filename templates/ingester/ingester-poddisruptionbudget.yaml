@@ -1,0 +1,14 @@
+{{- if and (gt (int .Values.ingester.replicas) 1) (.Values.ingester.podDisruptionBudget) }}
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "cortex.ingesterFullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "cortex.ingesterLabels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "cortex.ingesterSelectorLabels" . | nindent 6 }}
+  {{- toYaml .Values.ingester.podDisruptionBudget | nindent 2 }}
+{{- end }}

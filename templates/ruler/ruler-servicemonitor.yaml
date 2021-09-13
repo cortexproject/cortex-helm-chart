@@ -1,0 +1,39 @@
+{{- if .Values.ruler.serviceMonitor.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "cortex.rulerFullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "cortex.rulerLabels" . | nindent 4 }}
+    {{- if .Values.ruler.serviceMonitor.additionalLabels }}
+{{ toYaml .Values.ruler.serviceMonitor.additionalLabels | indent 4 }}
+    {{- end }}
+  {{- if .Values.ruler.serviceMonitor.annotations }}
+  annotations:
+{{ toYaml .Values.ruler.serviceMonitor.annotations | indent 4 }}
+  {{- end }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "cortex.rulerSelectorLabels" . | nindent 6 }}
+  namespaceSelector:
+    matchNames:
+      - {{ .Release.Namespace | quote }}
+  endpoints:
+  - port: http-metrics
+    {{- if .Values.ruler.serviceMonitor.interval }}
+    interval: {{ .Values.ruler.serviceMonitor.interval }}
+    {{- end }}
+    {{- if .Values.ruler.serviceMonitor.scrapeTimeout }}
+    scrapeTimeout: {{ .Values.ruler.serviceMonitor.scrapeTimeout }}
+    {{- end }}
+    {{- if .Values.ruler.serviceMonitor.relabelings }}
+    relabelings:
+    {{- toYaml .Values.ruler.serviceMonitor.relabelings | nindent 4 }}
+    {{- end }}
+    {{- if .Values.ruler.serviceMonitor.metricRelabelings }}
+    metricRelabelings:
+    {{- toYaml .Values.ruler.serviceMonitor.metricRelabelings | nindent 4 }}
+    {{- end }}
+{{- end }}

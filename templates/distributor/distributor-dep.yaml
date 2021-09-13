@@ -1,0 +1,124 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "cortex.distributorFullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "cortex.distributorLabels" . | nindent 4 }}
+    app.kubernetes.io/part-of: memberlist
+  annotations:
+    {{- toYaml .Values.distributor.annotations | nindent 4 }}
+spec:
+  {{- if not .Values.distributor.autoscaling.enabled }}
+  replicas: {{ .Values.distributor.replicas }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "cortex.distributorSelectorLabels" . | nindent 6 }}
+  strategy:
+    {{- toYaml .Values.distributor.strategy | nindent 4 }}
+  template:
+    metadata:
+      labels:
+        {{- include "cortex.distributorLabels" . | nindent 8 }}
+        app.kubernetes.io/part-of: memberlist
+        {{- with .Values.distributor.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      annotations:
+{{- if .Values.useExternalConfig }}
+        checksum/config: {{ .Values.externalConfigVersion }}
+{{- else }}
+        checksum/config: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+{{- end}}
+        {{- with .Values.distributor.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      serviceAccountName: {{ template "cortex.serviceAccountName" . }}
+    {{- if .Values.distributor.priorityClassName }}
+      priorityClassName: {{ .Values.distributor.priorityClassName }}
+    {{- end }}
+      {{- if .Values.distributor.securityContext.enabled }}
+      securityContext: {{- omit .Values.distributor.securityContext "enabled" | toYaml | nindent 8 }}
+      {{- end }}
+      initContainers:
+        {{- toYaml .Values.distributor.initContainers | nindent 8 }}
+      {{- if .Values.image.pullSecrets }}
+      imagePullSecrets:
+      {{- range .Values.image.pullSecrets }}
+        - name: {{ . }}
+      {{- end}}
+      {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args:
+            - "-target=distributor"
+            - "-config.file=/etc/cortex/cortex.yaml"
+          {{- range $key, $value := .Values.distributor.extraArgs }}
+            - "-{{ $key }}={{ $value }}"
+          {{- end }}
+          volumeMounts:
+            {{- if .Values.distributor.extraVolumeMounts }}
+              {{ toYaml .Values.distributor.extraVolumeMounts | nindent 12}}
+            {{- end }}
+            - name: config
+              mountPath: /etc/cortex
+            - name: runtime-config
+              mountPath: /etc/cortex-runtime-config
+            - name: storage
+              mountPath: "/data"
+              subPath: {{ .Values.distributor.persistence.subPath }}
+          ports:
+            - name: http-metrics
+              containerPort: {{ .Values.config.server.http_listen_port }}
+              protocol: TCP
+            - name: gossip
+              containerPort: {{ .Values.config.memberlist.bind_port }}
+              protocol: TCP
+            - name: grpc
+              containerPort: {{ .Values.config.server.grpc_listen_port }}
+              protocol: TCP
+          startupProbe:
+            {{- toYaml .Values.distributor.startupProbe | nindent 12 }}
+          livenessProbe:
+            {{- toYaml .Values.distributor.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.distributor.readinessProbe | nindent 12 }}
+          resources:
+            {{- toYaml .Values.distributor.resources | nindent 12 }}
+          {{- if .Values.distributor.containerSecurityContext.enabled }}
+          securityContext: {{- omit .Values.distributor.containerSecurityContext "enabled" | toYaml | nindent 12 }}
+          {{- end }}
+          env:
+            {{- if .Values.distributor.env }}
+              {{- toYaml .Values.distributor.env | nindent 12 }}
+            {{- end }}
+{{- if .Values.distributor.extraContainers }}
+{{ toYaml .Values.distributor.extraContainers | indent 8}}
+{{- end }}
+      nodeSelector:
+        {{- toYaml .Values.distributor.nodeSelector | nindent 8 }}
+      affinity:
+        {{- toYaml .Values.distributor.affinity | nindent 8 }}
+      tolerations:
+        {{- toYaml .Values.distributor.tolerations | nindent 8 }}
+      terminationGracePeriodSeconds: {{ .Values.distributor.terminationGracePeriodSeconds }}
+      volumes:
+        - name: config
+          secret:
+{{- if .Values.useExternalConfig }}
+            secretName: {{ .Values.externalConfigSecretName }}
+{{- else }}
+            secretName: {{ template "cortex.fullname" . }}
+{{- end }}
+        - name: runtime-config
+          configMap:
+            name: {{ template "cortex.fullname" . }}-runtime-config
+{{- if .Values.distributor.extraVolumes }}
+{{ toYaml .Values.distributor.extraVolumes | indent 8}}
+{{- end }}
+        - name: storage
+          emptyDir: {}

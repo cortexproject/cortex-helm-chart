@@ -1,0 +1,23 @@
+{{- if .Values.ruler.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "cortex.rulerFullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "cortex.rulerLabels" . | nindent 4 }}
+    {{- with .Values.ruler.service.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  annotations:
+    {{- toYaml .Values.ruler.service.annotations | nindent 4 }}
+spec:
+  type: ClusterIP
+  ports:
+    - port: {{ .Values.config.server.http_listen_port }}
+      protocol: TCP
+      name: http-metrics
+      targetPort: http-metrics
+  selector:
+    {{- include "cortex.rulerSelectorLabels" . | nindent 4 }}
+{{- end }}

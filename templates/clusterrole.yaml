@@ -1,0 +1,12 @@
+{{- if or .Values.ruler.sidecar.enabled .Values.alertmanager.sidecar.enabled }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ template "cortex.fullname" . }}-clusterrole
+  labels:
+  {{- include "cortex.labels" . | nindent 4 }}
+rules:
+  - apiGroups: [""] # "" indicates the core API group
+    resources: ["configmaps", "secrets"]
+    verbs: ["get", "watch", "list"]
+{{- end }}

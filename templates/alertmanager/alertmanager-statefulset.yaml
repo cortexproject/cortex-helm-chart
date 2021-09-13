@@ -1,0 +1,214 @@
+{{- if .Values.alertmanager.enabled -}}
+{{- if .Values.alertmanager.statefulSet.enabled -}}
+{{- $clusterPort := regexReplaceAll ".+[:]" (default "0.0.0.0:9094" .Values.config.alertmanager.cluster_bind_address) "" -}}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "cortex.alertmanagerFullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "cortex.alertmanagerLabels" . | nindent 4 }}
+    app.kubernetes.io/part-of: memberlist
+  annotations:
+    {{- toYaml .Values.alertmanager.annotations | nindent 4 }}
+spec:
+  replicas: {{ .Values.alertmanager.replicas }}
+  selector:
+    matchLabels:
+      {{- include "cortex.alertmanagerSelectorLabels" . | nindent 6 }}
+  updateStrategy:
+    {{- toYaml .Values.alertmanager.statefulStrategy | nindent 4 }}
+  serviceName: {{ template "cortex.fullname" . }}-alertmanager-headless
+  {{- if .Values.alertmanager.persistentVolume.enabled }}
+  volumeClaimTemplates:
+    - metadata:
+        name: storage
+        {{- if .Values.alertmanager.persistentVolume.annotations }}
+        annotations:
+          {{ toYaml .Values.alertmanager.persistentVolume.annotations | nindent 10 }}
+        {{- end }}
+      spec:
+        {{- if .Values.alertmanager.persistentVolume.storageClass }}
+        {{- if (eq "-" .Values.alertmanager.persistentVolume.storageClass) }}
+        storageClassName: ""
+        {{- else }}
+        storageClassName: "{{ .Values.alertmanager.persistentVolume.storageClass }}"
+        {{- end }}
+        {{- end }}
+        accessModes:
+          {{ toYaml .Values.alertmanager.persistentVolume.accessModes | nindent 10 }}
+        resources:
+          requests:
+            storage: "{{ .Values.alertmanager.persistentVolume.size }}"
+  {{- end }}
+  template:
+    metadata:
+      labels:
+        {{- include "cortex.alertmanagerLabels" . | nindent 8 }}
+        app.kubernetes.io/part-of: memberlist
+        {{- with .Values.alertmanager.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      annotations:
+        {{- if .Values.useExternalConfig }}
+        checksum/config: {{ .Values.externalConfigVersion }}
+        {{- else }}
+        checksum/config: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+        {{- end }}
+        {{- with .Values.alertmanager.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      serviceAccountName: {{ template "cortex.serviceAccountName" . }}
+      {{- if .Values.alertmanager.priorityClassName }}
+      priorityClassName: {{ .Values.alertmanager.priorityClassName }}
+      {{- end }}
+      {{- if .Values.alertmanager.securityContext.enabled }}
+      securityContext: {{- omit .Values.alertmanager.securityContext "enabled" | toYaml | nindent 8 }}
+      {{- end }}
+      initContainers:
+        {{- toYaml .Values.alertmanager.initContainers | nindent 8 }}
+      {{- if .Values.image.pullSecrets }}
+      imagePullSecrets:
+      {{- range .Values.image.pullSecrets }}
+        - name: {{ . }}
+      {{- end }}
+      {{- end }}
+      nodeSelector:
+        {{- toYaml .Values.alertmanager.nodeSelector | nindent 8 }}
+      affinity:
+        {{- toYaml .Values.alertmanager.affinity | nindent 8 }}
+      tolerations:
+        {{- toYaml .Values.alertmanager.tolerations | nindent 8 }}
+      terminationGracePeriodSeconds: {{ .Values.alertmanager.terminationGracePeriodSeconds }}
+      volumes:
+        - name: config
+          secret:
+            {{- if .Values.useExternalConfig }}
+            secretName: {{ .Values.externalConfigSecretName }}
+            {{- else }}
+            secretName: {{ template "cortex.fullname" . }}
+            {{- end }}
+        - name: runtime-config
+          configMap:
+            name: {{ template "cortex.fullname" . }}-runtime-config
+        {{- if not .Values.alertmanager.persistentVolume.enabled }}
+        - name: storage
+          emptyDir: {}
+        {{- end }}
+        {{- if .Values.alertmanager.extraVolumes }}
+        {{ toYaml .Values.alertmanager.extraVolumes | nindent 8 }}
+        {{- end }}
+      containers:
+        {{- if .Values.alertmanager.extraContainers }}
+        {{ toYaml .Values.alertmanager.extraContainers | nindent 8 }}
+        {{- end }}
+        {{- if .Values.alertmanager.sidecar.enabled }}
+        - name: {{ template "cortex.name" . }}-sc-alertmanager
+          {{- if .Values.alertmanager.sidecar.image.sha }}
+          image: "{{ .Values.alertmanager.sidecar.image.repository }}:{{ .Values.alertmanager.sidecar.image.tag }}@sha256:{{ .Values.alertmanager.sidecar.image.sha }}"
+          {{- else }}
+          image: "{{ .Values.alertmanager.sidecar.image.repository }}:{{ .Values.alertmanager.sidecar.image.tag }}"
+          {{- end }}
+          imagePullPolicy: {{ .Values.alertmanager.sidecar.imagePullPolicy }}
+          env:
+            {{- if .Values.alertmanager.sidecar.watchMethod }}
+            - name: METHOD
+              value: {{ .Values.alertmanager.sidecar.watchMethod }}
+            {{ end }}
+            - name: LABEL
+              value: "{{ .Values.alertmanager.sidecar.label }}"
+            {{- if .Values.alertmanager.sidecar.labelValue }}
+            - name: LABEL_VALUE
+              value: {{ quote .Values.alertmanager.sidecar.labelValue }}
+            {{- end }}
+            - name: FOLDER
+              value: "{{ .Values.alertmanager.sidecar.folder }}{{- with .Values.alertmanager.sidecar.defaultFolderName }}/{{ . }}{{- end }}"
+            - name: RESOURCE
+              value: "both"
+            {{- if .Values.alertmanager.sidecar.enableUniqueFilenames }}
+            - name: UNIQUE_FILENAMES
+              value: "{{ .Values.alertmanager.sidecar.enableUniqueFilenames }}"
+            {{- end }}
+            {{- if .Values.alertmanager.sidecar.searchNamespace }}
+            - name: NAMESPACE
+              value: "{{ .Values.alertmanager.sidecar.searchNamespace }}"
+            {{- end }}
+            {{- if .Values.alertmanager.sidecar.skipTlsVerify }}
+            - name: SKIP_TLS_VERIFY
+              value: "{{ .Values.alertmanager.sidecar.skipTlsVerify }}"
+            {{- end }}
+            {{- if .Values.alertmanager.sidecar.folderAnnotation }}
+            - name: FOLDER_ANNOTATION
+              value: "{{ .Values.alertmanager.sidecar.folderAnnotation }}"
+          {{- end }}
+          resources:
+            {{- toYaml .Values.alertmanager.sidecar.resources | nindent 12 }}
+          securityContext:
+            {{- toYaml .Values.alertmanager.sidecar.securityContext | nindent 12 }}
+          volumeMounts:
+            - name: storage
+              mountPath: "/data"
+        {{- end}}
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args:
+            - "-target=alertmanager"
+            - "-config.file=/etc/cortex/cortex.yaml"
+            {{- if .Values.configs.enabled }}
+            - "-alertmanager.configs.url=http://{{ template "cortex.fullname" . }}-configs.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.config.server.http_listen_port }}"
+            {{- end }}
+            {{- if gt (.Values.alertmanager.replicas | int) 1 }}
+            {{- range $n := until (.Values.alertmanager.replicas |int ) }}
+            - -alertmanager.cluster.peers={{ template "cortex.fullname" $ }}-alertmanager-{{ $n }}.{{ template "cortex.fullname" $ }}-alertmanager-headless.{{ $.Release.Namespace }}.svc.{{ $.Values.clusterDomain }}:{{ $clusterPort }}
+            {{- end }}
+            {{- end }}
+            {{- range $key, $value := .Values.alertmanager.extraArgs }}
+            - "-{{ $key }}={{ $value }}"
+            {{- end }}
+          volumeMounts:
+            {{- if .Values.alertmanager.extraVolumeMounts }}
+            {{ toYaml .Values.alertmanager.extraVolumeMounts | nindent 12}}
+            {{- end }}
+            - name: config
+              mountPath: /etc/cortex
+            - name: runtime-config
+              mountPath: /etc/cortex-runtime-config
+            - name: storage
+              mountPath: "/data"
+              {{- if .Values.alertmanager.persistentVolume.subPath }}
+              subPath: {{ .Values.alertmanager.persistentVolume.subPath }}
+              {{- else }}
+              {{- if .Values.alertmanager.persistence.subPath }}
+              ## DEPRECATED: use persistentVolume.subPath instead
+              subPath: {{ .Values.alertmanager.persistence.subPath }}
+              {{- end }}
+              {{- end }}
+          ports:
+            - name: http-metrics
+              containerPort: {{ .Values.config.server.http_listen_port }}
+              protocol: TCP
+            - name: gossip
+              containerPort: {{ .Values.config.memberlist.bind_port }}
+              protocol: TCP
+            - name: cluster
+              containerPort: {{ $clusterPort }}
+              protocol: TCP
+          startupProbe:
+            {{- toYaml .Values.alertmanager.startupProbe | nindent 12 }}
+          livenessProbe:
+            {{- toYaml .Values.alertmanager.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.alertmanager.readinessProbe | nindent 12 }}
+          resources:
+            {{- toYaml .Values.alertmanager.resources | nindent 12 }}
+          {{- if .Values.alertmanager.containerSecurityContext.enabled }}
+          securityContext: {{- omit .Values.alertmanager.containerSecurityContext "enabled" | toYaml | nindent 12 }}
+          {{- end }}
+          env:
+            {{- if .Values.alertmanager.env }}
+              {{- toYaml .Values.alertmanager.env | nindent 12 }}
+            {{- end }}
+{{- end -}}
+{{- end -}}

@@ -1,0 +1,23 @@
+{{- if ne .Values.config.storage.engine "blocks" -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "cortex.tableManagerFullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "cortex.tableManagerLabels" . | nindent 4 }}
+    {{- with .Values.table_manager.service.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  annotations:
+    {{- toYaml .Values.table_manager.service.annotations | nindent 4 }}
+spec:
+  type: ClusterIP
+  ports:
+    - port: {{ .Values.config.server.http_listen_port }}
+      protocol: TCP
+      name: http-metrics
+      targetPort: http-metrics
+  selector:
+    {{- include "cortex.tableManagerSelectorLabels" . | nindent 4 }}
+{{- end -}}

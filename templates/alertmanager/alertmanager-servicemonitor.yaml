@@ -1,0 +1,39 @@
+{{- if .Values.alertmanager.serviceMonitor.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "cortex.alertmanagerFullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "cortex.alertmanagerLabels" . | nindent 4 }}
+    {{- if .Values.alertmanager.serviceMonitor.additionalLabels }}
+{{ toYaml .Values.alertmanager.serviceMonitor.additionalLabels | indent 4 }}
+    {{- end }}
+  {{- if .Values.alertmanager.serviceMonitor.annotations }}
+  annotations:
+{{ toYaml .Values.alertmanager.serviceMonitor.annotations | indent 4 }}
+  {{- end }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "cortex.alertmanagerSelectorLabels" . | nindent 6 }}
+  namespaceSelector:
+    matchNames:
+      - {{ .Release.Namespace | quote }}
+  endpoints:
+  - port: http-metrics
+    {{- if .Values.alertmanager.serviceMonitor.interval }}
+    interval: {{ .Values.alertmanager.serviceMonitor.interval }}
+    {{- end }}
+    {{- if .Values.alertmanager.serviceMonitor.scrapeTimeout }}
+    scrapeTimeout: {{ .Values.alertmanager.serviceMonitor.scrapeTimeout }}
+    {{- end }}
+    {{- if .Values.alertmanager.serviceMonitor.relabelings }}
+    relabelings:
+    {{- toYaml .Values.alertmanager.serviceMonitor.relabelings | nindent 4 }}
+    {{- end }}
+    {{- if .Values.alertmanager.serviceMonitor.metricRelabelings }}
+    metricRelabelings:
+    {{- toYaml .Values.alertmanager.serviceMonitor.metricRelabelings | nindent 4 }}
+    {{- end }}
+{{- end }}

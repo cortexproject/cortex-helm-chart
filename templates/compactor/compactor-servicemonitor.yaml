@@ -1,0 +1,39 @@
+{{- if .Values.compactor.serviceMonitor.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "cortex.compactorFullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "cortex.compactorLabels" . | nindent 4 }}
+    {{- if .Values.compactor.serviceMonitor.additionalLabels }}
+{{ toYaml .Values.compactor.serviceMonitor.additionalLabels | indent 4 }}
+    {{- end }}
+  {{- if .Values.compactor.serviceMonitor.annotations }}
+  annotations:
+{{ toYaml .Values.compactor.serviceMonitor.annotations | indent 4 }}
+  {{- end }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "cortex.compactorSelectorLabels" . | nindent 6 }}
+  namespaceSelector:
+    matchNames:
+      - {{ .Release.Namespace | quote }}
+  endpoints:
+  - port: http-metrics
+    {{- if .Values.compactor.serviceMonitor.interval }}
+    interval: {{ .Values.compactor.serviceMonitor.interval }}
+    {{- end }}
+    {{- if .Values.compactor.serviceMonitor.scrapeTimeout }}
+    scrapeTimeout: {{ .Values.compactor.serviceMonitor.scrapeTimeout }}
+    {{- end }}
+    {{- if .Values.compactor.serviceMonitor.relabelings }}
+    relabelings:
+    {{- toYaml .Values.compactor.serviceMonitor.relabelings | nindent 4 }}
+    {{- end }}
+    {{- if .Values.compactor.serviceMonitor.metricRelabelings }}
+    metricRelabelings:
+    {{- toYaml .Values.compactor.serviceMonitor.metricRelabelings | nindent 4 }}
+    {{- end }}
+{{- end }}

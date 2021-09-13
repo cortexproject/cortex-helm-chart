@@ -60,26 +60,47 @@ Create the app name of cortex clients. Defaults to the same logic as "cortex.ful
 {{- end -}}
 {{- end -}}
 
+
+{{/*
+Common labels
+*/}}
+{{- define "cortex.labels" -}}
+helm.sh/chart: {{ include "cortex.chart" . }}
+{{ include "cortex.selectorLabels" . }}
+{{- if .Chart.AppVersion }}
+app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+{{- end }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- end }}
+
+{{/*
+Selector labels
+*/}}
+{{- define "cortex.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "cortex.name" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}
+
 {{/*
 Create configuration parameters for memcached configuration
 */}}
 {{- define "cortex.memcached" -}}
 {{- if and (eq .Values.config.storage.engine "blocks") (index .Values "tags" "blocks-storage-memcached") }}
 - "-blocks-storage.bucket-store.index-cache.backend=memcached"
-- "-blocks-storage.bucket-store.index-cache.memcached.addresses=dnssrvnoa+_memcache._tcp.{{ .Release.Name }}-memcached-blocks-index.{{ .Release.Namespace }}.svc:11211"
+- "-blocks-storage.bucket-store.index-cache.memcached.addresses=dns+{{ .Release.Name }}-memcached-blocks-index.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:11211"
 - "-blocks-storage.bucket-store.chunks-cache.backend=memcached"
-- "-blocks-storage.bucket-store.chunks-cache.memcached.addresses=dns+{{ .Release.Name }}-memcached-blocks.{{ .Release.Namespace }}.svc:11211"
+- "-blocks-storage.bucket-store.chunks-cache.memcached.addresses=dns+{{ .Release.Name }}-memcached-blocks.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:11211"
 - "-blocks-storage.bucket-store.metadata-cache.backend=memcached"
-- "-blocks-storage.bucket-store.metadata-cache.memcached.addresses=dns+{{ .Release.Name }}-memcached-blocks-metadata.{{ .Release.Namespace }}.svc:11211"
+- "-blocks-storage.bucket-store.metadata-cache.memcached.addresses=dns+{{ .Release.Name }}-memcached-blocks-metadata.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:11211"
 {{- end -}}
 {{- if and (ne .Values.config.storage.engine "blocks") .Values.memcached.enabled }}
-- -store.chunks-cache.memcached.addresses=dns+{{ .Release.Name }}-memcached.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:11211
+- "-store.chunks-cache.memcached.addresses=dns+{{ .Release.Name }}-memcached.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:11211"
 {{- end -}}
 {{- if and (ne .Values.config.storage.engine "blocks") (index .Values "memcached-index-read" "enabled") }}
-- -store.index-cache-read.memcached.addresses=dns+{{ .Release.Name }}-memcached-index-read.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:11211
+- "-store.index-cache-read.memcached.addresses=dns+{{ .Release.Name }}-memcached-index-read.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:11211"
 {{- end -}}
 {{- if and (ne .Values.config.storage.engine "blocks") (index .Values "memcached-index-write" "enabled") }}
-- -store.index-cache-write.memcached.addresses=dns+{{ .Release.Name }}-memcached-index-write.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:11211
+- "-store.index-cache-write.memcached.addresses=dns+{{ .Release.Name }}-memcached-index-write.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:11211"
 {{- end -}}
 {{- end -}}
 

@@ -1,0 +1,25 @@
+{{- if eq .Values.config.storage.engine "blocks" -}}
+{{- if .Values.compactor.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "cortex.compactorFullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "cortex.compactorLabels" . | nindent 4 }}
+    {{- with .Values.compactor.service.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  annotations:
+    {{- toYaml .Values.compactor.service.annotations | nindent 4 }}
+spec:
+  type: ClusterIP
+  ports:
+    - port: {{ .Values.config.server.http_listen_port }}
+      protocol: TCP
+      name: http-metrics
+      targetPort: http-metrics
+  selector:
+    {{- include "cortex.compactorSelectorLabels" . | nindent 4 }}
+{{- end -}}
+{{- end -}}

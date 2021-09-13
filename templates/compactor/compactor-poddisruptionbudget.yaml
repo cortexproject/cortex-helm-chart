@@ -1,0 +1,14 @@
+{{- if and (gt (int .Values.compactor.replicas) 1) (.Values.compactor.podDisruptionBudget) }}
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "cortex.compactorFullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "cortex.compactorLabels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "cortex.compactorSelectorLabels" . | nindent 6 }}
+  {{- toYaml .Values.compactor.podDisruptionBudget | nindent 2 }}
+{{- end }}

@@ -1,0 +1,116 @@
+{{- if ne .Values.config.storage.engine "blocks" -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "cortex.tableManagerFullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "cortex.tableManagerLabels" . | nindent 4 }}
+  annotations:
+    {{- toYaml .Values.table_manager.annotations | nindent 4 }}
+spec:
+  replicas: {{ .Values.table_manager.replicas }}
+  selector:
+    matchLabels:
+      {{- include "cortex.tableManagerSelectorLabels" . | nindent 6 }}
+  strategy:
+    {{- toYaml .Values.table_manager.strategy | nindent 4 }}
+  template:
+    metadata:
+      labels:
+        {{- include "cortex.tableManagerLabels" . | nindent 8 }}
+        {{- with .Values.table_manager.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      annotations:
+{{- if .Values.useExternalConfig }}
+        checksum/config: {{ .Values.externalConfigVersion }}
+{{- else }}
+        checksum/config: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+{{- end}}
+        {{- with .Values.table_manager.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      serviceAccountName: {{ template "cortex.serviceAccountName" . }}
+    {{- if .Values.table_manager.priorityClassName }}
+      priorityClassName: {{ .Values.table_manager.priorityClassName }}
+    {{- end }}
+      {{- if .Values.table_manager.securityContext.enabled }}
+      securityContext: {{- omit .Values.table_manager.securityContext "enabled" | toYaml | nindent 8 }}
+      {{- end }}
+      initContainers:
+        {{- toYaml .Values.table_manager.initContainers | nindent 8 }}
+      {{- if .Values.image.pullSecrets }}
+      imagePullSecrets:
+      {{- range .Values.image.pullSecrets }}
+        - name: {{ . }}
+      {{- end}}
+      {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args:
+            - "-target=table-manager"
+            - "-config.file=/etc/cortex/cortex.yaml"
+          {{- range $key, $value := .Values.table_manager.extraArgs }}
+            - "-{{ $key }}={{ $value }}"
+          {{- end }}
+          volumeMounts:
+            {{- if .Values.table_manager.extraVolumeMounts }}
+              {{ toYaml .Values.table_manager.extraVolumeMounts | nindent 12}}
+            {{- end }}
+            - name: config
+              mountPath: /etc/cortex
+            - name: runtime-config
+              mountPath: /etc/cortex-runtime-config
+            - name: storage
+              mountPath: "/data"
+              subPath: {{ .Values.table_manager.persistence.subPath }}
+          ports:
+            - name: http-metrics
+              containerPort: {{ .Values.config.server.http_listen_port }}
+              protocol: TCP
+          startupProbe:
+            {{- toYaml .Values.table_manager.startupProbe | nindent 12 }}
+          livenessProbe:
+            {{- toYaml .Values.table_manager.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.table_manager.readinessProbe | nindent 12 }}
+          resources:
+            {{- toYaml .Values.table_manager.resources | nindent 12 }}
+          {{- if .Values.table_manager.containerSecurityContext.enabled }}
+          securityContext: {{- omit .Values.table_manager.containerSecurityContext "enabled" | toYaml | nindent 12 }}
+          {{- end }}
+          env:
+            {{- if .Values.table_manager.env }}
+              {{- toYaml .Values.table_manager.env | nindent 12 }}
+            {{- end }}
+{{- if .Values.table_manager.extraContainers }}
+{{ toYaml .Values.table_manager.extraContainers | indent 8}}
+{{- end }}
+      nodeSelector:
+        {{- toYaml .Values.table_manager.nodeSelector | nindent 8 }}
+      affinity:
+        {{- toYaml .Values.table_manager.affinity | nindent 8 }}
+      tolerations:
+        {{- toYaml .Values.table_manager.tolerations | nindent 8 }}
+      terminationGracePeriodSeconds: {{ .Values.table_manager.terminationGracePeriodSeconds }}
+      volumes:
+        - name: config
+          secret:
+{{- if .Values.useExternalConfig }}
+            secretName: {{ .Values.externalConfigSecretName }}
+{{- else }}
+            secretName: {{ template "cortex.fullname" . }}
+{{- end }}
+        - name: runtime-config
+          configMap:
+            name: {{ template "cortex.fullname" . }}-runtime-config
+{{- if .Values.table_manager.extraVolumes }}
+{{ toYaml .Values.table_manager.extraVolumes | indent 8}}
+{{- end }}
+        - name: storage
+          emptyDir: {}
+{{- end -}}

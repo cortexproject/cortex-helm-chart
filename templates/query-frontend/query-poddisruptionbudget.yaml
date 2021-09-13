@@ -1,0 +1,14 @@
+{{- if and (gt (int .Values.query_frontend.replicas) 1) (.Values.query_frontend.podDisruptionBudget) }}
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "cortex.queryFrontendFullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "cortex.queryFrontendLabels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "cortex.queryFrontendSelectorLabels" . | nindent 6 }}
+  {{- toYaml .Values.query_frontend.podDisruptionBudget | nindent 2 }}
+{{- end }}

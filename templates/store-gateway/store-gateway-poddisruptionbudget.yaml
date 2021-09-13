@@ -1,0 +1,14 @@
+{{- if and (gt (int .Values.store_gateway.replicas) 1) (.Values.store_gateway.podDisruptionBudget) }}
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "cortex.storeGatewayFullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "cortex.storeGatewayLabels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "cortex.storeGatewaySelectorLabels" . | nindent 6 }}
+  {{- toYaml .Values.store_gateway.podDisruptionBudget | nindent 2 }}
+{{- end }}

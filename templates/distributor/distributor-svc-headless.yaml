@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "cortex.distributorFullname" . }}-headless
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "cortex.distributorLabels" . | nindent 4 }}
+    {{- with .Values.distributor.service.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  annotations:
+    {{- toYaml .Values.distributor.service.annotations | nindent 4 }}
+spec:
+  type: ClusterIP
+  clusterIP: None
+  publishNotReadyAddresses: true
+  ports:
+    - port: {{ .Values.config.server.grpc_listen_port }}
+      protocol: TCP
+      name: grpc
+      targetPort: grpc
+  selector:
+    {{- include "cortex.distributorSelectorLabels" . | nindent 4 }}

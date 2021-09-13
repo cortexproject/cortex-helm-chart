@@ -1,0 +1,14 @@
+{{- if and (gt (int .Values.ruler.replicas) 1) (.Values.ruler.podDisruptionBudget) }}
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "cortex.rulerFullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "cortex.rulerLabels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "cortex.rulerSelectorLabels" . | nindent 6 }}
+  {{- toYaml .Values.ruler.podDisruptionBudget | nindent 2 }}
+{{- end }}

@@ -1,0 +1,134 @@
+{{- if .Values.configs.enabled -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "cortex.configsFullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "cortex.configsLabels" . | nindent 4 }}
+  annotations:
+    {{- toYaml .Values.configs.annotations | nindent 4 }}
+spec:
+  replicas: {{ .Values.configs.replicas }}
+  selector:
+    matchLabels:
+      {{- include "cortex.configsSelectorLabels" . | nindent 6 }}
+  strategy:
+    {{- toYaml .Values.configs.strategy | nindent 4 }}
+  template:
+    metadata:
+      labels:
+        {{- include "cortex.configsLabels" . | nindent 8 }}
+        {{- with .Values.configs.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      annotations:
+{{- if .Values.useExternalConfig }}
+        checksum/config: {{ .Values.externalConfigVersion }}
+{{- else }}
+        checksum/config: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+{{- end }}
+        {{- with .Values.configs.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      serviceAccountName: {{ template "cortex.serviceAccountName" . }}
+    {{- if .Values.configs.priorityClassName }}
+      priorityClassName: {{ .Values.configs.priorityClassName }}
+    {{- end }}
+      {{- if .Values.configs.securityContext.enabled }}
+      securityContext: {{- omit .Values.configs.securityContext "enabled" | toYaml | nindent 8 }}
+      {{- end }}
+      initContainers:
+        {{- toYaml .Values.configs.initContainers | nindent 8 }}
+      {{- if .Values.image.pullSecrets }}
+      imagePullSecrets:
+      {{- range .Values.image.pullSecrets }}
+        - name: {{ . }}
+      {{- end}}
+      {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args:
+            - "-target=configs"
+            - "-config.file=/etc/cortex/cortex.yaml"
+            {{- if .Values.configsdb_postgresql.enabled }}
+            - "-configs.database.uri={{ .Values.configsdb_postgresql.uri }}"
+            - "-configs.database.password-file=/etc/postgresql/password"
+            - "-configs.database.migrations-dir=/migrations"
+            {{- else }}
+            - "-configs.database.uri=memory://"
+            {{- end }}
+          {{- range $key, $value := .Values.configs.extraArgs }}
+            - "-{{ $key }}={{ $value }}"
+          {{- end }}
+          volumeMounts:
+            - name: config
+              mountPath: /etc/cortex
+              subPath: {{ .Values.configs.persistence.subPath }}
+            - name: runtime-config
+              mountPath: /etc/cortex-runtime-config
+            {{- if .Values.configsdb_postgresql.enabled }}
+            - name: postgres-password
+              mountPath: /etc/postgresql
+            {{- end }}
+            {{- if .Values.configs.extraVolumeMounts }}
+              {{ toYaml .Values.configs.extraVolumeMounts | nindent 12}}
+            {{- end }}
+          ports:
+            - name: http-metrics
+              containerPort: {{ .Values.config.server.http_listen_port }}
+              protocol: TCP
+            - name: gossip
+              containerPort: {{ .Values.config.memberlist.bind_port }}
+              protocol: TCP
+          startupProbe:
+            {{- toYaml .Values.configs.startupProbe | nindent 12 }}
+          livenessProbe:
+            {{- toYaml .Values.configs.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.configs.readinessProbe | nindent 12 }}
+          resources:
+            {{- toYaml .Values.configs.resources | nindent 12 }}
+          {{- if .Values.configs.containerSecurityContext.enabled }}
+          securityContext: {{- omit .Values.configs.containerSecurityContext "enabled" | toYaml | nindent 12 }}
+          {{- end }}
+          env:
+            {{- if .Values.configs.env }}
+              {{- toYaml .Values.configs.env | nindent 12 }}
+            {{- end }}
+{{- if .Values.configs.extraContainers }}
+{{ toYaml .Values.configs.extraContainers | indent 8}}
+{{- end }}
+      nodeSelector:
+        {{- toYaml .Values.configs.nodeSelector | nindent 8 }}
+      affinity:
+        {{- toYaml .Values.configs.affinity | nindent 8 }}
+      tolerations:
+        {{- toYaml .Values.configs.tolerations | nindent 8 }}
+      terminationGracePeriodSeconds: {{ .Values.configs.terminationGracePeriodSeconds }}
+      volumes:
+        - name: config
+          secret:
+{{- if .Values.useExternalConfig }}
+            secretName: {{ .Values.externalConfigSecretName }}
+{{- else }}
+            secretName: {{ template "cortex.fullname" . }}
+{{- end }}
+        {{- if .Values.configsdb_postgresql.enabled }}
+        - name: postgres-password
+          secret:
+            secretName: {{ if .Values.configsdb_postgresql.auth.existing_secret.name }}{{ .Values.configsdb_postgresql.auth.existing_secret.name }}{{ else }}{{ template "cortex.fullname" . }}-postgresql{{ end }}
+            items:
+              - key: {{ if .Values.configsdb_postgresql.auth.existing_secret.name }}{{ .Values.configsdb_postgresql.auth.existing_secret.key }}{{ else }}postgresql-password{{ end }}
+                path: password
+        {{- end }}
+        - name: runtime-config
+          configMap:
+            name: {{ template "cortex.fullname" . }}-runtime-config
+{{- if .Values.configs.extraVolumes }}
+{{ toYaml .Values.configs.extraVolumes | indent 8}}
+{{- end }}
+{{- end }}

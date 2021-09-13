@@ -1,0 +1,14 @@
+{{- if and (gt (int .Values.distributor.replicas) 1) (.Values.distributor.podDisruptionBudget) }}
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "cortex.distributorFullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "cortex.distributorLabels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "cortex.distributorSelectorLabels" . | nindent 6 }}
+  {{- toYaml .Values.distributor.podDisruptionBudget | nindent 2 }}
+{{- end }}

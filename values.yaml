@@ -3,7 +3,7 @@
 
 image:
   repository: quay.io/cortexproject/cortex
-  tag: v1.7.0
+  tag: v1.10.0
   pullPolicy: IfNotPresent
 
   ## Optionally specify an array of imagePullSecrets.
@@ -20,9 +20,9 @@ tags:
   blocks-storage-memcached: false
 
 ingress:
-  enabled: true
+  enabled: false
   annotations:
-    kubernetes.io/ingress.class: nginx
+    # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
     - host: chart-example.local
@@ -37,6 +37,7 @@ serviceAccount:
   create: true
   name:
   annotations: {}
+  automountServiceAccountToken: true
 
 useExternalConfig: false
 externalConfigSecretName: 'secret-with-config.yaml'
@@ -46,6 +47,7 @@ config:
   auth_enabled: false
   api:
     prometheus_http_prefix: '/prometheus'
+    response_compression_enabled: true
   ingester:
     max_transfer_retries: 0
     lifecycler:
@@ -65,6 +67,7 @@ config:
     enforce_metric_name: false
     reject_old_samples: true
     reject_old_samples_max_age: 168h
+    max_query_lookback: 0s
   schema:
     configs:
       - from: 2020-11-01
@@ -126,12 +129,13 @@ config:
       memcached_client:
         timeout: 1s
   chunk_store:
-    max_look_back_period: 0s
     chunk_cache_config:
       memcached:
         expiration: 1h
       memcached_client:
         timeout: 1s
+  # -- https://cortexmetrics.io/docs/configuration/configuration-file/#store_gateway_config
+  store_gateway: {}
   table_manager:
     retention_deletes_enabled: false
     retention_period: 0s
@@ -140,13 +144,23 @@ config:
     pool:
       health_check_ingesters: true
   memberlist:
+    bind_port: 7946
+    # -- the service name of the memberlist
+    # if using memberlist discovery
     join_members: []
-    ## add here the service name of the ingesters
-    ## if using memberlist discovery, eg:
-    #  - cortex-ingester-headless
+    #  - '{{ include "cortex.fullname" $ }}-memberlist'
   querier:
     active_query_tracker_dir: /data/cortex/querier
     query_ingesters_within: 12h
+    # -- Comma separated list of store-gateway addresses in DNS Service Discovery
+    # format. This option should is set automatically when using the blocks storage and the
+    # store-gateway sharding is disabled (when enabled, the store-gateway instances
+    # form a ring and addresses are picked from the ring).
+    # @default -- automatic
+    store_gateway_addresses: |-
+      {{ if and (eq .Values.config.storage.engine "blocks") (not .Values.config.store_gateway.sharding_enabled) -}}
+      dns+{{ include "cortex.storeGatewayFullname" $ }}-headless:9095
+      {{- end }}
   query_range:
     split_queries_by_interval: 24h
     align_queries_with_step: true
@@ -159,18 +173,32 @@ config:
           timeout: 1s
   ruler:
     enable_alertmanager_discovery: false
+    # -- Enable the experimental ruler config api.
+    enable_api: false
+    # -- Method to use for backend rule storage (configdb, azure, gcs, s3, swift, local) refer to https://cortexmetrics.io/docs/configuration/configuration-file/#ruler_config
+    storage: {}
+  runtime_config:
+    file: /etc/cortex-runtime-config/runtime_config.yaml
   alertmanager:
+    # -- Enable the experimental alertmanager config api.
+    enable_api: false
     external_url: '/api/prom/alertmanager'
+    # -- Type of backend to use to store alertmanager configs. Supported values are: "configdb", "gcs", "s3", "local". refer to: https://cortexmetrics.io/docs/configuration/configuration-file/#alertmanager_config
+    storage: {}
   frontend:
     #  max_outstanding_per_tenant: 1000
     log_queries_longer_than: 10s
-    compress_responses: true
 
-rbac:
+runtimeconfigmap:
+  # -- If true, a configmap for the `runtime_config` will be created.
+  # If false, the configmap _must_ exist already on the cluster or pods will fail to create.
   create: true
-  pspEnabled: true
+  annotations: {}
+  # -- https://cortexmetrics.io/docs/configuration/arguments/#runtime-configuration-file
+  runtime_config: {}
 
 alertmanager:
+  enabled: true
   replicas: 1
 
   statefulSet:
@@ -185,6 +213,9 @@ alertmanager:
 
   serviceMonitor:
     enabled: false
+    additionalLabels: {}
+    relabelings: []
+    metricRelabelings: []
 
   resources: {}
   #  limits:
@@ -251,16 +282,19 @@ alertmanager:
     ##
     # storageClass: "-"
 
+  startupProbe:
+    httpGet:
+      path: /ready
+      port: http-metrics
+    failureThreshold: 10
   livenessProbe:
     httpGet:
       path: /ready
       port: http-metrics
-    initialDelaySeconds: 45
   readinessProbe:
     httpGet:
       path: /ready
       port: http-metrics
-    initialDelaySeconds: 45
 
   securityContext:
     {}
@@ -269,15 +303,17 @@ alertmanager:
     # runAsNonRoot: true
     # runAsUser: 10001
 
+  containerSecurityContext:
+    enabled: true
+    readOnlyRootFilesystem: true
+
   ## Tolerations for pod assignment
   ## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
   tolerations: []
 
-  # The values to set in the PodDisruptionBudget spec
   # If not set then a PodDisruptionBudget will not be created
-  podDisruptionBudget: {}
-  # minAvailable: 1
-  # maxUnavailable: 1
+  podDisruptionBudget:
+    maxUnavailable: 1
 
   strategy:
     type: RollingUpdate
@@ -330,6 +366,34 @@ alertmanager:
   # Extra env variables to pass to the cortex container
   env: []
 
+  ## Sidecars that collect the configmaps with specified label and stores the included files them into the respective folders
+  sidecar:
+    image:
+      repository: quay.io/kiwigrid/k8s-sidecar
+      tag: 1.10.7
+      sha: ""
+    imagePullPolicy: IfNotPresent
+    resources: {}
+    #   limits:
+    #     cpu: 100m
+    #     memory: 100Mi
+    #   requests:
+    #     cpu: 50m
+    #     memory: 50Mi
+    # skipTlsVerify Set to true to skip tls verification for kube api calls
+    # skipTlsVerify: true
+    enableUniqueFilenames: false
+    enabled: false
+    label: cortex_alertmanager
+    watchMethod: null
+    labelValue: null
+    folder: /data
+    defaultFolderName: null
+    searchNamespace: null
+    folderAnnotation: null
+    securityContext:
+      runAsUser: 0
+
 distributor:
   replicas: 2
 
@@ -339,6 +403,9 @@ distributor:
 
   serviceMonitor:
     enabled: false
+    additionalLabels: {}
+    relabelings: []
+    metricRelabelings: []
 
   resources: {}
   #  limits:
@@ -369,28 +436,46 @@ distributor:
           podAffinityTerm:
             labelSelector:
               matchExpressions:
-                - key: target
+                - key: app.kubernetes.io/component
                   operator: In
                   values:
                     - distributor
             topologyKey: 'kubernetes.io/hostname'
 
   annotations: {}
+
+  autoscaling:
+    # -- Creates a HorizontalPodAutoscaler for the distributor pods.
+    enabled: false
+    minReplicas: 2
+    maxReplicas: 30
+    targetCPUUtilizationPercentage: 80
+    targetMemoryUtilizationPercentage: 0  # 80
+    # -- Ref: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#support-for-configurable-scaling-behavior
+    behavior: {}
+
   persistence:
     subPath:
 
+  startupProbe:
+    httpGet:
+      path: /ready
+      port: http-metrics
+    failureThreshold: 10
   livenessProbe:
     httpGet:
       path: /ready
       port: http-metrics
-    initialDelaySeconds: 45
   readinessProbe:
     httpGet:
       path: /ready
       port: http-metrics
-    initialDelaySeconds: 45
 
   securityContext: {}
+
+  containerSecurityContext:
+    enabled: true
+    readOnlyRootFilesystem: true
 
   strategy:
     type: RollingUpdate
@@ -401,7 +486,8 @@ distributor:
   terminationGracePeriodSeconds: 60
 
   tolerations: []
-  podDisruptionBudget: {}
+  podDisruptionBudget:
+    maxUnavailable: 1
   initContainers: []
   extraContainers: []
   extraVolumes: []
@@ -424,6 +510,9 @@ ingester:
 
   serviceMonitor:
     enabled: false
+    additionalLabels: {}
+    relabelings: []
+    metricRelabelings: []
 
   resources: {}
   #  limits:
@@ -454,13 +543,47 @@ ingester:
           podAffinityTerm:
             labelSelector:
               matchExpressions:
-                - key: target
+                - key: app.kubernetes.io/component
                   operator: In
                   values:
                     - ingester
             topologyKey: 'kubernetes.io/hostname'
 
   annotations: {}
+
+  autoscaling:
+    enabled: false
+    minReplicas: 3
+    maxReplicas: 30
+    targetMemoryUtilizationPercentage: 80
+    behavior:
+      scaleDown:
+        # -- see https://cortexmetrics.io/docs/guides/ingesters-scaling-up-and-down/#scaling-down for scaledown details
+        policies:
+          - type: Pods
+            value: 1
+            # set to no less than 2x the maximum between -blocks-storage.bucket-store.sync-interval and -compactor.cleanup-interval
+            periodSeconds: 1800
+        # -- uses metrics from the past 1h to make scaleDown decisions
+        stabilizationWindowSeconds: 3600
+      scaleUp:
+        # -- This default scaleup policy allows adding 1 pod every 30 minutes.
+        # Ref: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#support-for-configurable-scaling-behavior
+        policies:
+          - type: Pods
+            value: 1
+            periodSeconds: 1800
+
+  lifecycle:
+    # -- The /shutdown preStop hook is recommended as part of the ingester
+    # scaledown process, but can be removed to optimize rolling restarts in
+    # instances that will never be scaled down or when using chunks storage
+    # with WAL disabled.
+    # https://cortexmetrics.io/docs/guides/ingesters-scaling-up-and-down/#scaling-down
+    preStop:
+      httpGet:
+        path: "/ingester/shutdown"
+        port: http-metrics
 
   ## DEPRECATED: use persistentVolume.subPath instead
   persistence:
@@ -502,23 +625,30 @@ ingester:
     ##
     # storageClass: "-"
 
-  livenessProbe:
-    failureThreshold: 20      # 10 minutes failure threshold
+  startupProbe:
+    # WAL Replay can take a long time. Increasing failureThreshold for ~30 min of time until killed
+    failureThreshold: 60
+    initialDelaySeconds: 120
+    periodSeconds: 30
     httpGet:
       path: /ready
       port: http-metrics
       scheme: HTTP
-    initialDelaySeconds: 180
-    periodSeconds: 30
-    successThreshold: 1
-    timeoutSeconds: 1
+  livenessProbe:
+    httpGet:
+      path: /ready
+      port: http-metrics
+      scheme: HTTP
   readinessProbe:
     httpGet:
       path: /ready
       port: http-metrics
-    initialDelaySeconds: 60
 
   securityContext: {}
+
+  containerSecurityContext:
+    enabled: true
+    readOnlyRootFilesystem: true
 
   strategy:
     type: RollingUpdate
@@ -531,7 +661,8 @@ ingester:
   terminationGracePeriodSeconds: 240
 
   tolerations: []
-  podDisruptionBudget: {}
+  podDisruptionBudget:
+    maxUnavailable: 1
   initContainers: []
   extraContainers: []
   extraVolumes: []
@@ -540,6 +671,7 @@ ingester:
   env: []
 
 ruler:
+  enabled: true
   replicas: 1
 
   service:
@@ -548,6 +680,9 @@ ruler:
 
   serviceMonitor:
     enabled: false
+    additionalLabels: {}
+    relabelings: []
+    metricRelabelings: []
 
   resources: {}
   #  limits:
@@ -576,18 +711,25 @@ ruler:
   persistence:
     subPath:
 
+  startupProbe:
+    httpGet:
+      path: /ready
+      port: http-metrics
+    failureThreshold: 10
   livenessProbe:
     httpGet:
       path: /ready
       port: http-metrics
-    initialDelaySeconds: 45
   readinessProbe:
     httpGet:
       path: /ready
       port: http-metrics
-    initialDelaySeconds: 45
 
   securityContext: {}
+
+  containerSecurityContext:
+    enabled: true
+    readOnlyRootFilesystem: true
 
   strategy:
     type: RollingUpdate
@@ -598,13 +740,72 @@ ruler:
   terminationGracePeriodSeconds: 180
 
   tolerations: []
-  podDisruptionBudget: {}
+  podDisruptionBudget:
+    maxUnavailable: 1
   initContainers: []
   extraContainers: []
   extraVolumes: []
   extraVolumeMounts: []
   extraPorts: []
   env: []
+  # allow configuring rules via configmap in case you don't want to use the configs db
+  directories: {}
+    # tenant_foo:
+    #   rules1.txt: |
+    #     groups:
+    #       - name: should_fire
+    #         rules:
+    #           - alert: HighPercentageError
+    #             expr: |
+    #               sum(rate({app="foo", env="production"} |= "error" [5m])) by (job)
+    #                 /
+    #               sum(rate({app="foo", env="production"}[5m])) by (job)
+    #                 > 0.05
+    #             for: 10m
+    #             labels:
+    #               severity: warning
+    #             annotations:
+    #               summary: High error rate
+
+  ## Sidecars that collect the configmaps with specified label and stores the included files them into the respective folders
+  sidecar:
+    image:
+      repository: quay.io/kiwigrid/k8s-sidecar
+      tag: 1.10.7
+      sha: ""
+    imagePullPolicy: IfNotPresent
+    resources: {}
+    #   limits:
+    #     cpu: 100m
+    #     memory: 100Mi
+    #   requests:
+    #     cpu: 50m
+    #     memory: 50Mi
+    # skipTlsVerify Set to true to skip tls verification for kube api calls
+    # skipTlsVerify: true
+    enableUniqueFilenames: false
+    enabled: false
+    # label that the configmaps with rules are marked with
+    label: cortex_rules
+    watchMethod: null
+    # value of label that the configmaps with rules are set to
+    labelValue: null
+    # folder in the pod that should hold the collected rules (unless `defaultFolderName` is set)
+    folder: /tmp/rules
+    # The default folder name, it will create a subfolder under the `folder` and put rules in there instead
+    defaultFolderName: null
+    # If specified, the sidecar will search for rules config-maps inside this namespace.
+    # Otherwise the namespace in which the sidecar is running will be used.
+    # It's also possible to specify ALL to search in all namespaces
+    searchNamespace: null
+    # If specified, the sidecar will look for annotation with this name to create folder and put graph here.
+    # You can use this parameter together with `provider.foldersFromFilesStructure`to annotate configmaps and create folder structure.
+    folderAnnotation: null
+    securityContext:
+      runAsUser: 0
+    # running the sidecar will also run as root
+    # provider configuration that lets cortex manage the rules
+
 
 querier:
   replicas: 2
@@ -615,6 +816,9 @@ querier:
 
   serviceMonitor:
     enabled: false
+    additionalLabels: {}
+    relabelings: []
+    metricRelabelings: []
 
   resources: {}
   #  limits:
@@ -645,28 +849,46 @@ querier:
           podAffinityTerm:
             labelSelector:
               matchExpressions:
-                - key: target
+                - key: app.kubernetes.io/component
                   operator: In
                   values:
                     - querier
             topologyKey: 'kubernetes.io/hostname'
 
   annotations: {}
+
+  autoscaling:
+    # -- Creates a HorizontalPodAutoscaler for the querier pods.
+    enabled: false
+    minReplicas: 2
+    maxReplicas: 30
+    targetCPUUtilizationPercentage: 80
+    targetMemoryUtilizationPercentage: 0  # 80
+    # -- Ref: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#support-for-configurable-scaling-behavior
+    behavior: {}
+
   persistence:
     subPath:
 
+  startupProbe:
+    httpGet:
+      path: /ready
+      port: http-metrics
+    failureThreshold: 10
   livenessProbe:
     httpGet:
       path: /ready
       port: http-metrics
-    initialDelaySeconds: 45
   readinessProbe:
     httpGet:
       path: /ready
       port: http-metrics
-    initialDelaySeconds: 45
 
   securityContext: {}
+
+  containerSecurityContext:
+    enabled: true
+    readOnlyRootFilesystem: true
 
   strategy:
     type: RollingUpdate
@@ -677,7 +899,8 @@ querier:
   terminationGracePeriodSeconds: 180
 
   tolerations: []
-  podDisruptionBudget: {}
+  podDisruptionBudget:
+    maxUnavailable: 1
   initContainers: []
   extraContainers: []
   extraVolumes: []
@@ -694,6 +917,9 @@ query_frontend:
 
   serviceMonitor:
     enabled: false
+    additionalLabels: {}
+    relabelings: []
+    metricRelabelings: []
 
   resources: {}
   #  limits:
@@ -724,7 +950,7 @@ query_frontend:
           podAffinityTerm:
             labelSelector:
               matchExpressions:
-                - key: target
+                - key: app.kubernetes.io/component
                   operator: In
                   values:
                     - query-frontend
@@ -734,18 +960,24 @@ query_frontend:
   persistence:
     subPath:
 
+  startupProbe:
+    httpGet:
+      path: /ready
+      port: http-metrics
+    failureThreshold: 10
   livenessProbe:
     httpGet:
       path: /ready
       port: http-metrics
-    initialDelaySeconds: 45
   readinessProbe:
     httpGet:
       path: /ready
       port: http-metrics
-    initialDelaySeconds: 45
 
   securityContext: {}
+  containerSecurityContext:
+    enabled: true
+    readOnlyRootFilesystem: true
 
   strategy:
     type: RollingUpdate
@@ -756,7 +988,8 @@ query_frontend:
   terminationGracePeriodSeconds: 180
 
   tolerations: []
-  podDisruptionBudget: {}
+  podDisruptionBudget:
+    maxUnavailable: 1
   initContainers: []
   extraContainers: []
   extraVolumes: []
@@ -773,6 +1006,9 @@ table_manager:
 
   serviceMonitor:
     enabled: false
+    additionalLabels: {}
+    relabelings: []
+    metricRelabelings: []
 
   resources: {}
   #  limits:
@@ -801,18 +1037,25 @@ table_manager:
   persistence:
     subPath:
 
+  startupProbe:
+    httpGet:
+      path: /ready
+      port: http-metrics
+    failureThreshold: 10
   livenessProbe:
     httpGet:
       path: /ready
       port: http-metrics
-    initialDelaySeconds: 45
   readinessProbe:
     httpGet:
       path: /ready
       port: http-metrics
-    initialDelaySeconds: 45
 
   securityContext: {}
+
+  containerSecurityContext:
+    enabled: true
+    readOnlyRootFilesystem: true
 
   strategy:
     type: RollingUpdate
@@ -823,7 +1066,8 @@ table_manager:
   terminationGracePeriodSeconds: 180
 
   tolerations: []
-  podDisruptionBudget: {}
+  podDisruptionBudget:
+    maxUnavailable: 1
   initContainers: []
   extraContainers: []
   extraVolumes: []
@@ -832,6 +1076,7 @@ table_manager:
   env: []
 
 configs:
+  enabled: false
   replicas: 1
 
   service:
@@ -840,6 +1085,9 @@ configs:
 
   serviceMonitor:
     enabled: false
+    additionalLabels: {}
+    relabelings: []
+    metricRelabelings: []
 
   resources: {}
   #  limits:
@@ -868,18 +1116,25 @@ configs:
   persistence:
     subPath:
 
+  startupProbe:
+    httpGet:
+      path: /ready
+      port: http-metrics
+    failureThreshold: 10
   livenessProbe:
     httpGet:
       path: /ready
       port: http-metrics
-    initialDelaySeconds: 45
   readinessProbe:
     httpGet:
       path: /ready
       port: http-metrics
-    initialDelaySeconds: 45
 
   securityContext: {}
+
+  containerSecurityContext:
+    enabled: true
+    readOnlyRootFilesystem: true
 
   strategy:
     type: RollingUpdate
@@ -890,7 +1145,8 @@ configs:
   terminationGracePeriodSeconds: 180
 
   tolerations: []
-  podDisruptionBudget: {}
+  podDisruptionBudget:
+    maxUnavailable: 1
   initContainers: []
   extraContainers: []
   extraVolumes: []
@@ -906,11 +1162,41 @@ nginx:
     dnsResolver: kube-dns.kube-system.svc.cluster.local
     ## ref: http://nginx.org/en/docs/http/ngx_http_core_module.html#client_max_body_size
     client_max_body_size: 1M
+    # -- arbitrary snippet to inject in the http { } section of the nginx config
+    httpSnippet: ""
+    # -- arbitrary snippet to inject in the top section of the nginx config
+    mainSnippet: ""
+    # -- arbitrary snippet to inject in the server { } section of the nginx config
+    serverSnippet: ""
     setHeaders: {}
-      # X-Scope-OrgID: 0
+    # -- (optional) List of [auth tenants](https://cortexmetrics.io/docs/guides/auth/) to set in the nginx config
+    auth_orgs: []
+    # -- (optional) Name of basic auth secret.
+    # In order to use this option, a secret with htpasswd formatted contents at
+    # the key ".htpasswd" must exist. For example:
+    #
+    #   apiVersion: v1
+    #   kind: Secret
+    #   metadata:
+    #     name: my-secret
+    #     namespace: <same as cortex installation>
+    #   stringData:
+    #     .htpasswd: |
+    #       user1:$apr1$/woC1jnP$KAh0SsVn5qeSMjTtn0E9Q0
+    #       user2:$apr1$QdR8fNLT$vbCEEzDj7LyqCMyNpSoBh/
+    #
+    # Please note that the use of basic auth will not identify organizations
+    # the way X-Scope-OrgID does. Thus, the use of basic auth alone will not
+    # prevent one tenant from viewing the metrics of another. To ensure tenants
+    # are scoped appropriately, explicitly set the `X-Scope-OrgID` header
+    # in the nginx config. Example
+    #   setHeaders:
+    #     X-Scope-Org-Id: $remote_user
+    basicAuthSecretName: ""
+
   image:
     repository: nginx
-    tag: 1.17
+    tag: 1.21
     pullPolicy: IfNotPresent
 
   service:
@@ -920,6 +1206,9 @@ nginx:
 
   serviceMonitor:
     enabled: false
+    additionalLabels: {}
+    relabelings: []
+    metricRelabelings: []
 
   resources: {}
   #  limits:
@@ -948,18 +1237,25 @@ nginx:
   persistence:
     subPath:
 
+  startupProbe:
+    httpGet:
+      path: /healthz
+      port: http-metrics
+    failureThreshold: 10
   livenessProbe:
     httpGet:
       path: /healthz
       port: http-metrics
-    initialDelaySeconds: 10
   readinessProbe:
     httpGet:
       path: /healthz
       port: http-metrics
-    initialDelaySeconds: 10
 
   securityContext: {}
+
+  containerSecurityContext:
+    enabled: true
+    readOnlyRootFilesystem: false
 
   strategy:
     type: RollingUpdate
@@ -970,7 +1266,8 @@ nginx:
   terminationGracePeriodSeconds: 10
 
   tolerations: []
-  podDisruptionBudget: {}
+  podDisruptionBudget:
+    maxUnavailable: 1
   initContainers: []
   extraContainers: []
   extraVolumes: []
@@ -987,6 +1284,9 @@ store_gateway:
 
   serviceMonitor:
     enabled: false
+    additionalLabels: {}
+    relabelings: []
+    metricRelabelings: []
 
   resources: {}
   #  limits:
@@ -1017,7 +1317,7 @@ store_gateway:
           podAffinityTerm:
             labelSelector:
               matchExpressions:
-                - key: target
+                - key: app.kubernetes.io/component
                   operator: In
                   values:
                     - store-gateway
@@ -1060,23 +1360,30 @@ store_gateway:
     ##
     # storageClass: "-"
 
-  livenessProbe:
-    failureThreshold: 20      # 10 minutes failure threshold
+  startupProbe:
+    # Increasing failureThreshold for ~30 min of time until killed
+    failureThreshold: 60
+    initialDelaySeconds: 120
+    periodSeconds: 30
     httpGet:
       path: /ready
       port: http-metrics
       scheme: HTTP
-    initialDelaySeconds: 180
-    periodSeconds: 30
-    successThreshold: 1
-    timeoutSeconds: 1
+  livenessProbe:
+    httpGet:
+      path: /ready
+      port: http-metrics
+      scheme: HTTP
   readinessProbe:
     httpGet:
       path: /ready
       port: http-metrics
-    initialDelaySeconds: 60
 
   securityContext: {}
+
+  containerSecurityContext:
+    enabled: true
+    readOnlyRootFilesystem: true
 
   strategy:
     type: RollingUpdate
@@ -1084,7 +1391,8 @@ store_gateway:
   terminationGracePeriodSeconds: 240
 
   tolerations: []
-  podDisruptionBudget: {}
+  podDisruptionBudget:
+    maxUnavailable: 1
   initContainers: []
   extraContainers: []
   extraVolumes: []
@@ -1102,6 +1410,9 @@ compactor:
 
   serviceMonitor:
     enabled: false
+    additionalLabels: {}
+    relabelings: []
+    metricRelabelings: []
 
   resources: {}
   #  limits:
@@ -1132,7 +1443,7 @@ compactor:
           podAffinityTerm:
             labelSelector:
               matchExpressions:
-                - key: target
+                - key: app.kubernetes.io/component
                   operator: In
                   values:
                     - compactor
@@ -1175,23 +1486,29 @@ compactor:
     ##
     # storageClass: "-"
 
-  livenessProbe:
-    failureThreshold: 20      # 10 minutes failure threshold
+  startupProbe:
+    # Increasing failureThreshold for ~30 min of time until killed
+    failureThreshold: 60
+    initialDelaySeconds: 120
+    periodSeconds: 30
     httpGet:
       path: /ready
       port: http-metrics
       scheme: HTTP
-    initialDelaySeconds: 180
-    periodSeconds: 30
-    successThreshold: 1
-    timeoutSeconds: 1
+  livenessProbe:
+    httpGet:
+      path: /ready
+      port: http-metrics
+      scheme: HTTP
   readinessProbe:
     httpGet:
       path: /ready
       port: http-metrics
-    initialDelaySeconds: 60
 
   securityContext: {}
+  containerSecurityContext:
+    enabled: true
+    readOnlyRootFilesystem: true
 
   strategy:
     type: RollingUpdate
@@ -1199,7 +1516,8 @@ compactor:
   terminationGracePeriodSeconds: 240
 
   tolerations: []
-  podDisruptionBudget: {}
+  podDisruptionBudget:
+    maxUnavailable: 1
   initContainers: []
   extraContainers: []
   extraVolumes: []

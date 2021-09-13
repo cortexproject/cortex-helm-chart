@@ -1,0 +1,14 @@
+{{- if and (gt (int .Values.table_manager.replicas) 1) (.Values.table_manager.podDisruptionBudget) }}
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "cortex.tableManagerFullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "cortex.tableManagerLabels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "cortex.tableManagerSelectorLabels" . | nindent 6 }}
+  {{- toYaml .Values.table_manager.podDisruptionBudget | nindent 2 }}
+{{- end }}
