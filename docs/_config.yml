@@ -1,0 +1,11 @@
+title: cortex-helm-chart
+email: cortex-team@googlegroups.com
+description: >-
+  Cortex is a horizontally scalable, highly available, multi-tenant, long term Prometheus.
+  The cortex-helm-chart helps the operator with deploying cortex on a Kubernetes cluster.
+twitter_username: CortexMetrics
+github_username:  cortexproject
+
+# Build settings
+remote_theme: pmarsceill/just-the-docs
+# color_scheme: "dark"
