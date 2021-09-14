@@ -1,0 +1,50 @@
+---
+# this ensures Jekyll reads the file to be transformed into CSS later
+# only Main files contain this front matter, not partials.
+---
+
+.code-header {
+  display: flex;
+  position: sticky;
+  margin-bottom: -2rem;
+  left: 0;
+  right: 0;
+  top: 0;
+  justify-content: flex-end;
+  opacity: 0;
+  transition: opacity .2s ease;
+  padding: .125rem .5rem;
+  pointer-events: none;
+}
+
+.copy-code-button {
+  border: none;
+  border-radius: .1rem;
+  outline: none;
+  transition: outline .1s ease;
+  font-size: 1rem;
+  box-shadow: 0 0 2px 3px rgba(0, 0, 0, 0.04);
+  padding: 4px 8px;
+  background-color: white;
+  pointer-events: auto;
+  user-select: none;
+
+  &::before {
+    margin-right: 0.2rem;
+    content: "📋";
+  }
+
+  // This class will be toggled via JavaScript
+  &.copied {
+    &::before {
+      content: "✔️";
+    }
+  }
+}
+.highlighter-rouge {
+  position: relative;
+}
+
+.highlighter-rouge:hover > .code-header {
+  opacity: 100%;
+}
