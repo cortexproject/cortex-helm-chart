@@ -1,24 +1,24 @@
 dependencies:
 - name: memcached
   repository: https://charts.bitnami.com/bitnami
-  version: 5.13.0
+  version: 5.15.1
 - name: memcached
   repository: https://charts.bitnami.com/bitnami
-  version: 5.13.0
+  version: 5.15.1
 - name: memcached
   repository: https://charts.bitnami.com/bitnami
-  version: 5.13.0
+  version: 5.15.1
 - name: memcached
   repository: https://charts.bitnami.com/bitnami
-  version: 5.13.0
+  version: 5.15.1
 - name: memcached
   repository: https://charts.bitnami.com/bitnami
-  version: 5.13.0
+  version: 5.15.1
 - name: memcached
   repository: https://charts.bitnami.com/bitnami
-  version: 5.13.0
+  version: 5.15.1
 - name: memcached
   repository: https://charts.bitnami.com/bitnami
-  version: 5.13.0
-digest: sha256:81cd2126bfd91749911ea4aeaae861953576e8bedd9d357ac5e27cd2c7462b74
-generated: "2021-06-22T13:58:03.865352-07:00"
+  version: 5.15.1
+digest: sha256:7a2be518f9bafda0443b65cb1cfb947fc9f0c17ea161192fbd78e51ed57586fe
+generated: "2021-09-17T10:13:20.523608025Z"
