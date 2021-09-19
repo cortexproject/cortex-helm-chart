@@ -1,6 +1,5 @@
 {{- if .Values.alertmanager.enabled -}}
 {{- if .Values.alertmanager.statefulSet.enabled -}}
-{{- $clusterPort := regexReplaceAll ".+[:]" (default "0.0.0.0:9094" .Values.config.alertmanager.cluster_bind_address) "" -}}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -159,11 +158,6 @@ spec:
             {{- if .Values.configs.enabled }}
             - "-alertmanager.configs.url=http://{{ template "cortex.fullname" . }}-configs.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.config.server.http_listen_port }}"
             {{- end }}
-            {{- if gt (.Values.alertmanager.replicas | int) 1 }}
-            {{- range $n := until (.Values.alertmanager.replicas |int ) }}
-            - "-alertmanager.cluster.peers={{ template "cortex.fullname" $ }}-alertmanager-{{ $n }}.{{ template "cortex.fullname" $ }}-alertmanager-headless.{{ $.Release.Namespace }}.svc.{{ $.Values.clusterDomain }}:{{ $clusterPort }}"
-            {{- end }}
-            {{- end }}
             {{- range $key, $value := .Values.alertmanager.extraArgs }}
             - "-{{ $key }}={{ $value }}"
             {{- end }}
@@ -179,11 +173,6 @@ spec:
               mountPath: "/data"
               {{- if .Values.alertmanager.persistentVolume.subPath }}
               subPath: {{ .Values.alertmanager.persistentVolume.subPath }}
-              {{- else }}
-              {{- if .Values.alertmanager.persistence.subPath }}
-              ## DEPRECATED: use persistentVolume.subPath instead
-              subPath: {{ .Values.alertmanager.persistence.subPath }}
-              {{- end }}
               {{- end }}
           ports:
             - name: http-metrics
@@ -191,9 +180,6 @@ spec:
               protocol: TCP
             - name: gossip
               containerPort: {{ .Values.config.memberlist.bind_port }}
-              protocol: TCP
-            - name: cluster
-              containerPort: {{ $clusterPort }}
               protocol: TCP
           startupProbe:
             {{- toYaml .Values.alertmanager.startupProbe | nindent 12 }}

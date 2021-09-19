@@ -104,9 +104,9 @@ spec:
           args:
             - "-target=alertmanager"
             - "-config.file=/etc/cortex/cortex.yaml"
-            {{- if .Values.configs.enabled }}
+          {{- if .Values.configs.enabled }}
             - "-alertmanager.configs.url=http://{{ template "cortex.configsFullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.config.server.http_listen_port }}"
-            {{- end }}
+          {{- end }}
           {{- range $key, $value := .Values.alertmanager.extraArgs }}
             - "-{{ $key }}={{ $value }}"
           {{- end }}
@@ -120,7 +120,9 @@ spec:
               mountPath: /etc/cortex-runtime-config
             - name: storage
               mountPath: "/data"
-              subPath: {{ .Values.alertmanager.persistence.subPath }}
+              {{- if .Values.alertmanager.persistentVolume.subPath }}
+              subPath: {{ .Values.alertmanager.persistentVolume.subPath }}
+              {{- end }}
           ports:
             - name: http-metrics
               containerPort: {{ .Values.config.server.http_listen_port }}

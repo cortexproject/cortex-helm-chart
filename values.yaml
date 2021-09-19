@@ -1,5 +1,5 @@
-#  Container image settings.
-#  Since the image is unique for all microservices, so are image settings.
+# Container image settings.
+# Since the image is unique for all microservices, so are image settings.
 
 image:
   repository: quay.io/cortexproject/cortex
@@ -47,99 +47,54 @@ config:
   auth_enabled: false
   api:
     prometheus_http_prefix: '/prometheus'
+    # -- Use GZIP compression for API responses. Some endpoints serve large YAML or JSON blobs
+    # which can benefit from compression.
     response_compression_enabled: true
   ingester:
-    max_transfer_retries: 0
     lifecycler:
       join_after: 0s
-      final_sleep: 0s
+      # -- Duration to sleep for before exiting, to ensure metrics are scraped.
+      final_sleep: 30s
       num_tokens: 512
       ring:
         replication_factor: 3
         kvstore:
-          store: consul
-          prefix: 'collectors/'
-          consul:
-            host: 'consul:8500'
-            http_client_timeout: '20s'
-            consistent_reads: true
+          store: "memberlist"
   limits:
-    enforce_metric_name: false
+    # -- Enforce that every sample has a metric name
+    enforce_metric_name: true
     reject_old_samples: true
     reject_old_samples_max_age: 168h
     max_query_lookback: 0s
-  schema:
-    configs:
-      - from: 2020-11-01
-        store: cassandra
-        object_store: cassandra
-        schema: v10
-        index:
-          prefix: index_
-          period: 168h
-        chunks:
-          prefix: chunks_
-          period: 168h
   server:
     http_listen_port: 8080
     grpc_listen_port: 9095
-    grpc_server_max_recv_msg_size: 104857600
-    grpc_server_max_send_msg_size: 104857600
-    grpc_server_max_concurrent_streams: 1000
+    grpc_server_max_recv_msg_size: 10485760
+    grpc_server_max_send_msg_size: 10485760
+    grpc_server_max_concurrent_streams: 10000
   ingester_client:
     grpc_client_config:
-      max_recv_msg_size: 104857600
-      max_send_msg_size: 104857600
-  # See https://github.com/cortexproject/cortex/blob/master/docs/configuration/config-file-reference.md#storage_config
+      max_recv_msg_size: 10485760
+      max_send_msg_size: 10485760
+  # -- See https://github.com/cortexproject/cortex/blob/master/docs/configuration/config-file-reference.md#storage_config
   storage:
-    engine: chunks
-    cassandra:
-      addresses:                  # configure cassandra addresses here.
-      keyspace: cortex            # configure desired keyspace here.
-      auth: true
-      username:                   # configure cassandra user here.
-      password:                   # configure cassandra password here.
-    azure:
-      container_name:             # configure azure blob container name here.
-      account_name:               # configure azure storage account name here.
-      account_key:                # configure azure storage account key here.
-    # aws:
-    #   dynamodb:
-    #     dynamodb_url:
-    #     api_limit:
-    #     throttle_limit:
-    #     metrics:
-    #       url:
-    #       target_queue_length:
-    #       scale_up_factor:
-    #       ignore_throttle_below:
-    #       queue_length_query:
-    #       write_throttle_query:
-    #       write_usage_query:
-    #       read_usage_query:
-    #       read_error_query:
-    #     chunk_gang_size:
-    #     chunk_get_max_parallelism:
-    #   s3:
-    #   bucketnames:
-    #   s3forcepathstyle:
+    engine: blocks
     index_queries_cache_config:
       memcached:
         expiration: 1h
       memcached_client:
         timeout: 1s
-  chunk_store:
-    chunk_cache_config:
-      memcached:
-        expiration: 1h
-      memcached_client:
-        timeout: 1s
+  blocks_storage:
+    tsdb:
+      dir: /data/tsdb
+    bucket_store:
+      sync_dir: /data/tsdb-sync
   # -- https://cortexmetrics.io/docs/configuration/configuration-file/#store_gateway_config
-  store_gateway: {}
-  table_manager:
-    retention_deletes_enabled: false
-    retention_period: 0s
+  store_gateway:
+    sharding_enabled: false
   distributor:
+    # -- Distribute samples based on all labels, as opposed to solely by user and
+    # metric name.
     shard_by_all_labels: true
     pool:
       health_check_ingesters: true
@@ -148,10 +103,16 @@ config:
     # -- the service name of the memberlist
     # if using memberlist discovery
     join_members: []
-    #  - '{{ include "cortex.fullname" $ }}-memberlist'
+      - '{{ include "cortex.fullname" $ }}-memberlist'
   querier:
-    active_query_tracker_dir: /data/cortex/querier
-    query_ingesters_within: 12h
+    active_query_tracker_dir: /data/active-query-tracker
+    # -- Maximum lookback beyond which queries are not sent to ingester. 0 means all
+    # queries are sent to ingester. Ingesters by default have no data older than 12 hours,
+    # so we can safely set this 13 hours
+    query_ingesters_within: 13h
+    # -- The time after which a metric should be queried from storage and not just
+    # ingesters.
+    query_store_after: 12h
     # -- Comma separated list of store-gateway addresses in DNS Service Discovery
     # format. This option should is set automatically when using the blocks storage and the
     # store-gateway sharding is disabled (when enabled, the store-gateway instances
@@ -174,7 +135,7 @@ config:
   ruler:
     enable_alertmanager_discovery: false
     # -- Enable the experimental ruler config api.
-    enable_api: false
+    enable_api: true
     # -- Method to use for backend rule storage (configdb, azure, gcs, s3, swift, local) refer to https://cortexmetrics.io/docs/configuration/configuration-file/#ruler_config
     storage: {}
   runtime_config:
@@ -243,10 +204,6 @@ alertmanager:
   nodeSelector: {}
   affinity: {}
   annotations: {}
-
-  ## DEPRECATED: use persistentVolume.subPath instead
-  persistence:
-    subPath:
 
   persistentVolume:
     ## If true and alertmanager.statefulSet.enabled is true,
