@@ -9,40 +9,40 @@ entries:
       condition: memcached.enabled
       name: memcached
       repository: https://charts.bitnami.com/bitnami
-      version: 5.13.0
+      version: 5.15.1
     - alias: memcached-index-read
       condition: memcached-index-read.enabled
       name: memcached
       repository: https://charts.bitnami.com/bitnami
-      version: 5.13.0
+      version: 5.15.1
     - alias: memcached-index-write
       condition: memcached-index-write.enabled
       name: memcached
       repository: https://charts.bitnami.com/bitnami
-      version: 5.13.0
+      version: 5.15.1
     - alias: memcached-frontend
       condition: memcached-frontend.enabled
       name: memcached
       repository: https://charts.bitnami.com/bitnami
-      version: 5.13.0
+      version: 5.15.1
     - alias: memcached-blocks-index
       name: memcached
       repository: https://charts.bitnami.com/bitnami
       tags:
       - blocks-storage-memcached
-      version: 5.13.0
+      version: 5.15.1
     - alias: memcached-blocks
       name: memcached
       repository: https://charts.bitnami.com/bitnami
       tags:
       - blocks-storage-memcached
-      version: 5.13.0
+      version: 5.15.1
     - alias: memcached-blocks-metadata
       name: memcached
       repository: https://charts.bitnami.com/bitnami
       tags:
       - blocks-storage-memcached
-      version: 5.13.0
+      version: 5.15.1
     description: Horizontally scalable, highly available, multi-tenant, long term
       Prometheus.
     digest: f56085791d745403dc72f855e3236f190ee24fa9feb152ff89fa1c01e06d3e8a
