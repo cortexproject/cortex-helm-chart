@@ -12,6 +12,7 @@
 * [ENHANCEMENT] Graceful shutdown of ingesters #195
 * [ENHANCEMENT] Define namespace in templates #184
 * [ENHANCEMENT] Use FQDN for memcached addresses #175
+* [ENHANCEMENT] Use memcached helm chart v5.15.1
 * [ENHANCEMENT] Optionally generate endpoints for `X-Scope-OrgID` injection (multi-tenancy) #180
 * [ENHANCEMENT] Optionally configure Basic Auth within Nginx #205
 * [BUGFIX] Fix whitespace in runtime-config annotations, introduced in #209, fixed in #212
