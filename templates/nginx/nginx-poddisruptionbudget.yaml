@@ -1,5 +1,6 @@
 {{- if and (.Values.nginx.enabled) (gt (int .Values.nginx.replicas) 1) (.Values.nginx.podDisruptionBudget) }}
 apiVersion: policy/v1beta1
+{{- end }}
 kind: PodDisruptionBudget
 metadata:
   name: {{ include "cortex.nginxFullname" . }}

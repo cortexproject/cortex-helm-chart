@@ -1,5 +1,9 @@
 {{- if and (gt (int .Values.query_frontend.replicas) 1) (.Values.query_frontend.podDisruptionBudget) }}
+{{- if .Capabilities.APIVersions.Has "policy/v1"}}
+apiVersion: policy/v1
+{{- else }}
 apiVersion: policy/v1beta1
+{{- end }}
 kind: PodDisruptionBudget
 metadata:
   name: {{ include "cortex.queryFrontendFullname" . }}
