@@ -102,7 +102,7 @@ spec:
         {{ toYaml .Values.store_gateway.extraContainers | nindent 8 }}
         {{- end }}
         - name: store-gateway
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          image: "{{ .Values.image.repository }}:{{ default .Chart.AppVersion .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args:
             - "-target=store-gateway"

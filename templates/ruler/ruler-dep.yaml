@@ -98,7 +98,7 @@ spec:
               mountPath: {{ .Values.ruler.sidecar.folder | quote }}
         {{- end}}
         - name: rules
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          image: "{{ .Values.image.repository }}:{{ default .Chart.AppVersion .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args:
             - "-target=ruler"

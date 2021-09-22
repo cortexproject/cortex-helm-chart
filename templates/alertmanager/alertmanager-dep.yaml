@@ -99,7 +99,7 @@ spec:
               mountPath: "/data"
         {{- end}}
         - name: alertmanager
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          image: "{{ .Values.image.repository }}:{{ default .Chart.AppVersion .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args:
             - "-target=alertmanager"
