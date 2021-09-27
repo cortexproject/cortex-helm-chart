@@ -36,9 +36,7 @@ spec:
     metricRelabelings:
     {{- toYaml .Values.store_gateway.serviceMonitor.metricRelabelings | nindent 4 }}
     {{- end }}
-    {{- if .Values.store_gateway.serviceMonitor.tls.enabled }}
-    scheme: HTTPS
-    tlsConfig:
-    {{- toYaml .Values.store_gateway.serviceMonitor.tls.config | nindent 6 }}
+    {{- with .Values.store_gateway.serviceMonitor.extraEndpointSpec }}
+    {{- toYaml . | nindent 4 }}
     {{- end }}
 {{- end }}

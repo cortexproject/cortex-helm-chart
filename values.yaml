@@ -216,11 +216,8 @@ alertmanager:
     additionalLabels: {}
     relabelings: []
     metricRelabelings: []
-    # Retrieve metrics with TLS enabled in Cortex (https://cortexmetrics.io/docs/guides/tls/)
-    # For config see https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#tlsconfig
-    tls:
-      enabled: false
-      config: {}
+    # Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint
+    extraEndpointSpec: {}
 
   resources: {}
   #  limits:
@@ -411,11 +408,8 @@ distributor:
     additionalLabels: {}
     relabelings: []
     metricRelabelings: []
-    # Retrieve metrics with TLS enabled in Cortex (https://cortexmetrics.io/docs/guides/tls/)
-    # For config see https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#tlsconfig
-    tls:
-      enabled: false
-      config: {}
+    # Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint
+    extraEndpointSpec: {}
 
   resources: {}
   #  limits:
@@ -523,11 +517,8 @@ ingester:
     additionalLabels: {}
     relabelings: []
     metricRelabelings: []
-    # Retrieve metrics with TLS enabled in Cortex (https://cortexmetrics.io/docs/guides/tls/)
-    # For config see https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#tlsconfig
-    tls:
-      enabled: false
-      config: {}
+    # Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint
+    extraEndpointSpec: {}
 
   resources: {}
   #  limits:
@@ -698,11 +689,8 @@ ruler:
     additionalLabels: {}
     relabelings: []
     metricRelabelings: []
-    # Retrieve metrics with TLS enabled in Cortex (https://cortexmetrics.io/docs/guides/tls/)
-    # For config see https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#tlsconfig
-    tls:
-      enabled: false
-      config: {}
+    # Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint
+    extraEndpointSpec: {}
 
   resources: {}
   #  limits:
@@ -839,11 +827,8 @@ querier:
     additionalLabels: {}
     relabelings: []
     metricRelabelings: []
-    # Retrieve metrics with TLS enabled in Cortex (https://cortexmetrics.io/docs/guides/tls/)
-    # For config see https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#tlsconfig
-    tls:
-      enabled: false
-      config: {}
+    # Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint
+    extraEndpointSpec: {}
 
   resources: {}
   #  limits:
@@ -945,11 +930,8 @@ query_frontend:
     additionalLabels: {}
     relabelings: []
     metricRelabelings: []
-    # Retrieve metrics with TLS enabled in Cortex (https://cortexmetrics.io/docs/guides/tls/)
-    # For config see https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#tlsconfig
-    tls:
-      enabled: false
-      config: {}
+    # Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint
+    extraEndpointSpec: {}
 
   resources: {}
   #  limits:
@@ -1039,11 +1021,8 @@ table_manager:
     additionalLabels: {}
     relabelings: []
     metricRelabelings: []
-    # Retrieve metrics with TLS enabled in Cortex (https://cortexmetrics.io/docs/guides/tls/)
-    # For config see https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#tlsconfig
-    tls:
-      enabled: false
-      config: {}
+    # Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint
+    extraEndpointSpec: {}
 
   resources: {}
   #  limits:
@@ -1123,11 +1102,8 @@ configs:
     additionalLabels: {}
     relabelings: []
     metricRelabelings: []
-    # Retrieve metrics with TLS enabled in Cortex (https://cortexmetrics.io/docs/guides/tls/)
-    # For config see https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#tlsconfig
-    tls:
-      enabled: false
-      config: {}
+    # Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint
+    extraEndpointSpec: {}
 
   resources: {}
   #  limits:
@@ -1249,6 +1225,8 @@ nginx:
     additionalLabels: {}
     relabelings: []
     metricRelabelings: []
+    # Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint
+    extraEndpointSpec: {}
 
   resources: {}
   #  limits:
@@ -1327,11 +1305,8 @@ store_gateway:
     additionalLabels: {}
     relabelings: []
     metricRelabelings: []
-    # Retrieve metrics with TLS enabled in Cortex (https://cortexmetrics.io/docs/guides/tls/)
-    # For config see https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#tlsconfig
-    tls:
-      enabled: false
-      config: {}
+    # Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint
+    extraEndpointSpec: {}
 
   resources: {}
   #  limits:
@@ -1458,11 +1433,8 @@ compactor:
     additionalLabels: {}
     relabelings: []
     metricRelabelings: []
-    # Retrieve metrics with TLS enabled in Cortex (https://cortexmetrics.io/docs/guides/tls/)
-    # For config see https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#tlsconfig
-    tls:
-      enabled: false
-      config: {}
+    # Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint
+    extraEndpointSpec: {}
 
   resources: {}
   #  limits:

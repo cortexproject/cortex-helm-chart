@@ -36,9 +36,7 @@ spec:
     metricRelabelings:
     {{- toYaml .Values.compactor.serviceMonitor.metricRelabelings | nindent 4 }}
     {{- end }}
-    {{- if .Values.compactor.serviceMonitor.tls.enabled }}
-    scheme: HTTPS
-    tlsConfig:
-    {{- toYaml .Values.compactor.serviceMonitor.tls.config | nindent 6 }}
+    {{- with .Values.compactor.serviceMonitor.extraEndpointSpec }}
+    {{- toYaml . | nindent 4 }}
     {{- end }}
 {{- end }}
