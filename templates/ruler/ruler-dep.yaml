@@ -131,7 +131,7 @@ spec:
               mountPath: /etc/cortex-runtime-config
             - name: storage
               mountPath: /data
-              subPath: {{ .Values.ruler.persistence.subPath }}
+              subPath: {{ .Values.ruler.persistentVolume.subPath }}
             - name: tmp
               mountPath: /rules
             {{- range $dir, $_ := .Values.ruler.directories }}

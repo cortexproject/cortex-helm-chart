@@ -102,7 +102,7 @@ config:
     bind_port: 7946
     # -- the service name of the memberlist
     # if using memberlist discovery
-    join_members: []
+    join_members:
       - '{{ include "cortex.fullname" $ }}-memberlist'
   querier:
     active_query_tracker_dir: /data/active-query-tracker
@@ -415,7 +415,7 @@ distributor:
     # -- Ref: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#support-for-configurable-scaling-behavior
     behavior: {}
 
-  persistence:
+  persistentVolume:
     subPath:
 
   startupProbe:
@@ -491,7 +491,7 @@ ingester:
   ## Additional Cortex container arguments, e.g. log level (debug, info, warn, error)
   extraArgs:
     {}
-    #  log.level: debug
+    # log.level: debug
 
   ## Pod Labels
   podLabels: {}
@@ -550,10 +550,6 @@ ingester:
       httpGet:
         path: "/ingester/shutdown"
         port: http-metrics
-
-  ## DEPRECATED: use persistentVolume.subPath instead
-  persistence:
-    subPath:
 
   persistentVolume:
     ## If true and ingester.statefulSet.enabled is true,
@@ -676,7 +672,7 @@ ruler:
   nodeSelector: {}
   affinity: {}
   annotations: {}
-  persistence:
+  persistentVolume:
     subPath:
 
   startupProbe:
@@ -837,7 +833,7 @@ querier:
     # -- Ref: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#support-for-configurable-scaling-behavior
     behavior: {}
 
-  persistence:
+  persistentVolume:
     subPath:
 
   startupProbe:
@@ -930,7 +926,7 @@ query_frontend:
             topologyKey: 'kubernetes.io/hostname'
 
   annotations: {}
-  persistence:
+  persistentVolume:
     subPath:
 
   startupProbe:
@@ -1010,7 +1006,7 @@ table_manager:
   nodeSelector: {}
   affinity: {}
   annotations: {}
-  persistence:
+  persistentVolume:
     subPath:
 
   startupProbe:
@@ -1091,7 +1087,7 @@ configs:
   nodeSelector: {}
   affinity: {}
   annotations: {}
-  persistence:
+  persistentVolume:
     subPath:
 
   startupProbe:
@@ -1214,7 +1210,7 @@ nginx:
   nodeSelector: {}
   affinity: {}
   annotations: {}
-  persistence:
+  persistentVolume:
     subPath:
 
   startupProbe:

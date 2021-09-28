@@ -2,7 +2,7 @@
 
 # cortex
 
-![Version: 0.7.0](https://img.shields.io/badge/Version-0.7.0-informational?style=flat-square) ![AppVersion: v1.10.0](https://img.shields.io/badge/AppVersion-v1.10.0-informational?style=flat-square)
+![Version: 1.0.0](https://img.shields.io/badge/Version-1.0.0-informational?style=flat-square) ![AppVersion: 1.10.0](https://img.shields.io/badge/AppVersion-1.10.0-informational?style=flat-square)
 
 Horizontally scalable, highly available, multi-tenant, long term Prometheus.
 
@@ -113,7 +113,6 @@ Kubernetes: `^1.19.0-0`
 | alertmanager.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
 | alertmanager.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
 | alertmanager.&ZeroWidthSpace;nodeSelector | object | `{}` |  |
-| alertmanager.&ZeroWidthSpace;persistence.&ZeroWidthSpace;subPath | string | `nil` |  |
 | alertmanager.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;accessModes[0] | string | `"ReadWriteOnce"` |  |
 | alertmanager.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;annotations | object | `{}` |  |
 | alertmanager.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;enabled | bool | `true` |  |
@@ -215,33 +214,29 @@ Kubernetes: `^1.19.0-0`
 | config.&ZeroWidthSpace;alertmanager.&ZeroWidthSpace;external_url | string | `"/api/prom/alertmanager"` |  |
 | config.&ZeroWidthSpace;alertmanager.&ZeroWidthSpace;storage | object | `{}` | Type of backend to use to store alertmanager configs. Supported values are: "configdb", "gcs", "s3", "local". refer to: https://cortexmetrics.io/docs/configuration/configuration-file/#alertmanager_config |
 | config.&ZeroWidthSpace;api.&ZeroWidthSpace;prometheus_http_prefix | string | `"/prometheus"` |  |
-| config.&ZeroWidthSpace;api.&ZeroWidthSpace;response_compression_enabled | bool | `true` |  |
+| config.&ZeroWidthSpace;api.&ZeroWidthSpace;response_compression_enabled | bool | `true` | Use GZIP compression for API responses. Some endpoints serve large YAML or JSON blobs which can benefit from compression. |
 | config.&ZeroWidthSpace;auth_enabled | bool | `false` |  |
-| config.&ZeroWidthSpace;chunk_store.&ZeroWidthSpace;chunk_cache_config.&ZeroWidthSpace;memcached.&ZeroWidthSpace;expiration | string | `"1h"` |  |
-| config.&ZeroWidthSpace;chunk_store.&ZeroWidthSpace;chunk_cache_config.&ZeroWidthSpace;memcached_client.&ZeroWidthSpace;timeout | string | `"1s"` |  |
+| config.&ZeroWidthSpace;blocks_storage.&ZeroWidthSpace;bucket_store.&ZeroWidthSpace;sync_dir | string | `"/data/tsdb-sync"` |  |
+| config.&ZeroWidthSpace;blocks_storage.&ZeroWidthSpace;tsdb.&ZeroWidthSpace;dir | string | `"/data/tsdb"` |  |
 | config.&ZeroWidthSpace;distributor.&ZeroWidthSpace;pool.&ZeroWidthSpace;health_check_ingesters | bool | `true` |  |
-| config.&ZeroWidthSpace;distributor.&ZeroWidthSpace;shard_by_all_labels | bool | `true` |  |
+| config.&ZeroWidthSpace;distributor.&ZeroWidthSpace;shard_by_all_labels | bool | `true` | Distribute samples based on all labels, as opposed to solely by user and metric name. |
 | config.&ZeroWidthSpace;frontend.&ZeroWidthSpace;log_queries_longer_than | string | `"10s"` |  |
-| config.&ZeroWidthSpace;ingester.&ZeroWidthSpace;lifecycler.&ZeroWidthSpace;final_sleep | string | `"0s"` |  |
+| config.&ZeroWidthSpace;ingester.&ZeroWidthSpace;lifecycler.&ZeroWidthSpace;final_sleep | string | `"30s"` | Duration to sleep for before exiting, to ensure metrics are scraped. |
 | config.&ZeroWidthSpace;ingester.&ZeroWidthSpace;lifecycler.&ZeroWidthSpace;join_after | string | `"0s"` |  |
 | config.&ZeroWidthSpace;ingester.&ZeroWidthSpace;lifecycler.&ZeroWidthSpace;num_tokens | int | `512` |  |
-| config.&ZeroWidthSpace;ingester.&ZeroWidthSpace;lifecycler.&ZeroWidthSpace;ring.&ZeroWidthSpace;kvstore.&ZeroWidthSpace;consul.&ZeroWidthSpace;consistent_reads | bool | `true` |  |
-| config.&ZeroWidthSpace;ingester.&ZeroWidthSpace;lifecycler.&ZeroWidthSpace;ring.&ZeroWidthSpace;kvstore.&ZeroWidthSpace;consul.&ZeroWidthSpace;host | string | `"consul:8500"` |  |
-| config.&ZeroWidthSpace;ingester.&ZeroWidthSpace;lifecycler.&ZeroWidthSpace;ring.&ZeroWidthSpace;kvstore.&ZeroWidthSpace;consul.&ZeroWidthSpace;http_client_timeout | string | `"20s"` |  |
-| config.&ZeroWidthSpace;ingester.&ZeroWidthSpace;lifecycler.&ZeroWidthSpace;ring.&ZeroWidthSpace;kvstore.&ZeroWidthSpace;prefix | string | `"collectors/"` |  |
-| config.&ZeroWidthSpace;ingester.&ZeroWidthSpace;lifecycler.&ZeroWidthSpace;ring.&ZeroWidthSpace;kvstore.&ZeroWidthSpace;store | string | `"consul"` |  |
+| config.&ZeroWidthSpace;ingester.&ZeroWidthSpace;lifecycler.&ZeroWidthSpace;ring.&ZeroWidthSpace;kvstore.&ZeroWidthSpace;store | string | `"memberlist"` |  |
 | config.&ZeroWidthSpace;ingester.&ZeroWidthSpace;lifecycler.&ZeroWidthSpace;ring.&ZeroWidthSpace;replication_factor | int | `3` |  |
-| config.&ZeroWidthSpace;ingester.&ZeroWidthSpace;max_transfer_retries | int | `0` |  |
-| config.&ZeroWidthSpace;ingester_client.&ZeroWidthSpace;grpc_client_config.&ZeroWidthSpace;max_recv_msg_size | int | `104857600` |  |
-| config.&ZeroWidthSpace;ingester_client.&ZeroWidthSpace;grpc_client_config.&ZeroWidthSpace;max_send_msg_size | int | `104857600` |  |
-| config.&ZeroWidthSpace;limits.&ZeroWidthSpace;enforce_metric_name | bool | `false` |  |
+| config.&ZeroWidthSpace;ingester_client.&ZeroWidthSpace;grpc_client_config.&ZeroWidthSpace;max_recv_msg_size | int | `10485760` |  |
+| config.&ZeroWidthSpace;ingester_client.&ZeroWidthSpace;grpc_client_config.&ZeroWidthSpace;max_send_msg_size | int | `10485760` |  |
+| config.&ZeroWidthSpace;limits.&ZeroWidthSpace;enforce_metric_name | bool | `true` | Enforce that every sample has a metric name |
 | config.&ZeroWidthSpace;limits.&ZeroWidthSpace;max_query_lookback | string | `"0s"` |  |
 | config.&ZeroWidthSpace;limits.&ZeroWidthSpace;reject_old_samples | bool | `true` |  |
 | config.&ZeroWidthSpace;limits.&ZeroWidthSpace;reject_old_samples_max_age | string | `"168h"` |  |
 | config.&ZeroWidthSpace;memberlist.&ZeroWidthSpace;bind_port | int | `7946` |  |
-| config.&ZeroWidthSpace;memberlist.&ZeroWidthSpace;join_members | list | `[]` | the service name of the memberlist if using memberlist discovery |
-| config.&ZeroWidthSpace;querier.&ZeroWidthSpace;active_query_tracker_dir | string | `"/data/cortex/querier"` |  |
-| config.&ZeroWidthSpace;querier.&ZeroWidthSpace;query_ingesters_within | string | `"12h"` |  |
+| config.&ZeroWidthSpace;memberlist.&ZeroWidthSpace;join_members | list | `["{{ include \"cortex.fullname\" $ }}-memberlist"]` | the service name of the memberlist if using memberlist discovery |
+| config.&ZeroWidthSpace;querier.&ZeroWidthSpace;active_query_tracker_dir | string | `"/data/active-query-tracker"` |  |
+| config.&ZeroWidthSpace;querier.&ZeroWidthSpace;query_ingesters_within | string | `"13h"` | Maximum lookback beyond which queries are not sent to ingester. 0 means all queries are sent to ingester. Ingesters by default have no data older than 12 hours, so we can safely set this 13 hours |
+| config.&ZeroWidthSpace;querier.&ZeroWidthSpace;query_store_after | string | `"12h"` | The time after which a metric should be queried from storage and not just ingesters. |
 | config.&ZeroWidthSpace;querier.&ZeroWidthSpace;store_gateway_addresses | string | automatic | Comma separated list of store-gateway addresses in DNS Service Discovery format. This option should is set automatically when using the blocks storage and the store-gateway sharding is disabled (when enabled, the store-gateway instances form a ring and addresses are picked from the ring). |
 | config.&ZeroWidthSpace;query_range.&ZeroWidthSpace;align_queries_with_step | bool | `true` |  |
 | config.&ZeroWidthSpace;query_range.&ZeroWidthSpace;cache_results | bool | `true` |  |
@@ -249,36 +244,16 @@ Kubernetes: `^1.19.0-0`
 | config.&ZeroWidthSpace;query_range.&ZeroWidthSpace;results_cache.&ZeroWidthSpace;cache.&ZeroWidthSpace;memcached_client.&ZeroWidthSpace;timeout | string | `"1s"` |  |
 | config.&ZeroWidthSpace;query_range.&ZeroWidthSpace;split_queries_by_interval | string | `"24h"` |  |
 | config.&ZeroWidthSpace;ruler.&ZeroWidthSpace;enable_alertmanager_discovery | bool | `false` |  |
-| config.&ZeroWidthSpace;ruler.&ZeroWidthSpace;enable_api | bool | `false` | Enable the experimental ruler config api. |
+| config.&ZeroWidthSpace;ruler.&ZeroWidthSpace;enable_api | bool | `true` | Enable the experimental ruler config api. |
 | config.&ZeroWidthSpace;ruler.&ZeroWidthSpace;storage | object | `{}` | Method to use for backend rule storage (configdb, azure, gcs, s3, swift, local) refer to https://cortexmetrics.io/docs/configuration/configuration-file/#ruler_config |
 | config.&ZeroWidthSpace;runtime_config.&ZeroWidthSpace;file | string | `"/etc/cortex-runtime-config/runtime_config.yaml"` |  |
-| config.&ZeroWidthSpace;schema.&ZeroWidthSpace;configs[0].&ZeroWidthSpace;chunks.&ZeroWidthSpace;period | string | `"168h"` |  |
-| config.&ZeroWidthSpace;schema.&ZeroWidthSpace;configs[0].&ZeroWidthSpace;chunks.&ZeroWidthSpace;prefix | string | `"chunks_"` |  |
-| config.&ZeroWidthSpace;schema.&ZeroWidthSpace;configs[0].&ZeroWidthSpace;from | string | `"2020-11-01"` |  |
-| config.&ZeroWidthSpace;schema.&ZeroWidthSpace;configs[0].&ZeroWidthSpace;index.&ZeroWidthSpace;period | string | `"168h"` |  |
-| config.&ZeroWidthSpace;schema.&ZeroWidthSpace;configs[0].&ZeroWidthSpace;index.&ZeroWidthSpace;prefix | string | `"index_"` |  |
-| config.&ZeroWidthSpace;schema.&ZeroWidthSpace;configs[0].&ZeroWidthSpace;object_store | string | `"cassandra"` |  |
-| config.&ZeroWidthSpace;schema.&ZeroWidthSpace;configs[0].&ZeroWidthSpace;schema | string | `"v10"` |  |
-| config.&ZeroWidthSpace;schema.&ZeroWidthSpace;configs[0].&ZeroWidthSpace;store | string | `"cassandra"` |  |
 | config.&ZeroWidthSpace;server.&ZeroWidthSpace;grpc_listen_port | int | `9095` |  |
-| config.&ZeroWidthSpace;server.&ZeroWidthSpace;grpc_server_max_concurrent_streams | int | `1000` |  |
-| config.&ZeroWidthSpace;server.&ZeroWidthSpace;grpc_server_max_recv_msg_size | int | `104857600` |  |
-| config.&ZeroWidthSpace;server.&ZeroWidthSpace;grpc_server_max_send_msg_size | int | `104857600` |  |
+| config.&ZeroWidthSpace;server.&ZeroWidthSpace;grpc_server_max_concurrent_streams | int | `10000` |  |
+| config.&ZeroWidthSpace;server.&ZeroWidthSpace;grpc_server_max_recv_msg_size | int | `10485760` |  |
+| config.&ZeroWidthSpace;server.&ZeroWidthSpace;grpc_server_max_send_msg_size | int | `10485760` |  |
 | config.&ZeroWidthSpace;server.&ZeroWidthSpace;http_listen_port | int | `8080` |  |
-| config.&ZeroWidthSpace;storage.&ZeroWidthSpace;azure.&ZeroWidthSpace;account_key | string | `nil` |  |
-| config.&ZeroWidthSpace;storage.&ZeroWidthSpace;azure.&ZeroWidthSpace;account_name | string | `nil` |  |
-| config.&ZeroWidthSpace;storage.&ZeroWidthSpace;azure.&ZeroWidthSpace;container_name | string | `nil` |  |
-| config.&ZeroWidthSpace;storage.&ZeroWidthSpace;cassandra.&ZeroWidthSpace;addresses | string | `nil` |  |
-| config.&ZeroWidthSpace;storage.&ZeroWidthSpace;cassandra.&ZeroWidthSpace;auth | bool | `true` |  |
-| config.&ZeroWidthSpace;storage.&ZeroWidthSpace;cassandra.&ZeroWidthSpace;keyspace | string | `"cortex"` |  |
-| config.&ZeroWidthSpace;storage.&ZeroWidthSpace;cassandra.&ZeroWidthSpace;password | string | `nil` |  |
-| config.&ZeroWidthSpace;storage.&ZeroWidthSpace;cassandra.&ZeroWidthSpace;username | string | `nil` |  |
-| config.&ZeroWidthSpace;storage.&ZeroWidthSpace;engine | string | `"chunks"` |  |
-| config.&ZeroWidthSpace;storage.&ZeroWidthSpace;index_queries_cache_config.&ZeroWidthSpace;memcached.&ZeroWidthSpace;expiration | string | `"1h"` |  |
-| config.&ZeroWidthSpace;storage.&ZeroWidthSpace;index_queries_cache_config.&ZeroWidthSpace;memcached_client.&ZeroWidthSpace;timeout | string | `"1s"` |  |
-| config.&ZeroWidthSpace;store_gateway | object | `{}` | https://cortexmetrics.io/docs/configuration/configuration-file/#store_gateway_config |
-| config.&ZeroWidthSpace;table_manager.&ZeroWidthSpace;retention_deletes_enabled | bool | `false` |  |
-| config.&ZeroWidthSpace;table_manager.&ZeroWidthSpace;retention_period | string | `"0s"` |  |
+| config.&ZeroWidthSpace;storage | object | `{"engine":"blocks","index_queries_cache_config":{"memcached":{"expiration":"1h"},"memcached_client":{"timeout":"1s"}}}` | See https://github.com/cortexproject/cortex/blob/master/docs/configuration/config-file-reference.md#storage_config |
+| config.&ZeroWidthSpace;store_gateway | object | `{"sharding_enabled":false}` | https://cortexmetrics.io/docs/configuration/configuration-file/#store_gateway_config |
 | configs.&ZeroWidthSpace;affinity | object | `{}` |  |
 | configs.&ZeroWidthSpace;annotations | object | `{}` |  |
 | configs.&ZeroWidthSpace;containerSecurityContext.&ZeroWidthSpace;enabled | bool | `true` |  |
@@ -294,7 +269,7 @@ Kubernetes: `^1.19.0-0`
 | configs.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
 | configs.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
 | configs.&ZeroWidthSpace;nodeSelector | object | `{}` |  |
-| configs.&ZeroWidthSpace;persistence.&ZeroWidthSpace;subPath | string | `nil` |  |
+| configs.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;subPath | string | `nil` |  |
 | configs.&ZeroWidthSpace;podAnnotations.&ZeroWidthSpace;"prometheus.&ZeroWidthSpace;io/port" | string | `"http-metrics"` |  |
 | configs.&ZeroWidthSpace;podAnnotations.&ZeroWidthSpace;"prometheus.&ZeroWidthSpace;io/scrape" | string | `"true"` |  |
 | configs.&ZeroWidthSpace;podDisruptionBudget.&ZeroWidthSpace;maxUnavailable | int | `1` |  |
@@ -349,7 +324,7 @@ Kubernetes: `^1.19.0-0`
 | distributor.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
 | distributor.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
 | distributor.&ZeroWidthSpace;nodeSelector | object | `{}` |  |
-| distributor.&ZeroWidthSpace;persistence.&ZeroWidthSpace;subPath | string | `nil` |  |
+| distributor.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;subPath | string | `nil` |  |
 | distributor.&ZeroWidthSpace;podAnnotations.&ZeroWidthSpace;"prometheus.&ZeroWidthSpace;io/port" | string | `"http-metrics"` |  |
 | distributor.&ZeroWidthSpace;podAnnotations.&ZeroWidthSpace;"prometheus.&ZeroWidthSpace;io/scrape" | string | `"true"` |  |
 | distributor.&ZeroWidthSpace;podDisruptionBudget.&ZeroWidthSpace;maxUnavailable | int | `1` |  |
@@ -406,7 +381,6 @@ Kubernetes: `^1.19.0-0`
 | ingester.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
 | ingester.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;scheme | string | `"HTTP"` |  |
 | ingester.&ZeroWidthSpace;nodeSelector | object | `{}` |  |
-| ingester.&ZeroWidthSpace;persistence.&ZeroWidthSpace;subPath | string | `nil` |  |
 | ingester.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;accessModes[0] | string | `"ReadWriteOnce"` |  |
 | ingester.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;annotations | object | `{}` |  |
 | ingester.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;enabled | bool | `true` |  |
@@ -534,7 +508,7 @@ Kubernetes: `^1.19.0-0`
 | nginx.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/healthz"` |  |
 | nginx.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
 | nginx.&ZeroWidthSpace;nodeSelector | object | `{}` |  |
-| nginx.&ZeroWidthSpace;persistence.&ZeroWidthSpace;subPath | string | `nil` |  |
+| nginx.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;subPath | string | `nil` |  |
 | nginx.&ZeroWidthSpace;podAnnotations.&ZeroWidthSpace;"prometheus.&ZeroWidthSpace;io/port" | string | `"http-metrics"` |  |
 | nginx.&ZeroWidthSpace;podAnnotations.&ZeroWidthSpace;"prometheus.&ZeroWidthSpace;io/scrape" | string | `""` |  |
 | nginx.&ZeroWidthSpace;podDisruptionBudget.&ZeroWidthSpace;maxUnavailable | int | `1` |  |
@@ -585,7 +559,7 @@ Kubernetes: `^1.19.0-0`
 | querier.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
 | querier.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
 | querier.&ZeroWidthSpace;nodeSelector | object | `{}` |  |
-| querier.&ZeroWidthSpace;persistence.&ZeroWidthSpace;subPath | string | `nil` |  |
+| querier.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;subPath | string | `nil` |  |
 | querier.&ZeroWidthSpace;podAnnotations.&ZeroWidthSpace;"prometheus.&ZeroWidthSpace;io/port" | string | `"http-metrics"` |  |
 | querier.&ZeroWidthSpace;podAnnotations.&ZeroWidthSpace;"prometheus.&ZeroWidthSpace;io/scrape" | string | `"true"` |  |
 | querier.&ZeroWidthSpace;podDisruptionBudget.&ZeroWidthSpace;maxUnavailable | int | `1` |  |
@@ -629,7 +603,7 @@ Kubernetes: `^1.19.0-0`
 | query_frontend.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
 | query_frontend.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
 | query_frontend.&ZeroWidthSpace;nodeSelector | object | `{}` |  |
-| query_frontend.&ZeroWidthSpace;persistence.&ZeroWidthSpace;subPath | string | `nil` |  |
+| query_frontend.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;subPath | string | `nil` |  |
 | query_frontend.&ZeroWidthSpace;podAnnotations.&ZeroWidthSpace;"prometheus.&ZeroWidthSpace;io/port" | string | `"http-metrics"` |  |
 | query_frontend.&ZeroWidthSpace;podAnnotations.&ZeroWidthSpace;"prometheus.&ZeroWidthSpace;io/scrape" | string | `"true"` |  |
 | query_frontend.&ZeroWidthSpace;podDisruptionBudget.&ZeroWidthSpace;maxUnavailable | int | `1` |  |
@@ -670,7 +644,7 @@ Kubernetes: `^1.19.0-0`
 | ruler.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
 | ruler.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
 | ruler.&ZeroWidthSpace;nodeSelector | object | `{}` |  |
-| ruler.&ZeroWidthSpace;persistence.&ZeroWidthSpace;subPath | string | `nil` |  |
+| ruler.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;subPath | string | `nil` |  |
 | ruler.&ZeroWidthSpace;podAnnotations.&ZeroWidthSpace;"prometheus.&ZeroWidthSpace;io/port" | string | `"http-metrics"` |  |
 | ruler.&ZeroWidthSpace;podAnnotations.&ZeroWidthSpace;"prometheus.&ZeroWidthSpace;io/scrape" | string | `"true"` |  |
 | ruler.&ZeroWidthSpace;podDisruptionBudget.&ZeroWidthSpace;maxUnavailable | int | `1` |  |
@@ -780,7 +754,7 @@ Kubernetes: `^1.19.0-0`
 | table_manager.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
 | table_manager.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
 | table_manager.&ZeroWidthSpace;nodeSelector | object | `{}` |  |
-| table_manager.&ZeroWidthSpace;persistence.&ZeroWidthSpace;subPath | string | `nil` |  |
+| table_manager.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;subPath | string | `nil` |  |
 | table_manager.&ZeroWidthSpace;podAnnotations.&ZeroWidthSpace;"prometheus.&ZeroWidthSpace;io/port" | string | `"http-metrics"` |  |
 | table_manager.&ZeroWidthSpace;podAnnotations.&ZeroWidthSpace;"prometheus.&ZeroWidthSpace;io/scrape" | string | `"true"` |  |
 | table_manager.&ZeroWidthSpace;podDisruptionBudget.&ZeroWidthSpace;maxUnavailable | int | `1` |  |

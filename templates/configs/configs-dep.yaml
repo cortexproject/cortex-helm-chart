@@ -67,7 +67,7 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /etc/cortex
-              subPath: {{ .Values.configs.persistence.subPath }}
+              subPath: {{ .Values.configs.persistentVolume.subPath }}
             - name: runtime-config
               mountPath: /etc/cortex-runtime-config
             {{- if .Values.configsdb_postgresql.enabled }}

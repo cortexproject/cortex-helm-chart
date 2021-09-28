@@ -67,7 +67,7 @@ spec:
               mountPath: /etc/cortex-runtime-config
             - name: storage
               mountPath: "/data"
-              subPath: {{ .Values.table_manager.persistence.subPath }}
+              subPath: {{ .Values.table_manager.persistentVolume.subPath }}
           ports:
             - name: http-metrics
               containerPort: {{ .Values.config.server.http_listen_port }}
