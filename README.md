@@ -222,10 +222,11 @@ Kubernetes: `^1.19.0-0`
 | config.&ZeroWidthSpace;distributor.&ZeroWidthSpace;shard_by_all_labels | bool | `true` | Distribute samples based on all labels, as opposed to solely by user and metric name. |
 | config.&ZeroWidthSpace;frontend.&ZeroWidthSpace;log_queries_longer_than | string | `"10s"` |  |
 | config.&ZeroWidthSpace;ingester.&ZeroWidthSpace;lifecycler.&ZeroWidthSpace;final_sleep | string | `"30s"` | Duration to sleep for before exiting, to ensure metrics are scraped. |
-| config.&ZeroWidthSpace;ingester.&ZeroWidthSpace;lifecycler.&ZeroWidthSpace;join_after | string | `"0s"` |  |
+| config.&ZeroWidthSpace;ingester.&ZeroWidthSpace;lifecycler.&ZeroWidthSpace;join_after | string | `"10s"` | We don't want to join immediately, but wait a bit to see other ingesters and their tokens first. It can take a while to have the full picture when using gossip |
 | config.&ZeroWidthSpace;ingester.&ZeroWidthSpace;lifecycler.&ZeroWidthSpace;num_tokens | int | `512` |  |
+| config.&ZeroWidthSpace;ingester.&ZeroWidthSpace;lifecycler.&ZeroWidthSpace;observe_period | string | `"10s"` | To avoid generating same tokens by multiple ingesters, they can "observe" the ring for a while, after putting their own tokens into it. This is only useful when using gossip, since multiple ingesters joining at the same time can have conflicting tokens if they don't see each other yet. |
 | config.&ZeroWidthSpace;ingester.&ZeroWidthSpace;lifecycler.&ZeroWidthSpace;ring.&ZeroWidthSpace;kvstore.&ZeroWidthSpace;store | string | `"memberlist"` |  |
-| config.&ZeroWidthSpace;ingester.&ZeroWidthSpace;lifecycler.&ZeroWidthSpace;ring.&ZeroWidthSpace;replication_factor | int | `3` |  |
+| config.&ZeroWidthSpace;ingester.&ZeroWidthSpace;lifecycler.&ZeroWidthSpace;ring.&ZeroWidthSpace;replication_factor | int | `3` | Ingester replication factor per default is 3 |
 | config.&ZeroWidthSpace;ingester_client.&ZeroWidthSpace;grpc_client_config.&ZeroWidthSpace;max_recv_msg_size | int | `10485760` |  |
 | config.&ZeroWidthSpace;ingester_client.&ZeroWidthSpace;grpc_client_config.&ZeroWidthSpace;max_send_msg_size | int | `10485760` |  |
 | config.&ZeroWidthSpace;limits.&ZeroWidthSpace;enforce_metric_name | bool | `true` | Enforce that every sample has a metric name |
@@ -253,6 +254,8 @@ Kubernetes: `^1.19.0-0`
 | config.&ZeroWidthSpace;server.&ZeroWidthSpace;grpc_server_max_send_msg_size | int | `10485760` |  |
 | config.&ZeroWidthSpace;server.&ZeroWidthSpace;http_listen_port | int | `8080` |  |
 | config.&ZeroWidthSpace;storage | object | `{"engine":"blocks","index_queries_cache_config":{"memcached":{"expiration":"1h"},"memcached_client":{"timeout":"1s"}}}` | See https://github.com/cortexproject/cortex/blob/master/docs/configuration/config-file-reference.md#storage_config |
+| config.&ZeroWidthSpace;storage.&ZeroWidthSpace;index_queries_cache_config.&ZeroWidthSpace;memcached.&ZeroWidthSpace;expiration | string | `"1h"` | How long keys stay in the memcache |
+| config.&ZeroWidthSpace;storage.&ZeroWidthSpace;index_queries_cache_config.&ZeroWidthSpace;memcached_client.&ZeroWidthSpace;timeout | string | `"1s"` | Maximum time to wait before giving up on memcached requests. |
 | config.&ZeroWidthSpace;store_gateway | object | `{"sharding_enabled":false}` | https://cortexmetrics.io/docs/configuration/configuration-file/#store_gateway_config |
 | configs.&ZeroWidthSpace;affinity | object | `{}` |  |
 | configs.&ZeroWidthSpace;annotations | object | `{}` |  |
@@ -779,6 +782,6 @@ Kubernetes: `^1.19.0-0`
 | table_manager.&ZeroWidthSpace;strategy.&ZeroWidthSpace;type | string | `"RollingUpdate"` |  |
 | table_manager.&ZeroWidthSpace;terminationGracePeriodSeconds | int | `180` |  |
 | table_manager.&ZeroWidthSpace;tolerations | list | `[]` |  |
-| tags.&ZeroWidthSpace;blocks-storage-memcached | bool | `false` |  |
+| tags.&ZeroWidthSpace;blocks-storage-memcached | bool | `false` | Set to true to enable block storage memcached caching |
 | useExternalConfig | bool | `false` |  |
 

@@ -17,6 +17,7 @@ image:
 clusterDomain: cluster.local
 
 tags:
+  # -- Set to true to enable block storage memcached caching
   blocks-storage-memcached: false
 
 ingress:
@@ -52,11 +53,19 @@ config:
     response_compression_enabled: true
   ingester:
     lifecycler:
-      join_after: 0s
+      # -- We don't want to join immediately, but wait a bit to see other ingesters and their tokens first.
+      # It can take a while to have the full picture when using gossip
+      join_after: 10s
+
+      # -- To avoid generating same tokens by multiple ingesters, they can "observe" the ring for a while,
+      # after putting their own tokens into it. This is only useful when using gossip, since multiple
+      # ingesters joining at the same time can have conflicting tokens if they don't see each other yet.
+      observe_period: 10s
       # -- Duration to sleep for before exiting, to ensure metrics are scraped.
       final_sleep: 30s
       num_tokens: 512
       ring:
+        # -- Ingester replication factor per default is 3
         replication_factor: 3
         kvstore:
           store: "memberlist"
@@ -81,8 +90,10 @@ config:
     engine: blocks
     index_queries_cache_config:
       memcached:
+        # -- How long keys stay in the memcache
         expiration: 1h
       memcached_client:
+        # -- Maximum time to wait before giving up on memcached requests.
         timeout: 1s
   blocks_storage:
     tsdb:
