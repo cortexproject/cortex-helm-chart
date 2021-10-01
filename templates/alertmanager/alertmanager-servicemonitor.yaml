@@ -36,4 +36,7 @@ spec:
     metricRelabelings:
     {{- toYaml .Values.alertmanager.serviceMonitor.metricRelabelings | nindent 4 }}
     {{- end }}
+    {{- with .Values.alertmanager.serviceMonitor.extraEndpointSpec }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
 {{- end }}
