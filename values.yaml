@@ -3,7 +3,7 @@
 
 image:
   repository: quay.io/cortexproject/cortex
-  tag: v1.10.0
+  tag: ""
   pullPolicy: IfNotPresent
 
   ## Optionally specify an array of imagePullSecrets.
