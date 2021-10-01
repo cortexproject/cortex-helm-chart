@@ -1541,7 +1541,8 @@ memcached:
       value: "4"
   metrics:
     enabled: true
-    serviceMonitor: false
+    serviceMonitor:
+      enabled: false
 
 # index read caching
 memcached-index-read:
@@ -1558,7 +1559,8 @@ memcached-index-read:
       value: "4"
   metrics:
     enabled: true
-    serviceMonitor: false
+    serviceMonitor:
+      enabled: false
 
 # index write caching
 memcached-index-write:
@@ -1575,7 +1577,8 @@ memcached-index-write:
       value: "4"
   metrics:
     enabled: true
-    serviceMonitor: false
+    serviceMonitor:
+      enabled: false
 
 memcached-frontend:
   enabled: false
@@ -1591,7 +1594,8 @@ memcached-frontend:
       value: "4"
   metrics:
     enabled: true
-    serviceMonitor: false
+    serviceMonitor:
+      enabled: false
 
 memcached-blocks-index:
   architecture: "high-availability"
@@ -1606,7 +1610,8 @@ memcached-blocks-index:
       value: "4"
   metrics:
     enabled: true
-    serviceMonitor: false
+    serviceMonitor:
+      enabled: false
 
 memcached-blocks:
   architecture: "high-availability"
@@ -1621,7 +1626,8 @@ memcached-blocks:
       value: "4"
   metrics:
     enabled: true
-    serviceMonitor: false
+    serviceMonitor:
+      enabled: false
 
 memcached-blocks-metadata:
   # enabled/disabled via the tags.blocks-storage-memcached boolean
@@ -1637,7 +1643,8 @@ memcached-blocks-metadata:
       value: "4"
   metrics:
     enabled: true
-    serviceMonitor: false
+    serviceMonitor:
+      enabled: false
 
 configsdb_postgresql:
   enabled: false

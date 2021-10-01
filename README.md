@@ -432,7 +432,7 @@ Kubernetes: `^1.19.0-0`
 | memcached-blocks-index.&ZeroWidthSpace;extraEnv[2].&ZeroWidthSpace;name | string | `"MEMCACHED_THREADS"` |  |
 | memcached-blocks-index.&ZeroWidthSpace;extraEnv[2].&ZeroWidthSpace;value | string | `"4"` |  |
 | memcached-blocks-index.&ZeroWidthSpace;metrics.&ZeroWidthSpace;enabled | bool | `true` |  |
-| memcached-blocks-index.&ZeroWidthSpace;metrics.&ZeroWidthSpace;serviceMonitor | bool | `false` |  |
+| memcached-blocks-index.&ZeroWidthSpace;metrics.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;enabled | bool | `false` |  |
 | memcached-blocks-index.&ZeroWidthSpace;replicaCount | int | `2` |  |
 | memcached-blocks-index.&ZeroWidthSpace;resources | object | `{}` |  |
 | memcached-blocks-metadata.&ZeroWidthSpace;architecture | string | `"high-availability"` |  |
@@ -443,7 +443,7 @@ Kubernetes: `^1.19.0-0`
 | memcached-blocks-metadata.&ZeroWidthSpace;extraEnv[2].&ZeroWidthSpace;name | string | `"MEMCACHED_THREADS"` |  |
 | memcached-blocks-metadata.&ZeroWidthSpace;extraEnv[2].&ZeroWidthSpace;value | string | `"4"` |  |
 | memcached-blocks-metadata.&ZeroWidthSpace;metrics.&ZeroWidthSpace;enabled | bool | `true` |  |
-| memcached-blocks-metadata.&ZeroWidthSpace;metrics.&ZeroWidthSpace;serviceMonitor | bool | `false` |  |
+| memcached-blocks-metadata.&ZeroWidthSpace;metrics.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;enabled | bool | `false` |  |
 | memcached-blocks-metadata.&ZeroWidthSpace;replicaCount | int | `2` |  |
 | memcached-blocks-metadata.&ZeroWidthSpace;resources | object | `{}` |  |
 | memcached-blocks.&ZeroWidthSpace;architecture | string | `"high-availability"` |  |
@@ -454,7 +454,7 @@ Kubernetes: `^1.19.0-0`
 | memcached-blocks.&ZeroWidthSpace;extraEnv[2].&ZeroWidthSpace;name | string | `"MEMCACHED_THREADS"` |  |
 | memcached-blocks.&ZeroWidthSpace;extraEnv[2].&ZeroWidthSpace;value | string | `"4"` |  |
 | memcached-blocks.&ZeroWidthSpace;metrics.&ZeroWidthSpace;enabled | bool | `true` |  |
-| memcached-blocks.&ZeroWidthSpace;metrics.&ZeroWidthSpace;serviceMonitor | bool | `false` |  |
+| memcached-blocks.&ZeroWidthSpace;metrics.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;enabled | bool | `false` |  |
 | memcached-blocks.&ZeroWidthSpace;replicaCount | int | `2` |  |
 | memcached-blocks.&ZeroWidthSpace;resources | object | `{}` |  |
 | memcached-frontend.&ZeroWidthSpace;architecture | string | `"high-availability"` |  |
@@ -466,7 +466,7 @@ Kubernetes: `^1.19.0-0`
 | memcached-frontend.&ZeroWidthSpace;extraEnv[2].&ZeroWidthSpace;name | string | `"MEMCACHED_THREADS"` |  |
 | memcached-frontend.&ZeroWidthSpace;extraEnv[2].&ZeroWidthSpace;value | string | `"4"` |  |
 | memcached-frontend.&ZeroWidthSpace;metrics.&ZeroWidthSpace;enabled | bool | `true` |  |
-| memcached-frontend.&ZeroWidthSpace;metrics.&ZeroWidthSpace;serviceMonitor | bool | `false` |  |
+| memcached-frontend.&ZeroWidthSpace;metrics.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;enabled | bool | `false` |  |
 | memcached-frontend.&ZeroWidthSpace;replicaCount | int | `2` |  |
 | memcached-frontend.&ZeroWidthSpace;resources | object | `{}` |  |
 | memcached-index-read.&ZeroWidthSpace;architecture | string | `"high-availability"` |  |
@@ -478,7 +478,7 @@ Kubernetes: `^1.19.0-0`
 | memcached-index-read.&ZeroWidthSpace;extraEnv[2].&ZeroWidthSpace;name | string | `"MEMCACHED_THREADS"` |  |
 | memcached-index-read.&ZeroWidthSpace;extraEnv[2].&ZeroWidthSpace;value | string | `"4"` |  |
 | memcached-index-read.&ZeroWidthSpace;metrics.&ZeroWidthSpace;enabled | bool | `true` |  |
-| memcached-index-read.&ZeroWidthSpace;metrics.&ZeroWidthSpace;serviceMonitor | bool | `false` |  |
+| memcached-index-read.&ZeroWidthSpace;metrics.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;enabled | bool | `false` |  |
 | memcached-index-read.&ZeroWidthSpace;replicaCount | int | `2` |  |
 | memcached-index-read.&ZeroWidthSpace;resources | object | `{}` |  |
 | memcached-index-write.&ZeroWidthSpace;architecture | string | `"high-availability"` |  |
@@ -490,7 +490,7 @@ Kubernetes: `^1.19.0-0`
 | memcached-index-write.&ZeroWidthSpace;extraEnv[2].&ZeroWidthSpace;name | string | `"MEMCACHED_THREADS"` |  |
 | memcached-index-write.&ZeroWidthSpace;extraEnv[2].&ZeroWidthSpace;value | string | `"4"` |  |
 | memcached-index-write.&ZeroWidthSpace;metrics.&ZeroWidthSpace;enabled | bool | `true` |  |
-| memcached-index-write.&ZeroWidthSpace;metrics.&ZeroWidthSpace;serviceMonitor | bool | `false` |  |
+| memcached-index-write.&ZeroWidthSpace;metrics.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;enabled | bool | `false` |  |
 | memcached-index-write.&ZeroWidthSpace;replicaCount | int | `2` |  |
 | memcached-index-write.&ZeroWidthSpace;resources | object | `{}` |  |
 | memcached.&ZeroWidthSpace;architecture | string | `"high-availability"` |  |
@@ -502,7 +502,7 @@ Kubernetes: `^1.19.0-0`
 | memcached.&ZeroWidthSpace;extraEnv[2].&ZeroWidthSpace;name | string | `"MEMCACHED_THREADS"` |  |
 | memcached.&ZeroWidthSpace;extraEnv[2].&ZeroWidthSpace;value | string | `"4"` |  |
 | memcached.&ZeroWidthSpace;metrics.&ZeroWidthSpace;enabled | bool | `true` |  |
-| memcached.&ZeroWidthSpace;metrics.&ZeroWidthSpace;serviceMonitor | bool | `false` |  |
+| memcached.&ZeroWidthSpace;metrics.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;enabled | bool | `false` |  |
 | memcached.&ZeroWidthSpace;replicaCount | int | `2` |  |
 | memcached.&ZeroWidthSpace;resources | object | `{}` |  |
 | nginx.&ZeroWidthSpace;affinity | object | `{}` |  |
