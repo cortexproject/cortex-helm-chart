@@ -1426,7 +1426,7 @@ compactor:
   ## Additional Cortex container arguments, e.g. log level (debug, info, warn, error)
   extraArgs:
     {}
-    #  log.level: debug
+    # log.level: debug
 
   ## Pod Labels
   podLabels: {}
@@ -1531,191 +1531,113 @@ memcached:
   enabled: false
   architecture: "high-availability"
   replicaCount: 2
-  pdbMinAvailable: 1
-  memcached:
-    maxItemMemory: 3840
-    extraArgs:
-      - -I 32m
-    threads: 32
   resources: {}
-  #  requests:
-  #    memory: 1Gi
-  #    cpu: 10m
-  #  limits:
-  #    memory: 4Gi
-  #    cpu: 1
+  extraEnv:
+    - name: MEMCACHED_CACHE_SIZE
+      value: "1024"
+    - name: MEMCACHED_MAX_CONNECTIONS
+      value: "1000"
+    - name: MEMCACHED_THREADS
+      value: "4"
   metrics:
     enabled: true
-  # tolerations: {}
-  # - key: "dedicated"
-  #   operator: "Equal"
-  #   value: "cortex-memcached"
-  #   effect: "NoSchedule"
-  # affinity: {}
-  #   nodeAffinity:
-  #     requiredDuringSchedulingIgnoredDuringExecution:
-  #         nodeSelectorTerms:
-  #         - matchExpressions:
-  #           - key: dedicated
-  #             operator: In
-  #             values:
-  #             - cortex-memcached
+    serviceMonitor: false
 
 # index read caching
 memcached-index-read:
   enabled: false
   architecture: "high-availability"
   replicaCount: 2
-  # pdbMinAvailable: 1
-  # image: memcached:1.5.7-alpine
-  memcached:
-    maxItemMemory: 3840
-    extraArgs:
-      - -I 32m
-    threads: 32
   resources: {}
-  #  requests:
-  #    memory: 1Gi
-  #    cpu: 10m
-  #  limits:
-  #    memory: 4Gi
-  #    cpu: 1
+  extraEnv:
+    - name: MEMCACHED_CACHE_SIZE
+      value: "1024"
+    - name: MEMCACHED_MAX_CONNECTIONS
+      value: "1000"
+    - name: MEMCACHED_THREADS
+      value: "4"
   metrics:
     enabled: true
-  # tolerations: []
-  # - key: "dedicated"
-  #   operator: "Equal"
-  #   value: "cortex-memcached"
-  #   effect: "NoSchedule"
-  # affinity: {}
-  #   nodeAffinity:
-  #     requiredDuringSchedulingIgnoredDuringExecution:
-  #         nodeSelectorTerms:
-  #         - matchExpressions:
-  #           - key: dedicated
-  #             operator: In
-  #             values:
-  #             - cortex-memcached
+    serviceMonitor: false
 
 # index write caching
 memcached-index-write:
   enabled: false
   architecture: "high-availability"
   replicaCount: 2
-  # dpdbMinAvailable: 1
-  # image: memcached:1.5.7-alpine
-  memcached:
-    maxItemMemory: 3840
-    extraArgs:
-      - -I 32m
-    threads: 32
   resources: {}
-  #  requests:
-  #    memory: 1Gi
-  #    cpu: 10m
-  #  limits:
-  #    memory: 4Gi
-  #    cpu: 1
+  extraEnv:
+    - name: MEMCACHED_CACHE_SIZE
+      value: "1024"
+    - name: MEMCACHED_MAX_CONNECTIONS
+      value: "1000"
+    - name: MEMCACHED_THREADS
+      value: "4"
   metrics:
     enabled: true
-  # tolerations: []
-  # - key: "dedicated"
-  #   operator: "Equal"
-  #   value: "cortex-memcached"
-  #   effect: "NoSchedule"
-  # affinity: {}
-  #   nodeAffinity:
-  #     requiredDuringSchedulingIgnoredDuringExecution:
-  #         nodeSelectorTerms:
-  #         - matchExpressions:
-  #           - key: dedicated
-  #             operator: In
-  #             values:
-  #             - cortex-memcached
+    serviceMonitor: false
 
 memcached-frontend:
   enabled: false
   architecture: "high-availability"
   replicaCount: 2
-  # dpdbMinAvailable: 1
-  # image: memcached:1.5.7-alpine
-  memcached:
-    maxItemMemory: 3840
-    extraArgs:
-      - -I 32m
-    threads: 32
   resources: {}
-  #  requests:
-  #    memory: 1Gi
-  #    cpu: 10m
-  #  limits:
-  #    memory: 4Gi
-  #    cpu: 1
+  extraEnv:
+    - name: MEMCACHED_CACHE_SIZE
+      value: "1024"
+    - name: MEMCACHED_MAX_CONNECTIONS
+      value: "1000"
+    - name: MEMCACHED_THREADS
+      value: "4"
   metrics:
     enabled: true
+    serviceMonitor: false
 
 memcached-blocks-index:
-  # enabled/disabled via the tags.blocks-storage-memcached boolean
   architecture: "high-availability"
   replicaCount: 2
-  # dpdbMinAvailable: 1
-  # image: memcached:1.5.7-alpine
-  memcached:
-    maxItemMemory: 3840
-    extraArgs:
-      - -I 32m
-    threads: 32
   resources: {}
-  #  requests:
-  #    memory: 1Gi
-  #    cpu: 10m
-  #  limits:
-  #    memory: 4Gi
-  #    cpu: 1
+  extraEnv:
+    - name: MEMCACHED_CACHE_SIZE
+      value: "1024"
+    - name: MEMCACHED_MAX_CONNECTIONS
+      value: "1000"
+    - name: MEMCACHED_THREADS
+      value: "4"
   metrics:
     enabled: true
+    serviceMonitor: false
 
 memcached-blocks:
-  # enabled/disabled via the tags.blocks-storage-memcached boolean
   architecture: "high-availability"
   replicaCount: 2
-  # dpdbMinAvailable: 1
-  # image: memcached:1.5.7-alpine
-  memcached:
-    maxItemMemory: 3840
-    extraArgs:
-      - -I 32m
-    threads: 32
   resources: {}
-  #  requests:
-  #    memory: 1Gi
-  #    cpu: 10m
-  #  limits:
-  #    memory: 4Gi
-  #    cpu: 1
+  extraEnv:
+    - name: MEMCACHED_CACHE_SIZE
+      value: "1024"
+    - name: MEMCACHED_MAX_CONNECTIONS
+      value: "1000"
+    - name: MEMCACHED_THREADS
+      value: "4"
   metrics:
     enabled: true
+    serviceMonitor: false
 
 memcached-blocks-metadata:
   # enabled/disabled via the tags.blocks-storage-memcached boolean
   architecture: "high-availability"
   replicaCount: 2
-  # dpdbMinAvailable: 1
-  # image: memcached:1.5.7-alpine
-  memcached:
-    maxItemMemory: 3840
-    extraArgs:
-      - -I 32m
-    threads: 32
   resources: {}
-  #  requests:
-  #    memory: 1Gi
-  #    cpu: 10m
-  #  limits:
-  #    memory: 4Gi
-  #    cpu: 1
+  extraEnv:
+    - name: MEMCACHED_CACHE_SIZE
+      value: "1024"
+    - name: MEMCACHED_MAX_CONNECTIONS
+      value: "1000"
+    - name: MEMCACHED_THREADS
+      value: "4"
   metrics:
     enabled: true
+    serviceMonitor: false
 
 configsdb_postgresql:
   enabled: false
