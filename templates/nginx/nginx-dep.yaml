@@ -44,7 +44,7 @@ spec:
       {{- end}}
       {{- end }}
       containers:
-        - name: cortex-gw
+        - name: nginx
           image: "{{ .Values.nginx.image.repository }}:{{ .Values.nginx.image.tag }}"
           imagePullPolicy: {{ .Values.nginx.image.pullPolicy }}
           {{- if .Values.nginx.extraArgs }}
