@@ -507,6 +507,7 @@ ingester:
     ## This is useful when using WAL
     ##
     enabled: false
+    # -- see https://cortexmetrics.io/docs/guides/ingesters-scaling-up-and-down/#scaling-down and https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#pod-management-policies for scaledown details
     podManagementPolicy: OrderedReady
 
   service:
