@@ -17,6 +17,7 @@
 * [ENHANCEMENT] Optionally generate endpoints for `X-Scope-OrgID` injection (multi-tenancy) #180
 * [ENHANCEMENT] Optionally configure Basic Auth within Nginx #205
 * [ENHANCEMENT] Add extraEndpointSpec to all servicemonitors for specifying things like TLS #216
+* [ENHANCEMENT] Add option to specify `podManagementPolicy` when using ingesters as statefulset #236
 * [BUGFIX] Fix whitespace in runtime-config annotations, introduced in #209, fixed in #212
 * [BUGFIX] Correcting nginx config for auth orgs to right proxy_pass #192
 * [DEPENDENCY] Update Helm release memcached to v5.15.4 #228
