@@ -2,6 +2,8 @@
 
 ## master / unreleased
 
+## 0.7.0 / 2021-10-05
+
 * [FEATURE] Support runtime configuration #209
 * [FEATURE] Add autoscaler for queriers #190
 * [FEATURE] Add autoscaler for distributors #189
@@ -18,6 +20,7 @@
 * [ENHANCEMENT] Add option to specify `podManagementPolicy` when using ingesters as statefulset #236
 * [BUGFIX] Fix whitespace in runtime-config annotations, introduced in #209, fixed in #212
 * [BUGFIX] Correcting nginx config for auth orgs to right proxy_pass #192
+* [DEPENDENCY] Update Helm release memcached to v5.15.4 #228
 
 ## 0.6.0 / 2021-06-28
 
