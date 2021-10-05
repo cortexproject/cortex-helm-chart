@@ -434,6 +434,7 @@ Kubernetes: `^1.19.0-0`
 | ingester.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;initialDelaySeconds | int | `120` |  |
 | ingester.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;periodSeconds | int | `30` |  |
 | ingester.&ZeroWidthSpace;statefulSet.&ZeroWidthSpace;enabled | bool | `false` |  |
+| ingester.&ZeroWidthSpace;statefulSet.&ZeroWidthSpace;podManagementPolicy | string | `"OrderedReady"` |  |
 | ingester.&ZeroWidthSpace;statefulStrategy.&ZeroWidthSpace;type | string | `"RollingUpdate"` |  |
 | ingester.&ZeroWidthSpace;strategy.&ZeroWidthSpace;rollingUpdate.&ZeroWidthSpace;maxSurge | int | `0` |  |
 | ingester.&ZeroWidthSpace;strategy.&ZeroWidthSpace;rollingUpdate.&ZeroWidthSpace;maxUnavailable | int | `1` |  |
