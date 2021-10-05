@@ -425,82 +425,61 @@ Kubernetes: `^1.19.0-0`
 | ingress.&ZeroWidthSpace;hosts[0].&ZeroWidthSpace;paths[0] | string | `"/"` |  |
 | ingress.&ZeroWidthSpace;tls | list | `[]` |  |
 | memcached-blocks-index.&ZeroWidthSpace;architecture | string | `"high-availability"` |  |
-| memcached-blocks-index.&ZeroWidthSpace;extraEnv[0].&ZeroWidthSpace;name | string | `"MEMCACHED_CACHE_SIZE"` |  |
-| memcached-blocks-index.&ZeroWidthSpace;extraEnv[0].&ZeroWidthSpace;value | string | `"1024"` |  |
-| memcached-blocks-index.&ZeroWidthSpace;extraEnv[1].&ZeroWidthSpace;name | string | `"MEMCACHED_MAX_CONNECTIONS"` |  |
-| memcached-blocks-index.&ZeroWidthSpace;extraEnv[1].&ZeroWidthSpace;value | string | `"1000"` |  |
-| memcached-blocks-index.&ZeroWidthSpace;extraEnv[2].&ZeroWidthSpace;name | string | `"MEMCACHED_THREADS"` |  |
-| memcached-blocks-index.&ZeroWidthSpace;extraEnv[2].&ZeroWidthSpace;value | string | `"4"` |  |
+| memcached-blocks-index.&ZeroWidthSpace;extraEnv[0] | object | `{"name":"MEMCACHED_CACHE_SIZE","value":"1024"}` | MEMCACHED_CACHE_SIZE is the amount of memory allocated to memcached for object storage |
+| memcached-blocks-index.&ZeroWidthSpace;extraEnv[1] | object | `{"name":"MEMCACHED_MAX_CONNECTIONS","value":"1024"}` | MEMCACHED_MAX_CONNECTIONS is the maximum number of simultaneous connections to the memcached service |
+| memcached-blocks-index.&ZeroWidthSpace;extraEnv[2] | object | `{"name":"MEMCACHED_THREADS","value":"4"}` | MEMCACHED_THREADS is the number of threads to use when processing incoming requests. By default, memcached is configured to use 4 concurrent threads. The threading improves the performance of storing and retrieving data in the cache, using a locking system to prevent different threads overwriting or updating the same values. |
 | memcached-blocks-index.&ZeroWidthSpace;metrics.&ZeroWidthSpace;enabled | bool | `true` |  |
 | memcached-blocks-index.&ZeroWidthSpace;metrics.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;enabled | bool | `false` |  |
 | memcached-blocks-index.&ZeroWidthSpace;replicaCount | int | `2` |  |
 | memcached-blocks-index.&ZeroWidthSpace;resources | object | `{}` |  |
 | memcached-blocks-metadata.&ZeroWidthSpace;architecture | string | `"high-availability"` |  |
-| memcached-blocks-metadata.&ZeroWidthSpace;extraEnv[0].&ZeroWidthSpace;name | string | `"MEMCACHED_CACHE_SIZE"` |  |
-| memcached-blocks-metadata.&ZeroWidthSpace;extraEnv[0].&ZeroWidthSpace;value | string | `"1024"` |  |
-| memcached-blocks-metadata.&ZeroWidthSpace;extraEnv[1].&ZeroWidthSpace;name | string | `"MEMCACHED_MAX_CONNECTIONS"` |  |
-| memcached-blocks-metadata.&ZeroWidthSpace;extraEnv[1].&ZeroWidthSpace;value | string | `"1000"` |  |
-| memcached-blocks-metadata.&ZeroWidthSpace;extraEnv[2].&ZeroWidthSpace;name | string | `"MEMCACHED_THREADS"` |  |
-| memcached-blocks-metadata.&ZeroWidthSpace;extraEnv[2].&ZeroWidthSpace;value | string | `"4"` |  |
+| memcached-blocks-metadata.&ZeroWidthSpace;extraEnv[0] | object | `{"name":"MEMCACHED_CACHE_SIZE","value":"1024"}` | MEMCACHED_CACHE_SIZE is the amount of memory allocated to memcached for object storage |
+| memcached-blocks-metadata.&ZeroWidthSpace;extraEnv[1] | object | `{"name":"MEMCACHED_MAX_CONNECTIONS","value":"1024"}` | MEMCACHED_MAX_CONNECTIONS is the maximum number of simultaneous connections to the memcached service |
+| memcached-blocks-metadata.&ZeroWidthSpace;extraEnv[2] | object | `{"name":"MEMCACHED_THREADS","value":"4"}` | MEMCACHED_THREADS is the number of threads to use when processing incoming requests. By default, memcached is configured to use 4 concurrent threads. The threading improves the performance of storing and retrieving data in the cache, using a locking system to prevent different threads overwriting or updating the same values. |
 | memcached-blocks-metadata.&ZeroWidthSpace;metrics.&ZeroWidthSpace;enabled | bool | `true` |  |
 | memcached-blocks-metadata.&ZeroWidthSpace;metrics.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;enabled | bool | `false` |  |
 | memcached-blocks-metadata.&ZeroWidthSpace;replicaCount | int | `2` |  |
 | memcached-blocks-metadata.&ZeroWidthSpace;resources | object | `{}` |  |
 | memcached-blocks.&ZeroWidthSpace;architecture | string | `"high-availability"` |  |
-| memcached-blocks.&ZeroWidthSpace;extraEnv[0].&ZeroWidthSpace;name | string | `"MEMCACHED_CACHE_SIZE"` |  |
-| memcached-blocks.&ZeroWidthSpace;extraEnv[0].&ZeroWidthSpace;value | string | `"1024"` |  |
-| memcached-blocks.&ZeroWidthSpace;extraEnv[1].&ZeroWidthSpace;name | string | `"MEMCACHED_MAX_CONNECTIONS"` |  |
-| memcached-blocks.&ZeroWidthSpace;extraEnv[1].&ZeroWidthSpace;value | string | `"1000"` |  |
-| memcached-blocks.&ZeroWidthSpace;extraEnv[2].&ZeroWidthSpace;name | string | `"MEMCACHED_THREADS"` |  |
-| memcached-blocks.&ZeroWidthSpace;extraEnv[2].&ZeroWidthSpace;value | string | `"4"` |  |
+| memcached-blocks.&ZeroWidthSpace;extraEnv[0] | object | `{"name":"MEMCACHED_CACHE_SIZE","value":"1024"}` | MEMCACHED_CACHE_SIZE is the amount of memory allocated to memcached for object storage |
+| memcached-blocks.&ZeroWidthSpace;extraEnv[1] | object | `{"name":"MEMCACHED_MAX_CONNECTIONS","value":"1024"}` | MEMCACHED_MAX_CONNECTIONS is the maximum number of simultaneous connections to the memcached service |
+| memcached-blocks.&ZeroWidthSpace;extraEnv[2] | object | `{"name":"MEMCACHED_THREADS","value":"4"}` | MEMCACHED_THREADS is the number of threads to use when processing incoming requests. By default, memcached is configured to use 4 concurrent threads. The threading improves the performance of storing and retrieving data in the cache, using a locking system to prevent different threads overwriting or updating the same values. |
 | memcached-blocks.&ZeroWidthSpace;metrics.&ZeroWidthSpace;enabled | bool | `true` |  |
 | memcached-blocks.&ZeroWidthSpace;metrics.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;enabled | bool | `false` |  |
 | memcached-blocks.&ZeroWidthSpace;replicaCount | int | `2` |  |
 | memcached-blocks.&ZeroWidthSpace;resources | object | `{}` |  |
 | memcached-frontend.&ZeroWidthSpace;architecture | string | `"high-availability"` |  |
 | memcached-frontend.&ZeroWidthSpace;enabled | bool | `false` |  |
-| memcached-frontend.&ZeroWidthSpace;extraEnv[0].&ZeroWidthSpace;name | string | `"MEMCACHED_CACHE_SIZE"` |  |
-| memcached-frontend.&ZeroWidthSpace;extraEnv[0].&ZeroWidthSpace;value | string | `"1024"` |  |
-| memcached-frontend.&ZeroWidthSpace;extraEnv[1].&ZeroWidthSpace;name | string | `"MEMCACHED_MAX_CONNECTIONS"` |  |
-| memcached-frontend.&ZeroWidthSpace;extraEnv[1].&ZeroWidthSpace;value | string | `"1000"` |  |
-| memcached-frontend.&ZeroWidthSpace;extraEnv[2].&ZeroWidthSpace;name | string | `"MEMCACHED_THREADS"` |  |
-| memcached-frontend.&ZeroWidthSpace;extraEnv[2].&ZeroWidthSpace;value | string | `"4"` |  |
+| memcached-frontend.&ZeroWidthSpace;extraEnv[0] | object | `{"name":"MEMCACHED_CACHE_SIZE","value":"1024"}` | MEMCACHED_CACHE_SIZE is the amount of memory allocated to memcached for object storage |
+| memcached-frontend.&ZeroWidthSpace;extraEnv[1] | object | `{"name":"MEMCACHED_MAX_CONNECTIONS","value":"1024"}` | MEMCACHED_MAX_CONNECTIONS is the maximum number of simultaneous connections to the memcached service |
+| memcached-frontend.&ZeroWidthSpace;extraEnv[2] | object | `{"name":"MEMCACHED_THREADS","value":"4"}` | MEMCACHED_THREADS is the number of threads to use when processing incoming requests. By default, memcached is configured to use 4 concurrent threads. The threading improves the performance of storing and retrieving data in the cache, using a locking system to prevent different threads overwriting or updating the same values. |
 | memcached-frontend.&ZeroWidthSpace;metrics.&ZeroWidthSpace;enabled | bool | `true` |  |
 | memcached-frontend.&ZeroWidthSpace;metrics.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;enabled | bool | `false` |  |
 | memcached-frontend.&ZeroWidthSpace;replicaCount | int | `2` |  |
 | memcached-frontend.&ZeroWidthSpace;resources | object | `{}` |  |
 | memcached-index-read.&ZeroWidthSpace;architecture | string | `"high-availability"` |  |
 | memcached-index-read.&ZeroWidthSpace;enabled | bool | `false` |  |
-| memcached-index-read.&ZeroWidthSpace;extraEnv[0].&ZeroWidthSpace;name | string | `"MEMCACHED_CACHE_SIZE"` |  |
-| memcached-index-read.&ZeroWidthSpace;extraEnv[0].&ZeroWidthSpace;value | string | `"1024"` |  |
-| memcached-index-read.&ZeroWidthSpace;extraEnv[1].&ZeroWidthSpace;name | string | `"MEMCACHED_MAX_CONNECTIONS"` |  |
-| memcached-index-read.&ZeroWidthSpace;extraEnv[1].&ZeroWidthSpace;value | string | `"1000"` |  |
-| memcached-index-read.&ZeroWidthSpace;extraEnv[2].&ZeroWidthSpace;name | string | `"MEMCACHED_THREADS"` |  |
-| memcached-index-read.&ZeroWidthSpace;extraEnv[2].&ZeroWidthSpace;value | string | `"4"` |  |
+| memcached-index-read.&ZeroWidthSpace;extraEnv[0] | object | `{"name":"MEMCACHED_CACHE_SIZE","value":"1024"}` | MEMCACHED_CACHE_SIZE is the amount of memory allocated to memcached for object storage |
+| memcached-index-read.&ZeroWidthSpace;extraEnv[1] | object | `{"name":"MEMCACHED_MAX_CONNECTIONS","value":"1024"}` | MEMCACHED_MAX_CONNECTIONS is the maximum number of simultaneous connections to the memcached service |
+| memcached-index-read.&ZeroWidthSpace;extraEnv[2] | object | `{"name":"MEMCACHED_THREADS","value":"4"}` | MEMCACHED_THREADS is the number of threads to use when processing incoming requests. By default, memcached is configured to use 4 concurrent threads. The threading improves the performance of storing and retrieving data in the cache, using a locking system to prevent different threads overwriting or updating the same values. |
 | memcached-index-read.&ZeroWidthSpace;metrics.&ZeroWidthSpace;enabled | bool | `true` |  |
 | memcached-index-read.&ZeroWidthSpace;metrics.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;enabled | bool | `false` |  |
 | memcached-index-read.&ZeroWidthSpace;replicaCount | int | `2` |  |
 | memcached-index-read.&ZeroWidthSpace;resources | object | `{}` |  |
 | memcached-index-write.&ZeroWidthSpace;architecture | string | `"high-availability"` |  |
 | memcached-index-write.&ZeroWidthSpace;enabled | bool | `false` |  |
-| memcached-index-write.&ZeroWidthSpace;extraEnv[0].&ZeroWidthSpace;name | string | `"MEMCACHED_CACHE_SIZE"` |  |
-| memcached-index-write.&ZeroWidthSpace;extraEnv[0].&ZeroWidthSpace;value | string | `"1024"` |  |
-| memcached-index-write.&ZeroWidthSpace;extraEnv[1].&ZeroWidthSpace;name | string | `"MEMCACHED_MAX_CONNECTIONS"` |  |
-| memcached-index-write.&ZeroWidthSpace;extraEnv[1].&ZeroWidthSpace;value | string | `"1000"` |  |
-| memcached-index-write.&ZeroWidthSpace;extraEnv[2].&ZeroWidthSpace;name | string | `"MEMCACHED_THREADS"` |  |
-| memcached-index-write.&ZeroWidthSpace;extraEnv[2].&ZeroWidthSpace;value | string | `"4"` |  |
+| memcached-index-write.&ZeroWidthSpace;extraEnv[0] | object | `{"name":"MEMCACHED_CACHE_SIZE","value":"1024"}` | MEMCACHED_CACHE_SIZE is the amount of memory allocated to memcached for object storage |
+| memcached-index-write.&ZeroWidthSpace;extraEnv[1] | object | `{"name":"MEMCACHED_MAX_CONNECTIONS","value":"1024"}` | MEMCACHED_MAX_CONNECTIONS is the maximum number of simultaneous connections to the memcached service |
+| memcached-index-write.&ZeroWidthSpace;extraEnv[2] | object | `{"name":"MEMCACHED_THREADS","value":"4"}` | MEMCACHED_THREADS is the number of threads to use when processing incoming requests. By default, memcached is configured to use 4 concurrent threads. The threading improves the performance of storing and retrieving data in the cache, using a locking system to prevent different threads overwriting or updating the same values. |
 | memcached-index-write.&ZeroWidthSpace;metrics.&ZeroWidthSpace;enabled | bool | `true` |  |
 | memcached-index-write.&ZeroWidthSpace;metrics.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;enabled | bool | `false` |  |
 | memcached-index-write.&ZeroWidthSpace;replicaCount | int | `2` |  |
 | memcached-index-write.&ZeroWidthSpace;resources | object | `{}` |  |
 | memcached.&ZeroWidthSpace;architecture | string | `"high-availability"` |  |
 | memcached.&ZeroWidthSpace;enabled | bool | `false` |  |
-| memcached.&ZeroWidthSpace;extraEnv[0].&ZeroWidthSpace;name | string | `"MEMCACHED_CACHE_SIZE"` |  |
-| memcached.&ZeroWidthSpace;extraEnv[0].&ZeroWidthSpace;value | string | `"1024"` |  |
-| memcached.&ZeroWidthSpace;extraEnv[1].&ZeroWidthSpace;name | string | `"MEMCACHED_MAX_CONNECTIONS"` |  |
-| memcached.&ZeroWidthSpace;extraEnv[1].&ZeroWidthSpace;value | string | `"1000"` |  |
-| memcached.&ZeroWidthSpace;extraEnv[2].&ZeroWidthSpace;name | string | `"MEMCACHED_THREADS"` |  |
-| memcached.&ZeroWidthSpace;extraEnv[2].&ZeroWidthSpace;value | string | `"4"` |  |
+| memcached.&ZeroWidthSpace;extraEnv[0] | object | `{"name":"MEMCACHED_CACHE_SIZE","value":"1024"}` | MEMCACHED_CACHE_SIZE is the amount of memory allocated to memcached for object storage |
+| memcached.&ZeroWidthSpace;extraEnv[1] | object | `{"name":"MEMCACHED_MAX_CONNECTIONS","value":"1024"}` | MEMCACHED_MAX_CONNECTIONS is the maximum number of simultaneous connections to the memcached service |
+| memcached.&ZeroWidthSpace;extraEnv[2] | object | `{"name":"MEMCACHED_THREADS","value":"4"}` | MEMCACHED_THREADS is the number of threads to use when processing incoming requests. By default, memcached is configured to use 4 concurrent threads. The threading improves the performance of storing and retrieving data in the cache, using a locking system to prevent different threads overwriting or updating the same values. |
 | memcached.&ZeroWidthSpace;metrics.&ZeroWidthSpace;enabled | bool | `true` |  |
 | memcached.&ZeroWidthSpace;metrics.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;enabled | bool | `false` |  |
 | memcached.&ZeroWidthSpace;replicaCount | int | `2` |  |

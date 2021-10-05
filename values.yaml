@@ -1533,10 +1533,15 @@ memcached:
   replicaCount: 2
   resources: {}
   extraEnv:
+    # -- MEMCACHED_CACHE_SIZE is the amount of memory allocated to memcached for object storage
     - name: MEMCACHED_CACHE_SIZE
       value: "1024"
+    # -- MEMCACHED_MAX_CONNECTIONS is the maximum number of simultaneous connections to the memcached service
     - name: MEMCACHED_MAX_CONNECTIONS
-      value: "1000"
+      value: "1024"
+    # -- MEMCACHED_THREADS is the number of threads to use when processing incoming requests.
+    # By default, memcached is configured to use 4 concurrent threads. The threading improves the performance of
+    # storing and retrieving data in the cache, using a locking system to prevent different threads overwriting or updating the same values.
     - name: MEMCACHED_THREADS
       value: "4"
   metrics:
@@ -1551,10 +1556,15 @@ memcached-index-read:
   replicaCount: 2
   resources: {}
   extraEnv:
+    # -- MEMCACHED_CACHE_SIZE is the amount of memory allocated to memcached for object storage
     - name: MEMCACHED_CACHE_SIZE
       value: "1024"
+    # -- MEMCACHED_MAX_CONNECTIONS is the maximum number of simultaneous connections to the memcached service
     - name: MEMCACHED_MAX_CONNECTIONS
-      value: "1000"
+      value: "1024"
+    # -- MEMCACHED_THREADS is the number of threads to use when processing incoming requests.
+    # By default, memcached is configured to use 4 concurrent threads. The threading improves the performance of
+    # storing and retrieving data in the cache, using a locking system to prevent different threads overwriting or updating the same values.
     - name: MEMCACHED_THREADS
       value: "4"
   metrics:
@@ -1569,10 +1579,15 @@ memcached-index-write:
   replicaCount: 2
   resources: {}
   extraEnv:
+    # -- MEMCACHED_CACHE_SIZE is the amount of memory allocated to memcached for object storage
     - name: MEMCACHED_CACHE_SIZE
       value: "1024"
+    # -- MEMCACHED_MAX_CONNECTIONS is the maximum number of simultaneous connections to the memcached service
     - name: MEMCACHED_MAX_CONNECTIONS
-      value: "1000"
+      value: "1024"
+    # -- MEMCACHED_THREADS is the number of threads to use when processing incoming requests.
+    # By default, memcached is configured to use 4 concurrent threads. The threading improves the performance of
+    # storing and retrieving data in the cache, using a locking system to prevent different threads overwriting or updating the same values.
     - name: MEMCACHED_THREADS
       value: "4"
   metrics:
@@ -1586,10 +1601,15 @@ memcached-frontend:
   replicaCount: 2
   resources: {}
   extraEnv:
+    # -- MEMCACHED_CACHE_SIZE is the amount of memory allocated to memcached for object storage
     - name: MEMCACHED_CACHE_SIZE
       value: "1024"
+    # -- MEMCACHED_MAX_CONNECTIONS is the maximum number of simultaneous connections to the memcached service
     - name: MEMCACHED_MAX_CONNECTIONS
-      value: "1000"
+      value: "1024"
+    # -- MEMCACHED_THREADS is the number of threads to use when processing incoming requests.
+    # By default, memcached is configured to use 4 concurrent threads. The threading improves the performance of
+    # storing and retrieving data in the cache, using a locking system to prevent different threads overwriting or updating the same values.
     - name: MEMCACHED_THREADS
       value: "4"
   metrics:
@@ -1602,10 +1622,15 @@ memcached-blocks-index:
   replicaCount: 2
   resources: {}
   extraEnv:
+    # -- MEMCACHED_CACHE_SIZE is the amount of memory allocated to memcached for object storage
     - name: MEMCACHED_CACHE_SIZE
       value: "1024"
+    # -- MEMCACHED_MAX_CONNECTIONS is the maximum number of simultaneous connections to the memcached service
     - name: MEMCACHED_MAX_CONNECTIONS
-      value: "1000"
+      value: "1024"
+    # -- MEMCACHED_THREADS is the number of threads to use when processing incoming requests.
+    # By default, memcached is configured to use 4 concurrent threads. The threading improves the performance of
+    # storing and retrieving data in the cache, using a locking system to prevent different threads overwriting or updating the same values.
     - name: MEMCACHED_THREADS
       value: "4"
   metrics:
@@ -1618,10 +1643,15 @@ memcached-blocks:
   replicaCount: 2
   resources: {}
   extraEnv:
+    # -- MEMCACHED_CACHE_SIZE is the amount of memory allocated to memcached for object storage
     - name: MEMCACHED_CACHE_SIZE
       value: "1024"
+    # -- MEMCACHED_MAX_CONNECTIONS is the maximum number of simultaneous connections to the memcached service
     - name: MEMCACHED_MAX_CONNECTIONS
-      value: "1000"
+      value: "1024"
+    # -- MEMCACHED_THREADS is the number of threads to use when processing incoming requests.
+    # By default, memcached is configured to use 4 concurrent threads. The threading improves the performance of
+    # storing and retrieving data in the cache, using a locking system to prevent different threads overwriting or updating the same values.
     - name: MEMCACHED_THREADS
       value: "4"
   metrics:
@@ -1635,10 +1665,15 @@ memcached-blocks-metadata:
   replicaCount: 2
   resources: {}
   extraEnv:
+    # -- MEMCACHED_CACHE_SIZE is the amount of memory allocated to memcached for object storage
     - name: MEMCACHED_CACHE_SIZE
       value: "1024"
+    # -- MEMCACHED_MAX_CONNECTIONS is the maximum number of simultaneous connections to the memcached service
     - name: MEMCACHED_MAX_CONNECTIONS
-      value: "1000"
+      value: "1024"
+    # -- MEMCACHED_THREADS is the number of threads to use when processing incoming requests.
+    # By default, memcached is configured to use 4 concurrent threads. The threading improves the performance of
+    # storing and retrieving data in the cache, using a locking system to prevent different threads overwriting or updating the same values.
     - name: MEMCACHED_THREADS
       value: "4"
   metrics:
