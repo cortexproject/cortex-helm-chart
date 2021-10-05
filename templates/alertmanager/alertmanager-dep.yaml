@@ -120,8 +120,8 @@ spec:
               mountPath: /etc/cortex-runtime-config
             - name: storage
               mountPath: "/data"
-              {{- if .Values.alertmanager.persistentVolume.subPath }}
-              subPath: {{ .Values.alertmanager.persistentVolume.subPath }}
+              {{- with .Values.alertmanager.persistentVolume.subPath }}
+              subPath: {{ . }}
               {{- end }}
           ports:
             - name: http-metrics
