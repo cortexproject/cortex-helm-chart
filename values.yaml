@@ -507,6 +507,7 @@ ingester:
     ## This is useful when using WAL
     ##
     enabled: false
+    podManagementPolicy: OrderedReady
 
   service:
     annotations: {}

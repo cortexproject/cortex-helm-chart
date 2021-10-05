@@ -18,6 +18,7 @@ spec:
       {{- include "cortex.ingesterSelectorLabels" . | nindent 6 }}
   updateStrategy:
     {{- toYaml .Values.ingester.statefulStrategy | nindent 4 }}          
+  podManagementPolicy: "{{ .Values.ingester.statefulSet.podManagementPolicy }}"
   serviceName: {{ template "cortex.fullname" . }}-ingester-headless
   {{- if .Values.ingester.persistentVolume.enabled }}
   volumeClaimTemplates:
