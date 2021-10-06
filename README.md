@@ -400,7 +400,7 @@ Kubernetes: `^1.19.0-0`
 | ingester.&ZeroWidthSpace;extraVolumeMounts | list | `[]` |  |
 | ingester.&ZeroWidthSpace;extraVolumes | list | `[]` |  |
 | ingester.&ZeroWidthSpace;initContainers | list | `[]` |  |
-| ingester.&ZeroWidthSpace;lifecycle.&ZeroWidthSpace;preStop | object | `{"httpGet":{"path":"/ingester/shutdown","port":"http-metrics"}}` | The /shutdown preStop hook is recommended as part of the ingester scaledown process, but can be removed to optimize rolling restarts in instances that will never be scaled down or when using chunks storage with WAL disabled. https://cortexmetrics.io/docs/guides/ingesters-scaling-up-and-down/#scaling-down |
+| ingester.&ZeroWidthSpace;lifecycle | object | `{}` | The /shutdown preStop hook is recommended as part of the ingester scaledown process, but can be removed to optimize rolling restarts in instances that will never be scaled down or when using chunks storage with WAL disabled. https://cortexmetrics.io/docs/guides/ingesters-scaling-up-and-down/#scaling-down |
 | ingester.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
 | ingester.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
 | ingester.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;scheme | string | `"HTTP"` |  |

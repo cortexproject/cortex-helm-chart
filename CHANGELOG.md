@@ -1,6 +1,7 @@
 # Changelog
 
 ## master / unreleased
+* [CHANGE] Remove lifecycle defaults from values file #240
 
 ## 0.7.0 / 2021-10-05
 
