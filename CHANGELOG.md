@@ -2,14 +2,17 @@
 
 ## master / unreleased
 
+## 1.0.0 / TBD
+### !!!!BREAKING CHANGES!!!
+
 * [FEATURE] Add autoscaler for nginx #249
+* [FEATURE] Add in lifecycle for querier, querier-frontend, and distributor #243
 * [ENHANCEMENT] Update container names to match cortex-mixin expectations #233
 * [BUGFIX] Fix nil pointer evaluation when using `ruler.dictonaries` option #242
 * [BUGFIX] Fixed hardcoding of containerSecurityContext in Ingester statefulset #258
+* [BUGFIX] Don't create nginx resources unless nginx is enabled. #261
 * [DEPENDENCY] Update Helm release memcached to v5.15.5 #241
 * [DEPENDENCY] Update Helm release memcached to v5.15.8 #247
-* [FEATURE] Add in lifecycle for querier, querier-frontend, and distributor #243
-* [BUGFIX] Don't create nginx resources unless nginx is enabled. #261
 
 ## 0.7.0 / 2021-10-05
 
