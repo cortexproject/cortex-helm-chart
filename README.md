@@ -86,13 +86,13 @@ Kubernetes: `^1.19.0-0`
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://charts.bitnami.com/bitnami | memcached(memcached) | 5.15.4 |
-| https://charts.bitnami.com/bitnami | memcached-index-read(memcached) | 5.15.4 |
-| https://charts.bitnami.com/bitnami | memcached-index-write(memcached) | 5.15.4 |
-| https://charts.bitnami.com/bitnami | memcached-frontend(memcached) | 5.15.4 |
-| https://charts.bitnami.com/bitnami | memcached-blocks-index(memcached) | 5.15.4 |
-| https://charts.bitnami.com/bitnami | memcached-blocks(memcached) | 5.15.4 |
-| https://charts.bitnami.com/bitnami | memcached-blocks-metadata(memcached) | 5.15.4 |
+| https://charts.bitnami.com/bitnami | memcached(memcached) | 5.15.5 |
+| https://charts.bitnami.com/bitnami | memcached-index-read(memcached) | 5.15.5 |
+| https://charts.bitnami.com/bitnami | memcached-index-write(memcached) | 5.15.5 |
+| https://charts.bitnami.com/bitnami | memcached-frontend(memcached) | 5.15.5 |
+| https://charts.bitnami.com/bitnami | memcached-blocks-index(memcached) | 5.15.5 |
+| https://charts.bitnami.com/bitnami | memcached-blocks(memcached) | 5.15.5 |
+| https://charts.bitnami.com/bitnami | memcached-blocks-metadata(memcached) | 5.15.5 |
 
 ## Values
 
