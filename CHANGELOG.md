@@ -3,6 +3,7 @@
 ## master / unreleased
 
 * [BUGFIX] Fix nil pointer evaluation when using `ruler.dictonaries` option #242
+* [DEPENDENCY] Update Helm release memcached to v5.15.5 #241
 
 ## 0.7.0 / 2021-10-05
 
