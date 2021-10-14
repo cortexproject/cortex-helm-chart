@@ -2,6 +2,8 @@
 
 ## master / unreleased
 
+* [BUGFIX] Fix nil pointer evaluation when using `ruler.dictonaries` option #242
+
 ## 0.7.0 / 2021-10-05
 
 * [FEATURE] Support runtime configuration #209
