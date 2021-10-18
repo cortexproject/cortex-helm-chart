@@ -919,6 +919,7 @@ querier:
   extraVolumeMounts: []
   extraPorts: []
   env: []
+  lifecycle: {}
 
 query_frontend:
   replicas: 2
