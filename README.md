@@ -574,6 +574,7 @@ Kubernetes: `^1.19.0-0`
 | querier.&ZeroWidthSpace;extraVolumeMounts | list | `[]` |  |
 | querier.&ZeroWidthSpace;extraVolumes | list | `[]` |  |
 | querier.&ZeroWidthSpace;initContainers | list | `[]` |  |
+| querier.&ZeroWidthSpace;lifecycle | object | `{}` |  |
 | querier.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
 | querier.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
 | querier.&ZeroWidthSpace;nodeSelector | object | `{}` |  |
