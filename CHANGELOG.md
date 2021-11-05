@@ -2,6 +2,7 @@
 
 ## master / unreleased
 
+* [FEATURE] Add autoscaler for nginx #249
 * [BUGFIX] Fix nil pointer evaluation when using `ruler.dictonaries` option #242
 * [DEPENDENCY] Update Helm release memcached to v5.15.5 #241
 

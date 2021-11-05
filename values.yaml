@@ -1295,6 +1295,16 @@ nginx:
   extraPorts: []
   env: []
 
+  autoscaling:
+    # -- Creates a HorizontalPodAutoscaler for the nginx pods.
+    enabled: false
+    minReplicas: 2
+    maxReplicas: 30
+    targetCPUUtilizationPercentage: 80
+    targetMemoryUtilizationPercentage: 0  # 80
+    # -- Ref: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#support-for-configurable-scaling-behavior
+    behavior: {}
+
 store_gateway:
   replicas: 1
 
