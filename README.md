@@ -423,6 +423,8 @@ Kubernetes: `^1.19.0-0`
 | ingress.&ZeroWidthSpace;enabled | bool | `false` |  |
 | ingress.&ZeroWidthSpace;hosts[0].&ZeroWidthSpace;host | string | `"chart-example.local"` |  |
 | ingress.&ZeroWidthSpace;hosts[0].&ZeroWidthSpace;paths[0] | string | `"/"` |  |
+| ingress.&ZeroWidthSpace;ingressClass.&ZeroWidthSpace;enabled | bool | `true` |  |
+| ingress.&ZeroWidthSpace;ingressClass.&ZeroWidthSpace;name | string | `"nginx"` |  |
 | ingress.&ZeroWidthSpace;tls | list | `[]` |  |
 | memcached-blocks-index.&ZeroWidthSpace;architecture | string | `"high-availability"` |  |
 | memcached-blocks-index.&ZeroWidthSpace;extraEnv[0] | object | `{"name":"MEMCACHED_CACHE_SIZE","value":"1024"}` | MEMCACHED_CACHE_SIZE is the amount of memory allocated to memcached for object storage |
