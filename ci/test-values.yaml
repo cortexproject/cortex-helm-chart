@@ -69,6 +69,8 @@ querier:
     enabled: true
 nginx:
   replicas: 1
+  autoscaling:
+    enabled: true
   config:
     httpSnippet: |-
       # http snippet
