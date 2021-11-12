@@ -401,6 +401,7 @@ distributor:
 
   service:
     annotations: {}
+    type: ClusterIP
     labels: {}
 
   serviceMonitor:
