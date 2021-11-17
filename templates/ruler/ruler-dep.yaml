@@ -97,7 +97,7 @@ spec:
             - name: sc-rules-volume
               mountPath: {{ .Values.ruler.sidecar.folder | quote }}
         {{- end}}
-        - name: {{ .Chart.Name }}
+        - name: rules
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args:

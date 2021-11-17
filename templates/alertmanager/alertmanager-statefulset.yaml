@@ -150,7 +150,7 @@ spec:
             - name: storage
               mountPath: "/data"
         {{- end}}
-        - name: {{ .Chart.Name }}
+        - name: alertmanager
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args:
@@ -161,7 +161,7 @@ spec:
             {{- end }}
             {{- if gt (.Values.alertmanager.replicas | int) 1 }}
             {{- range $n := until (.Values.alertmanager.replicas |int ) }}
-            - -alertmanager.cluster.peers={{ template "cortex.fullname" $ }}-alertmanager-{{ $n }}.{{ template "cortex.fullname" $ }}-alertmanager-headless.{{ $.Release.Namespace }}.svc.{{ $.Values.clusterDomain }}:{{ $clusterPort }}
+            - "-alertmanager.cluster.peers={{ template "cortex.fullname" $ }}-alertmanager-{{ $n }}.{{ template "cortex.fullname" $ }}-alertmanager-headless.{{ $.Release.Namespace }}.svc.{{ $.Values.clusterDomain }}:{{ $clusterPort }}"
             {{- end }}
             {{- end }}
             {{- range $key, $value := .Values.alertmanager.extraArgs }}
