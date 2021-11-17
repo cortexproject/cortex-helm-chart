@@ -150,8 +150,6 @@ spec:
             {{- toYaml .Values.ingester.readinessProbe | nindent 12 }}
           resources:
             {{- toYaml .Values.ingester.resources | nindent 12 }}
-          securityContext:
-            readOnlyRootFilesystem: true
           env:
             {{- if .Values.ingester.env }}
               {{- toYaml .Values.ingester.env | nindent 12 }}
