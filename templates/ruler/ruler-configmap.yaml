@@ -5,7 +5,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: {{ include "cortex.rulerFullname" $ }}-{{ include "cortex.rulerRulesDirName" $dir }}
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ $.Release.Namespace }}
   labels:
     {{- include "cortex.rulerLabels" $ | nindent 4 }}
 data:

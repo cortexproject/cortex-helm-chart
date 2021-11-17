@@ -2,7 +2,7 @@
 
 # cortex
 
-![Version: 0.6.0](https://img.shields.io/badge/Version-0.6.0-informational?style=flat-square) ![AppVersion: v1.9.0](https://img.shields.io/badge/AppVersion-v1.9.0-informational?style=flat-square)
+![Version: 0.7.0](https://img.shields.io/badge/Version-0.7.0-informational?style=flat-square) ![AppVersion: v1.10.0](https://img.shields.io/badge/AppVersion-v1.10.0-informational?style=flat-square)
 
 Horizontally scalable, highly available, multi-tenant, long term Prometheus.
 
@@ -86,13 +86,13 @@ Kubernetes: `^1.19.0-0`
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://charts.bitnami.com/bitnami | memcached(memcached) | 5.15.1 |
-| https://charts.bitnami.com/bitnami | memcached-index-read(memcached) | 5.15.1 |
-| https://charts.bitnami.com/bitnami | memcached-index-write(memcached) | 5.15.1 |
-| https://charts.bitnami.com/bitnami | memcached-frontend(memcached) | 5.15.1 |
-| https://charts.bitnami.com/bitnami | memcached-blocks-index(memcached) | 5.15.1 |
-| https://charts.bitnami.com/bitnami | memcached-blocks(memcached) | 5.15.1 |
-| https://charts.bitnami.com/bitnami | memcached-blocks-metadata(memcached) | 5.15.1 |
+| https://charts.bitnami.com/bitnami | memcached(memcached) | 5.15.8 |
+| https://charts.bitnami.com/bitnami | memcached-index-read(memcached) | 5.15.8 |
+| https://charts.bitnami.com/bitnami | memcached-index-write(memcached) | 5.15.8 |
+| https://charts.bitnami.com/bitnami | memcached-frontend(memcached) | 5.15.8 |
+| https://charts.bitnami.com/bitnami | memcached-blocks-index(memcached) | 5.15.8 |
+| https://charts.bitnami.com/bitnami | memcached-blocks(memcached) | 5.15.8 |
+| https://charts.bitnami.com/bitnami | memcached-blocks-metadata(memcached) | 5.15.8 |
 
 ## Values
 
@@ -434,6 +434,7 @@ Kubernetes: `^1.19.0-0`
 | ingester.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;initialDelaySeconds | int | `120` |  |
 | ingester.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;periodSeconds | int | `30` |  |
 | ingester.&ZeroWidthSpace;statefulSet.&ZeroWidthSpace;enabled | bool | `false` |  |
+| ingester.&ZeroWidthSpace;statefulSet.&ZeroWidthSpace;podManagementPolicy | string | `"OrderedReady"` | see https://cortexmetrics.io/docs/guides/ingesters-scaling-up-and-down/#scaling-down and https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#pod-management-policies for scaledown details |
 | ingester.&ZeroWidthSpace;statefulStrategy.&ZeroWidthSpace;type | string | `"RollingUpdate"` |  |
 | ingester.&ZeroWidthSpace;strategy.&ZeroWidthSpace;rollingUpdate.&ZeroWidthSpace;maxSurge | int | `0` |  |
 | ingester.&ZeroWidthSpace;strategy.&ZeroWidthSpace;rollingUpdate.&ZeroWidthSpace;maxUnavailable | int | `1` |  |
@@ -501,6 +502,12 @@ Kubernetes: `^1.19.0-0`
 | memcached.&ZeroWidthSpace;resources | object | `{}` |  |
 | nginx.&ZeroWidthSpace;affinity | object | `{}` |  |
 | nginx.&ZeroWidthSpace;annotations | object | `{}` |  |
+| nginx.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;behavior | object | `{}` | Ref: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#support-for-configurable-scaling-behavior |
+| nginx.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;enabled | bool | `false` | Creates a HorizontalPodAutoscaler for the nginx pods. |
+| nginx.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;maxReplicas | int | `30` |  |
+| nginx.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;minReplicas | int | `2` |  |
+| nginx.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;targetCPUUtilizationPercentage | int | `80` |  |
+| nginx.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;targetMemoryUtilizationPercentage | int | `0` |  |
 | nginx.&ZeroWidthSpace;config.&ZeroWidthSpace;auth_orgs | list | `[]` | (optional) List of [auth tenants](https://cortexmetrics.io/docs/guides/auth/) to set in the nginx config |
 | nginx.&ZeroWidthSpace;config.&ZeroWidthSpace;basicAuthSecretName | string | `""` | (optional) Name of basic auth secret. In order to use this option, a secret with htpasswd formatted contents at the key ".htpasswd" must exist. For example:   apiVersion: v1   kind: Secret   metadata:     name: my-secret     namespace: <same as cortex installation>   stringData:     .htpasswd: |       user1:$apr1$/woC1jnP$KAh0SsVn5qeSMjTtn0E9Q0       user2:$apr1$QdR8fNLT$vbCEEzDj7LyqCMyNpSoBh/ Please note that the use of basic auth will not identify organizations the way X-Scope-OrgID does. Thus, the use of basic auth alone will not prevent one tenant from viewing the metrics of another. To ensure tenants are scoped appropriately, explicitly set the `X-Scope-OrgID` header in the nginx config. Example   setHeaders:     X-Scope-Org-Id: $remote_user |
 | nginx.&ZeroWidthSpace;config.&ZeroWidthSpace;client_max_body_size | string | `"1M"` |  |

@@ -2,8 +2,69 @@ apiVersion: v1
 entries:
   cortex:
   - apiVersion: v2
+    appVersion: v1.10.0
+    created: "2021-10-05T18:09:51.28390429+02:00"
+    dependencies:
+    - alias: memcached
+      condition: memcached.enabled
+      name: memcached
+      repository: https://charts.bitnami.com/bitnami
+      version: 5.15.4
+    - alias: memcached-index-read
+      condition: memcached-index-read.enabled
+      name: memcached
+      repository: https://charts.bitnami.com/bitnami
+      version: 5.15.4
+    - alias: memcached-index-write
+      condition: memcached-index-write.enabled
+      name: memcached
+      repository: https://charts.bitnami.com/bitnami
+      version: 5.15.4
+    - alias: memcached-frontend
+      condition: memcached-frontend.enabled
+      name: memcached
+      repository: https://charts.bitnami.com/bitnami
+      version: 5.15.4
+    - alias: memcached-blocks-index
+      name: memcached
+      repository: https://charts.bitnami.com/bitnami
+      tags:
+      - blocks-storage-memcached
+      version: 5.15.4
+    - alias: memcached-blocks
+      name: memcached
+      repository: https://charts.bitnami.com/bitnami
+      tags:
+      - blocks-storage-memcached
+      version: 5.15.4
+    - alias: memcached-blocks-metadata
+      name: memcached
+      repository: https://charts.bitnami.com/bitnami
+      tags:
+      - blocks-storage-memcached
+      version: 5.15.4
+    description: Horizontally scalable, highly available, multi-tenant, long term
+      Prometheus.
+    digest: bc69f3ebd4aec81edfa2f742999f103416b6f1f56edc133a9ae7d088ac82630c
+    home: https://cortexmetrics.io/
+    icon: https://avatars2.githubusercontent.com/u/43045022?s=200&v=4
+    kubeVersion: ^1.19.0-0
+    maintainers:
+    - email: thayward@infoblox.com
+      name: Tom Hayward
+      url: https://github.com/kd7lxl
+    - email: Niclas.Schad@plusserver.com
+      name: Niclas Schad
+      url: https://github.com/ShuzZzle
+    name: cortex
+    sources:
+    - https://github.com/cortexproject/cortex-helm-chart
+    urls:
+    - https://cortexproject.github.io/cortex-helm-chart/cortex-0.7.0.tgz
+    version: 0.7.0
+  - apiVersion: v2
     appVersion: v1.9.0
-    created: "2021-06-28T13:12:24.363253347+02:00"
+    created: "2021-10-05T18:09:51.278044055+02:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -60,7 +121,7 @@ entries:
     version: 0.6.0
   - apiVersion: v2
     appVersion: v1.9.0
-    created: "2021-06-28T13:12:24.359221149+02:00"
+    created: "2021-10-05T18:09:51.273958318+02:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -117,7 +178,7 @@ entries:
     version: 0.5.0
   - apiVersion: v2
     appVersion: v1.7.0
-    created: "2021-06-28T13:12:24.355627707+02:00"
+    created: "2021-10-05T18:09:51.270299325+02:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -173,7 +234,7 @@ entries:
     version: 0.4.1
   - apiVersion: v2
     appVersion: v1.7.0
-    created: "2021-06-28T13:12:24.351130152+02:00"
+    created: "2021-10-05T18:09:51.266950968+02:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -229,7 +290,7 @@ entries:
     version: 0.4.0
   - apiVersion: v2
     appVersion: v1.6.0
-    created: "2021-06-28T13:12:24.34652572+02:00"
+    created: "2021-10-05T18:09:51.264318072+02:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -285,7 +346,7 @@ entries:
     version: 0.3.0
   - apiVersion: v2
     appVersion: v1.4.0
-    created: "2021-06-28T13:12:24.341413453+02:00"
+    created: "2021-10-05T18:09:51.261485189+02:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -316,4 +377,4 @@ entries:
     urls:
     - https://cortexproject.github.io/cortex-helm-chart/cortex-0.2.0.tgz
     version: 0.2.0
-generated: "2021-06-28T13:12:24.330618906+02:00"
+generated: "2021-10-05T18:09:51.255455506+02:00"

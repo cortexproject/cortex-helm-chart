@@ -507,6 +507,8 @@ ingester:
     ## This is useful when using WAL
     ##
     enabled: false
+    # -- see https://cortexmetrics.io/docs/guides/ingesters-scaling-up-and-down/#scaling-down and https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#pod-management-policies for scaledown details
+    podManagementPolicy: OrderedReady
 
   service:
     annotations: {}
@@ -1292,6 +1294,16 @@ nginx:
   extraVolumeMounts: []
   extraPorts: []
   env: []
+
+  autoscaling:
+    # -- Creates a HorizontalPodAutoscaler for the nginx pods.
+    enabled: false
+    minReplicas: 2
+    maxReplicas: 30
+    targetCPUUtilizationPercentage: 80
+    targetMemoryUtilizationPercentage: 0  # 80
+    # -- Ref: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#support-for-configurable-scaling-behavior
+    behavior: {}
 
 store_gateway:
   replicas: 1

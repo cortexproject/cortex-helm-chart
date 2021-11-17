@@ -2,6 +2,14 @@
 
 ## master / unreleased
 
+* [FEATURE] Add autoscaler for nginx #249
+* [ENHANCEMENT] Update container names to match cortex-mixin expectations #233
+* [BUGFIX] Fix nil pointer evaluation when using `ruler.dictonaries` option #242
+* [DEPENDENCY] Update Helm release memcached to v5.15.5 #241
+* [DEPENDENCY] Update Helm release memcached to v5.15.8 #247
+
+## 0.7.0 / 2021-10-05
+
 * [FEATURE] Support runtime configuration #209
 * [FEATURE] Add autoscaler for queriers #190
 * [FEATURE] Add autoscaler for distributors #189
@@ -15,9 +23,10 @@
 * [ENHANCEMENT] Optionally generate endpoints for `X-Scope-OrgID` injection (multi-tenancy) #180
 * [ENHANCEMENT] Optionally configure Basic Auth within Nginx #205
 * [ENHANCEMENT] Add extraEndpointSpec to all servicemonitors for specifying things like TLS #216
-* [ENHANCEMENT] Update container names to match cortex-mixin expectations #233
+* [ENHANCEMENT] Add option to specify `podManagementPolicy` when using ingesters as statefulset #236
 * [BUGFIX] Fix whitespace in runtime-config annotations, introduced in #209, fixed in #212
 * [BUGFIX] Correcting nginx config for auth orgs to right proxy_pass #192
+* [DEPENDENCY] Update Helm release memcached to v5.15.4 #228
 
 ## 0.6.0 / 2021-06-28
 

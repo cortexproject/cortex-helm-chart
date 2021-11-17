@@ -8,6 +8,7 @@
         "ShuzZzle",
         "kd7lxl"
     ],
+    "labels": ["dependencies"],
     "regexManagers": [{
             "description": "Update cortex image in README.md",
             "fileMatch": ["^README\\.md$"],
