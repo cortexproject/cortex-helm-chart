@@ -345,6 +345,7 @@ Kubernetes: `^1.19.0-0`
 | distributor.&ZeroWidthSpace;extraVolumeMounts | list | `[]` |  |
 | distributor.&ZeroWidthSpace;extraVolumes | list | `[]` |  |
 | distributor.&ZeroWidthSpace;initContainers | list | `[]` |  |
+| distributor.&ZeroWidthSpace;lifecycle | object | `{}` |  |
 | distributor.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
 | distributor.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
 | distributor.&ZeroWidthSpace;nodeSelector | object | `{}` |  |
@@ -580,6 +581,7 @@ Kubernetes: `^1.19.0-0`
 | querier.&ZeroWidthSpace;extraVolumeMounts | list | `[]` |  |
 | querier.&ZeroWidthSpace;extraVolumes | list | `[]` |  |
 | querier.&ZeroWidthSpace;initContainers | list | `[]` |  |
+| querier.&ZeroWidthSpace;lifecycle | object | `{}` |  |
 | querier.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
 | querier.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
 | querier.&ZeroWidthSpace;nodeSelector | object | `{}` |  |
@@ -623,6 +625,7 @@ Kubernetes: `^1.19.0-0`
 | query_frontend.&ZeroWidthSpace;extraVolumeMounts | list | `[]` |  |
 | query_frontend.&ZeroWidthSpace;extraVolumes | list | `[]` |  |
 | query_frontend.&ZeroWidthSpace;initContainers | list | `[]` |  |
+| query_frontend.&ZeroWidthSpace;lifecycle | object | `{}` |  |
 | query_frontend.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
 | query_frontend.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
 | query_frontend.&ZeroWidthSpace;nodeSelector | object | `{}` |  |
