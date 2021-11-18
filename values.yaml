@@ -1192,14 +1192,6 @@ nginx:
     annotations: {}
     labels: {}
 
-  serviceMonitor:
-    enabled: false
-    additionalLabels: {}
-    relabelings: []
-    metricRelabelings: []
-    # Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint
-    extraEndpointSpec: {}
-
   resources: {}
   #  limits:
   #    cpu: 100m
