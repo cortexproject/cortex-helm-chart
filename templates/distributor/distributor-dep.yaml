@@ -96,6 +96,10 @@ spec:
             {{- if .Values.distributor.env }}
               {{- toYaml .Values.distributor.env | nindent 12 }}
             {{- end }}
+          {{- with .Values.distributor.lifecycle }}
+          lifecycle:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
 {{- if .Values.distributor.extraContainers }}
 {{ toYaml .Values.distributor.extraContainers | indent 8}}
 {{- end }}

@@ -498,6 +498,7 @@ distributor:
   extraVolumeMounts: []
   extraPorts: []
   env: []
+  lifecycle: {}
 
 ingester:
   replicas: 3
@@ -919,6 +920,7 @@ querier:
   extraVolumeMounts: []
   extraPorts: []
   env: []
+  lifecycle: {}
 
 query_frontend:
   replicas: 2
@@ -1010,6 +1012,7 @@ query_frontend:
   extraVolumeMounts: []
   extraPorts: []
   env: []
+  lifecycle: {}
 
 table_manager:
   replicas: 1
