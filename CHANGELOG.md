@@ -3,6 +3,7 @@
 ## master / unreleased
 
 * [FEATURE] Add autoscaler for nginx #249
+* [ENHANCEMENT] Update container names to match cortex-mixin expectations #233
 * [BUGFIX] Fix nil pointer evaluation when using `ruler.dictonaries` option #242
 * [BUGFIX] Fixed hardcoding of containerSecurityContext in Ingester statefulset #258
 * [DEPENDENCY] Update Helm release memcached to v5.15.5 #241
