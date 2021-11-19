@@ -65,8 +65,7 @@ spec:
       priorityClassName: {{ .Values.ingester.priorityClassName }}
       {{- end }}
       {{- if .Values.ingester.securityContext.enabled }}
-      securityContext:
-        {{- omit .Values.ingester.securityContext "enabled" | toYaml | nindent 8 }}
+      securityContext: {{- omit .Values.ingester.securityContext "enabled" | toYaml | nindent 8 }}
       {{- end }}
       initContainers:
         {{- toYaml .Values.ingester.initContainers | nindent 8 }}
@@ -151,8 +150,9 @@ spec:
             {{- toYaml .Values.ingester.readinessProbe | nindent 12 }}
           resources:
             {{- toYaml .Values.ingester.resources | nindent 12 }}
-          securityContext:
-            readOnlyRootFilesystem: true
+          {{- if .Values.ingester.containerSecurityContext.enabled }}
+          securityContext: {{- omit .Values.ingester.containerSecurityContext "enabled" | toYaml | nindent 12 }}
+          {{- end }}
           env:
             {{- if .Values.ingester.env }}
               {{- toYaml .Values.ingester.env | nindent 12 }}
