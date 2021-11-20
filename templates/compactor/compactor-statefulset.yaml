@@ -143,9 +143,9 @@ spec:
           {{- if .Values.compactor.containerSecurityContext.enabled }}
           securityContext: {{- omit .Values.compactor.containerSecurityContext "enabled" | toYaml | nindent 12 }}
           {{- end }}
+          {{- if .Values.compactor.env }}
           env:
-            {{- if .Values.compactor.env }}
-              {{- toYaml .Values.compactor.env | nindent 12 }}
-            {{- end }}
+            {{- toYaml .Values.compactor.env | nindent 12 }}
+          {{- end }}
 {{- end -}}
 {{- end -}}

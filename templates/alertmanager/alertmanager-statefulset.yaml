@@ -192,9 +192,9 @@ spec:
           {{- if .Values.alertmanager.containerSecurityContext.enabled }}
           securityContext: {{- omit .Values.alertmanager.containerSecurityContext "enabled" | toYaml | nindent 12 }}
           {{- end }}
+          {{- if .Values.alertmanager.env }}
           env:
-            {{- if .Values.alertmanager.env }}
-              {{- toYaml .Values.alertmanager.env | nindent 12 }}
-            {{- end }}
+            {{- toYaml .Values.alertmanager.env | nindent 12 }}
+          {{- end }}
 {{- end -}}
 {{- end -}}

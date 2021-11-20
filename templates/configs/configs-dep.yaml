@@ -95,10 +95,10 @@ spec:
           {{- if .Values.configs.containerSecurityContext.enabled }}
           securityContext: {{- omit .Values.configs.containerSecurityContext "enabled" | toYaml | nindent 12 }}
           {{- end }}
+          {{- if .Values.configs.env }}
           env:
-            {{- if .Values.configs.env }}
-              {{- toYaml .Values.configs.env | nindent 12 }}
-            {{- end }}
+            {{- toYaml .Values.configs.env | nindent 12 }}
+          {{- end }}
 {{- if .Values.configs.extraContainers }}
 {{ toYaml .Values.configs.extraContainers | indent 8}}
 {{- end }}

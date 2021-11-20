@@ -48,7 +48,7 @@ spec:
       imagePullSecrets:
       {{- range .Values.image.pullSecrets }}
         - name: {{ . }}
-      {{- end}}
+      {{- end }}
       {{- end }}
       containers:
         - name: distributor
@@ -92,17 +92,17 @@ spec:
           {{- if .Values.distributor.containerSecurityContext.enabled }}
           securityContext: {{- omit .Values.distributor.containerSecurityContext "enabled" | toYaml | nindent 12 }}
           {{- end }}
+          {{- if .Values.distributor.env }}
           env:
-            {{- if .Values.distributor.env }}
-              {{- toYaml .Values.distributor.env | nindent 12 }}
-            {{- end }}
+            {{- toYaml .Values.distributor.env | nindent 12 }}
+          {{- end }}
           {{- with .Values.distributor.lifecycle }}
           lifecycle:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-{{- if .Values.distributor.extraContainers }}
-{{ toYaml .Values.distributor.extraContainers | indent 8}}
-{{- end }}
+      {{- if .Values.distributor.extraContainers }}
+        {{ toYaml .Values.distributor.extraContainers | indent 8}}
+      {{- end }}
       nodeSelector:
         {{- toYaml .Values.distributor.nodeSelector | nindent 8 }}
       affinity:
@@ -113,16 +113,16 @@ spec:
       volumes:
         - name: config
           secret:
-{{- if .Values.useExternalConfig }}
+          {{- if .Values.useExternalConfig }}
             secretName: {{ .Values.externalConfigSecretName }}
-{{- else }}
+          {{- else }}
             secretName: {{ template "cortex.fullname" . }}
-{{- end }}
+          {{- end }}
         - name: runtime-config
           configMap:
             name: {{ template "cortex.fullname" . }}-runtime-config
-{{- if .Values.distributor.extraVolumes }}
-{{ toYaml .Values.distributor.extraVolumes | indent 8}}
-{{- end }}
+      {{- if .Values.distributor.extraVolumes }}
+        {{ toYaml .Values.distributor.extraVolumes | indent 8}}
+      {{- end }}
         - name: storage
           emptyDir: {}

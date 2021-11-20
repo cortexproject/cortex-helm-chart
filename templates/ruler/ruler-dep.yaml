@@ -91,8 +91,9 @@ spec:
           {{- end }}
           resources:
             {{- toYaml .Values.ruler.sidecar.resources | nindent 12 }}
-          securityContext:
-            {{- toYaml .Values.ruler.sidecar.securityContext | nindent 12 }}
+          {{- if .Values.ruler.containerSecurityContext.enabled }}
+          securityContext: {{- omit .Values.ruler.sidecar.containerSecurityContext "enabled" | toYaml | nindent 12 }}
+          {{- end }}
           volumeMounts:
             - name: sc-rules-volume
               mountPath: {{ .Values.ruler.sidecar.folder | quote }}
