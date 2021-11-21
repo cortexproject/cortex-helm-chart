@@ -143,8 +143,9 @@ spec:
           {{- end }}
           resources:
             {{- toYaml .Values.alertmanager.sidecar.resources | nindent 12 }}
-          securityContext:
-            {{- toYaml .Values.alertmanager.sidecar.securityContext | nindent 12 }}
+          {{- if .Values.alertmanager.sidecar.containerSecurityContext.enabled }}
+          securityContext: {{- omit .Values.alertmanager.sidecar.containerSecurityContext "enabled" | toYaml | nindent 12 }}
+          {{- end }}
           volumeMounts:
             - name: storage
               mountPath: "/data"

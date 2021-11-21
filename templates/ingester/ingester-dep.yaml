@@ -64,7 +64,7 @@ spec:
             {{- end }}
           volumeMounts:
             {{- if .Values.ingester.extraVolumeMounts }}
-              {{ toYaml .Values.ingester.extraVolumeMounts | nindent 12}}
+            {{ toYaml .Values.ingester.extraVolumeMounts | nindent 12}}
             {{- end }}
             - name: config
               mountPath: /etc/cortex

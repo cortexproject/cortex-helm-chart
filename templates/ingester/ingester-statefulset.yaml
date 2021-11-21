@@ -148,10 +148,10 @@ spec:
           {{- if .Values.ingester.containerSecurityContext.enabled }}
           securityContext: {{- omit .Values.ingester.containerSecurityContext "enabled" | toYaml | nindent 12 }}
           {{- end }}
+          {{- if .Values.ingester.env }}
           env:
-            {{- if .Values.ingester.env }}
-              {{- toYaml .Values.ingester.env | nindent 12 }}
-            {{- end }}
+            {{- toYaml .Values.ingester.env | nindent 12 }}
+          {{- end }}
           {{- with .Values.ingester.lifecycle }}
           lifecycle:
             {{- toYaml . | nindent 12 }}
