@@ -9,6 +9,7 @@
 * [DEPENDENCY] Update Helm release memcached to v5.15.5 #241
 * [DEPENDENCY] Update Helm release memcached to v5.15.8 #247
 * [FEATURE] Add in lifecycle for querier, querier-frontend, and distributor #243
+* [BUGFIX] Don't create nginx resources unless nginx is enabled. #261
 
 ## 0.7.0 / 2021-10-05
 
