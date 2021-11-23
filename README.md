@@ -409,7 +409,7 @@ Kubernetes: `^1.19.0-0`
 | ingress.&ZeroWidthSpace;enabled | bool | `false` |  |
 | ingress.&ZeroWidthSpace;hosts[0].&ZeroWidthSpace;host | string | `"chart-example.local"` |  |
 | ingress.&ZeroWidthSpace;hosts[0].&ZeroWidthSpace;paths[0] | string | `"/"` |  |
-| ingress.&ZeroWidthSpace;ingressClass.&ZeroWidthSpace;enabled | bool | `true` |  |
+| ingress.&ZeroWidthSpace;ingressClass.&ZeroWidthSpace;enabled | bool | `false` |  |
 | ingress.&ZeroWidthSpace;ingressClass.&ZeroWidthSpace;name | string | `"nginx"` |  |
 | ingress.&ZeroWidthSpace;tls | list | `[]` |  |
 | memcached | object | `{"architecture":"high-availability","enabled":false,"extraEnv":[{"name":"MEMCACHED_CACHE_SIZE","value":"1024"},{"name":"MEMCACHED_MAX_CONNECTIONS","value":"1024"},{"name":"MEMCACHED_THREADS","value":"4"}],"metrics":{"enabled":true,"serviceMonitor":{"enabled":false}},"replicaCount":2,"resources":{}}` | chunk caching for legacy chunk storage engine |
