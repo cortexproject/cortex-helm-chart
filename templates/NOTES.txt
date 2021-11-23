@@ -6,4 +6,4 @@ Unlike the official cortex default configuration this helm-chart does not run th
 
 Verify the application is working by running these commands:
   kubectl --namespace {{ .Release.Namespace }} port-forward service/{{ include "cortex.querierFullname" . }} {{ .Values.config.server.http_listen_port }}
-  curl http://127.0.0.1:{{ .Values.config.server.http_listen_port }}{{.Values.config.api.prometheus_http_prefix}}/api/v1/labels
+  curl http://127.0.0.1:{{ .Values.config.server.http_listen_port }}/services
