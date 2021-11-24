@@ -139,8 +139,10 @@ spec:
               protocol: TCP
           startupProbe:
             {{- toYaml .Values.ingester.startupProbe | nindent 12 }}
+          {{- if .Values.ingester.livenessProbe }}
           livenessProbe:
             {{- toYaml .Values.ingester.livenessProbe | nindent 12 }}
+          {{- end}}
           readinessProbe:
             {{- toYaml .Values.ingester.readinessProbe | nindent 12 }}
           resources:

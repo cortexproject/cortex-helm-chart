@@ -530,11 +530,9 @@ ingester:
       path: /ready
       port: http-metrics
       scheme: HTTP
-  livenessProbe:
-    httpGet:
-      path: /ready
-      port: http-metrics
-      scheme: HTTP
+  # -- Liveness probes for ingesters are not recommended.
+  #  Ref: https://cortexmetrics.io/docs/guides/running-cortex-on-kubernetes/#take-extra-care-with-ingesters
+  livenessProbe: {}
   readinessProbe:
     httpGet:
       path: /ready
