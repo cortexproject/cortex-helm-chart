@@ -1,4 +1,4 @@
-{{- if and (gt (int .Values.nginx.replicas) 1) (.Values.nginx.podDisruptionBudget) }}
+{{- if and (.Values.nginx.enabled) (gt (int .Values.nginx.replicas) 1) (.Values.nginx.podDisruptionBudget) }}
 apiVersion: policy/v1beta1
 kind: PodDisruptionBudget
 metadata:
