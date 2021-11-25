@@ -2,12 +2,33 @@
 
 ## master / unreleased
 
-## 1.0.0 / TBD
-### !!!!BREAKING CHANGES!!!
+## 1.0.0 / 2021-11-25
+### This Release includes BREAKING CHANGES
+
 
 * [FEATURE] Add autoscaler for nginx #249
 * [FEATURE] Add in lifecycle for querier, querier-frontend, and distributor #243
+* [FEATURE] Add ingressClass to ingressResource
+* [ENHANCEMENT] Allow overriding cortex Version
+* [ENHANCEMENT] Update policy k8 Version
+* [ENHANCEMENT] Improved default values for bitnami/memcached
 * [ENHANCEMENT] Update container names to match cortex-mixin expectations #233
+* [CHANGE] Deprecate *.persistence
+* [CHANGE] Remove legacy clusterPort from alertmanager
+* [CHANGE] Remove useless nginx.serviceMonitor section
+* [CHANGE] Configure blocks storage engine by default instead of chunks
+* [CHANGE] Adjusted cortex default configuration
+  * server.grpc_server_max_recv_msg_size: 104857600 -> 10485760
+  * server.grpc_server_max_send_msg_size: 104857600 -> 10485760
+  * server.grpc_server_max_concurrent_streams: 1000 -> 10000
+  * server.ingester_client.grpc_client_config.max_recv_msg_size: 104857600 -> 10485760
+  * server.ingester_client.grpc_client_config.max_send_msg_size: 104857600 -> 10485760
+  * config.limits.enforce_metric_name: false -> true
+  * config.ruler.enable_api: false -> true
+  * configure memberlist automatically
+  * config.ingester.lifecycler.final_sleep: 0s -> 30s
+  * config.querier.query_ingesters_within: 12h -> 13h
+  * config.querier.query_store_after: 0 -> 12h
 * [BUGFIX] Fix nil pointer evaluation when using `ruler.dictonaries` option #242
 * [BUGFIX] Fixed hardcoding of containerSecurityContext in Ingester statefulset #258
 * [BUGFIX] Don't create nginx resources unless nginx is enabled. #261
