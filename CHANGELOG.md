@@ -8,16 +8,16 @@
 
 * [FEATURE] Add autoscaler for nginx #249
 * [FEATURE] Add in lifecycle for querier, querier-frontend, and distributor #243
-* [FEATURE] Add ingressClass to ingressResource
-* [ENHANCEMENT] Allow overriding cortex Version
-* [ENHANCEMENT] Update policy k8 Version
-* [ENHANCEMENT] Improved default values for bitnami/memcached
+* [FEATURE] Add ingressClass to ingressResource #227
+* [ENHANCEMENT] Allow overriding cortex Version #227
+* [ENHANCEMENT] Update policy k8 Version #227
+* [ENHANCEMENT] Improved default values for bitnami/memcached #227
 * [ENHANCEMENT] Update container names to match cortex-mixin expectations #233
-* [CHANGE] Deprecate *.persistence
-* [CHANGE] Remove legacy clusterPort from alertmanager
-* [CHANGE] Remove useless nginx.serviceMonitor section
-* [CHANGE] Configure blocks storage engine by default instead of chunks
-* [CHANGE] Adjusted cortex default configuration
+* [CHANGE] Deprecate *.persistence #227
+* [CHANGE] Remove legacy clusterPort from alertmanager #227
+* [CHANGE] Remove useless nginx.serviceMonitor section #227
+* [CHANGE] Configure blocks storage engine by default instead of chunks #227
+* [CHANGE] Adjusted cortex default configuration #227
   * server.grpc_server_max_recv_msg_size: 104857600 -> 10485760
   * server.grpc_server_max_send_msg_size: 104857600 -> 10485760
   * server.grpc_server_max_concurrent_streams: 1000 -> 10000
