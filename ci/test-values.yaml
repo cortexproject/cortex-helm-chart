@@ -11,10 +11,6 @@ config:
         replication_factor: 1
         kvstore:
           store: "memberlist"
-    walconfig:
-      wal_enabled: true
-      recover_from_wal: true
-      wal_dir: "/data/wal"
 
   # See https://github.com/cortexproject/cortex/blob/master/docs/configuration/config-file-reference.md#storage_config
   storage:

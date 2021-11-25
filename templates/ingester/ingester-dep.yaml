@@ -53,7 +53,7 @@ spec:
       {{- end }}
       containers:
         - name: ingester
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          image: "{{ .Values.image.repository }}:{{ default .Chart.AppVersion .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args:
             - "-target=ingester"
@@ -64,7 +64,7 @@ spec:
             {{- end }}
           volumeMounts:
             {{- if .Values.ingester.extraVolumeMounts }}
-              {{ toYaml .Values.ingester.extraVolumeMounts | nindent 12}}
+            {{ toYaml .Values.ingester.extraVolumeMounts | nindent 12}}
             {{- end }}
             - name: config
               mountPath: /etc/cortex
@@ -72,13 +72,8 @@ spec:
               mountPath: /etc/cortex-runtime-config
             - name: storage
               mountPath: "/data"
-              {{- if .Values.ingester.persistentVolume.subPath }}
-              subPath: {{ .Values.ingester.persistentVolume.subPath }}
-              {{- else }}
-              {{- if .Values.ingester.persistence.subPath }}
-              ## DEPRECATED: use persistentVolume.subPath instead
-              subPath: {{ .Values.ingester.persistence.subPath }}
-              {{- end }}
+              {{- with .Values.ingester.persistentVolume.subPath }}
+              subPath: {{ . }}
               {{- end }}
           ports:
             - name: http-metrics

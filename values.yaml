@@ -1,37 +1,32 @@
-#  Container image settings.
-#  Since the image is unique for all microservices, so are image settings.
-
 image:
   repository: quay.io/cortexproject/cortex
-  tag: v1.10.0
+  # -- Allows you to override the cortex version in this chart. Use at your own risk.
+  tag: ""
   pullPolicy: IfNotPresent
 
-  ## Optionally specify an array of imagePullSecrets.
-  ## Secrets must be manually created in the namespace.
-  ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
-  ##
-  # pullSecrets:
-  #   - myRegistrKeySecretName
+  # -- Optionally specify an array of imagePullSecrets.
+  # Secrets must be manually created in the namespace.
+  # ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+  pullSecrets: []
 
-# Kubernetes cluster DNS domain
+# -- Kubernetes cluster DNS domain
 clusterDomain: cluster.local
 
 tags:
+  # -- Set to true to enable block storage memcached caching
   blocks-storage-memcached: false
 
 ingress:
   enabled: false
-  annotations:
-    # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
+  ingressClass:
+    enabled: false
+    name: "nginx"
+  annotations: {}
   hosts:
     - host: chart-example.local
       paths:
         - /
   tls: []
-  #  - secretName: chart-example-tls
-  #    hosts:
-  #      - chart-example.local
 
 serviceAccount:
   create: true
@@ -47,99 +42,64 @@ config:
   auth_enabled: false
   api:
     prometheus_http_prefix: '/prometheus'
+    # -- Use GZIP compression for API responses. Some endpoints serve large YAML or JSON blobs
+    # which can benefit from compression.
     response_compression_enabled: true
   ingester:
-    max_transfer_retries: 0
     lifecycler:
-      join_after: 0s
-      final_sleep: 0s
+      # -- We don't want to join immediately, but wait a bit to see other ingesters and their tokens first.
+      # It can take a while to have the full picture when using gossip
+      join_after: 10s
+
+      # -- To avoid generating same tokens by multiple ingesters, they can "observe" the ring for a while,
+      # after putting their own tokens into it. This is only useful when using gossip, since multiple
+      # ingesters joining at the same time can have conflicting tokens if they don't see each other yet.
+      observe_period: 10s
+      # -- Duration to sleep for before exiting, to ensure metrics are scraped.
+      final_sleep: 30s
       num_tokens: 512
       ring:
+        # -- Ingester replication factor per default is 3
         replication_factor: 3
         kvstore:
-          store: consul
-          prefix: 'collectors/'
-          consul:
-            host: 'consul:8500'
-            http_client_timeout: '20s'
-            consistent_reads: true
+          store: "memberlist"
   limits:
-    enforce_metric_name: false
+    # -- Enforce that every sample has a metric name
+    enforce_metric_name: true
     reject_old_samples: true
     reject_old_samples_max_age: 168h
     max_query_lookback: 0s
-  schema:
-    configs:
-      - from: 2020-11-01
-        store: cassandra
-        object_store: cassandra
-        schema: v10
-        index:
-          prefix: index_
-          period: 168h
-        chunks:
-          prefix: chunks_
-          period: 168h
   server:
     http_listen_port: 8080
     grpc_listen_port: 9095
-    grpc_server_max_recv_msg_size: 104857600
-    grpc_server_max_send_msg_size: 104857600
-    grpc_server_max_concurrent_streams: 1000
+    grpc_server_max_recv_msg_size: 10485760
+    grpc_server_max_send_msg_size: 10485760
+    grpc_server_max_concurrent_streams: 10000
   ingester_client:
     grpc_client_config:
-      max_recv_msg_size: 104857600
-      max_send_msg_size: 104857600
-  # See https://github.com/cortexproject/cortex/blob/master/docs/configuration/config-file-reference.md#storage_config
+      max_recv_msg_size: 10485760
+      max_send_msg_size: 10485760
+  # -- See https://github.com/cortexproject/cortex/blob/master/docs/configuration/config-file-reference.md#storage_config
   storage:
-    engine: chunks
-    cassandra:
-      addresses:                  # configure cassandra addresses here.
-      keyspace: cortex            # configure desired keyspace here.
-      auth: true
-      username:                   # configure cassandra user here.
-      password:                   # configure cassandra password here.
-    azure:
-      container_name:             # configure azure blob container name here.
-      account_name:               # configure azure storage account name here.
-      account_key:                # configure azure storage account key here.
-    # aws:
-    #   dynamodb:
-    #     dynamodb_url:
-    #     api_limit:
-    #     throttle_limit:
-    #     metrics:
-    #       url:
-    #       target_queue_length:
-    #       scale_up_factor:
-    #       ignore_throttle_below:
-    #       queue_length_query:
-    #       write_throttle_query:
-    #       write_usage_query:
-    #       read_usage_query:
-    #       read_error_query:
-    #     chunk_gang_size:
-    #     chunk_get_max_parallelism:
-    #   s3:
-    #   bucketnames:
-    #   s3forcepathstyle:
+    engine: blocks
     index_queries_cache_config:
       memcached:
+        # -- How long keys stay in the memcache
         expiration: 1h
       memcached_client:
+        # -- Maximum time to wait before giving up on memcached requests.
         timeout: 1s
-  chunk_store:
-    chunk_cache_config:
-      memcached:
-        expiration: 1h
-      memcached_client:
-        timeout: 1s
+  blocks_storage:
+    tsdb:
+      dir: /data/tsdb
+    bucket_store:
+      sync_dir: /data/tsdb-sync
   # -- https://cortexmetrics.io/docs/configuration/configuration-file/#store_gateway_config
-  store_gateway: {}
-  table_manager:
-    retention_deletes_enabled: false
-    retention_period: 0s
+  store_gateway:
+    sharding_enabled: false
   distributor:
+    # -- Distribute samples based on all labels, as opposed to solely by user and
+    # metric name.
     shard_by_all_labels: true
     pool:
       health_check_ingesters: true
@@ -147,11 +107,17 @@ config:
     bind_port: 7946
     # -- the service name of the memberlist
     # if using memberlist discovery
-    join_members: []
-    #  - '{{ include "cortex.fullname" $ }}-memberlist'
+    join_members:
+      - '{{ include "cortex.fullname" $ }}-memberlist'
   querier:
-    active_query_tracker_dir: /data/cortex/querier
-    query_ingesters_within: 12h
+    active_query_tracker_dir: /data/active-query-tracker
+    # -- Maximum lookback beyond which queries are not sent to ingester. 0 means all
+    # queries are sent to ingester. Ingesters by default have no data older than 12 hours,
+    # so we can safely set this 13 hours
+    query_ingesters_within: 13h
+    # -- The time after which a metric should be queried from storage and not just
+    # ingesters.
+    query_store_after: 12h
     # -- Comma separated list of store-gateway addresses in DNS Service Discovery
     # format. This option should is set automatically when using the blocks storage and the
     # store-gateway sharding is disabled (when enabled, the store-gateway instances
@@ -174,7 +140,7 @@ config:
   ruler:
     enable_alertmanager_discovery: false
     # -- Enable the experimental ruler config api.
-    enable_api: false
+    enable_api: true
     # -- Method to use for backend rule storage (configdb, azure, gcs, s3, swift, local) refer to https://cortexmetrics.io/docs/configuration/configuration-file/#ruler_config
     storage: {}
   runtime_config:
@@ -186,7 +152,6 @@ config:
     # -- Type of backend to use to store alertmanager configs. Supported values are: "configdb", "gcs", "s3", "local". refer to: https://cortexmetrics.io/docs/configuration/configuration-file/#alertmanager_config
     storage: {}
   frontend:
-    #  max_outstanding_per_tenant: 1000
     log_queries_longer_than: 10s
 
 runtimeconfigmap:
@@ -202,9 +167,8 @@ alertmanager:
   replicas: 1
 
   statefulSet:
-    ## If true, use a statefulset instead of a deployment for pod management.
-    ## This is useful for using a persistent volume for storing silences between restarts
-    ##
+    # -- If true, use a statefulset instead of a deployment for pod management.
+    # This is useful for using a persistent volume for storing silences between restarts.
     enabled: false
 
   service:
@@ -216,26 +180,18 @@ alertmanager:
     additionalLabels: {}
     relabelings: []
     metricRelabelings: []
-    # Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint
+    # -- Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint
     extraEndpointSpec: {}
 
   resources: {}
-  #  limits:
-  #    cpu: 200m
-  #    memory: 256Mi
-  #  requests:
-  #    cpu: 10m
-  #    memory: 32Mi
 
-  ## Additional Cortex container arguments, e.g. log level (debug, info, warn, error)
-  extraArgs:
-    {}
-    # log.level: debug
+  # -- Additional Cortex container arguments, e.g. log level (debug, info, warn, error)
+  extraArgs: {}
 
-  ## Pod Labels
+  # -- Pod Labels
   podLabels: {}
 
-  ## Pod Annotations
+  # -- Pod Annotations
   podAnnotations:
     prometheus.io/scrape: 'true'
     prometheus.io/port: 'http-metrics'
@@ -244,45 +200,34 @@ alertmanager:
   affinity: {}
   annotations: {}
 
-  ## DEPRECATED: use persistentVolume.subPath instead
-  persistence:
-    subPath:
-
   persistentVolume:
-    ## If true and alertmanager.statefulSet.enabled is true,
-    ## Alertmanager will create/use a Persistent Volume Claim
-    ## If false, use emptyDir
-    ##
+    # -- If true and alertmanager.statefulSet.enabled is true,
+    # Alertmanager will create/use a Persistent Volume Claim
+    # If false, use emptyDir
     enabled: true
 
-    ## Alertmanager data Persistent Volume Claim annotations
-    ##
+    # -- Alertmanager data Persistent Volume Claim annotations
     annotations: {}
 
-    ## Alertmanager data Persistent Volume access modes
-    ## Must match those of existing PV or dynamic provisioner
-    ## Ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
-    ##
+    # -- Alertmanager data Persistent Volume access modes
+    # Must match those of existing PV or dynamic provisioner
+    # Ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
     accessModes:
       - ReadWriteOnce
 
-    ## Alertmanager data Persistent Volume size
-    ##
+    # -- Alertmanager data Persistent Volume size
     size: 2Gi
 
-    ## Subdirectory of Alertmanager data Persistent Volume to mount
-    ## Useful if the volume's root directory is not empty
-    ##
+    # -- Subdirectory of Alertmanager data Persistent Volume to mount
+    # Useful if the volume's root directory is not empty
     subPath: ''
 
-    ## Alertmanager data Persistent Volume Storage Class
-    ## If defined, storageClassName: <storageClass>
-    ## If set to "-", storageClassName: "", which disables dynamic provisioning
-    ## If undefined (the default) or set to null, no storageClassName spec is
-    ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
-    ##   GKE, AWS & OpenStack)
-    ##
-    # storageClass: "-"
+    # -- Alertmanager data Persistent Volume Storage Class
+    # If defined, storageClassName: <storageClass>
+    # If set to "-", storageClassName: "", which disables dynamic provisioning
+    # If undefined (the default) or set to null, no storageClassName spec is
+    # set, choosing the default provisioner.
+    storageClass: null
 
   startupProbe:
     httpGet:
@@ -298,22 +243,17 @@ alertmanager:
       path: /ready
       port: http-metrics
 
-  securityContext:
-    {}
-    # fsGroup: 10001
-    # runAsGroup: 10001
-    # runAsNonRoot: true
-    # runAsUser: 10001
+  securityContext: {}
 
   containerSecurityContext:
     enabled: true
     readOnlyRootFilesystem: true
 
-  ## Tolerations for pod assignment
-  ## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
+  # -- Tolerations for pod assignment
+  # ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
   tolerations: []
 
-  # If not set then a PodDisruptionBudget will not be created
+  # -- If not set then a PodDisruptionBudget will not be created
   podDisruptionBudget:
     maxUnavailable: 1
 
@@ -327,48 +267,25 @@ alertmanager:
 
   terminationGracePeriodSeconds: 60
 
+  # -- Init containers to be added to the cortex pod.
   initContainers: []
-  ## Init containers to be added to the cortex pod.
-  # - name: my-init-container
-  #   image: busybox:latest
-  #   command: ['sh', '-c', 'echo hello']
 
+  # -- Additional containers to be added to the cortex pod.
   extraContainers: []
-  ## Additional containers to be added to the cortex pod.
-  # - name: reverse-proxy
-  #   image: angelbarrera92/basic-auth-reverse-proxy:dev
-  #   args:
-  #     - "serve"
-  #     - "--upstream=http://localhost:3100"
-  #     - "--auth-config=/etc/reverse-proxy-conf/authn.yaml"
-  #   ports:
-  #     - name: http
-  #       containerPort: 11811
-  #       protocol: TCP
-  #   volumeMounts:
-  #     - name: reverse-proxy-auth-config
-  #       mountPath: /etc/reverse-proxy-conf
 
+  # -- Additional volumes to the cortex pod.
   extraVolumes: []
-  ## Additional volumes to the cortex pod.
-  # - name: reverse-proxy-auth-config
-  #   secret:
-  #     secretName: reverse-proxy-auth-config
 
-  ## Extra volume mounts that will be added to the cortex container
+  # -- Extra volume mounts that will be added to the cortex container
   extraVolumeMounts: []
 
+  # -- Additional ports to the cortex services. Useful to expose extra container ports.
   extraPorts: []
-  ## Additional ports to the cortex services. Useful to expose extra container ports.
-  # - port: 11811
-  #   protocol: TCP
-  #   name: http
-  #   targetPort: http
 
-  # Extra env variables to pass to the cortex container
+  # -- Extra env variables to pass to the cortex container
   env: []
 
-  ## Sidecars that collect the configmaps with specified label and stores the included files them into the respective folders
+  # -- Sidecars that collect the configmaps with specified label and stores the included files them into the respective folders
   sidecar:
     image:
       repository: quay.io/kiwigrid/k8s-sidecar
@@ -376,14 +293,8 @@ alertmanager:
       sha: ""
     imagePullPolicy: IfNotPresent
     resources: {}
-    #   limits:
-    #     cpu: 100m
-    #     memory: 100Mi
-    #   requests:
-    #     cpu: 50m
-    #     memory: 50Mi
-    # skipTlsVerify Set to true to skip tls verification for kube api calls
-    # skipTlsVerify: true
+    # -- skipTlsVerify Set to true to skip tls verification for kube api calls
+    skipTlsVerify: false
     enableUniqueFilenames: false
     enabled: false
     label: cortex_alertmanager
@@ -393,8 +304,9 @@ alertmanager:
     defaultFolderName: null
     searchNamespace: null
     folderAnnotation: null
-    securityContext:
-      runAsUser: 0
+    containerSecurityContext:
+      enabled: true
+      readOnlyRootFilesystem: true
 
 distributor:
   replicas: 2
@@ -408,26 +320,18 @@ distributor:
     additionalLabels: {}
     relabelings: []
     metricRelabelings: []
-    # Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint
+    # -- Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint
     extraEndpointSpec: {}
 
   resources: {}
-  #  limits:
-  #    cpu: 1
-  #    memory: 1Gi
-  #  requests:
-  #    cpu: 100m
-  #    memory: 512Mi
 
-  ## Additional Cortex container arguments, e.g. log level (debug, info, warn, error)
-  extraArgs:
-    {}
-    # log.level: debug
+  # -- Additional Cortex container arguments, e.g. log.level (debug, info, warn, error)
+  extraArgs: {}
 
-  ## Pod Labels
+  # -- Pod Labels
   podLabels: {}
 
-  ## Pod Annotations
+  # -- Pod Annotations
   podAnnotations:
     prometheus.io/scrape: 'true'
     prometheus.io/port: 'http-metrics'
@@ -458,7 +362,7 @@ distributor:
     # -- Ref: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#support-for-configurable-scaling-behavior
     behavior: {}
 
-  persistence:
+  persistentVolume:
     subPath:
 
   startupProbe:
@@ -490,8 +394,10 @@ distributor:
   terminationGracePeriodSeconds: 60
 
   tolerations: []
+
   podDisruptionBudget:
     maxUnavailable: 1
+
   initContainers: []
   extraContainers: []
   extraVolumes: []
@@ -504,11 +410,10 @@ ingester:
   replicas: 3
 
   statefulSet:
-    ## If true, use a statefulset instead of a deployment for pod management.
-    ## This is useful when using WAL
-    ##
+    # -- If true, use a statefulset instead of a deployment for pod management.
+    # This is useful when using WAL
     enabled: false
-    # -- see https://cortexmetrics.io/docs/guides/ingesters-scaling-up-and-down/#scaling-down and https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#pod-management-policies for scaledown details
+    # -- ref: https://cortexmetrics.io/docs/guides/ingesters-scaling-up-and-down/#scaling-down and https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#pod-management-policies for scaledown details
     podManagementPolicy: OrderedReady
 
   service:
@@ -520,26 +425,18 @@ ingester:
     additionalLabels: {}
     relabelings: []
     metricRelabelings: []
-    # Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint
+    # -- Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint
     extraEndpointSpec: {}
 
   resources: {}
-  #  limits:
-  #    cpu: 1
-  #    memory: 1Gi
-  #  requests:
-  #    cpu: 100m
-  #    memory: 512Mi
 
-  ## Additional Cortex container arguments, e.g. log level (debug, info, warn, error)
-  extraArgs:
-    {}
-    #  log.level: debug
+  # -- Additional Cortex container arguments, e.g. log.level (debug, info, warn, error)
+  extraArgs: {}
 
-  ## Pod Labels
+  # -- Pod Labels
   podLabels: {}
 
-  ## Pod Annotations
+  # -- Pod Annotations
   podAnnotations:
     prometheus.io/scrape: 'true'
     prometheus.io/port: 'http-metrics'
@@ -594,48 +491,36 @@ ingester:
         path: "/ingester/shutdown"
         port: http-metrics
 
-  ## DEPRECATED: use persistentVolume.subPath instead
-  persistence:
-    subPath:
-
   persistentVolume:
-    ## If true and ingester.statefulSet.enabled is true,
-    ## Ingester will create/use a Persistent Volume Claim
-    ## If false, use emptyDir
-    ##
+    # -- If true and ingester.statefulSet.enabled is true,
+    # Ingester will create/use a Persistent Volume Claim
+    # If false, use emptyDir
     enabled: true
 
-    ## Ingester data Persistent Volume Claim annotations
-    ##
+    # -- Ingester data Persistent Volume Claim annotations
     annotations: {}
 
-    ## Ingester data Persistent Volume access modes
-    ## Must match those of existing PV or dynamic provisioner
-    ## Ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
-    ##
+    # -- Ingester data Persistent Volume access modes
+    # Must match those of existing PV or dynamic provisioner
+    # Ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
     accessModes:
       - ReadWriteOnce
 
-    ## Ingester data Persistent Volume size
-    ##
+    # -- Ingester data Persistent Volume size
     size: 2Gi
 
-    ## Subdirectory of Ingester data Persistent Volume to mount
-    ## Useful if the volume's root directory is not empty
-    ##
+    # -- Subdirectory of Ingester data Persistent Volume to mount
+    # Useful if the volume's root directory is not empty
     subPath: ''
 
-    ## Ingester data Persistent Volume Storage Class
-    ## If defined, storageClassName: <storageClass>
-    ## If set to "-", storageClassName: "", which disables dynamic provisioning
-    ## If undefined (the default) or set to null, no storageClassName spec is
-    ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
-    ##   GKE, AWS & OpenStack)
-    ##
-    # storageClass: "-"
+    # -- Ingester data Persistent Volume Storage Class
+    # If defined, storageClassName: <storageClass>
+    # If set to "-", storageClassName: "", which disables dynamic provisioning
+    # If undefined (the default) or set to null, no storageClassName spec is
+    # set, choosing the default provisioner.
+    storageClass: null
 
   startupProbe:
-    # WAL Replay can take a long time. Increasing failureThreshold for ~30 min of time until killed
     failureThreshold: 60
     initialDelaySeconds: 120
     periodSeconds: 30
@@ -670,8 +555,10 @@ ingester:
   terminationGracePeriodSeconds: 240
 
   tolerations: []
+
   podDisruptionBudget:
     maxUnavailable: 1
+
   initContainers: []
   extraContainers: []
   extraVolumes: []
@@ -692,26 +579,18 @@ ruler:
     additionalLabels: {}
     relabelings: []
     metricRelabelings: []
-    # Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint
+    # -- Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint
     extraEndpointSpec: {}
 
   resources: {}
-  #  limits:
-  #    cpu: 200m
-  #    memory: 256Mi
-  #  requests:
-  #    cpu: 10m
-  #    memory: 32Mi
 
-  ## Additional Cortex container arguments, e.g. log level (debug, info, warn, error)
-  extraArgs:
-    {}
-    # log.level: debug
+  # -- Additional Cortex container arguments, e.g. log.level (debug, info, warn, error)
+  extraArgs: {}
 
-  ## Pod Labels
+  # -- Pod Labels
   podLabels: {}
 
-  ## Pod Annotations
+  # -- Pod Annotations
   podAnnotations:
     prometheus.io/scrape: 'true'
     prometheus.io/port: 'http-metrics'
@@ -719,7 +598,7 @@ ruler:
   nodeSelector: {}
   affinity: {}
   annotations: {}
-  persistence:
+  persistentVolume:
     subPath:
 
   startupProbe:
@@ -751,34 +630,20 @@ ruler:
   terminationGracePeriodSeconds: 180
 
   tolerations: []
+
   podDisruptionBudget:
     maxUnavailable: 1
+
   initContainers: []
   extraContainers: []
   extraVolumes: []
   extraVolumeMounts: []
   extraPorts: []
   env: []
-  # allow configuring rules via configmap in case you don't want to use the configs db
+  # -- allow configuring rules via configmap. ref: https://cortexproject.github.io/cortex-helm-chart/guides/configure_rules_via_configmap.html
   directories: {}
-    # tenant_foo:
-    #   rules1.txt: |
-    #     groups:
-    #       - name: should_fire
-    #         rules:
-    #           - alert: HighPercentageError
-    #             expr: |
-    #               sum(rate({app="foo", env="production"} |= "error" [5m])) by (job)
-    #                 /
-    #               sum(rate({app="foo", env="production"}[5m])) by (job)
-    #                 > 0.05
-    #             for: 10m
-    #             labels:
-    #               severity: warning
-    #             annotations:
-    #               summary: High error rate
 
-  ## Sidecars that collect the configmaps with specified label and stores the included files them into the respective folders
+  # -- Sidecars that collect the configmaps with specified label and stores the included files them into the respective folders
   sidecar:
     image:
       repository: quay.io/kiwigrid/k8s-sidecar
@@ -796,27 +661,25 @@ ruler:
     # skipTlsVerify: true
     enableUniqueFilenames: false
     enabled: false
-    # label that the configmaps with rules are marked with
+    # -- label that the configmaps with rules are marked with
     label: cortex_rules
     watchMethod: null
-    # value of label that the configmaps with rules are set to
+    # -- value of label that the configmaps with rules are set to
     labelValue: null
-    # folder in the pod that should hold the collected rules (unless `defaultFolderName` is set)
+    # -- folder in the pod that should hold the collected rules (unless `defaultFolderName` is set)
     folder: /tmp/rules
-    # The default folder name, it will create a subfolder under the `folder` and put rules in there instead
+    # -- The default folder name, it will create a subfolder under the `folder` and put rules in there instead
     defaultFolderName: null
-    # If specified, the sidecar will search for rules config-maps inside this namespace.
+    # -- If specified, the sidecar will search for rules config-maps inside this namespace.
     # Otherwise the namespace in which the sidecar is running will be used.
     # It's also possible to specify ALL to search in all namespaces
     searchNamespace: null
-    # If specified, the sidecar will look for annotation with this name to create folder and put graph here.
+    # -- If specified, the sidecar will look for annotation with this name to create folder and put graph here.
     # You can use this parameter together with `provider.foldersFromFilesStructure`to annotate configmaps and create folder structure.
     folderAnnotation: null
-    securityContext:
-      runAsUser: 0
-    # running the sidecar will also run as root
-    # provider configuration that lets cortex manage the rules
-
+    containerSecurityContext:
+      enabled: true
+      readOnlyRootFilesystem: true
 
 querier:
   replicas: 2
@@ -830,26 +693,18 @@ querier:
     additionalLabels: {}
     relabelings: []
     metricRelabelings: []
-    # Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint
+    # -- Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint
     extraEndpointSpec: {}
 
   resources: {}
-  #  limits:
-  #    cpu: 1
-  #    memory: 1Gi
-  #  requests:
-  #    cpu: 50m
-  #    memory: 128Mi
 
-  ## Additional Cortex container arguments, e.g. log level (debug, info, warn, error)
-  extraArgs:
-    {}
-    # log.level: debug
+  # -- Additional Cortex container arguments, e.g. log.level (debug, info, warn, error)
+  extraArgs: {}
 
-  ## Pod Labels
+  # -- Pod Labels
   podLabels: {}
 
-  ## Pod Annotations
+  # -- Pod Annotations
   podAnnotations:
     prometheus.io/scrape: 'true'
     prometheus.io/port: 'http-metrics'
@@ -880,7 +735,7 @@ querier:
     # -- Ref: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#support-for-configurable-scaling-behavior
     behavior: {}
 
-  persistence:
+  persistentVolume:
     subPath:
 
   startupProbe:
@@ -912,8 +767,10 @@ querier:
   terminationGracePeriodSeconds: 180
 
   tolerations: []
+
   podDisruptionBudget:
     maxUnavailable: 1
+
   initContainers: []
   extraContainers: []
   extraVolumes: []
@@ -934,26 +791,18 @@ query_frontend:
     additionalLabels: {}
     relabelings: []
     metricRelabelings: []
-    # Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint
+    # -- Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint
     extraEndpointSpec: {}
 
   resources: {}
-  #  limits:
-  #    cpu: 1
-  #    memory: 256Mi
-  #  requests:
-  #    cpu: 10m
-  #    memory: 32Mi
 
-  ## Additional Cortex container arguments, e.g. log level (debug, info, warn, error)
-  extraArgs:
-    {}
-    # log.level: debug
+  # -- Additional Cortex container arguments, e.g. log.level (debug, info, warn, error)
+  extraArgs: {}
 
-  ## Pod Labels
+  # -- Pod Labels
   podLabels: {}
 
-  ## Pod Annotations
+  # -- Pod Annotations
   podAnnotations:
     prometheus.io/scrape: 'true'
     prometheus.io/port: 'http-metrics'
@@ -973,7 +822,7 @@ query_frontend:
             topologyKey: 'kubernetes.io/hostname'
 
   annotations: {}
-  persistence:
+  persistentVolume:
     subPath:
 
   startupProbe:
@@ -1004,8 +853,10 @@ query_frontend:
   terminationGracePeriodSeconds: 180
 
   tolerations: []
+
   podDisruptionBudget:
     maxUnavailable: 1
+
   initContainers: []
   extraContainers: []
   extraVolumes: []
@@ -1026,26 +877,18 @@ table_manager:
     additionalLabels: {}
     relabelings: []
     metricRelabelings: []
-    # Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint
+    # -- Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint
     extraEndpointSpec: {}
 
   resources: {}
-  #  limits:
-  #    cpu: 1
-  #    memory: 1Gi
-  #  requests:
-  #    cpu: 10m
-  #    memory: 32Mi
 
-  ## Additional Cortex container arguments, e.g. log level (debug, info, warn, error)
-  extraArgs:
-    {}
-    # log.level: debug
+  # -- Additional Cortex container arguments, e.g. log.level (debug, info, warn, error)
+  extraArgs: {}
 
-  ## Pod Labels
+  # -- Pod Labels
   podLabels: {}
 
-  ## Pod Annotations
+  # -- Pod Annotations
   podAnnotations:
     prometheus.io/scrape: 'true'
     prometheus.io/port: 'http-metrics'
@@ -1053,7 +896,7 @@ table_manager:
   nodeSelector: {}
   affinity: {}
   annotations: {}
-  persistence:
+  persistentVolume:
     subPath:
 
   startupProbe:
@@ -1085,8 +928,10 @@ table_manager:
   terminationGracePeriodSeconds: 180
 
   tolerations: []
+
   podDisruptionBudget:
     maxUnavailable: 1
+
   initContainers: []
   extraContainers: []
   extraVolumes: []
@@ -1107,26 +952,18 @@ configs:
     additionalLabels: {}
     relabelings: []
     metricRelabelings: []
-    # Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint
+    # -- Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint
     extraEndpointSpec: {}
 
   resources: {}
-  #  limits:
-  #    cpu: 1
-  #    memory: 1Gi
-  #  requests:
-  #    cpu: 10m
-  #    memory: 32Mi
 
-  ## Additional Cortex container arguments, e.g. log level (debug, info, warn, error)
-  extraArgs:
-    {}
-    # log.level: debug
+  # -- Additional Cortex container arguments, e.g. log.level (debug, info, warn, error)
+  extraArgs: {}
 
-  ## Pod Labels
+  # -- Pod Labels
   podLabels: {}
 
-  ## Pod Annotations
+  # -- Pod Annotations
   podAnnotations:
     prometheus.io/scrape: 'true'
     prometheus.io/port: 'http-metrics'
@@ -1134,7 +971,7 @@ configs:
   nodeSelector: {}
   affinity: {}
   annotations: {}
-  persistence:
+  persistentVolume:
     subPath:
 
   startupProbe:
@@ -1166,8 +1003,10 @@ configs:
   terminationGracePeriodSeconds: 180
 
   tolerations: []
+
   podDisruptionBudget:
     maxUnavailable: 1
+
   initContainers: []
   extraContainers: []
   extraVolumes: []
@@ -1181,7 +1020,7 @@ nginx:
   http_listen_port: 80
   config:
     dnsResolver: kube-dns.kube-system.svc.cluster.local
-    ## ref: http://nginx.org/en/docs/http/ngx_http_core_module.html#client_max_body_size
+    # -- ref: http://nginx.org/en/docs/http/ngx_http_core_module.html#client_max_body_size
     client_max_body_size: 1M
     # -- arbitrary snippet to inject in the http { } section of the nginx config
     httpSnippet: ""
@@ -1225,31 +1064,15 @@ nginx:
     annotations: {}
     labels: {}
 
-  serviceMonitor:
-    enabled: false
-    additionalLabels: {}
-    relabelings: []
-    metricRelabelings: []
-    # Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint
-    extraEndpointSpec: {}
-
   resources: {}
-  #  limits:
-  #    cpu: 100m
-  #    memory: 128Mi
-  #  requests:
-  #    cpu: 10m
-  #    memory: 16Mi
 
-  ## Additional Cortex container arguments, e.g. log level (debug, info, warn, error)
-  extraArgs:
-    {}
-    # log.level: debug
+  # -- Additional Cortex container arguments, e.g. log.level (debug, info, warn, error)
+  extraArgs: {}
 
-  ## Pod Labels
+  # -- Pod Labels
   podLabels: {}
 
-  ## Pod Annotations
+  # -- Pod Annotations
   podAnnotations:
     prometheus.io/scrape: ''
     prometheus.io/port: 'http-metrics'
@@ -1257,7 +1080,7 @@ nginx:
   nodeSelector: {}
   affinity: {}
   annotations: {}
-  persistence:
+  persistentVolume:
     subPath:
 
   startupProbe:
@@ -1289,8 +1112,10 @@ nginx:
   terminationGracePeriodSeconds: 10
 
   tolerations: []
+
   podDisruptionBudget:
     maxUnavailable: 1
+
   initContainers: []
   extraContainers: []
   extraVolumes: []
@@ -1320,26 +1145,18 @@ store_gateway:
     additionalLabels: {}
     relabelings: []
     metricRelabelings: []
-    # Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint
+    # -- Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint
     extraEndpointSpec: {}
 
   resources: {}
-  #  limits:
-  #    cpu: 1
-  #    memory: 1Gi
-  #  requests:
-  #    cpu: 100m
-  #    memory: 512Mi
 
-  ## Additional Cortex container arguments, e.g. log level (debug, info, warn, error)
-  extraArgs:
-    {}
-  # log.level: debug
+  # -- Additional Cortex container arguments, e.g. log.level (debug, info, warn, error)
+  extraArgs: {}
 
-  ## Pod Labels
+  # -- Pod Labels
   podLabels: {}
 
-  ## Pod Annotations
+  # -- Pod Annotations
   podAnnotations:
     prometheus.io/scrape: 'true'
     prometheus.io/port: 'http-metrics'
@@ -1361,42 +1178,34 @@ store_gateway:
   annotations: {}
 
   persistentVolume:
-    ## If true Store-gateway will create/use a Persistent Volume Claim
-    ## If false, use emptyDir
-    ##
+    # -- If true Store-gateway will create/use a Persistent Volume Claim
+    # If false, use emptyDir
     enabled: true
 
-    ## Store-gateway data Persistent Volume Claim annotations
-    ##
+    # -- Store-gateway data Persistent Volume Claim annotations
     annotations: {}
 
-    ## Store-gateway data Persistent Volume access modes
-    ## Must match those of existing PV or dynamic provisioner
-    ## Ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
-    ##
+    # -- Store-gateway data Persistent Volume access modes
+    # Must match those of existing PV or dynamic provisioner
+    # Ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
     accessModes:
       - ReadWriteOnce
 
-    ## Store-gateway data Persistent Volume size
-    ##
+    # -- Store-gateway data Persistent Volume size
     size: 2Gi
 
-    ## Subdirectory of Store-gateway data Persistent Volume to mount
-    ## Useful if the volume's root directory is not empty
-    ##
+    # -- Subdirectory of Store-gateway data Persistent Volume to mount
+    # Useful if the volume's root directory is not empty
     subPath: ''
 
-    ## Store-gateway data Persistent Volume Storage Class
-    ## If defined, storageClassName: <storageClass>
-    ## If set to "-", storageClassName: "", which disables dynamic provisioning
-    ## If undefined (the default) or set to null, no storageClassName spec is
-    ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
-    ##   GKE, AWS & OpenStack)
-    ##
-    # storageClass: "-"
+    # -- Store-gateway data Persistent Volume Storage Class
+    # If defined, storageClassName: <storageClass>
+    # If set to "-", storageClassName: "", which disables dynamic provisioning
+    # If undefined (the default) or set to null, no storageClassName spec is
+    # set, choosing the default provisioner.
+    storageClass: null
 
   startupProbe:
-    # Increasing failureThreshold for ~30 min of time until killed
     failureThreshold: 60
     initialDelaySeconds: 120
     periodSeconds: 30
@@ -1426,8 +1235,10 @@ store_gateway:
   terminationGracePeriodSeconds: 240
 
   tolerations: []
+
   podDisruptionBudget:
     maxUnavailable: 1
+
   initContainers: []
   extraContainers: []
   extraVolumes: []
@@ -1448,26 +1259,18 @@ compactor:
     additionalLabels: {}
     relabelings: []
     metricRelabelings: []
-    # Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint
+    # -- Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint
     extraEndpointSpec: {}
 
   resources: {}
-  #  limits:
-  #    cpu: 1
-  #    memory: 1Gi
-  #  requests:
-  #    cpu: 100m
-  #    memory: 512Mi
 
-  ## Additional Cortex container arguments, e.g. log level (debug, info, warn, error)
-  extraArgs:
-    {}
-    #  log.level: debug
+  # -- Additional Cortex container arguments, e.g. log.level (debug, info, warn, error)
+  extraArgs: {}
 
-  ## Pod Labels
+  # -- Pod Labels
   podLabels: {}
 
-  ## Pod Annotations
+  # -- Pod Annotations
   podAnnotations:
     prometheus.io/scrape: 'true'
     prometheus.io/port: 'http-metrics'
@@ -1489,42 +1292,34 @@ compactor:
   annotations: {}
 
   persistentVolume:
-    ## If true compactor will create/use a Persistent Volume Claim
-    ## If false, use emptyDir
-    ##
+    # -- If true compactor will create/use a Persistent Volume Claim
+    # If false, use emptyDir
     enabled: true
 
-    ## compactor data Persistent Volume Claim annotations
-    ##
+    # -- compactor data Persistent Volume Claim annotations
     annotations: {}
 
-    ## compactor data Persistent Volume access modes
-    ## Must match those of existing PV or dynamic provisioner
-    ## Ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
-    ##
+    # -- compactor data Persistent Volume access modes
+    # Must match those of existing PV or dynamic provisioner
+    # Ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
     accessModes:
       - ReadWriteOnce
 
-    ## compactor data Persistent Volume size
-    ##
+    # compactor data Persistent Volume size
     size: 2Gi
 
-    ## Subdirectory of compactor data Persistent Volume to mount
-    ## Useful if the volume's root directory is not empty
-    ##
+    # -- Subdirectory of compactor data Persistent Volume to mount
+    # Useful if the volume's root directory is not empty
     subPath: ''
 
-    ## compactor data Persistent Volume Storage Class
-    ## If defined, storageClassName: <storageClass>
-    ## If set to "-", storageClassName: "", which disables dynamic provisioning
-    ## If undefined (the default) or set to null, no storageClassName spec is
-    ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
-    ##   GKE, AWS & OpenStack)
-    ##
-    # storageClass: "-"
+    # -- compactor data Persistent Volume Storage Class
+    # If defined, storageClassName: <storageClass>
+    # If set to "-", storageClassName: "", which disables dynamic provisioning
+    # If undefined (the default) or set to null, no storageClassName spec is
+    # set, choosing the default provisioner.
+    storageClass: null
 
   startupProbe:
-    # Increasing failureThreshold for ~30 min of time until killed
     failureThreshold: 60
     initialDelaySeconds: 120
     periodSeconds: 30
@@ -1553,8 +1348,10 @@ compactor:
   terminationGracePeriodSeconds: 240
 
   tolerations: []
+
   podDisruptionBudget:
     maxUnavailable: 1
+
   initContainers: []
   extraContainers: []
   extraVolumes: []
@@ -1562,196 +1359,160 @@ compactor:
   extraPorts: []
   env: []
 
-# chunk caching
+# -- chunk caching for legacy chunk storage engine
 memcached:
   enabled: false
   architecture: "high-availability"
   replicaCount: 2
-  pdbMinAvailable: 1
-  memcached:
-    maxItemMemory: 3840
-    extraArgs:
-      - -I 32m
-    threads: 32
   resources: {}
-  #  requests:
-  #    memory: 1Gi
-  #    cpu: 10m
-  #  limits:
-  #    memory: 4Gi
-  #    cpu: 1
+  extraEnv:
+    # -- MEMCACHED_CACHE_SIZE is the amount of memory allocated to memcached for object storage
+    - name: MEMCACHED_CACHE_SIZE
+      value: "1024"
+    # -- MEMCACHED_MAX_CONNECTIONS is the maximum number of simultaneous connections to the memcached service
+    - name: MEMCACHED_MAX_CONNECTIONS
+      value: "1024"
+    # -- MEMCACHED_THREADS is the number of threads to use when processing incoming requests.
+    # By default, memcached is configured to use 4 concurrent threads. The threading improves the performance of
+    # storing and retrieving data in the cache, using a locking system to prevent different threads overwriting or updating the same values.
+    - name: MEMCACHED_THREADS
+      value: "4"
   metrics:
     enabled: true
-  # tolerations: {}
-  # - key: "dedicated"
-  #   operator: "Equal"
-  #   value: "cortex-memcached"
-  #   effect: "NoSchedule"
-  # affinity: {}
-  #   nodeAffinity:
-  #     requiredDuringSchedulingIgnoredDuringExecution:
-  #         nodeSelectorTerms:
-  #         - matchExpressions:
-  #           - key: dedicated
-  #             operator: In
-  #             values:
-  #             - cortex-memcached
+    serviceMonitor:
+      enabled: false
 
-# index read caching
+# -- index read caching for legacy chunk storage engine
 memcached-index-read:
   enabled: false
   architecture: "high-availability"
   replicaCount: 2
-  # pdbMinAvailable: 1
-  # image: memcached:1.5.7-alpine
-  memcached:
-    maxItemMemory: 3840
-    extraArgs:
-      - -I 32m
-    threads: 32
   resources: {}
-  #  requests:
-  #    memory: 1Gi
-  #    cpu: 10m
-  #  limits:
-  #    memory: 4Gi
-  #    cpu: 1
+  extraEnv:
+    # -- MEMCACHED_CACHE_SIZE is the amount of memory allocated to memcached for object storage
+    - name: MEMCACHED_CACHE_SIZE
+      value: "1024"
+    # -- MEMCACHED_MAX_CONNECTIONS is the maximum number of simultaneous connections to the memcached service
+    - name: MEMCACHED_MAX_CONNECTIONS
+      value: "1024"
+    # -- MEMCACHED_THREADS is the number of threads to use when processing incoming requests.
+    # By default, memcached is configured to use 4 concurrent threads. The threading improves the performance of
+    # storing and retrieving data in the cache, using a locking system to prevent different threads overwriting or updating the same values.
+    - name: MEMCACHED_THREADS
+      value: "4"
   metrics:
     enabled: true
-  # tolerations: []
-  # - key: "dedicated"
-  #   operator: "Equal"
-  #   value: "cortex-memcached"
-  #   effect: "NoSchedule"
-  # affinity: {}
-  #   nodeAffinity:
-  #     requiredDuringSchedulingIgnoredDuringExecution:
-  #         nodeSelectorTerms:
-  #         - matchExpressions:
-  #           - key: dedicated
-  #             operator: In
-  #             values:
-  #             - cortex-memcached
+    serviceMonitor:
+      enabled: false
 
-# index write caching
+# -- index write caching for legacy chunk storage engine
 memcached-index-write:
   enabled: false
   architecture: "high-availability"
   replicaCount: 2
-  # dpdbMinAvailable: 1
-  # image: memcached:1.5.7-alpine
-  memcached:
-    maxItemMemory: 3840
-    extraArgs:
-      - -I 32m
-    threads: 32
   resources: {}
-  #  requests:
-  #    memory: 1Gi
-  #    cpu: 10m
-  #  limits:
-  #    memory: 4Gi
-  #    cpu: 1
+  extraEnv:
+    # -- MEMCACHED_CACHE_SIZE is the amount of memory allocated to memcached for object storage
+    - name: MEMCACHED_CACHE_SIZE
+      value: "1024"
+    # -- MEMCACHED_MAX_CONNECTIONS is the maximum number of simultaneous connections to the memcached service
+    - name: MEMCACHED_MAX_CONNECTIONS
+      value: "1024"
+    # -- MEMCACHED_THREADS is the number of threads to use when processing incoming requests.
+    # By default, memcached is configured to use 4 concurrent threads. The threading improves the performance of
+    # storing and retrieving data in the cache, using a locking system to prevent different threads overwriting or updating the same values.
+    - name: MEMCACHED_THREADS
+      value: "4"
   metrics:
     enabled: true
-  # tolerations: []
-  # - key: "dedicated"
-  #   operator: "Equal"
-  #   value: "cortex-memcached"
-  #   effect: "NoSchedule"
-  # affinity: {}
-  #   nodeAffinity:
-  #     requiredDuringSchedulingIgnoredDuringExecution:
-  #         nodeSelectorTerms:
-  #         - matchExpressions:
-  #           - key: dedicated
-  #             operator: In
-  #             values:
-  #             - cortex-memcached
+    serviceMonitor:
+      enabled: false
 
 memcached-frontend:
   enabled: false
   architecture: "high-availability"
   replicaCount: 2
-  # dpdbMinAvailable: 1
-  # image: memcached:1.5.7-alpine
-  memcached:
-    maxItemMemory: 3840
-    extraArgs:
-      - -I 32m
-    threads: 32
   resources: {}
-  #  requests:
-  #    memory: 1Gi
-  #    cpu: 10m
-  #  limits:
-  #    memory: 4Gi
-  #    cpu: 1
+  extraEnv:
+    # -- MEMCACHED_CACHE_SIZE is the amount of memory allocated to memcached for object storage
+    - name: MEMCACHED_CACHE_SIZE
+      value: "1024"
+    # -- MEMCACHED_MAX_CONNECTIONS is the maximum number of simultaneous connections to the memcached service
+    - name: MEMCACHED_MAX_CONNECTIONS
+      value: "1024"
+    # -- MEMCACHED_THREADS is the number of threads to use when processing incoming requests.
+    # By default, memcached is configured to use 4 concurrent threads. The threading improves the performance of
+    # storing and retrieving data in the cache, using a locking system to prevent different threads overwriting or updating the same values.
+    - name: MEMCACHED_THREADS
+      value: "4"
   metrics:
     enabled: true
+    serviceMonitor:
+      enabled: false
 
 memcached-blocks-index:
-  # enabled/disabled via the tags.blocks-storage-memcached boolean
   architecture: "high-availability"
   replicaCount: 2
-  # dpdbMinAvailable: 1
-  # image: memcached:1.5.7-alpine
-  memcached:
-    maxItemMemory: 3840
-    extraArgs:
-      - -I 32m
-    threads: 32
   resources: {}
-  #  requests:
-  #    memory: 1Gi
-  #    cpu: 10m
-  #  limits:
-  #    memory: 4Gi
-  #    cpu: 1
+  extraEnv:
+    # -- MEMCACHED_CACHE_SIZE is the amount of memory allocated to memcached for object storage
+    - name: MEMCACHED_CACHE_SIZE
+      value: "1024"
+    # -- MEMCACHED_MAX_CONNECTIONS is the maximum number of simultaneous connections to the memcached service
+    - name: MEMCACHED_MAX_CONNECTIONS
+      value: "1024"
+    # -- MEMCACHED_THREADS is the number of threads to use when processing incoming requests.
+    # By default, memcached is configured to use 4 concurrent threads. The threading improves the performance of
+    # storing and retrieving data in the cache, using a locking system to prevent different threads overwriting or updating the same values.
+    - name: MEMCACHED_THREADS
+      value: "4"
   metrics:
     enabled: true
+    serviceMonitor:
+      enabled: false
 
 memcached-blocks:
-  # enabled/disabled via the tags.blocks-storage-memcached boolean
   architecture: "high-availability"
   replicaCount: 2
-  # dpdbMinAvailable: 1
-  # image: memcached:1.5.7-alpine
-  memcached:
-    maxItemMemory: 3840
-    extraArgs:
-      - -I 32m
-    threads: 32
   resources: {}
-  #  requests:
-  #    memory: 1Gi
-  #    cpu: 10m
-  #  limits:
-  #    memory: 4Gi
-  #    cpu: 1
+  extraEnv:
+    # -- MEMCACHED_CACHE_SIZE is the amount of memory allocated to memcached for object storage
+    - name: MEMCACHED_CACHE_SIZE
+      value: "1024"
+    # -- MEMCACHED_MAX_CONNECTIONS is the maximum number of simultaneous connections to the memcached service
+    - name: MEMCACHED_MAX_CONNECTIONS
+      value: "1024"
+    # -- MEMCACHED_THREADS is the number of threads to use when processing incoming requests.
+    # By default, memcached is configured to use 4 concurrent threads. The threading improves the performance of
+    # storing and retrieving data in the cache, using a locking system to prevent different threads overwriting or updating the same values.
+    - name: MEMCACHED_THREADS
+      value: "4"
   metrics:
     enabled: true
+    serviceMonitor:
+      enabled: false
 
 memcached-blocks-metadata:
   # enabled/disabled via the tags.blocks-storage-memcached boolean
   architecture: "high-availability"
   replicaCount: 2
-  # dpdbMinAvailable: 1
-  # image: memcached:1.5.7-alpine
-  memcached:
-    maxItemMemory: 3840
-    extraArgs:
-      - -I 32m
-    threads: 32
   resources: {}
-  #  requests:
-  #    memory: 1Gi
-  #    cpu: 10m
-  #  limits:
-  #    memory: 4Gi
-  #    cpu: 1
+  extraEnv:
+    # -- MEMCACHED_CACHE_SIZE is the amount of memory allocated to memcached for object storage
+    - name: MEMCACHED_CACHE_SIZE
+      value: "1024"
+    # -- MEMCACHED_MAX_CONNECTIONS is the maximum number of simultaneous connections to the memcached service
+    - name: MEMCACHED_MAX_CONNECTIONS
+      value: "1024"
+    # -- MEMCACHED_THREADS is the number of threads to use when processing incoming requests.
+    # By default, memcached is configured to use 4 concurrent threads. The threading improves the performance of
+    # storing and retrieving data in the cache, using a locking system to prevent different threads overwriting or updating the same values.
+    - name: MEMCACHED_THREADS
+      value: "4"
   metrics:
     enabled: true
+    serviceMonitor:
+      enabled: false
 
 configsdb_postgresql:
   enabled: false

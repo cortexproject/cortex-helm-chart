@@ -34,7 +34,7 @@ spec:
         {{- end }}
         {{- end }}
         accessModes:
-          {{ toYaml .Values.store_gateway.persistentVolume.accessModes | nindent 10 }}
+          {{- toYaml .Values.store_gateway.persistentVolume.accessModes | nindent 10 }}
         resources:
           requests:
             storage: "{{ .Values.store_gateway.persistentVolume.size }}"
@@ -102,7 +102,7 @@ spec:
         {{ toYaml .Values.store_gateway.extraContainers | nindent 8 }}
         {{- end }}
         - name: store-gateway
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          image: "{{ .Values.image.repository }}:{{ default .Chart.AppVersion .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args:
             - "-target=store-gateway"
@@ -145,8 +145,8 @@ spec:
           {{- if .Values.store_gateway.containerSecurityContext.enabled }}
           securityContext: {{- omit .Values.store_gateway.containerSecurityContext "enabled" | toYaml | nindent 12 }}
           {{- end }}
+          {{- if .Values.store_gateway.env }}
           env:
-            {{- if .Values.store_gateway.env }}
-              {{- toYaml .Values.store_gateway.env | nindent 12 }}
-            {{- end }}
+            {{- toYaml .Values.store_gateway.env | nindent 12 }}
+          {{- end }}
 {{- end -}}

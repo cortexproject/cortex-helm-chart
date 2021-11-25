@@ -41,6 +41,7 @@ config:
 In AlertManager, the data_dir and local storage directory should be the same.
 In the Ruler, there needs to be two separate volumes. One is read-only and serves as the location shared with the sidecar that contains all of the rules that were derived from configmaps (/tmp/rules). The other is read-write and used by the Ruler itself for its own management of rules, etc (/data).
 Example ConfigMap containing a rule:
+{% raw %}
 ```yaml
 kind: ConfigMap
 metadata:
@@ -67,6 +68,7 @@ data:
               title: Node {{ $labels.instance }} has high CPU usage
 
 ```
+{% endraw %}
 Example ConfigMap containing an alertmanager-config:
 ```yaml
 apiVersion: v1
