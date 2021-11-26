@@ -622,6 +622,50 @@ Kubernetes: `^1.19.0-0`
 | query_frontend.&ZeroWidthSpace;strategy.&ZeroWidthSpace;type | string | `"RollingUpdate"` |  |
 | query_frontend.&ZeroWidthSpace;terminationGracePeriodSeconds | int | `180` |  |
 | query_frontend.&ZeroWidthSpace;tolerations | list | `[]` |  |
+| query_scheduler.&ZeroWidthSpace;affinity.&ZeroWidthSpace;podAntiAffinity.&ZeroWidthSpace;preferredDuringSchedulingIgnoredDuringExecution[0].&ZeroWidthSpace;podAffinityTerm.&ZeroWidthSpace;labelSelector.&ZeroWidthSpace;matchExpressions[0].&ZeroWidthSpace;key | string | `"app.kubernetes.io/component"` |  |
+| query_scheduler.&ZeroWidthSpace;affinity.&ZeroWidthSpace;podAntiAffinity.&ZeroWidthSpace;preferredDuringSchedulingIgnoredDuringExecution[0].&ZeroWidthSpace;podAffinityTerm.&ZeroWidthSpace;labelSelector.&ZeroWidthSpace;matchExpressions[0].&ZeroWidthSpace;operator | string | `"In"` |  |
+| query_scheduler.&ZeroWidthSpace;affinity.&ZeroWidthSpace;podAntiAffinity.&ZeroWidthSpace;preferredDuringSchedulingIgnoredDuringExecution[0].&ZeroWidthSpace;podAffinityTerm.&ZeroWidthSpace;labelSelector.&ZeroWidthSpace;matchExpressions[0].&ZeroWidthSpace;values[0] | string | `"query-scheduler"` |  |
+| query_scheduler.&ZeroWidthSpace;affinity.&ZeroWidthSpace;podAntiAffinity.&ZeroWidthSpace;preferredDuringSchedulingIgnoredDuringExecution[0].&ZeroWidthSpace;podAffinityTerm.&ZeroWidthSpace;topologyKey | string | `"kubernetes.io/hostname"` |  |
+| query_scheduler.&ZeroWidthSpace;affinity.&ZeroWidthSpace;podAntiAffinity.&ZeroWidthSpace;preferredDuringSchedulingIgnoredDuringExecution[0].&ZeroWidthSpace;weight | int | `100` |  |
+| query_scheduler.&ZeroWidthSpace;annotations | object | `{}` |  |
+| query_scheduler.&ZeroWidthSpace;containerSecurityContext.&ZeroWidthSpace;enabled | bool | `true` |  |
+| query_scheduler.&ZeroWidthSpace;containerSecurityContext.&ZeroWidthSpace;readOnlyRootFilesystem | bool | `true` |  |
+| query_scheduler.&ZeroWidthSpace;enabled | bool | `false` | If true, querier and query-frontend will connect to it (requires Cortex v1.6.0+) https://cortexmetrics.io/docs/operations/scaling-query-frontend/#query-scheduler |
+| query_scheduler.&ZeroWidthSpace;env | list | `[]` |  |
+| query_scheduler.&ZeroWidthSpace;extraArgs | object | `{}` | Additional Cortex container arguments, e.g. log.level (debug, info, warn, error) |
+| query_scheduler.&ZeroWidthSpace;extraContainers | list | `[]` |  |
+| query_scheduler.&ZeroWidthSpace;extraPorts | list | `[]` |  |
+| query_scheduler.&ZeroWidthSpace;extraVolumeMounts | list | `[]` |  |
+| query_scheduler.&ZeroWidthSpace;extraVolumes | list | `[]` |  |
+| query_scheduler.&ZeroWidthSpace;initContainers | list | `[]` |  |
+| query_scheduler.&ZeroWidthSpace;lifecycle | object | `{}` |  |
+| query_scheduler.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
+| query_scheduler.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
+| query_scheduler.&ZeroWidthSpace;nodeSelector | object | `{}` |  |
+| query_scheduler.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;subPath | string | `nil` |  |
+| query_scheduler.&ZeroWidthSpace;podAnnotations | object | `{"prometheus.io/port":"http-metrics","prometheus.io/scrape":"true"}` | Pod Annotations |
+| query_scheduler.&ZeroWidthSpace;podDisruptionBudget.&ZeroWidthSpace;maxUnavailable | int | `1` |  |
+| query_scheduler.&ZeroWidthSpace;podLabels | object | `{}` | Pod Labels |
+| query_scheduler.&ZeroWidthSpace;readinessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
+| query_scheduler.&ZeroWidthSpace;readinessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
+| query_scheduler.&ZeroWidthSpace;replicas | int | `2` |  |
+| query_scheduler.&ZeroWidthSpace;resources | object | `{}` |  |
+| query_scheduler.&ZeroWidthSpace;securityContext | object | `{}` |  |
+| query_scheduler.&ZeroWidthSpace;service.&ZeroWidthSpace;annotations | object | `{}` |  |
+| query_scheduler.&ZeroWidthSpace;service.&ZeroWidthSpace;labels | object | `{}` |  |
+| query_scheduler.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;additionalLabels | object | `{}` |  |
+| query_scheduler.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;enabled | bool | `false` |  |
+| query_scheduler.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;extraEndpointSpec | object | `{}` | Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint |
+| query_scheduler.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;metricRelabelings | list | `[]` |  |
+| query_scheduler.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;relabelings | list | `[]` |  |
+| query_scheduler.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;failureThreshold | int | `10` |  |
+| query_scheduler.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
+| query_scheduler.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
+| query_scheduler.&ZeroWidthSpace;strategy.&ZeroWidthSpace;rollingUpdate.&ZeroWidthSpace;maxSurge | int | `0` |  |
+| query_scheduler.&ZeroWidthSpace;strategy.&ZeroWidthSpace;rollingUpdate.&ZeroWidthSpace;maxUnavailable | int | `1` |  |
+| query_scheduler.&ZeroWidthSpace;strategy.&ZeroWidthSpace;type | string | `"RollingUpdate"` |  |
+| query_scheduler.&ZeroWidthSpace;terminationGracePeriodSeconds | int | `180` |  |
+| query_scheduler.&ZeroWidthSpace;tolerations | list | `[]` |  |
 | ruler.&ZeroWidthSpace;affinity | object | `{}` |  |
 | ruler.&ZeroWidthSpace;annotations | object | `{}` |  |
 | ruler.&ZeroWidthSpace;containerSecurityContext.&ZeroWidthSpace;enabled | bool | `true` |  |

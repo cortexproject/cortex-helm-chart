@@ -51,6 +51,9 @@ spec:
             - "-target=query-frontend"
             - "-config.file=/etc/cortex/cortex.yaml"
             {{- include "cortex.frontend-memcached" . | nindent 12 }}
+          {{- if .Values.query_scheduler.enabled }}
+            - "-frontend.scheduler-address={{ template "cortex.fullname" . }}-query-scheduler-headless.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.config.server.grpc_listen_port }}"
+          {{- end }}
           {{- range $key, $value := .Values.query_frontend.extraArgs }}
             - "-{{ $key }}={{ $value }}"
           {{- end }}
