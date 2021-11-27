@@ -1,8 +1,29 @@
-.git
-.github
-cortex
-docs
-tools
+# Git
+.git/
+.gitignore
+.github/
+
+# IDE
+.project
+.idea/
+*.tmproj
+
+# Common backup files
+*.swp
+*.bak
+*.tmp
+*~
+
+# Cortex ignore
+docs/
+tools/
 ct.yaml
-ci
+ci/
 README.md.gotmpl
+.prettierignore
+CHANGELOG.md
+MAINTAINERS.md
+LICENSE
+Makefile
+renovate.json
+

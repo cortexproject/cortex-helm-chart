@@ -96,7 +96,7 @@ spec:
           emptyDir: {}
         {{- end }}
         {{- if .Values.alertmanager.extraVolumes }}
-        {{ toYaml .Values.alertmanager.extraVolumes | nindent 8 }}
+        {{- toYaml .Values.alertmanager.extraVolumes | nindent 8 }}
         {{- end }}
       containers:
         {{- if .Values.alertmanager.extraContainers }}
@@ -164,7 +164,7 @@ spec:
             {{- end }}
           volumeMounts:
             {{- if .Values.alertmanager.extraVolumeMounts }}
-            {{ toYaml .Values.alertmanager.extraVolumeMounts | nindent 12}}
+            {{- toYaml .Values.alertmanager.extraVolumeMounts | nindent 12}}
             {{- end }}
             - name: config
               mountPath: /etc/cortex

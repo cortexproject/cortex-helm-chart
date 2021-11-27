@@ -59,7 +59,7 @@ spec:
           {{- end }}
           volumeMounts:
             {{- if .Values.query_frontend.extraVolumeMounts }}
-            {{ toYaml .Values.query_frontend.extraVolumeMounts | nindent 12}}
+            {{- toYaml .Values.query_frontend.extraVolumeMounts | nindent 12}}
             {{- end }}
             - name: config
               mountPath: /etc/cortex
@@ -92,7 +92,7 @@ spec:
             {{- toYaml . | nindent 12 }}
           {{- end }}
         {{- if .Values.query_frontend.extraContainers }}
-        {{ toYaml .Values.query_frontend.extraContainers | indent 8}}
+        {{- toYaml .Values.query_frontend.extraContainers | nindent 8}}
         {{- end }}
       nodeSelector:
         {{- toYaml .Values.query_frontend.nodeSelector | nindent 8 }}
@@ -113,5 +113,5 @@ spec:
           configMap:
             name: {{ template "cortex.fullname" . }}-runtime-config
         {{- if .Values.query_frontend.extraVolumes }}
-        {{ toYaml .Values.query_frontend.extraVolumes | indent 8}}
+        {{- toYaml .Values.query_frontend.extraVolumes | nindent 8}}
         {{- end }}

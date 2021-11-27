@@ -62,7 +62,7 @@ spec:
           {{- end }}
           volumeMounts:
             {{- if .Values.distributor.extraVolumeMounts }}
-              {{ toYaml .Values.distributor.extraVolumeMounts | nindent 12}}
+            {{- toYaml .Values.distributor.extraVolumeMounts | nindent 12}}
             {{- end }}
             - name: config
               mountPath: /etc/cortex
@@ -101,7 +101,7 @@ spec:
             {{- toYaml . | nindent 12 }}
           {{- end }}
       {{- if .Values.distributor.extraContainers }}
-        {{ toYaml .Values.distributor.extraContainers | indent 8}}
+      {{- toYaml .Values.distributor.extraContainers | nindent 8}}
       {{- end }}
       nodeSelector:
         {{- toYaml .Values.distributor.nodeSelector | nindent 8 }}
@@ -121,8 +121,8 @@ spec:
         - name: runtime-config
           configMap:
             name: {{ template "cortex.fullname" . }}-runtime-config
-      {{- if .Values.distributor.extraVolumes }}
-        {{ toYaml .Values.distributor.extraVolumes | indent 8}}
-      {{- end }}
         - name: storage
           emptyDir: {}
+        {{- if .Values.distributor.extraVolumes }}
+        {{- toYaml .Values.distributor.extraVolumes | nindent 8}}
+        {{- end }}
