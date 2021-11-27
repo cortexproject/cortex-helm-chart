@@ -54,7 +54,15 @@ ingester:
     enabled: true
     minReplicas: 1
   statefulSet:
-    enabled: true
+    enabled: false
+  extraVolumes:
+    - name: tmp-test
+      emptyDir: {}
+  extraVolumeMounts:
+    - name: tmp-test
+      mountPath: /tmp-test
+compactor:
+  replicas: 1
   extraVolumes:
     - name: tmp-test
       emptyDir: {}
@@ -123,6 +131,14 @@ alertmanager:
 ruler:
   replicas: 1
   enabled: true
+  extraVolumes:
+    - name: tmp-test
+      emptyDir: {}
+  extraVolumeMounts:
+    - name: tmp-test
+      mountPath: /tmp-test
+store_gateway:
+  replicas: 1
   extraVolumes:
     - name: tmp-test
       emptyDir: {}
