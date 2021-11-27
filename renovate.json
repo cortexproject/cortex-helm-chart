@@ -2,7 +2,8 @@
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
     "extends": [
         "config:base",
-        ":gitSignOff"
+        ":gitSignOff",
+        ":rebaseStalePrs"
     ],
     "assignees": [
         "ShuzZzle",
@@ -10,10 +11,10 @@
     ],
     "labels": ["dependencies"],
     "regexManagers": [{
-            "description": "Update cortex image in README.md",
-            "fileMatch": ["^README\\.md$"],
+            "description": "Update cortex in Chart.yaml",
+            "fileMatch": ["^Chart\\.yaml$"],
             "matchStrings": [
-                "\\|\\s+image.&ZeroWidthSpace;tag\\s+\\|\\s+string\\s+\\|\\s+`\"(?<currentValue>.*?)\"`\\s+\\|\\s+\\|\\s+"
+                "appVersion: (?<currentValue>.*?)\\n",
             ],
             "depNameTemplate": "quay.io/cortexproject/cortex",
             "datasourceTemplate": "docker"
