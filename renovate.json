@@ -14,7 +14,7 @@
             "description": "Update cortex in Chart.yaml",
             "fileMatch": ["^Chart\\.yaml$"],
             "matchStrings": [
-                "appVersion: (?<currentValue>.*?)\\n",
+                "appVersion: (?<currentValue>.*?)\\n"
             ],
             "depNameTemplate": "quay.io/cortexproject/cortex",
             "datasourceTemplate": "docker"
