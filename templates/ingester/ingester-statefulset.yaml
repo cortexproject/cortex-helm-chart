@@ -98,11 +98,11 @@ spec:
           emptyDir: {}
         {{- end }}
         {{- if .Values.ingester.extraVolumes }}
-        {{ toYaml .Values.ingester.extraVolumes | nindent 8 }}
+        {{- toYaml .Values.ingester.extraVolumes | nindent 8 }}
         {{- end }}
       containers:
         {{- if .Values.ingester.extraContainers }}
-        {{ toYaml .Values.ingester.extraContainers | nindent 8 }}
+        {{- toYaml .Values.ingester.extraContainers | nindent 8 }}
         {{- end }}
         - name: ingester
           image: "{{ .Values.image.repository }}:{{ default .Chart.AppVersion .Values.image.tag }}"
@@ -116,7 +116,7 @@ spec:
             {{- end }}
           volumeMounts:
             {{- if .Values.ingester.extraVolumeMounts }}
-            {{ toYaml .Values.ingester.extraVolumeMounts | nindent 12}}
+            {{- toYaml .Values.ingester.extraVolumeMounts | nindent 12}}
             {{- end }}
             - name: config
               mountPath: /etc/cortex

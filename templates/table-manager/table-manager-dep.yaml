@@ -59,7 +59,7 @@ spec:
           {{- end }}
           volumeMounts:
             {{- if .Values.table_manager.extraVolumeMounts }}
-            {{ toYaml .Values.table_manager.extraVolumeMounts | nindent 12}}
+            {{- toYaml .Values.table_manager.extraVolumeMounts | nindent 12}}
             {{- end }}
             - name: config
               mountPath: /etc/cortex
@@ -88,7 +88,7 @@ spec:
             {{- toYaml .Values.table_manager.env | nindent 12 }}
           {{- end }}
         {{- if .Values.table_manager.extraContainers }}
-        {{ toYaml .Values.table_manager.extraContainers | indent 8}}
+        {{- toYaml .Values.table_manager.extraContainers | nindent 8}}
         {{- end }}
       nodeSelector:
         {{- toYaml .Values.table_manager.nodeSelector | nindent 8 }}
@@ -111,6 +111,6 @@ spec:
         - name: storage
           emptyDir: {}
         {{- if .Values.table_manager.extraVolumes }}
-        {{ toYaml .Values.table_manager.extraVolumes | indent 8}}
+        {{- toYaml .Values.table_manager.extraVolumes | nindent 8}}
         {{- end }}
 {{- end -}}

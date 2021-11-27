@@ -75,7 +75,7 @@ spec:
               mountPath: /etc/postgresql
             {{- end }}
             {{- if .Values.configs.extraVolumeMounts }}
-              {{ toYaml .Values.configs.extraVolumeMounts | nindent 12}}
+            {{- toYaml .Values.configs.extraVolumeMounts | nindent 12}}
             {{- end }}
           ports:
             - name: http-metrics
@@ -99,9 +99,9 @@ spec:
           env:
             {{- toYaml .Values.configs.env | nindent 12 }}
           {{- end }}
-{{- if .Values.configs.extraContainers }}
-{{ toYaml .Values.configs.extraContainers | indent 8}}
-{{- end }}
+      {{- if .Values.configs.extraContainers }}
+      {{- toYaml .Values.configs.extraContainers | nindent 8}}
+      {{- end }}
       nodeSelector:
         {{- toYaml .Values.configs.nodeSelector | nindent 8 }}
       affinity:
@@ -112,11 +112,11 @@ spec:
       volumes:
         - name: config
           secret:
-{{- if .Values.useExternalConfig }}
+          {{- if .Values.useExternalConfig }}
             secretName: {{ .Values.externalConfigSecretName }}
-{{- else }}
+          {{- else }}
             secretName: {{ template "cortex.fullname" . }}
-{{- end }}
+          {{- end }}
         {{- if .Values.configsdb_postgresql.enabled }}
         - name: postgres-password
           secret:
@@ -128,7 +128,7 @@ spec:
         - name: runtime-config
           configMap:
             name: {{ template "cortex.fullname" . }}-runtime-config
-{{- if .Values.configs.extraVolumes }}
-{{ toYaml .Values.configs.extraVolumes | indent 8}}
-{{- end }}
+        {{- if .Values.configs.extraVolumes }}
+        {{- toYaml .Values.configs.extraVolumes | nindent 8}}
+        {{- end }}
 {{- end }}

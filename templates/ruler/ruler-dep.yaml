@@ -120,7 +120,7 @@ spec:
           {{- end }}
           volumeMounts:
             {{- if .Values.ruler.extraVolumeMounts }}
-              {{ toYaml .Values.ruler.extraVolumeMounts | nindent 12}}
+            {{- toYaml .Values.ruler.extraVolumeMounts | nindent 12}}
             {{- end }}
             {{- if .Values.ruler.sidecar.enabled }}
             - name: sc-rules-volume
@@ -162,7 +162,7 @@ spec:
             {{- toYaml .Values.ruler.env | nindent 12 }}
           {{- end }}
         {{- if .Values.ruler.extraContainers }}
-        {{ toYaml .Values.ruler.extraContainers | indent 8}}
+        {{- toYaml .Values.ruler.extraContainers | nindent 8}}
         {{- end }}
       nodeSelector:
         {{- toYaml .Values.ruler.nodeSelector | nindent 8 }}
@@ -189,13 +189,13 @@ spec:
           configMap:
             name: {{ include "cortex.rulerFullname" $ }}-{{ include "cortex.rulerRulesDirName" $dir }}
         {{- end }}
-        {{- if .Values.ruler.extraVolumes }}
-        {{ toYaml .Values.ruler.extraVolumes | indent 8}}
-        {{- end }}
         - name: storage
           emptyDir: {}
         {{- if .Values.ruler.sidecar.enabled }}
         - name: sc-rules-volume
           emptyDir: {}
+        {{- end }}
+        {{- if .Values.ruler.extraVolumes }}
+        {{- toYaml .Values.ruler.extraVolumes | nindent 8}}
         {{- end }}
 {{- end }}
