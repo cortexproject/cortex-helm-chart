@@ -94,6 +94,8 @@ config:
       dir: /data/tsdb
     bucket_store:
       sync_dir: /data/tsdb-sync
+      bucket_index:
+        enabled: true
   # -- https://cortexmetrics.io/docs/configuration/configuration-file/#store_gateway_config
   store_gateway:
     sharding_enabled: false

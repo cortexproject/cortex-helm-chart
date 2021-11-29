@@ -203,6 +203,7 @@ Kubernetes: `^1.19.0-0`
 | config.&ZeroWidthSpace;api.&ZeroWidthSpace;prometheus_http_prefix | string | `"/prometheus"` |  |
 | config.&ZeroWidthSpace;api.&ZeroWidthSpace;response_compression_enabled | bool | `true` | Use GZIP compression for API responses. Some endpoints serve large YAML or JSON blobs which can benefit from compression. |
 | config.&ZeroWidthSpace;auth_enabled | bool | `false` |  |
+| config.&ZeroWidthSpace;blocks_storage.&ZeroWidthSpace;bucket_store.&ZeroWidthSpace;bucket_index.&ZeroWidthSpace;enabled | bool | `true` |  |
 | config.&ZeroWidthSpace;blocks_storage.&ZeroWidthSpace;bucket_store.&ZeroWidthSpace;sync_dir | string | `"/data/tsdb-sync"` |  |
 | config.&ZeroWidthSpace;blocks_storage.&ZeroWidthSpace;tsdb.&ZeroWidthSpace;dir | string | `"/data/tsdb"` |  |
 | config.&ZeroWidthSpace;distributor.&ZeroWidthSpace;pool.&ZeroWidthSpace;health_check_ingesters | bool | `true` |  |
