@@ -4,7 +4,6 @@ title: Configure memcached
 parent: Guides
 has_children: true
 has_toc: false
-nav_order: 5
 ---
 # Configuring memcached as the caching store
 
