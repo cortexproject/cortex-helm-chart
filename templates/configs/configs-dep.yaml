@@ -32,7 +32,7 @@ spec:
         {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
-      serviceAccountName: {{ template "cortex.serviceAccountName" . }}
+      serviceAccountName: {{ .Values.configs.serviceAccount.name | default (include "cortex.serviceAccountName" . ) }}
     {{- if .Values.configs.priorityClassName }}
       priorityClassName: {{ .Values.configs.priorityClassName }}
     {{- end }}

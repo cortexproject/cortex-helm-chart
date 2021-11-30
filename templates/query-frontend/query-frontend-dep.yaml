@@ -31,7 +31,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
     spec:
-      serviceAccountName: {{ template "cortex.serviceAccountName" . }}
+      serviceAccountName: {{ .Values.query_frontend.serviceAccount.name | default (include "cortex.serviceAccountName" . ) }}
       {{- if .Values.query_frontend.priorityClassName }}
       priorityClassName: {{ .Values.query_frontend.priorityClassName }}
       {{- end }}

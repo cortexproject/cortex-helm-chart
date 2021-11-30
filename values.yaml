@@ -177,6 +177,10 @@ alertmanager:
     annotations: {}
     labels: {}
 
+  serviceAccount:
+    # -- "" disables the individual serviceAccount and uses the global serviceAccount for that component
+    name: ""
+
   serviceMonitor:
     enabled: false
     additionalLabels: {}
@@ -317,6 +321,10 @@ distributor:
     annotations: {}
     labels: {}
 
+  serviceAccount:
+    # -- "" disables the individual serviceAccount and uses the global serviceAccount for that component
+    name: ""
+
   serviceMonitor:
     enabled: false
     additionalLabels: {}
@@ -421,6 +429,9 @@ ingester:
   service:
     annotations: {}
     labels: {}
+
+  serviceAccount:
+    name:
 
   serviceMonitor:
     enabled: false
@@ -574,6 +585,10 @@ ruler:
     annotations: {}
     labels: {}
 
+  serviceAccount:
+    # -- "" disables the individual serviceAccount and uses the global serviceAccount for that component
+    name: ""
+
   serviceMonitor:
     enabled: false
     additionalLabels: {}
@@ -688,6 +703,10 @@ querier:
     annotations: {}
     labels: {}
 
+  serviceAccount:
+    # -- "" disables the individual serviceAccount and uses the global serviceAccount for that component
+    name: ""
+
   serviceMonitor:
     enabled: false
     additionalLabels: {}
@@ -786,6 +805,10 @@ query_frontend:
     annotations: {}
     labels: {}
 
+  serviceAccount:
+    # -- "" disables the individual serviceAccount and uses the global serviceAccount for that component
+    name: ""
+
   serviceMonitor:
     enabled: false
     additionalLabels: {}
@@ -872,6 +895,10 @@ table_manager:
     annotations: {}
     labels: {}
 
+  serviceAccount:
+    # -- "" disables the individual serviceAccount and uses the global serviceAccount for that component
+    name: ""
+
   serviceMonitor:
     enabled: false
     additionalLabels: {}
@@ -946,6 +973,10 @@ configs:
   service:
     annotations: {}
     labels: {}
+
+  serviceAccount:
+    # -- "" disables the individual serviceAccount and uses the global serviceAccount for that component
+    name: ""
 
   serviceMonitor:
     enabled: false
@@ -1064,6 +1095,10 @@ nginx:
     annotations: {}
     labels: {}
 
+  serviceAccount:
+    # -- "" disables the individual serviceAccount and uses the global serviceAccount for that component
+    name: ""
+
   resources: {}
 
   # -- Additional Cortex container arguments, e.g. log.level (debug, info, warn, error)
@@ -1139,6 +1174,10 @@ store_gateway:
   service:
     annotations: {}
     labels: {}
+
+  serviceAccount:
+    # -- "" disables the individual serviceAccount and uses the global serviceAccount for that component
+    name: ""
 
   serviceMonitor:
     enabled: false
@@ -1253,6 +1292,10 @@ compactor:
   service:
     annotations: {}
     labels: {}
+
+  serviceAccount:
+    # -- "" disables the individual serviceAccount and uses the global serviceAccount for that component
+    name: ""
 
   serviceMonitor:
     enabled: false

@@ -5,6 +5,7 @@
 * [DEPENDENCY] Update Helm release memcached to v5.15.9 #273
 * [CHANGE] Enable bucket index by default #275
 * [CHANGE] Disable ingester liveness probes by default. #263
+* [FEATURE] Allow different service accounts per dep/statefulset. #264
 
 ## 1.0.1 / 2021-11-26
 * [BUGFIX] alertmanager/ruler deployment: fix indentation #266

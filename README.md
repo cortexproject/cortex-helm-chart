@@ -129,6 +129,7 @@ Kubernetes: `^1.19.0-0`
 | alertmanager.&ZeroWidthSpace;securityContext | object | `{}` |  |
 | alertmanager.&ZeroWidthSpace;service.&ZeroWidthSpace;annotations | object | `{}` |  |
 | alertmanager.&ZeroWidthSpace;service.&ZeroWidthSpace;labels | object | `{}` |  |
+| alertmanager.&ZeroWidthSpace;serviceAccount.&ZeroWidthSpace;name | string | `""` | "" disables the individual serviceAccount and uses the global serviceAccount for that component |
 | alertmanager.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;additionalLabels | object | `{}` |  |
 | alertmanager.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;enabled | bool | `false` |  |
 | alertmanager.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;extraEndpointSpec | object | `{}` | Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint |
@@ -183,6 +184,7 @@ Kubernetes: `^1.19.0-0`
 | compactor.&ZeroWidthSpace;securityContext | object | `{}` |  |
 | compactor.&ZeroWidthSpace;service.&ZeroWidthSpace;annotations | object | `{}` |  |
 | compactor.&ZeroWidthSpace;service.&ZeroWidthSpace;labels | object | `{}` |  |
+| compactor.&ZeroWidthSpace;serviceAccount.&ZeroWidthSpace;name | string | `""` | "" disables the individual serviceAccount and uses the global serviceAccount for that component |
 | compactor.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;additionalLabels | object | `{}` |  |
 | compactor.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;enabled | bool | `false` |  |
 | compactor.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;extraEndpointSpec | object | `{}` | Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint |
@@ -271,6 +273,7 @@ Kubernetes: `^1.19.0-0`
 | configs.&ZeroWidthSpace;securityContext | object | `{}` |  |
 | configs.&ZeroWidthSpace;service.&ZeroWidthSpace;annotations | object | `{}` |  |
 | configs.&ZeroWidthSpace;service.&ZeroWidthSpace;labels | object | `{}` |  |
+| configs.&ZeroWidthSpace;serviceAccount.&ZeroWidthSpace;name | string | `""` | "" disables the individual serviceAccount and uses the global serviceAccount for that component |
 | configs.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;additionalLabels | object | `{}` |  |
 | configs.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;enabled | bool | `false` |  |
 | configs.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;extraEndpointSpec | object | `{}` | Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint |
@@ -325,6 +328,7 @@ Kubernetes: `^1.19.0-0`
 | distributor.&ZeroWidthSpace;securityContext | object | `{}` |  |
 | distributor.&ZeroWidthSpace;service.&ZeroWidthSpace;annotations | object | `{}` |  |
 | distributor.&ZeroWidthSpace;service.&ZeroWidthSpace;labels | object | `{}` |  |
+| distributor.&ZeroWidthSpace;serviceAccount.&ZeroWidthSpace;name | string | `""` | "" disables the individual serviceAccount and uses the global serviceAccount for that component |
 | distributor.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;additionalLabels | object | `{}` |  |
 | distributor.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;enabled | bool | `false` |  |
 | distributor.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;extraEndpointSpec | object | `{}` | Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint |
@@ -385,6 +389,7 @@ Kubernetes: `^1.19.0-0`
 | ingester.&ZeroWidthSpace;securityContext | object | `{}` |  |
 | ingester.&ZeroWidthSpace;service.&ZeroWidthSpace;annotations | object | `{}` |  |
 | ingester.&ZeroWidthSpace;service.&ZeroWidthSpace;labels | object | `{}` |  |
+| ingester.&ZeroWidthSpace;serviceAccount.&ZeroWidthSpace;name | string | `nil` |  |
 | ingester.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;additionalLabels | object | `{}` |  |
 | ingester.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;enabled | bool | `false` |  |
 | ingester.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;extraEndpointSpec | object | `{}` | Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint |
@@ -501,6 +506,7 @@ Kubernetes: `^1.19.0-0`
 | nginx.&ZeroWidthSpace;service.&ZeroWidthSpace;annotations | object | `{}` |  |
 | nginx.&ZeroWidthSpace;service.&ZeroWidthSpace;labels | object | `{}` |  |
 | nginx.&ZeroWidthSpace;service.&ZeroWidthSpace;type | string | `"ClusterIP"` |  |
+| nginx.&ZeroWidthSpace;serviceAccount.&ZeroWidthSpace;name | string | `""` | "" disables the individual serviceAccount and uses the global serviceAccount for that component |
 | nginx.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;failureThreshold | int | `10` |  |
 | nginx.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/healthz"` |  |
 | nginx.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
@@ -545,6 +551,7 @@ Kubernetes: `^1.19.0-0`
 | querier.&ZeroWidthSpace;securityContext | object | `{}` |  |
 | querier.&ZeroWidthSpace;service.&ZeroWidthSpace;annotations | object | `{}` |  |
 | querier.&ZeroWidthSpace;service.&ZeroWidthSpace;labels | object | `{}` |  |
+| querier.&ZeroWidthSpace;serviceAccount.&ZeroWidthSpace;name | string | `""` | "" disables the individual serviceAccount and uses the global serviceAccount for that component |
 | querier.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;additionalLabels | object | `{}` |  |
 | querier.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;enabled | bool | `false` |  |
 | querier.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;extraEndpointSpec | object | `{}` | Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint |
@@ -588,6 +595,7 @@ Kubernetes: `^1.19.0-0`
 | query_frontend.&ZeroWidthSpace;securityContext | object | `{}` |  |
 | query_frontend.&ZeroWidthSpace;service.&ZeroWidthSpace;annotations | object | `{}` |  |
 | query_frontend.&ZeroWidthSpace;service.&ZeroWidthSpace;labels | object | `{}` |  |
+| query_frontend.&ZeroWidthSpace;serviceAccount.&ZeroWidthSpace;name | string | `""` | "" disables the individual serviceAccount and uses the global serviceAccount for that component |
 | query_frontend.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;additionalLabels | object | `{}` |  |
 | query_frontend.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;enabled | bool | `false` |  |
 | query_frontend.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;extraEndpointSpec | object | `{}` | Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint |
@@ -628,6 +636,7 @@ Kubernetes: `^1.19.0-0`
 | ruler.&ZeroWidthSpace;securityContext | object | `{}` |  |
 | ruler.&ZeroWidthSpace;service.&ZeroWidthSpace;annotations | object | `{}` |  |
 | ruler.&ZeroWidthSpace;service.&ZeroWidthSpace;labels | object | `{}` |  |
+| ruler.&ZeroWidthSpace;serviceAccount.&ZeroWidthSpace;name | string | `""` | "" disables the individual serviceAccount and uses the global serviceAccount for that component |
 | ruler.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;additionalLabels | object | `{}` |  |
 | ruler.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;enabled | bool | `false` |  |
 | ruler.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;extraEndpointSpec | object | `{}` | Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint |
@@ -690,6 +699,7 @@ Kubernetes: `^1.19.0-0`
 | store_gateway.&ZeroWidthSpace;securityContext | object | `{}` |  |
 | store_gateway.&ZeroWidthSpace;service.&ZeroWidthSpace;annotations | object | `{}` |  |
 | store_gateway.&ZeroWidthSpace;service.&ZeroWidthSpace;labels | object | `{}` |  |
+| store_gateway.&ZeroWidthSpace;serviceAccount.&ZeroWidthSpace;name | string | `""` | "" disables the individual serviceAccount and uses the global serviceAccount for that component |
 | store_gateway.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;additionalLabels | object | `{}` |  |
 | store_gateway.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;enabled | bool | `false` |  |
 | store_gateway.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;extraEndpointSpec | object | `{}` | Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint |
@@ -729,6 +739,7 @@ Kubernetes: `^1.19.0-0`
 | table_manager.&ZeroWidthSpace;securityContext | object | `{}` |  |
 | table_manager.&ZeroWidthSpace;service.&ZeroWidthSpace;annotations | object | `{}` |  |
 | table_manager.&ZeroWidthSpace;service.&ZeroWidthSpace;labels | object | `{}` |  |
+| table_manager.&ZeroWidthSpace;serviceAccount.&ZeroWidthSpace;name | string | `""` | "" disables the individual serviceAccount and uses the global serviceAccount for that component |
 | table_manager.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;additionalLabels | object | `{}` |  |
 | table_manager.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;enabled | bool | `false` |  |
 | table_manager.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;extraEndpointSpec | object | `{}` | Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint |
