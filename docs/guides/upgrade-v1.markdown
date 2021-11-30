@@ -26,7 +26,7 @@ Cortex provides a configuration called Multi KV to migrate from one kvstore to a
 Assuming you have an existing installation of cortex-helm-chart v0.6.0, here is an example of how to convert it to `memberlist`.
 #### Stage 1 - mirror to both kvstores
 
-_Be sure to augment this comment with any other options you used for the initial installation._
+_Be sure to augment this command with any other options you used for the initial installation._
 ```
 helm upgrade cortex cortex-helm/cortex --version 0.6.0 -f kvstore-mirror.yaml
 ```
@@ -61,7 +61,7 @@ config:
 
 #### Stage 2 - use runtime config to make memberlist the primary
 
-_Be sure to augment this comment with any other options you used for the initial installation._
+_Be sure to augment this command with any other options you used for the initial installation._
 ```
 helm upgrade cortex cortex-helm/cortex --version 0.6.0 -f kvstore-mirror.yaml -f kvstore-runtime.yaml
 ```
@@ -77,7 +77,7 @@ runtimeconfigmap:
 
 #### Stage 3 - disable consul
 
-_Be sure to augment this comment with any other options you used for the initial installation._
+_Be sure to augment this command with any other options you used for the initial installation._
 ```
 helm upgrade cortex cortex-helm/cortex --version 0.6.0 -f kvstore-memberlist.yaml
 ```
