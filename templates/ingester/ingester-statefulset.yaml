@@ -18,6 +18,7 @@ spec:
       {{- include "cortex.ingesterSelectorLabels" . | nindent 6 }}
   updateStrategy:
     {{- toYaml .Values.ingester.statefulStrategy | nindent 4 }}          
+  podManagementPolicy: "{{ .Values.ingester.statefulSet.podManagementPolicy }}"
   serviceName: {{ template "cortex.fullname" . }}-ingester-headless
   {{- if .Values.ingester.persistentVolume.enabled }}
   volumeClaimTemplates:
@@ -59,13 +60,12 @@ spec:
         {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
-      serviceAccountName: {{ template "cortex.serviceAccountName" . }}
+      serviceAccountName: {{ .Values.ingester.serviceAccount.name | default (include "cortex.serviceAccountName" . ) }}
       {{- if .Values.ingester.priorityClassName }}
       priorityClassName: {{ .Values.ingester.priorityClassName }}
       {{- end }}
       {{- if .Values.ingester.securityContext.enabled }}
-      securityContext:
-        {{- omit .Values.ingester.securityContext "enabled" | toYaml | nindent 8 }}
+      securityContext: {{- omit .Values.ingester.securityContext "enabled" | toYaml | nindent 8 }}
       {{- end }}
       initContainers:
         {{- toYaml .Values.ingester.initContainers | nindent 8 }}
@@ -98,14 +98,14 @@ spec:
           emptyDir: {}
         {{- end }}
         {{- if .Values.ingester.extraVolumes }}
-        {{ toYaml .Values.ingester.extraVolumes | nindent 8 }}
+        {{- toYaml .Values.ingester.extraVolumes | nindent 8 }}
         {{- end }}
       containers:
         {{- if .Values.ingester.extraContainers }}
-        {{ toYaml .Values.ingester.extraContainers | nindent 8 }}
+        {{- toYaml .Values.ingester.extraContainers | nindent 8 }}
         {{- end }}
-        - name: {{ .Chart.Name }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        - name: ingester
+          image: "{{ .Values.image.repository }}:{{ default .Chart.AppVersion .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args:
             - "-target=ingester"
@@ -116,7 +116,7 @@ spec:
             {{- end }}
           volumeMounts:
             {{- if .Values.ingester.extraVolumeMounts }}
-            {{ toYaml .Values.ingester.extraVolumeMounts | nindent 12}}
+            {{- toYaml .Values.ingester.extraVolumeMounts | nindent 12}}
             {{- end }}
             - name: config
               mountPath: /etc/cortex
@@ -124,13 +124,8 @@ spec:
               mountPath: /etc/cortex-runtime-config
             - name: storage
               mountPath: "/data"
-              {{- if .Values.ingester.persistentVolume.subPath }}
-              subPath: {{ .Values.ingester.persistentVolume.subPath }}
-              {{- else }}
-              {{- if .Values.ingester.persistence.subPath }}
-              ## DEPRECATED: use persistentVolume.subPath instead
-              subPath: {{ .Values.ingester.persistence.subPath }}
-              {{- end }}
+              {{- with .Values.ingester.persistentVolume.subPath }}
+              subPath: {{ . }}
               {{- end }}
           ports:
             - name: http-metrics
@@ -144,18 +139,21 @@ spec:
               protocol: TCP
           startupProbe:
             {{- toYaml .Values.ingester.startupProbe | nindent 12 }}
+          {{- if .Values.ingester.livenessProbe }}
           livenessProbe:
             {{- toYaml .Values.ingester.livenessProbe | nindent 12 }}
+          {{- end}}
           readinessProbe:
             {{- toYaml .Values.ingester.readinessProbe | nindent 12 }}
           resources:
             {{- toYaml .Values.ingester.resources | nindent 12 }}
-          securityContext:
-            readOnlyRootFilesystem: true
+          {{- if .Values.ingester.containerSecurityContext.enabled }}
+          securityContext: {{- omit .Values.ingester.containerSecurityContext "enabled" | toYaml | nindent 12 }}
+          {{- end }}
+          {{- if .Values.ingester.env }}
           env:
-            {{- if .Values.ingester.env }}
-              {{- toYaml .Values.ingester.env | nindent 12 }}
-            {{- end }}
+            {{- toYaml .Values.ingester.env | nindent 12 }}
+          {{- end }}
           {{- with .Values.ingester.lifecycle }}
           lifecycle:
             {{- toYaml . | nindent 12 }}

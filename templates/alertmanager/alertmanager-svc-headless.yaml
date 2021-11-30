@@ -1,6 +1,5 @@
 {{- if .Values.alertmanager.enabled -}}
 {{- if .Values.alertmanager.statefulSet.enabled -}}
-{{- $clusterPort := regexReplaceAll ".+[:]" (default "0.0.0.0:9094" .Values.config.alertmanager.cluster_bind_address) "" -}}
 apiVersion: v1
 kind: Service
 metadata:
@@ -18,10 +17,10 @@ spec:
   clusterIP: None
   publishNotReadyAddresses: true
   ports:
-    - port: {{ $clusterPort }}
+    - port: {{ .Values.config.server.http_listen_port }}
       protocol: TCP
-      name: cluster
-      targetPort: cluster
+      name: http-metrics
+      targetPort: http-metrics
   selector:
     {{- include "cortex.alertmanagerSelectorLabels" . | nindent 4 }}
 {{- end -}}

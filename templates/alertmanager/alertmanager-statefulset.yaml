@@ -1,6 +1,5 @@
 {{- if .Values.alertmanager.enabled -}}
 {{- if .Values.alertmanager.statefulSet.enabled -}}
-{{- $clusterPort := regexReplaceAll ".+[:]" (default "0.0.0.0:9094" .Values.config.alertmanager.cluster_bind_address) "" -}}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -59,7 +58,7 @@ spec:
         {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
-      serviceAccountName: {{ template "cortex.serviceAccountName" . }}
+      serviceAccountName: {{ .Values.alertmanager.serviceAccount.name | default (include "cortex.serviceAccountName" . ) }}
       {{- if .Values.alertmanager.priorityClassName }}
       priorityClassName: {{ .Values.alertmanager.priorityClassName }}
       {{- end }}
@@ -97,7 +96,7 @@ spec:
           emptyDir: {}
         {{- end }}
         {{- if .Values.alertmanager.extraVolumes }}
-        {{ toYaml .Values.alertmanager.extraVolumes | nindent 8 }}
+        {{- toYaml .Values.alertmanager.extraVolumes | nindent 8 }}
         {{- end }}
       containers:
         {{- if .Values.alertmanager.extraContainers }}
@@ -144,14 +143,15 @@ spec:
           {{- end }}
           resources:
             {{- toYaml .Values.alertmanager.sidecar.resources | nindent 12 }}
-          securityContext:
-            {{- toYaml .Values.alertmanager.sidecar.securityContext | nindent 12 }}
+          {{- if .Values.alertmanager.sidecar.containerSecurityContext.enabled }}
+          securityContext: {{- omit .Values.alertmanager.sidecar.containerSecurityContext "enabled" | toYaml | nindent 12 }}
+          {{- end }}
           volumeMounts:
             - name: storage
               mountPath: "/data"
-        {{- end}}
-        - name: {{ .Chart.Name }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        {{- end }}
+        - name: alertmanager
+          image: "{{ .Values.image.repository }}:{{ default .Chart.AppVersion .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args:
             - "-target=alertmanager"
@@ -159,17 +159,12 @@ spec:
             {{- if .Values.configs.enabled }}
             - "-alertmanager.configs.url=http://{{ template "cortex.fullname" . }}-configs.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.config.server.http_listen_port }}"
             {{- end }}
-            {{- if gt (.Values.alertmanager.replicas | int) 1 }}
-            {{- range $n := until (.Values.alertmanager.replicas |int ) }}
-            - -alertmanager.cluster.peers={{ template "cortex.fullname" $ }}-alertmanager-{{ $n }}.{{ template "cortex.fullname" $ }}-alertmanager-headless.{{ $.Release.Namespace }}.svc.{{ $.Values.clusterDomain }}:{{ $clusterPort }}
-            {{- end }}
-            {{- end }}
             {{- range $key, $value := .Values.alertmanager.extraArgs }}
             - "-{{ $key }}={{ $value }}"
             {{- end }}
           volumeMounts:
             {{- if .Values.alertmanager.extraVolumeMounts }}
-            {{ toYaml .Values.alertmanager.extraVolumeMounts | nindent 12}}
+            {{- toYaml .Values.alertmanager.extraVolumeMounts | nindent 12}}
             {{- end }}
             - name: config
               mountPath: /etc/cortex
@@ -177,13 +172,8 @@ spec:
               mountPath: /etc/cortex-runtime-config
             - name: storage
               mountPath: "/data"
-              {{- if .Values.alertmanager.persistentVolume.subPath }}
-              subPath: {{ .Values.alertmanager.persistentVolume.subPath }}
-              {{- else }}
-              {{- if .Values.alertmanager.persistence.subPath }}
-              ## DEPRECATED: use persistentVolume.subPath instead
-              subPath: {{ .Values.alertmanager.persistence.subPath }}
-              {{- end }}
+              {{- with .Values.alertmanager.persistentVolume.subPath }}
+              subPath: {{ . }}
               {{- end }}
           ports:
             - name: http-metrics
@@ -191,9 +181,6 @@ spec:
               protocol: TCP
             - name: gossip
               containerPort: {{ .Values.config.memberlist.bind_port }}
-              protocol: TCP
-            - name: cluster
-              containerPort: {{ $clusterPort }}
               protocol: TCP
           startupProbe:
             {{- toYaml .Values.alertmanager.startupProbe | nindent 12 }}
@@ -206,9 +193,9 @@ spec:
           {{- if .Values.alertmanager.containerSecurityContext.enabled }}
           securityContext: {{- omit .Values.alertmanager.containerSecurityContext "enabled" | toYaml | nindent 12 }}
           {{- end }}
+          {{- if .Values.alertmanager.env }}
           env:
-            {{- if .Values.alertmanager.env }}
-              {{- toYaml .Values.alertmanager.env | nindent 12 }}
-            {{- end }}
+            {{- toYaml .Values.alertmanager.env | nindent 12 }}
+          {{- end }}
 {{- end -}}
 {{- end -}}

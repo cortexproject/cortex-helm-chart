@@ -23,19 +23,19 @@ spec:
         {{- toYaml . | nindent 8 }}
         {{- end }}
       annotations:
-{{- if .Values.useExternalConfig }}
+      {{- if .Values.useExternalConfig }}
         checksum/config: {{ .Values.externalConfigVersion }}
-{{- else }}
+      {{- else }}
         checksum/config: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
-{{- end}}
+      {{- end}}
         {{- with .Values.table_manager.podAnnotations }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
-      serviceAccountName: {{ template "cortex.serviceAccountName" . }}
-    {{- if .Values.table_manager.priorityClassName }}
+      serviceAccountName: {{ .Values.table_manager.serviceAccount.name | default (include "cortex.serviceAccountName" . ) }}
+      {{- if .Values.table_manager.priorityClassName }}
       priorityClassName: {{ .Values.table_manager.priorityClassName }}
-    {{- end }}
+      {{- end }}
       {{- if .Values.table_manager.securityContext.enabled }}
       securityContext: {{- omit .Values.table_manager.securityContext "enabled" | toYaml | nindent 8 }}
       {{- end }}
@@ -48,8 +48,8 @@ spec:
       {{- end}}
       {{- end }}
       containers:
-        - name: {{ .Chart.Name }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        - name: table-manager
+          image: "{{ .Values.image.repository }}:{{ default .Chart.AppVersion .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args:
             - "-target=table-manager"
@@ -59,7 +59,7 @@ spec:
           {{- end }}
           volumeMounts:
             {{- if .Values.table_manager.extraVolumeMounts }}
-              {{ toYaml .Values.table_manager.extraVolumeMounts | nindent 12}}
+            {{- toYaml .Values.table_manager.extraVolumeMounts | nindent 12}}
             {{- end }}
             - name: config
               mountPath: /etc/cortex
@@ -67,7 +67,7 @@ spec:
               mountPath: /etc/cortex-runtime-config
             - name: storage
               mountPath: "/data"
-              subPath: {{ .Values.table_manager.persistence.subPath }}
+              subPath: {{ .Values.table_manager.persistentVolume.subPath }}
           ports:
             - name: http-metrics
               containerPort: {{ .Values.config.server.http_listen_port }}
@@ -83,13 +83,13 @@ spec:
           {{- if .Values.table_manager.containerSecurityContext.enabled }}
           securityContext: {{- omit .Values.table_manager.containerSecurityContext "enabled" | toYaml | nindent 12 }}
           {{- end }}
+          {{- if .Values.table_manager.env }}
           env:
-            {{- if .Values.table_manager.env }}
-              {{- toYaml .Values.table_manager.env | nindent 12 }}
-            {{- end }}
-{{- if .Values.table_manager.extraContainers }}
-{{ toYaml .Values.table_manager.extraContainers | indent 8}}
-{{- end }}
+            {{- toYaml .Values.table_manager.env | nindent 12 }}
+          {{- end }}
+        {{- if .Values.table_manager.extraContainers }}
+        {{- toYaml .Values.table_manager.extraContainers | nindent 8}}
+        {{- end }}
       nodeSelector:
         {{- toYaml .Values.table_manager.nodeSelector | nindent 8 }}
       affinity:
@@ -100,17 +100,17 @@ spec:
       volumes:
         - name: config
           secret:
-{{- if .Values.useExternalConfig }}
+          {{- if .Values.useExternalConfig }}
             secretName: {{ .Values.externalConfigSecretName }}
-{{- else }}
+          {{- else }}
             secretName: {{ template "cortex.fullname" . }}
-{{- end }}
+          {{- end }}
         - name: runtime-config
           configMap:
             name: {{ template "cortex.fullname" . }}-runtime-config
-{{- if .Values.table_manager.extraVolumes }}
-{{ toYaml .Values.table_manager.extraVolumes | indent 8}}
-{{- end }}
         - name: storage
           emptyDir: {}
+        {{- if .Values.table_manager.extraVolumes }}
+        {{- toYaml .Values.table_manager.extraVolumes | nindent 8}}
+        {{- end }}
 {{- end -}}

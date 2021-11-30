@@ -58,7 +58,7 @@ spec:
         {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
-      serviceAccountName: {{ template "cortex.serviceAccountName" . }}
+      serviceAccountName: {{ .Values.compactor.serviceAccount.name | default (include "cortex.serviceAccountName" . ) }}
       {{- if .Values.compactor.priorityClassName }}
       priorityClassName: {{ .Values.compactor.priorityClassName }}
       {{- end }}
@@ -96,14 +96,14 @@ spec:
           emptyDir: {}
         {{- end }}
         {{- if .Values.compactor.extraVolumes }}
-        {{ toYaml .Values.compactor.extraVolumes | nindent 8 }}
+        {{- toYaml .Values.compactor.extraVolumes | nindent 8 }}
         {{- end }}
       containers:
         {{- if .Values.compactor.extraContainers }}
         {{ toYaml .Values.compactor.extraContainers | nindent 8 }}
         {{- end }}
-        - name: {{ .Chart.Name }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        - name: compactor
+          image: "{{ .Values.image.repository }}:{{ default .Chart.AppVersion .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args:
             - "-target=compactor"
@@ -114,7 +114,7 @@ spec:
             {{- end }}
           volumeMounts:
             {{- if .Values.compactor.extraVolumeMounts }}
-            {{ toYaml .Values.compactor.extraVolumeMounts | nindent 12}}
+            {{- toYaml .Values.compactor.extraVolumeMounts | nindent 12}}
             {{- end }}
             - name: config
               mountPath: /etc/cortex
@@ -143,9 +143,9 @@ spec:
           {{- if .Values.compactor.containerSecurityContext.enabled }}
           securityContext: {{- omit .Values.compactor.containerSecurityContext "enabled" | toYaml | nindent 12 }}
           {{- end }}
+          {{- if .Values.compactor.env }}
           env:
-            {{- if .Values.compactor.env }}
-              {{- toYaml .Values.compactor.env | nindent 12 }}
-            {{- end }}
+            {{- toYaml .Values.compactor.env | nindent 12 }}
+          {{- end }}
 {{- end -}}
 {{- end -}}

@@ -25,16 +25,16 @@ spec:
         {{- toYaml . | nindent 8 }}
         {{- end }}
       annotations:
-{{- if .Values.useExternalConfig }}
+      {{- if .Values.useExternalConfig }}
         checksum/config: {{ .Values.externalConfigVersion }}
-{{- else }}
+      {{- else }}
         checksum/config: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
-{{- end}}
-        {{- with .Values.ruler.podAnnotations }}
+      {{- end }}
+      {{- with .Values.ruler.podAnnotations }}
         {{- toYaml . | nindent 8 }}
-        {{- end }}
+      {{- end }}
     spec:
-      serviceAccountName: {{ template "cortex.serviceAccountName" . }}
+      serviceAccountName: {{ .Values.ruler.serviceAccount.name | default (include "cortex.serviceAccountName" . ) }}
     {{- if .Values.ruler.priorityClassName }}
       priorityClassName: {{ .Values.ruler.priorityClassName }}
     {{- end }}
@@ -91,14 +91,15 @@ spec:
           {{- end }}
           resources:
             {{- toYaml .Values.ruler.sidecar.resources | nindent 12 }}
-          securityContext:
-            {{- toYaml .Values.ruler.sidecar.securityContext | nindent 12 }}
+          {{- if .Values.ruler.containerSecurityContext.enabled }}
+          securityContext: {{- omit .Values.ruler.sidecar.containerSecurityContext "enabled" | toYaml | nindent 12 }}
+          {{- end }}
           volumeMounts:
             - name: sc-rules-volume
               mountPath: {{ .Values.ruler.sidecar.folder | quote }}
         {{- end}}
-        - name: {{ .Chart.Name }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        - name: rules
+          image: "{{ .Values.image.repository }}:{{ default .Chart.AppVersion .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args:
             - "-target=ruler"
@@ -107,11 +108,11 @@ spec:
             - "-ruler.configs.url=http://{{ template "cortex.configsFullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.config.server.http_listen_port }}"
             {{- end }}
             {{- if not .Values.config.ruler.alertmanager_url }}
-            {{- if .Values.config.ruler.enable_alertmanager_discovery }}
-            - "-ruler.alertmanager-url=http://_http-metrics._tcp.{{ template "cortex.name" . }}-alertmanager-headless/api/prom/alertmanager/"
-            {{- else }}
+              {{- if .Values.config.ruler.enable_alertmanager_discovery }}
+            - "-ruler.alertmanager-url=http://_http-metrics._tcp.{{ template "cortex.name" . }}-alertmanager-headless.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}/api/prom/alertmanager/"
+              {{- else }}
             - "-ruler.alertmanager-url=http://{{ template "cortex.alertmanagerFullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.config.server.http_listen_port }}/api/prom/alertmanager/"
-            {{- end }}
+              {{- end }}
             {{- end }}
             {{- include "cortex.memcached" . | nindent 12}}
           {{- range $key, $value := .Values.ruler.extraArgs }}
@@ -119,7 +120,7 @@ spec:
           {{- end }}
           volumeMounts:
             {{- if .Values.ruler.extraVolumeMounts }}
-              {{ toYaml .Values.ruler.extraVolumeMounts | nindent 12}}
+            {{- toYaml .Values.ruler.extraVolumeMounts | nindent 12}}
             {{- end }}
             {{- if .Values.ruler.sidecar.enabled }}
             - name: sc-rules-volume
@@ -131,7 +132,7 @@ spec:
               mountPath: /etc/cortex-runtime-config
             - name: storage
               mountPath: /data
-              subPath: {{ .Values.ruler.persistence.subPath }}
+              subPath: {{ .Values.ruler.persistentVolume.subPath }}
             - name: tmp
               mountPath: /rules
             {{- range $dir, $_ := .Values.ruler.directories }}
@@ -156,13 +157,13 @@ spec:
           {{- if .Values.ruler.containerSecurityContext.enabled }}
           securityContext: {{- omit .Values.ruler.containerSecurityContext "enabled" | toYaml | nindent 12 }}
           {{- end }}
+          {{- if .Values.ruler.env }}
           env:
-            {{- if .Values.ruler.env }}
-              {{- toYaml .Values.ruler.env | nindent 12 }}
-            {{- end }}
-{{- if .Values.ruler.extraContainers }}
-{{ toYaml .Values.ruler.extraContainers | indent 8}}
-{{- end }}
+            {{- toYaml .Values.ruler.env | nindent 12 }}
+          {{- end }}
+        {{- if .Values.ruler.extraContainers }}
+        {{- toYaml .Values.ruler.extraContainers | nindent 8}}
+        {{- end }}
       nodeSelector:
         {{- toYaml .Values.ruler.nodeSelector | nindent 8 }}
       affinity:
@@ -188,13 +189,13 @@ spec:
           configMap:
             name: {{ include "cortex.rulerFullname" $ }}-{{ include "cortex.rulerRulesDirName" $dir }}
         {{- end }}
-{{- if .Values.ruler.extraVolumes }}
-{{ toYaml .Values.ruler.extraVolumes | indent 8}}
-{{- end }}
         - name: storage
           emptyDir: {}
-{{- if .Values.ruler.sidecar.enabled }}
+        {{- if .Values.ruler.sidecar.enabled }}
         - name: sc-rules-volume
           emptyDir: {}
-{{- end }}
+        {{- end }}
+        {{- if .Values.ruler.extraVolumes }}
+        {{- toYaml .Values.ruler.extraVolumes | nindent 8}}
+        {{- end }}
 {{- end }}

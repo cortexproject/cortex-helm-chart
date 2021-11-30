@@ -24,19 +24,19 @@ spec:
         {{- toYaml . | nindent 8 }}
         {{- end }}
       annotations:
-{{- if .Values.useExternalConfig }}
+        {{- if .Values.useExternalConfig }}
         checksum/config: {{ .Values.externalConfigVersion }}
-{{- else }}
+        {{- else }}
         checksum/config: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
-{{- end}}
+        {{- end }}
         {{- with .Values.querier.podAnnotations }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
-      serviceAccountName: {{ template "cortex.serviceAccountName" . }}
-    {{- if .Values.querier.priorityClassName }}
+      serviceAccountName: {{ .Values.querier.serviceAccount.name | default (include "cortex.serviceAccountName" . ) }}
+      {{- if .Values.querier.priorityClassName }}
       priorityClassName: {{ .Values.querier.priorityClassName }}
-    {{- end }}
+      {{- end }}
       {{- if .Values.querier.securityContext.enabled }}
       securityContext: {{- omit .Values.querier.securityContext "enabled" | toYaml | nindent 8 }}
       {{- end }}
@@ -49,8 +49,8 @@ spec:
       {{- end}}
       {{- end }}
       containers:
-        - name: {{ .Chart.Name }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        - name: querier
+          image: "{{ .Values.image.repository }}:{{ default .Chart.AppVersion .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args:
             - "-target=querier"
@@ -62,7 +62,7 @@ spec:
           {{- end }}
           volumeMounts:
             {{- if .Values.querier.extraVolumeMounts }}
-              {{ toYaml .Values.querier.extraVolumeMounts | nindent 12}}
+            {{- toYaml .Values.querier.extraVolumeMounts | nindent 12}}
             {{- end }}
             - name: config
               mountPath: /etc/cortex
@@ -70,7 +70,7 @@ spec:
               mountPath: /etc/cortex-runtime-config
             - name: storage
               mountPath: "/data"
-              subPath: {{ .Values.querier.persistence.subPath }}
+              subPath: {{ .Values.querier.persistentVolume.subPath }}
           ports:
             - name: http-metrics
               containerPort: {{ .Values.config.server.http_listen_port }}
@@ -90,9 +90,13 @@ spec:
             {{- if .Values.querier.env }}
               {{- toYaml .Values.querier.env | nindent 12 }}
             {{- end }}
-{{- if .Values.querier.extraContainers }}
-{{ toYaml .Values.querier.extraContainers | indent 8}}
-{{- end }}
+          {{- with .Values.querier.lifecycle }}
+          lifecycle:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+        {{- if .Values.querier.extraContainers }}
+        {{- toYaml .Values.querier.extraContainers | nindent 8}}
+        {{- end }}
       nodeSelector:
         {{- toYaml .Values.querier.nodeSelector | nindent 8 }}
       affinity:
@@ -103,16 +107,16 @@ spec:
       volumes:
         - name: config
           secret:
-{{- if .Values.useExternalConfig }}
+          {{- if .Values.useExternalConfig }}
             secretName: {{ .Values.externalConfigSecretName }}
-{{- else }}
+          {{- else }}
             secretName: {{ template "cortex.fullname" . }}
-{{- end }}
+          {{- end }}
         - name: runtime-config
           configMap:
             name: {{ template "cortex.fullname" . }}-runtime-config
-{{- if .Values.querier.extraVolumes }}
-{{ toYaml .Values.querier.extraVolumes | indent 8}}
-{{- end }}
         - name: storage
           emptyDir: {}
+        {{- if .Values.querier.extraVolumes }}
+        {{- toYaml .Values.querier.extraVolumes | nindent 8}}
+        {{- end }}

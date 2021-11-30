@@ -1,52 +1,56 @@
 apiVersion: v2
-version: 0.6.0
-appVersion: v1.9.0
+version: 1.0.1
+appVersion: v1.10.0
 description: 'Horizontally scalable, highly available, multi-tenant, long term Prometheus.'
 home: https://cortexmetrics.io/
 icon: https://avatars2.githubusercontent.com/u/43045022?s=200&v=4
 kubeVersion: ^1.19.0-0
 maintainers:
-  - email: cortex-team@googlegroups.com
-    name: Cortex Maintainers
+  - email: thayward@infoblox.com
+    name: Tom Hayward
+    url: https://github.com/kd7lxl
+  - email: Niclas.Schad@plusserver.com
+    name: Niclas Schad
+    url: https://github.com/ShuzZzle
 name: cortex
 sources:
   - https://github.com/cortexproject/cortex-helm-chart
 dependencies:
   - name: memcached
     alias: memcached
-    version: 5.13.0
+    version: 5.15.9
     repository: https://charts.bitnami.com/bitnami
     condition: memcached.enabled
   - name: memcached
     alias: memcached-index-read
-    version: 5.13.0
+    version: 5.15.9
     repository: https://charts.bitnami.com/bitnami
     condition: memcached-index-read.enabled
   - name: memcached
     alias: memcached-index-write
-    version: 5.13.0
+    version: 5.15.9
     repository: https://charts.bitnami.com/bitnami
     condition: memcached-index-write.enabled
   - name: memcached
     alias: memcached-frontend
-    version: 5.13.0
+    version: 5.15.9
     repository: https://charts.bitnami.com/bitnami
     condition: memcached-frontend.enabled
   - name: memcached
     alias: memcached-blocks-index
-    version: 5.13.0
+    version: 5.15.9
     repository: https://charts.bitnami.com/bitnami
     tags:
       - blocks-storage-memcached
   - name: memcached
     alias: memcached-blocks
-    version: 5.13.0
+    version: 5.15.9
     repository: https://charts.bitnami.com/bitnami
     tags:
       - blocks-storage-memcached
   - name: memcached
     alias: memcached-blocks-metadata
-    version: 5.13.0
+    version: 5.15.9
     repository: https://charts.bitnami.com/bitnami
     tags:
       - blocks-storage-memcached

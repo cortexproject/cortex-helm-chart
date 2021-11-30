@@ -36,7 +36,7 @@ spec:
         {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
-      serviceAccountName: {{ template "cortex.serviceAccountName" . }}
+      serviceAccountName: {{ .Values.ingester.serviceAccount.name | default (include "cortex.serviceAccountName" . ) }}
       {{- if .Values.ingester.priorityClassName }}
       priorityClassName: {{ .Values.ingester.priorityClassName }}
       {{- end }}
@@ -52,8 +52,8 @@ spec:
       {{- end }}
       {{- end }}
       containers:
-        - name: {{ .Chart.Name }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        - name: ingester
+          image: "{{ .Values.image.repository }}:{{ default .Chart.AppVersion .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args:
             - "-target=ingester"
@@ -64,7 +64,7 @@ spec:
             {{- end }}
           volumeMounts:
             {{- if .Values.ingester.extraVolumeMounts }}
-              {{ toYaml .Values.ingester.extraVolumeMounts | nindent 12}}
+            {{- toYaml .Values.ingester.extraVolumeMounts | nindent 12}}
             {{- end }}
             - name: config
               mountPath: /etc/cortex
@@ -72,13 +72,8 @@ spec:
               mountPath: /etc/cortex-runtime-config
             - name: storage
               mountPath: "/data"
-              {{- if .Values.ingester.persistentVolume.subPath }}
-              subPath: {{ .Values.ingester.persistentVolume.subPath }}
-              {{- else }}
-              {{- if .Values.ingester.persistence.subPath }}
-              ## DEPRECATED: use persistentVolume.subPath instead
-              subPath: {{ .Values.ingester.persistence.subPath }}
-              {{- end }}
+              {{- with .Values.ingester.persistentVolume.subPath }}
+              subPath: {{ . }}
               {{- end }}
           ports:
             - name: http-metrics
@@ -92,8 +87,10 @@ spec:
               protocol: TCP
           startupProbe:
             {{- toYaml .Values.ingester.startupProbe | nindent 12 }}
+          {{- if .Values.ingester.livenessProbe }}
           livenessProbe:
             {{- toYaml .Values.ingester.livenessProbe | nindent 12 }}
+          {{- end }}
           readinessProbe:
             {{- toYaml .Values.ingester.readinessProbe | nindent 12 }}
           resources:
@@ -110,7 +107,7 @@ spec:
             {{- toYaml . | nindent 12 }}
           {{- end }}
         {{- with .Values.ingester.extraContainers }}
-        {{ toYaml . | nindent 8 }}
+        {{- toYaml . | nindent 8 }}
         {{- end }}
       nodeSelector:
         {{- toYaml .Values.ingester.nodeSelector | nindent 8 }}
@@ -130,9 +127,9 @@ spec:
         - name: runtime-config
           configMap:
             name: {{ template "cortex.fullname" . }}-runtime-config
-        {{- if .Values.ingester.extraVolumes }}
-        {{ toYaml .Values.ingester.extraVolumes | nindent 8}}
-        {{- end }}
         - name: storage
           emptyDir: {}
+        {{- if .Values.ingester.extraVolumes }}
+        {{- toYaml .Values.ingester.extraVolumes | nindent 8}}
+        {{- end }}
 {{- end -}}

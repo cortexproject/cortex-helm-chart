@@ -11,10 +11,6 @@ config:
         replication_factor: 1
         kvstore:
           store: "memberlist"
-    walconfig:
-      wal_enabled: true
-      recover_from_wal: true
-      wal_dir: "/data/wal"
 
   # See https://github.com/cortexproject/cortex/blob/master/docs/configuration/config-file-reference.md#storage_config
   storage:
@@ -58,17 +54,60 @@ ingester:
     enabled: true
     minReplicas: 1
   statefulSet:
-    enabled: true
+    enabled: false
+  extraVolumes:
+    - name: tmp-test
+      emptyDir: {}
+  extraVolumeMounts:
+    - name: tmp-test
+      mountPath: /tmp-test
+compactor:
+  replicas: 1
+  extraVolumes:
+    - name: tmp-test
+      emptyDir: {}
+  extraVolumeMounts:
+    - name: tmp-test
+      mountPath: /tmp-test
 distributor:
   replicas: 1
   autoscaling:
     enabled: true
     minReplicas: 1
+  extraVolumes:
+    - name: tmp-test
+      emptyDir: {}
+  extraVolumeMounts:
+    - name: tmp-test
+      mountPath: /tmp-test
 querier:
+  replicas: 1
   autoscaling:
     enabled: true
+  extraVolumes:
+    - name: tmp-test
+      emptyDir: {}
+  extraVolumeMounts:
+    - name: tmp-test
+      mountPath: /tmp-test
+query_frontend:
+  replicas: 1
+  extraVolumes:
+    - name: tmp-test
+      emptyDir: {}
+  extraVolumeMounts:
+    - name: tmp-test
+      mountPath: /tmp-test
 nginx:
   replicas: 1
+  autoscaling:
+    enabled: true
+  extraVolumes:
+    - name: tmp-test
+      emptyDir: {}
+  extraVolumeMounts:
+    - name: tmp-test
+      mountPath: /tmp-test
   config:
     httpSnippet: |-
       # http snippet
@@ -79,6 +118,33 @@ nginx:
 runtimeconfigmap:
   annotations:
     foo: bar
+alertmanager:
+  replicas: 1
+  statefulSet:
+    enabled: false
+  extraVolumes:
+    - name: tmp-test
+      emptyDir: {}
+  extraVolumeMounts:
+    - name: tmp-test
+      mountPath: /tmp-test
+ruler:
+  replicas: 1
+  enabled: true
+  extraVolumes:
+    - name: tmp-test
+      emptyDir: {}
+  extraVolumeMounts:
+    - name: tmp-test
+      mountPath: /tmp-test
+store_gateway:
+  replicas: 1
+  extraVolumes:
+    - name: tmp-test
+      emptyDir: {}
+  extraVolumeMounts:
+    - name: tmp-test
+      mountPath: /tmp-test
 
 tags:
   blocks-storage-memcached: true
