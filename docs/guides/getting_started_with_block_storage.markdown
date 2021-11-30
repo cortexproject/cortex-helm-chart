@@ -4,7 +4,6 @@ title: Getting started with block storage
 parent: Guides
 has_children: true
 has_toc: false
-nav_order: 1
 ---
 # Getting Started
 

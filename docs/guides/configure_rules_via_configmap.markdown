@@ -4,7 +4,6 @@ title: Configure rules via configmap
 parent: Guides
 has_children: true
 has_toc: false
-nav_order: 3
 ---
 # Configure rules via configmap
 

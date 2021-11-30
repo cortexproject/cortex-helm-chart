@@ -4,7 +4,6 @@ title: Configure rules via sidecar
 parent: Guides
 has_children: true
 has_toc: false
-nav_order: 4
 ---
 # Rules and AlertManager configuration
 Cortex can be configured to use a sidecar container in the Ruler and AlertManager to dynamically discover rules and AlertManager config/templates that are declared as ConfigMaps to allow easy and extensible configuration that avoids having to store state in the Cortex system itself (via config service, etc).
