@@ -68,10 +68,11 @@ helm upgrade cortex cortex-helm/cortex --version 0.6.0 -f kvstore-mirror.yaml -f
 
 kvstore-runtime.yaml:
 ```yaml
-runtime_config:
-  multi_kv_config:
-    mirror_enabled: false
-    primary: memberlist
+runtimeconfigmap:
+  runtime_config:
+    multi_kv_config:
+      mirror_enabled: false
+      primary: memberlist
 ```
 
 #### Stage 3 - disable consul
