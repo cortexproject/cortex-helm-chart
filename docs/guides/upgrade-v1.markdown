@@ -9,7 +9,7 @@ has_toc: true
 
 cortex-helm-chart v1.0.0 introduced a number of breaking changes in an attempt to provide better defaults for new users. Care should be taken when upgrading so that the new defaults are not inherited unexpectedly. Many of the new defaults are safe and simple to apply with an upgrade, but some require special procedures to migrate to, and some may not match your desired configuration.
 
-This guide covers a few topics, but is not exhaustive. Please review the [release notes](https://github.com/cortexproject/cortex-helm-chart/releases/tag/v1.0.0) and [diff](https://github.com/cortexproject/cortex-helm-chart/compare/v0.6.0...v1.0.0) before upgrading to ensure you haven't missed anything important to your installation.
+This guide covers a few topics, but is not exhaustive. Please review the [release notes](https://github.com/cortexproject/cortex-helm-chart/releases/tag/v1.0.0) and [diff](https://github.com/cortexproject/cortex-helm-chart/compare/v0.6.0...v1.0.0) before upgrading to ensure you haven't missed anything important to your installation. You may want to use a tool like [helm-diff](https://github.com/databus23/helm-diff) to see what changes will be applied.
 
 ## Migrating to Memberlist
 
@@ -17,7 +17,7 @@ The default kvstore changed from `consul` to `memberlist`. Migrating from one kv
 
 ### Downtime
 
-If you are okay with downtime, the simplest way to migrate kvstores is to scale down all cortex components, then `helm upgrade` to cortex-helm-chart v1.x.x to apply the new default kvstore, `memberlist`.
+If you are okay with downtime, the simplest way to migrate kvstores is to scale down all cortex components, then `helm upgrade --reset-values` to cortex-helm-chart v1.x.x to apply the new default kvstore, `memberlist`. Keep in mind this will apply all the new defaults, so ensure any values you would like to preserve that are unrelated to the kvstore are overridden with `-f` and your custom values file or `--set`.
 
 ### Multi KV
 
