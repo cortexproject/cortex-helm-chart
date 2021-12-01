@@ -112,3 +112,14 @@ Create configuration for frontend memcached configuration
 - "-frontend.memcached.addresses=dns+{{ template "cortex.fullname" . }}-memcached-frontend.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:11211"
 {{- end -}}
 {{- end -}}
+
+{{/*
+Determine the policy api version
+*/}}
+{{- define "cortex.pdbVersion" -}}
+{{- if or (.Capabilities.APIVersions.Has "policy/v1/PodDisruptionBudget") (semverCompare ">=1.21" .Capabilities.KubeVersion.Version) -}}
+policy/v1
+{{- else -}}
+policy/v1beta1
+{{- end -}}
+{{- end -}}
