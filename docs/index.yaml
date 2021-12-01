@@ -3,7 +3,7 @@ entries:
   cortex:
   - apiVersion: v2
     appVersion: v1.10.0
-    created: "2021-12-01T22:05:21.608842691+01:00"
+    created: "2021-12-01T22:24:52.648823082+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -45,7 +45,7 @@ entries:
       version: 5.15.9
     description: Horizontally scalable, highly available, multi-tenant, long term
       Prometheus.
-    digest: d91a54e0e0b8071505caa450eb5494c1797a84a8f59e096cf597c643a4e788e1
+    digest: c4426c925a375c33fb02ed347ab8c818eb02bd25ac100122194259b291b5f2ce
     home: https://cortexmetrics.io/
     icon: https://avatars2.githubusercontent.com/u/43045022?s=200&v=4
     kubeVersion: ^1.19.0-0
@@ -64,7 +64,7 @@ entries:
     version: 1.1.0
   - apiVersion: v2
     appVersion: v1.10.0
-    created: "2021-12-01T22:05:21.602159129+01:00"
+    created: "2021-12-01T22:24:52.641614361+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -125,7 +125,7 @@ entries:
     version: 1.0.1
   - apiVersion: v2
     appVersion: v1.10.0
-    created: "2021-12-01T22:05:21.594159679+01:00"
+    created: "2021-12-01T22:24:52.629997612+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -186,7 +186,7 @@ entries:
     version: 1.0.0
   - apiVersion: v2
     appVersion: v1.10.0
-    created: "2021-12-01T22:05:21.587275377+01:00"
+    created: "2021-12-01T22:24:52.622651651+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -247,7 +247,7 @@ entries:
     version: 0.7.0
   - apiVersion: v2
     appVersion: v1.9.0
-    created: "2021-12-01T22:05:21.57697093+01:00"
+    created: "2021-12-01T22:24:52.616713143+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -304,7 +304,7 @@ entries:
     version: 0.6.0
   - apiVersion: v2
     appVersion: v1.9.0
-    created: "2021-12-01T22:05:21.572691003+01:00"
+    created: "2021-12-01T22:24:52.612494122+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -361,7 +361,7 @@ entries:
     version: 0.5.0
   - apiVersion: v2
     appVersion: v1.7.0
-    created: "2021-12-01T22:05:21.569137908+01:00"
+    created: "2021-12-01T22:24:52.608774617+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -417,7 +417,7 @@ entries:
     version: 0.4.1
   - apiVersion: v2
     appVersion: v1.7.0
-    created: "2021-12-01T22:05:21.564241157+01:00"
+    created: "2021-12-01T22:24:52.604510486+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -473,7 +473,7 @@ entries:
     version: 0.4.0
   - apiVersion: v2
     appVersion: v1.6.0
-    created: "2021-12-01T22:05:21.560142479+01:00"
+    created: "2021-12-01T22:24:52.600587424+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -529,7 +529,7 @@ entries:
     version: 0.3.0
   - apiVersion: v2
     appVersion: v1.4.0
-    created: "2021-12-01T22:05:21.556285786+01:00"
+    created: "2021-12-01T22:24:52.5953208+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -560,4 +560,4 @@ entries:
     urls:
     - https://cortexproject.github.io/cortex-helm-chart/cortex-0.2.0.tgz
     version: 0.2.0
-generated: "2021-12-01T22:05:21.544697103+01:00"
+generated: "2021-12-01T22:24:52.581688554+01:00"
