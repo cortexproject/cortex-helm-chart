@@ -48,11 +48,7 @@ spec:
         {{- toYaml . | nindent 8 }}
         {{- end }}
       annotations:
-        {{- if .Values.useExternalConfig }}
-        checksum/config: {{ .Values.externalConfigVersion }}
-        {{- else }}
-        checksum/config: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
-        {{- end }}
+        checksum/config: {{ include "cortex.configChecksum" . }}
         {{- with .Values.store_gateway.podAnnotations }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
@@ -80,13 +76,7 @@ spec:
         {{- toYaml .Values.store_gateway.tolerations | nindent 8 }}
       terminationGracePeriodSeconds: {{ .Values.store_gateway.terminationGracePeriodSeconds }}
       volumes:
-        - name: config
-          secret:
-            {{- if .Values.useExternalConfig }}
-            secretName: {{ .Values.externalConfigSecretName }}
-            {{- else }}
-            secretName: {{ template "cortex.fullname" . }}
-            {{- end }}
+        {{- include "cortex.configVolume" . | nindent 8 }}
         - name: runtime-config
           configMap:
             name: {{ template "cortex.fullname" . }}-runtime-config

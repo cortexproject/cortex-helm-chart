@@ -754,5 +754,6 @@ Kubernetes: `^1.19.0-0`
 | table_manager.&ZeroWidthSpace;terminationGracePeriodSeconds | int | `180` |  |
 | table_manager.&ZeroWidthSpace;tolerations | list | `[]` |  |
 | tags.&ZeroWidthSpace;blocks-storage-memcached | bool | `false` | Set to true to enable block storage memcached caching |
+| useConfigMap | bool | `false` |  |
 | useExternalConfig | bool | `false` |  |
 

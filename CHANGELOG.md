@@ -1,6 +1,7 @@
 # Changelog
 
 ## master / unreleased
+* [FEATURE] Optionally manage cortex config as configmap. #280
 
 ## 1.1.0 / 2021-12-01
 
