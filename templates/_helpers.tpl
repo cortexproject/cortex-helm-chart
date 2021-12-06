@@ -147,7 +147,7 @@ Get volume of config secret of configMap
     secretName: {{ .Values.externalConfigSecretName }}
   {{- else if .Values.useConfigMap }}
   configMap:
-    name: {{ template "cortex.fullname" . }}
+    name: {{ template "cortex.fullname" . }}-config
   {{- else }}
   secret:
     secretName: {{ template "cortex.fullname" . }}
