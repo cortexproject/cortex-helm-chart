@@ -34,6 +34,7 @@ serviceAccount:
   annotations: {}
   automountServiceAccountToken: true
 
+useConfigMap: false
 useExternalConfig: false
 externalConfigSecretName: 'secret-with-config.yaml'
 externalConfigVersion: '0'

@@ -123,3 +123,33 @@ policy/v1
 policy/v1beta1
 {{- end -}}
 {{- end -}}
+
+{{/*
+Get checksum of config secret or configMap
+*/}}
+{{- define "cortex.configChecksum" -}}
+{{- if .Values.useExternalConfig -}}
+{{- .Values.externalConfigVersion -}}
+{{- else if .Values.useConfigMap -}}
+{{- include (print $.Template.BasePath "/configmap.yaml") . | sha256sum -}}
+{{- else -}}
+{{- include (print $.Template.BasePath "/secret.yaml") . | sha256sum -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Get volume of config secret of configMap
+*/}}
+{{- define "cortex.configVolume" -}}
+- name: config
+  {{- if .Values.useExternalConfig }}
+  secret:
+    secretName: {{ .Values.externalConfigSecretName }}
+  {{- else if .Values.useConfigMap }}
+  configMap:
+    name: {{ template "cortex.fullname" . }}-config
+  {{- else }}
+  secret:
+    secretName: {{ template "cortex.fullname" . }}
+  {{- end }}
+{{- end -}}
