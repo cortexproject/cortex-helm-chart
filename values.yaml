@@ -1083,7 +1083,7 @@ nginx:
     # are scoped appropriately, explicitly set the `X-Scope-OrgID` header
     # in the nginx config. Example
     #   setHeaders:
-    #     X-Scope-Org-Id: $remote_user
+    #     X-Scope-OrgID: $remote_user
     basicAuthSecretName: ""
 
   image:
