@@ -2,6 +2,7 @@
 
 ## master / unreleased
 * [FEATURE] Optionally manage cortex config as configmap. #280
+* [ENHANCEMENT] Upgrade to Cortex v1.11.0 #272
 
 ## 1.1.0 / 2021-12-01
 
