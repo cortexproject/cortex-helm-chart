@@ -371,7 +371,7 @@ Kubernetes: `^1.19.0-0`
 | ingester.&ZeroWidthSpace;extraVolumes | list | `[]` |  |
 | ingester.&ZeroWidthSpace;initContainers | list | `[]` |  |
 | ingester.&ZeroWidthSpace;lifecycle.&ZeroWidthSpace;preStop | object | `{"httpGet":{"path":"/ingester/shutdown","port":"http-metrics"}}` | The /shutdown preStop hook is recommended as part of the ingester scaledown process, but can be removed to optimize rolling restarts in instances that will never be scaled down or when using chunks storage with WAL disabled. https://cortexmetrics.io/docs/guides/ingesters-scaling-up-and-down/#scaling-down |
-| ingester.&ZeroWidthSpace;livenessProbe | object | `{}` | Liveness probes for ingesters are not recommended.  Ref: https://cortexmetrics.io/docs/guides/running-cortex-on-kubernetes/#take-extra-care-with-ingesters |
+| ingester.&ZeroWidthSpace;livenessProbe | object | `{}` | Startup/liveness probes for ingesters are not recommended.  Ref: https://cortexmetrics.io/docs/guides/running-cortex-on-kubernetes/#take-extra-care-with-ingesters |
 | ingester.&ZeroWidthSpace;nodeSelector | object | `{}` |  |
 | ingester.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;accessModes | list | `["ReadWriteOnce"]` | Ingester data Persistent Volume access modes Must match those of existing PV or dynamic provisioner Ref: http://kubernetes.io/docs/user-guide/persistent-volumes/ |
 | ingester.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;annotations | object | `{}` | Ingester data Persistent Volume Claim annotations |
@@ -395,12 +395,7 @@ Kubernetes: `^1.19.0-0`
 | ingester.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;extraEndpointSpec | object | `{}` | Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint |
 | ingester.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;metricRelabelings | list | `[]` |  |
 | ingester.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;relabelings | list | `[]` |  |
-| ingester.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;failureThreshold | int | `60` |  |
-| ingester.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
-| ingester.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
-| ingester.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;scheme | string | `"HTTP"` |  |
-| ingester.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;initialDelaySeconds | int | `120` |  |
-| ingester.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;periodSeconds | int | `30` |  |
+| ingester.&ZeroWidthSpace;startupProbe | object | `{}` | Startup/liveness probes for ingesters are not recommended.  Ref: https://cortexmetrics.io/docs/guides/running-cortex-on-kubernetes/#take-extra-care-with-ingesters |
 | ingester.&ZeroWidthSpace;statefulSet.&ZeroWidthSpace;enabled | bool | `false` | If true, use a statefulset instead of a deployment for pod management. This is useful when using WAL |
 | ingester.&ZeroWidthSpace;statefulSet.&ZeroWidthSpace;podManagementPolicy | string | `"OrderedReady"` | ref: https://cortexmetrics.io/docs/guides/ingesters-scaling-up-and-down/#scaling-down and https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#pod-management-policies for scaledown details |
 | ingester.&ZeroWidthSpace;statefulStrategy.&ZeroWidthSpace;type | string | `"RollingUpdate"` |  |

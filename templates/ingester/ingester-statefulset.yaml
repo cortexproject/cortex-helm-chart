@@ -127,12 +127,14 @@ spec:
             - name: gossip
               containerPort: {{ .Values.config.memberlist.bind_port }}
               protocol: TCP
+          {{- if .Values.ingester.startupProbe }}
           startupProbe:
             {{- toYaml .Values.ingester.startupProbe | nindent 12 }}
+          {{- end }}
           {{- if .Values.ingester.livenessProbe }}
           livenessProbe:
             {{- toYaml .Values.ingester.livenessProbe | nindent 12 }}
-          {{- end}}
+          {{- end }}
           readinessProbe:
             {{- toYaml .Values.ingester.readinessProbe | nindent 12 }}
           resources:
