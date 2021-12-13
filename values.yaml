@@ -201,7 +201,7 @@ alertmanager:
   # -- Pod Annotations
   podAnnotations:
     prometheus.io/scrape: 'true'
-    prometheus.io/port: 'http-metrics'
+    prometheus.io/port: '8080'
 
   nodeSelector: {}
   affinity: {}
@@ -345,7 +345,7 @@ distributor:
   # -- Pod Annotations
   podAnnotations:
     prometheus.io/scrape: 'true'
-    prometheus.io/port: 'http-metrics'
+    prometheus.io/port: '8080'
 
   nodeSelector: {}
   affinity:
@@ -453,7 +453,7 @@ ingester:
   # -- Pod Annotations
   podAnnotations:
     prometheus.io/scrape: 'true'
-    prometheus.io/port: 'http-metrics'
+    prometheus.io/port: '8080'
 
   nodeSelector: {}
   affinity:
@@ -605,7 +605,7 @@ ruler:
   # -- Pod Annotations
   podAnnotations:
     prometheus.io/scrape: 'true'
-    prometheus.io/port: 'http-metrics'
+    prometheus.io/port: '8080'
 
   nodeSelector: {}
   affinity: {}
@@ -723,7 +723,7 @@ querier:
   # -- Pod Annotations
   podAnnotations:
     prometheus.io/scrape: 'true'
-    prometheus.io/port: 'http-metrics'
+    prometheus.io/port: '8080'
 
   nodeSelector: {}
   affinity:
@@ -825,7 +825,7 @@ query_frontend:
   # -- Pod Annotations
   podAnnotations:
     prometheus.io/scrape: 'true'
-    prometheus.io/port: 'http-metrics'
+    prometheus.io/port: '8080'
 
   nodeSelector: {}
   affinity:
@@ -915,7 +915,7 @@ table_manager:
   # -- Pod Annotations
   podAnnotations:
     prometheus.io/scrape: 'true'
-    prometheus.io/port: 'http-metrics'
+    prometheus.io/port: '8080'
 
   nodeSelector: {}
   affinity: {}
@@ -994,7 +994,7 @@ configs:
   # -- Pod Annotations
   podAnnotations:
     prometheus.io/scrape: 'true'
-    prometheus.io/port: 'http-metrics'
+    prometheus.io/port: '8080'
 
   nodeSelector: {}
   affinity: {}
@@ -1105,9 +1105,7 @@ nginx:
   podLabels: {}
 
   # -- Pod Annotations
-  podAnnotations:
-    prometheus.io/scrape: ''
-    prometheus.io/port: 'http-metrics'
+  podAnnotations: {}
 
   nodeSelector: {}
   affinity: {}
@@ -1195,7 +1193,7 @@ store_gateway:
   # -- Pod Annotations
   podAnnotations:
     prometheus.io/scrape: 'true'
-    prometheus.io/port: 'http-metrics'
+    prometheus.io/port: '8080'
 
   nodeSelector: {}
   affinity:
@@ -1313,7 +1311,7 @@ compactor:
   # -- Pod Annotations
   podAnnotations:
     prometheus.io/scrape: 'true'
-    prometheus.io/port: 'http-metrics'
+    prometheus.io/port: '8080'
 
   nodeSelector: {}
   affinity:
