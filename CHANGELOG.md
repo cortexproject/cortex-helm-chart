@@ -1,6 +1,7 @@
 # Changelog
 
 ## master / unreleased
+* [CHANGE] Use port number for prometheus port annotations. #288
 * [CHANGE] Disable ingester startup probes by default. #286
 * [FEATURE] Optionally manage cortex config as configmap. #280
 * [ENHANCEMENT] Upgrade to Cortex v1.11.0 #272
