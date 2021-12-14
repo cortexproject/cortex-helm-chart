@@ -3,6 +3,7 @@
 ## master / unreleased
 * [CHANGE] Use port number for prometheus port annotations. #288
 * [CHANGE] Disable ingester startup probes by default. #286
+* [CHANGE] Moved HPA memory specification to be the first item in the list. #284
 * [FEATURE] Optionally manage cortex config as configmap. #280
 * [ENHANCEMENT] Upgrade to Cortex v1.11.0 #272
 
