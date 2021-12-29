@@ -1,6 +1,9 @@
 # Changelog
 
 ## master / unreleased
+
+## 1.2.0 / 2021-12-29
+
 * [CHANGE] Use port number for prometheus port annotations. #288
 * [CHANGE] Disable ingester startup probes by default. #286
 * [CHANGE] Moved HPA memory specification to be the first item in the list. #284
@@ -17,6 +20,7 @@
 * [DEPENDENCY] Update Helm release memcached to v5.15.9 #273
 
 ## 1.0.1 / 2021-11-26
+
 * [BUGFIX] alertmanager/ruler deployment: fix indentation #266
 
 ## 1.0.0 / 2021-11-25
