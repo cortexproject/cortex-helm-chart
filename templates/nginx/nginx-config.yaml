@@ -39,6 +39,8 @@ data:
 
       server { # simple reverse-proxy
         listen {{ .Values.nginx.http_listen_port }};
+        root /home/app;
+        index all-services.html;
         proxy_connect_timeout 300s;
         proxy_send_timeout 300s;
         proxy_read_timeout 300s;
@@ -65,6 +67,22 @@ data:
           # this return statement returns a response before basic auth is
           # evaluated.
           return 200 'alive';
+        }
+
+        location / {
+          if ($arg_redirect) {
+            proxy_pass $arg_redirect;
+          }
+
+          try_files '' /all-services.html =404;
+        }
+
+        location /config {
+          if ($arg_redirect) {
+            proxy_pass $arg_redirect;
+          }
+
+          try_files '' /all-services.html =404;
         }
 
         # Distributor Config
@@ -125,6 +143,10 @@ data:
         location ~ {{.Values.config.api.prometheus_http_prefix}}/api/v1/label/.* {
           proxy_pass      http://{{ template "cortex.fullname" . }}-query-frontend.{{ $rootDomain }}$request_uri;
         }
+    
+    
+    
+    
         {{- if and (.Values.config.auth_enabled) (.Values.nginx.config.auth_orgs) }}
         # Auth orgs
         {{- range $org := compact .Values.nginx.config.auth_orgs | uniq }}

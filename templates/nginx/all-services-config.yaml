@@ -1,0 +1,39 @@
+{{- if .Values.nginx.enabled }}
+{{- $rootDomain := printf "%s.svc.%s:%d" .Release.Namespace .Values.clusterDomain (.Values.config.server.http_listen_port | int) }}
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: {{ include "cortex.nginxFullname" . }}-all-services-page
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "cortex.nginxLabels" . | nindent 4 }}
+data:
+  all-services.html: |-
+    <html>
+    <script>
+        function addURI(elem) {
+            var requestURI = location.pathname.substr(1)
+            var href = new URL(requestURI, elem.getAttribute("href")).href
+            var url = "http://{{ .Values.nginx.redirectUrl }}?redirect=" + href
+            elem.setAttribute("href", url)
+    }
+    </script>
+    <head>
+    <title>Cortex All Services</title>
+    <body>
+    <h1>Cortex All Services</h1>
+    <hr>
+    <ul>
+        <li><a href="http://{{ template "cortex.alertmanagerFullname" . }}.{{ $rootDomain }}" onclick="addURI(this)">Alertmanager</a></li>
+        <li><a href="http://{{ template "cortex.compactorFullname" . }}.{{ $rootDomain }}" onclick="addURI(this)">Compactor</a></li>
+        <li><a href="http://{{ template "cortex.distributorFullname" . }}.{{ $rootDomain }}" onclick="addURI(this)">Distributor</a></li>
+        <li><a href="http://{{ template "cortex.ingesterFullname" . }}.{{ $rootDomain }}" onclick="addURI(this)">Ingester</a></li>
+        <li><a href="http://{{ template "cortex.rulerFullname" . }}.{{ $rootDomain }}" onclick="addURI(this)">Ruler</a></li>
+        <li><a href="http://{{ template "cortex.storeGatewayFullname" . }}.{{ $rootDomain }}" onclick="addURI(this)">Store-Gateway</a></li>
+        <li><a href="http://{{ template "cortex.querierFullname" . }}.{{ $rootDomain }}" onclick="addURI(this)">Querier</a></li>
+        <li><a href="http://{{ template "cortex.queryFrontendFullname" . }}.{{ $rootDomain }}" onclick="addURI(this)">Query-Frontend</a></li>
+    </ul>
+    </body>
+    </head>
+    </html>
+{{- end }}

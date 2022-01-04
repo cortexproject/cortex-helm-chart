@@ -60,7 +60,11 @@ spec:
             {{- toYaml .Values.nginx.extraVolumeMounts | nindent 12}}
             {{- end }}
             - name: config
+              readOnly: true
               mountPath: /etc/nginx
+            - name: all-services-html
+              readOnly: true
+              mountPath: /home/app
             {{- if .Values.nginx.config.basicAuthSecretName }}
             - name: htpasswd
               mountPath: /etc/apache2
@@ -99,6 +103,9 @@ spec:
         - name: config
           configMap:
             name: {{ template "cortex.fullname" . }}-nginx
+        - name: all-services-html
+          configMap:
+            name: {{ include "cortex.nginxFullname" . }}-all-services-page
         {{- if .Values.nginx.config.basicAuthSecretName }}
         - name: htpasswd
           secret:
