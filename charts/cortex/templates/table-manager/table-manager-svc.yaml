@@ -4,11 +4,11 @@ kind: Service
 metadata:
   name: {{ template "cortex-table-manager.fullname" . }}
   labels: {{ include "cortex-table-manager.labels" . | nindent 4 }}
-{{- with .Values.table_manager.labels }}
-{{- toYaml . | indent 4 }}
-{{- end }}
+    {{- with .Values.table_manager.service.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
   annotations:
-    {{- toYaml .Values.table_manager.annotations | nindent 4 }}
+    {{- toYaml .Values.table_manager.service.annotations | nindent 4 }}
 spec:
   type: ClusterIP
   ports:
@@ -16,5 +16,6 @@ spec:
       protocol: TCP
       name: http-metrics
       targetPort: http-metrics
-  selector: {{ include "cortex-table-manager.matchLabels" . | nindent 4 }}
+  selector:
+    {{- include "cortex-table-manager.matchLabels" . | nindent 4 }}
 {{- end -}}

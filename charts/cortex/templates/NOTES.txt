@@ -1,3 +1,9 @@
+{{- if eq .Values.config.storage.engine "chunks" }}
+Cortex chunks storage has been deprecated, and it's now in maintenance mode: all Cortex users are encouraged to migrate to the blocks storage.
+No new features will be added to the chunks storage.
+Unlike the official cortex default configuration this helm-chart does not run the chunk engine by default.
+{{- end }}
+
 Verify the application is working by running these commands:
-  kubectl --namespace {{ .Release.Namespace }} port-forward service/{{ include "cortex.fullname" . }} {{ .Values.distributor.service.port }}
-  curl http://127.0.0.1:{{ .Values.distributor.service.port }}/api/prom/label
+  kubectl --namespace {{ .Release.Namespace }} port-forward service/{{ include "cortex-querier.fullname" . }} {{ .Values.config.server.http_listen_port }}
+  curl http://127.0.0.1:{{ .Values.config.server.http_listen_port }}/services

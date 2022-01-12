@@ -1,0 +1,16 @@
+{{- with .Values.runtimeconfigmap }}
+{{- if .create }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "cortex.runtimeconfigname" $ }}
+  labels: {{- include "cortex.labels" $ | nindent 4 }}
+  {{- with .annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+data:
+  runtime_config.yaml: |
+    {{- tpl (toYaml .runtime_config) $ | nindent 4 }}
+{{- end }}
+{{- end }}

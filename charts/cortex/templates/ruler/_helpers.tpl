@@ -30,3 +30,10 @@ cortex-ruler selector labels
 app.kubernetes.io/component: ruler
 {{ include "cortex.matchLabels" . }}
 {{- end -}}
+
+{{/*
+format rules dir
+*/}}
+{{- define "cortex-ruler.dirName" -}}
+rules-{{ . | replace "_" "-" | trimSuffix "-" }}
+{{- end }}

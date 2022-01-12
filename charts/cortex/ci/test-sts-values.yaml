@@ -1,0 +1,204 @@
+ingress:
+  enabled: true
+
+config:
+  ingester:
+    lifecycler:
+      join_after: 30s
+      final_sleep: 30s
+      tokens_file_path: "/data/tokens"
+      ring:
+        replication_factor: 1
+        kvstore:
+          store: "memberlist"
+
+  # See https://github.com/cortexproject/cortex/blob/master/docs/configuration/config-file-reference.md#storage_config
+  storage:
+    engine: blocks
+  blocks_storage:
+    backend: "filesystem"
+    tsdb:
+      dir: "/data/tsdb"
+    bucket_store:
+      sync_dir: "/data/tsdb-sync"
+    filesystem:
+      dir: "/data/store"
+
+  distributor:
+    ring:
+      kvstore:
+        store: memberlist
+
+  ruler:
+    ring:
+      kvstore:
+        store: memberlist
+
+  ruler_storage:
+    backend: "filesystem"
+    filesystem:
+      dir: "/data/store"
+
+  alertmanager_storage:
+    backend: "filesystem"
+    filesystem:
+      dir: "/data/store"
+
+  memberlist:
+    join_members:
+      - '{{ include "cortex.fullname" $ }}-memberlist'
+
+ingester:
+  replicas: 1
+  autoscaling:
+    enabled: true
+    minReplicas: 1
+  statefulSet:
+    enabled: true
+  extraVolumes:
+    - name: tmp-test
+      emptyDir: {}
+  extraVolumeMounts:
+    - name: tmp-test
+      mountPath: /tmp-test
+compactor:
+  replicas: 1
+  extraVolumes:
+    - name: tmp-test
+      emptyDir: {}
+  extraVolumeMounts:
+    - name: tmp-test
+      mountPath: /tmp-test
+distributor:
+  replicas: 1
+  autoscaling:
+    enabled: true
+    minReplicas: 1
+  extraVolumes:
+    - name: tmp-test
+      emptyDir: {}
+  extraVolumeMounts:
+    - name: tmp-test
+      mountPath: /tmp-test
+querier:
+  replicas: 1
+  autoscaling:
+    enabled: true
+  extraVolumes:
+    - name: tmp-test
+      emptyDir: {}
+  extraVolumeMounts:
+    - name: tmp-test
+      mountPath: /tmp-test
+query_frontend:
+  replicas: 1
+  extraVolumes:
+    - name: tmp-test
+      emptyDir: {}
+  extraVolumeMounts:
+    - name: tmp-test
+      mountPath: /tmp-test
+nginx:
+  replicas: 1
+  autoscaling:
+    enabled: true
+  extraVolumes:
+    - name: tmp-test
+      emptyDir: {}
+  extraVolumeMounts:
+    - name: tmp-test
+      mountPath: /tmp-test
+  config:
+    httpSnippet: |-
+      # http snippet
+    mainSnippet: |-
+      # main snippet
+    serverSnippet: |-
+      # server snippet
+runtimeconfigmap:
+  annotations:
+    foo: bar
+alertmanager:
+  replicas: 1
+  statefulSet:
+    enabled: true
+  extraVolumes:
+    - name: tmp-test
+      emptyDir: {}
+  extraVolumeMounts:
+    - name: tmp-test
+      mountPath: /tmp-test
+ruler:
+  replicas: 1
+  enabled: true
+  extraVolumes:
+    - name: tmp-test
+      emptyDir: {}
+  extraVolumeMounts:
+    - name: tmp-test
+      mountPath: /tmp-test
+store_gateway:
+  replicas: 1
+  extraVolumes:
+    - name: tmp-test
+      emptyDir: {}
+  extraVolumeMounts:
+    - name: tmp-test
+      mountPath: /tmp-test
+
+tags:
+  blocks-storage-memcached: true
+memcached:
+  enabled: true
+  architecture: standalone
+  replicaCount: 1
+  resources:
+    # https://github.com/helm/helm/issues/9136
+    requests:
+      cpu: 0
+      memory: 0
+memcached-index-read:
+  enabled: true
+  architecture: standalone
+  replicaCount: 1
+  resources:
+    requests:
+      cpu: 0
+      memory: 0
+memcached-index-write:
+  enabled: true
+  architecture: standalone
+  replicaCount: 1
+  resources:
+    requests:
+      cpu: 0
+      memory: 0
+memcached-frontend:
+  enabled: true
+  architecture: standalone
+  replicaCount: 1
+  resources:
+    requests:
+      cpu: 0
+      memory: 0
+memcached-blocks:
+  architecture: standalone
+  replicaCount: 1
+  resources:
+    requests:
+      cpu: 0
+      memory: 0
+memcached-blocks-index:
+  architecture: standalone
+  replicaCount: 1
+  resources:
+    requests:
+      cpu: 0
+      memory: 0
+memcached-blocks-metadata:
+  architecture: standalone
+  replicaCount: 1
+  resources:
+    requests:
+      cpu: 0
+      memory: 0

@@ -1,11 +1,11 @@
-{{- if .Values.configs.enabled }}
+{{- if .Values.configs.enabled -}}
 apiVersion: v1
 kind: Service
 metadata:
   name: {{ template "cortex-configs.fullname" . }}
   labels: {{ include "cortex-configs.labels" . | nindent 4 }}
     {{- with .Values.configs.service.labels }}
-{{- toYaml . | indent 4 }}
+    {{- toYaml . | nindent 4 }}
     {{- end }}
   annotations:
     {{- toYaml .Values.configs.service.annotations | nindent 4 }}

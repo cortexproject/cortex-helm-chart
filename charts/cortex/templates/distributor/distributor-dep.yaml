@@ -6,7 +6,9 @@ metadata:
   annotations:
     {{- toYaml .Values.distributor.annotations | nindent 4 }}
 spec:
+  {{- if not .Values.distributor.autoscaling.enabled }}
   replicas: {{ .Values.distributor.replicas }}
+  {{- end }}
   selector:
     matchLabels: {{ include "cortex-distributor.matchLabels" . | nindent 6 }}
   strategy:
@@ -18,16 +20,12 @@ spec:
 {{- toYaml . | indent 8 }}
 {{- end }}
       annotations:
-{{- if .Values.useExternalConfig }}
-        checksum/config: {{ .Values.externalConfigVersion }}
-{{- else }}
-        checksum/config: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
-{{- end}}
+        checksum/config: {{ include "cortex.configChecksum" . }}
         {{- with .Values.distributor.podAnnotations }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
-      serviceAccountName: {{ template "cortex.serviceAccountName" . }}
+      serviceAccountName: {{ .Values.distributor.serviceAccount.name | default (include "cortex.serviceAccountName" . ) }}
     {{- if .Values.distributor.priorityClassName }}
       priorityClassName: {{ .Values.distributor.priorityClassName }}
     {{- end }}
@@ -42,7 +40,7 @@ spec:
       {{- end}}
       {{- end }}
       containers:
-        - name: {{ .Chart.Name }}
+        - name: distributor
           image: "{{ .Values.image.repository }}:{{ include "cortex.imageTag" . }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args:
@@ -53,32 +51,45 @@ spec:
           {{- end }}
           volumeMounts:
             {{- if .Values.distributor.extraVolumeMounts }}
-              {{ toYaml .Values.distributor.extraVolumeMounts | nindent 12}}
+            {{- toYaml .Values.distributor.extraVolumeMounts | nindent 12}}
             {{- end }}
             - name: config
               mountPath: /etc/cortex
+            - name: runtime-config
+              mountPath: /etc/cortex-runtime-config
             - name: storage
               mountPath: "/data"
-              subPath: {{ .Values.distributor.persistence.subPath }}
+              subPath: {{ .Values.distributor.persistentVolume.subPath }}
           ports:
             - name: http-metrics
               containerPort: {{ .Values.config.server.http_listen_port }}
               protocol: TCP
+            - name: gossip
+              containerPort: {{ .Values.config.memberlist.bind_port }}
+              protocol: TCP
+            - name: grpc
+              containerPort: {{ .Values.config.server.grpc_listen_port }}
+              protocol: TCP
+          startupProbe:
+            {{- toYaml .Values.distributor.startupProbe | nindent 12 }}
           livenessProbe:
             {{- toYaml .Values.distributor.livenessProbe | nindent 12 }}
           readinessProbe:
             {{- toYaml .Values.distributor.readinessProbe | nindent 12 }}
           resources:
             {{- toYaml .Values.distributor.resources | nindent 12 }}
-          securityContext:
-            readOnlyRootFilesystem: true
+          securityContext: {{- toYaml .Values.distributor.containerSecurityContext | nindent 12 }}
+          {{- if .Values.distributor.env }}
           env:
-            {{- if .Values.distributor.env }}
-              {{- toYaml .Values.distributor.env | nindent 12 }}
-            {{- end }}
-{{- if .Values.distributor.extraContainers }}
-{{ toYaml .Values.distributor.extraContainers | indent 8}}
-{{- end }}
+            {{- toYaml .Values.distributor.env | nindent 12 }}
+          {{- end }}
+          {{- with .Values.distributor.lifecycle }}
+          lifecycle:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      {{- if .Values.distributor.extraContainers }}
+      {{- toYaml .Values.distributor.extraContainers | nindent 8}}
+      {{- end }}
       nodeSelector:
         {{- toYaml .Values.distributor.nodeSelector | nindent 8 }}
       affinity:
@@ -87,13 +98,10 @@ spec:
         {{- toYaml .Values.distributor.tolerations | nindent 8 }}
       terminationGracePeriodSeconds: {{ .Values.distributor.terminationGracePeriodSeconds }}
       volumes:
-        - name: config
-          secret:
-{{- if .Values.useExternalConfig }}
-            secretName: {{ .Values.externalConfigSecretName }}
-{{- else }}
-            secretName: {{ template "cortex.fullname" . }}
-{{- end }}
+        {{- include "cortex.configVolume" . | nindent 8 }}
+        - name: runtime-config
+          configMap:
+            name: {{ template "cortex.runtimeconfigname" . }}
 {{- if .Values.distributor.extraVolumes }}
 {{ toYaml .Values.distributor.extraVolumes | indent 8}}
 {{- end }}

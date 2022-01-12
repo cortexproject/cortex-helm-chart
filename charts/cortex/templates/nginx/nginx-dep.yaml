@@ -7,7 +7,9 @@ metadata:
   annotations:
     {{- toYaml .Values.nginx.annotations | nindent 4 }}
 spec:
+  {{- if not .Values.nginx.autoscaling.enabled }}
   replicas: {{ .Values.nginx.replicas }}
+  {{- end }}
   selector:
     matchLabels: {{ include "cortex-nginx.matchLabels" . | nindent 6 }}
   strategy:
@@ -15,28 +17,27 @@ spec:
   template:
     metadata:
       labels: {{ include "cortex-nginx.labels" . | nindent 8 }}
-{{- with .Values.nginx.podLabels }}
-{{- toYaml . | indent 8 }}
-{{- end }}
+        {{- with .Values.nginx.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/nginx/nginx-config.yaml") . | sha256sum }}
         {{- with .Values.nginx.podAnnotations }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
-      serviceAccountName: {{ template "cortex.serviceAccountName" . }}
-    {{- if .Values.nginx.priorityClassName }}
+      serviceAccountName: {{ .Values.nginx.serviceAccount.name | default (include "cortex.serviceAccountName" . ) }}
+      {{- if .Values.nginx.priorityClassName }}
       priorityClassName: {{ .Values.nginx.priorityClassName }}
-    {{- end }}
-      securityContext:
-        {{- toYaml .Values.nginx.securityContext | nindent 8 }}
+      {{- end }}
+      securityContext: {{- toYaml .Values.nginx.securityContext | nindent 8 }}
       initContainers:
         {{- toYaml .Values.nginx.initContainers | nindent 8 }}
       {{- if .Values.image.pullSecrets }}
       imagePullSecrets:
       {{- range .Values.image.pullSecrets }}
         - name: {{ . }}
-      {{- end}}
+      {{- end }}
       {{- end }}
       containers:
         - name: nginx
@@ -50,29 +51,35 @@ spec:
           {{- end }}
           volumeMounts:
             {{- if .Values.nginx.extraVolumeMounts }}
-              {{ toYaml .Values.nginx.extraVolumeMounts | nindent 12}}
+            {{- toYaml .Values.nginx.extraVolumeMounts | nindent 12}}
             {{- end }}
             - name: config
               mountPath: /etc/nginx
+            {{- if .Values.nginx.config.basicAuthSecretName }}
+            - name: htpasswd
+              mountPath: /etc/apache2
+              readOnly: true
+            {{- end }}
           ports:
             - name: http
               containerPort: {{ .Values.nginx.http_listen_port }}
               protocol: TCP
+          startupProbe:
+            {{- toYaml .Values.nginx.startupProbe | nindent 12 }}
           livenessProbe:
             {{- toYaml .Values.nginx.livenessProbe | nindent 12 }}
           readinessProbe:
             {{- toYaml .Values.nginx.readinessProbe | nindent 12 }}
           resources:
             {{- toYaml .Values.nginx.resources | nindent 12 }}
-          securityContext:
-            readOnlyRootFilesystem: false
+          securityContext: {{- toYaml .Values.nginx.containerSecurityContext | nindent 12 }}
+          {{- if .Values.nginx.env }}
           env:
-            {{- if .Values.nginx.env }}
-              {{- toYaml .Values.nginx.env | nindent 12 }}
-            {{- end }}
-{{- if .Values.nginx.extraContainers }}
-{{ toYaml .Values.nginx.extraContainers | indent 8}}
-{{- end }}
+            {{- toYaml .Values.nginx.env | nindent 12 }}
+          {{- end }}
+        {{- if .Values.nginx.extraContainers }}
+        {{ toYaml .Values.nginx.extraContainers | indent 8}}
+        {{- end }}
       nodeSelector:
         {{- toYaml .Values.nginx.nodeSelector | nindent 8 }}
       affinity:
@@ -84,7 +91,13 @@ spec:
         - name: config
           configMap:
             name: {{ template "cortex.fullname" . }}-nginx
-{{- if .Values.nginx.extraVolumes }}
-{{ toYaml .Values.nginx.extraVolumes | indent 8}}
+        {{- if .Values.nginx.config.basicAuthSecretName }}
+        - name: htpasswd
+          secret:
+            defaultMode: 420
+            secretName: {{ .Values.nginx.config.basicAuthSecretName }}
+        {{- end }}
+        {{- if .Values.nginx.extraVolumes }}
+        {{- toYaml .Values.nginx.extraVolumes | nindent 8}}
+        {{- end }}
 {{- end }}
-{{- end}}

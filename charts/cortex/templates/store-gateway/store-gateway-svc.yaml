@@ -11,11 +11,10 @@ metadata:
     {{- toYaml .Values.store_gateway.service.annotations | nindent 4 }}
 spec:
   type: ClusterIP
-  clusterIP: None
   ports:
-    - port: {{ .Values.config.server.grpc_listen_port }}
+    - port: {{ .Values.config.server.http_listen_port }}
       protocol: TCP
-      name: grpc
-      targetPort: grpc
+      name: http-metrics
+      targetPort: http-metrics
   selector: {{- include "cortex-store-gateway.matchLabels" . | nindent 4 }}
 {{- end -}}

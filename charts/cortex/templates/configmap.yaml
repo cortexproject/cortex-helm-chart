@@ -1,0 +1,11 @@
+{{- if (and (not .Values.useExternalConfig) (.Values.useConfigMap)) }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "cortex.configname" . }}
+  labels:
+    {{- include "cortex.labels" . | nindent 4 }}
+data:
+  cortex.yaml: |
+    {{- tpl (toYaml .Values.config) . | nindent 4 }}
+{{- end }}
