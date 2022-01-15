@@ -2,6 +2,8 @@
 
 ## master / unreleased
 
+* [DEPENDENCY] Update Helm release memcached to v5.15.14 #301
+
 ## 1.2.0 / 2021-12-29
 
 * [CHANGE] Use port number for prometheus port annotations. #288
