@@ -308,24 +308,26 @@ alertmanager:
     enableUniqueFilenames: false
     # -- Label that should be used for filtering
     label: cortex_alertmanager
-    # -- Determines how kopf-k8s-sidecar will run. If WATCH it will run like like a normal operator forever.
+    # -- Determines how kopf-k8s-sidecar will run. If WATCH it will run like a normal operator forever.
     # If LIST it will gather the matching configmaps and secrets currently present,
     # write those files to the destination directory and die
-    watchMethod: null
+    watchMethod: ""
     # -- The value for the label you want to filter your resources on.
     # Don't set a value to filter by any value
-    labelValue: null
+    labelValue: ""
     # -- Folder where the files should be placed.
     folder: /data
     # -- The default folder name, it will create a subfolder under the `folder` and put rules in there instead
-    defaultFolderName: null
+    defaultFolderName: ""
     # -- The Namespace(s) from which resources will be watched.
     # For multiple namespaces, use a comma-separated string like "default,test".
     # If not set or set to ALL, it will watch all Namespaces.
-    searchNamespace: null
+    searchNamespace: ""
     # -- The annotation the sidecar will look for in ConfigMaps and/or Secrets to override the destination folder for files.
     # If the value is a relative path, it will be relative to FOLDER
-    folderAnnotation: null
+    folderAnnotation: "k8s-sidecar-target-directory"
+    # -- The resource type that the operator will filter for. Can be configmap, secret or both
+    resource: "both"
     containerSecurityContext:
       enabled: true
       readOnlyRootFilesystem: true
@@ -686,24 +688,26 @@ ruler:
     enableUniqueFilenames: false
     # -- label that the configmaps with rules are marked with
     label: cortex_rules
-    # -- Determines how kopf-k8s-sidecar will run. If WATCH it will run like like a normal operator forever.
+    # -- Determines how kopf-k8s-sidecar will run. If WATCH it will run like a normal operator forever.
     # If LIST it will gather the matching configmaps and secrets currently present,
     # write those files to the destination directory and die
-    watchMethod: null
+    watchMethod: ""
     # -- The value for the label you want to filter your resources on.
     # Don't set a value to filter by any value
-    labelValue: null
+    labelValue: ""
     # -- Folder where the files should be placed.
     folder: /tmp/rules
     # -- The default folder name, it will create a subfolder under the `folder` and put rules in there instead
-    defaultFolderName: null
+    defaultFolderName: ""
     # -- The Namespace(s) from which resources will be watched.
     # For multiple namespaces, use a comma-separated string like "default,test".
     # If not set or set to ALL, it will watch all Namespaces.
-    searchNamespace: null
+    searchNamespace: ""
     # -- The annotation the sidecar will look for in ConfigMaps and/or Secrets to override the destination folder for files.
     # If the value is a relative path, it will be relative to FOLDER
-    folderAnnotation: null
+    folderAnnotation: "k8s-sidecar-target-directory"
+    # -- The resource type that the operator will filter for. Can be configmap, secret or both
+    resource: "both"
     containerSecurityContext:
       enabled: true
       readOnlyRootFilesystem: true

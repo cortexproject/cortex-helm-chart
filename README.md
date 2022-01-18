@@ -137,21 +137,22 @@ Kubernetes: `^1.19.0-0`
 | alertmanager.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;relabelings | list | `[]` |  |
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;containerSecurityContext.&ZeroWidthSpace;enabled | bool | `true` |  |
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;containerSecurityContext.&ZeroWidthSpace;readOnlyRootFilesystem | bool | `true` |  |
-| alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;defaultFolderName | string | `nil` | The default folder name, it will create a subfolder under the `folder` and put rules in there instead |
+| alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;defaultFolderName | string | `""` | The default folder name, it will create a subfolder under the `folder` and put rules in there instead |
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;enableUniqueFilenames | bool | `false` | A value of true will produce unique filenames to avoid issues when duplicate data keys exist between ConfigMaps and/or Secrets within the same or multiple Namespaces. |
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;enabled | bool | `false` | Enable sidecar that collect the configmaps with specified label and stores the included files them into the respective folders |
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;folder | string | `"/data"` | Folder where the files should be placed. |
-| alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;folderAnnotation | string | `nil` | The annotation the sidecar will look for in ConfigMaps and/or Secrets to override the destination folder for files. If the value is a relative path, it will be relative to FOLDER |
+| alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;folderAnnotation | string | `"k8s-sidecar-target-directory"` | The annotation the sidecar will look for in ConfigMaps and/or Secrets to override the destination folder for files. If the value is a relative path, it will be relative to FOLDER |
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;repository | string | `"omegavveapon/kopf-k8s-sidecar"` |  |
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;sha | string | `""` |  |
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"1.4.0"` |  |
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;imagePullPolicy | string | `"IfNotPresent"` |  |
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;label | string | `"cortex_alertmanager"` | Label that should be used for filtering |
-| alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;labelValue | string | `nil` | The value for the label you want to filter your resources on. Don't set a value to filter by any value |
+| alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;labelValue | string | `""` | The value for the label you want to filter your resources on. Don't set a value to filter by any value |
+| alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;resource | string | `"both"` | The resource type that the operator will filter for. Can be configmap, secret or both |
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;resources | object | `{}` |  |
-| alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;searchNamespace | string | `nil` | The Namespace(s) from which resources will be watched. For multiple namespaces, use a comma-separated string like "default,test". If not set or set to ALL, it will watch all Namespaces. |
+| alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;searchNamespace | string | `""` | The Namespace(s) from which resources will be watched. For multiple namespaces, use a comma-separated string like "default,test". If not set or set to ALL, it will watch all Namespaces. |
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;skipTlsVerify | bool | `false` | Set to true to skip tls verification for kube api calls |
-| alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;watchMethod | string | `nil` | Determines how kopf-k8s-sidecar will run. If WATCH it will run like like a normal operator forever. If LIST it will gather the matching configmaps and secrets currently present, write those files to the destination directory and die |
+| alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;watchMethod | string | `""` | Determines how kopf-k8s-sidecar will run. If WATCH it will run like a normal operator forever. If LIST it will gather the matching configmaps and secrets currently present, write those files to the destination directory and die |
 | alertmanager.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;failureThreshold | int | `10` |  |
 | alertmanager.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
 | alertmanager.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
@@ -654,21 +655,22 @@ Kubernetes: `^1.19.0-0`
 | ruler.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;relabelings | list | `[]` |  |
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;containerSecurityContext.&ZeroWidthSpace;enabled | bool | `true` |  |
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;containerSecurityContext.&ZeroWidthSpace;readOnlyRootFilesystem | bool | `true` |  |
-| ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;defaultFolderName | string | `nil` | The default folder name, it will create a subfolder under the `folder` and put rules in there instead |
+| ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;defaultFolderName | string | `""` | The default folder name, it will create a subfolder under the `folder` and put rules in there instead |
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;enableUniqueFilenames | bool | `false` | A value of true will produce unique filenames to avoid issues when duplicate data keys exist between ConfigMaps and/or Secrets within the same or multiple Namespaces. |
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;enabled | bool | `false` | Enable sidecar that collect the configmaps with specified label and stores the included files them into the respective folders |
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;folder | string | `"/tmp/rules"` | Folder where the files should be placed. |
-| ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;folderAnnotation | string | `nil` | The annotation the sidecar will look for in ConfigMaps and/or Secrets to override the destination folder for files. If the value is a relative path, it will be relative to FOLDER |
+| ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;folderAnnotation | string | `"k8s-sidecar-target-directory"` | The annotation the sidecar will look for in ConfigMaps and/or Secrets to override the destination folder for files. If the value is a relative path, it will be relative to FOLDER |
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;repository | string | `"omegavveapon/kopf-k8s-sidecar"` |  |
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;sha | string | `""` |  |
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"1.4.0"` |  |
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;imagePullPolicy | string | `"IfNotPresent"` |  |
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;label | string | `"cortex_rules"` | label that the configmaps with rules are marked with |
-| ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;labelValue | string | `nil` | The value for the label you want to filter your resources on. Don't set a value to filter by any value |
+| ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;labelValue | string | `""` | The value for the label you want to filter your resources on. Don't set a value to filter by any value |
+| ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;resource | string | `"both"` | The resource type that the operator will filter for. Can be configmap, secret or both |
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;resources | object | `{}` |  |
-| ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;searchNamespace | string | `nil` | The Namespace(s) from which resources will be watched. For multiple namespaces, use a comma-separated string like "default,test". If not set or set to ALL, it will watch all Namespaces. |
+| ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;searchNamespace | string | `""` | The Namespace(s) from which resources will be watched. For multiple namespaces, use a comma-separated string like "default,test". If not set or set to ALL, it will watch all Namespaces. |
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;skipTlsVerify | bool | `false` | Set to true to skip tls verification for kube api calls |
-| ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;watchMethod | string | `nil` | Determines how kopf-k8s-sidecar will run. If WATCH it will run like like a normal operator forever. If LIST it will gather the matching configmaps and secrets currently present, write those files to the destination directory and die |
+| ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;watchMethod | string | `""` | Determines how kopf-k8s-sidecar will run. If WATCH it will run like a normal operator forever. If LIST it will gather the matching configmaps and secrets currently present, write those files to the destination directory and die |
 | ruler.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;failureThreshold | int | `10` |  |
 | ruler.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
 | ruler.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
