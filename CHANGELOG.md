@@ -2,6 +2,8 @@
 
 ## master / unreleased
 
+* [CHANGE] move from quay.io/kiwigrid/k8s-sidecar to omegavvweapon/kopf-k8s-sidecar image #302
+
 ## 1.2.0 / 2021-12-29
 
 * [CHANGE] Use port number for prometheus port annotations. #288

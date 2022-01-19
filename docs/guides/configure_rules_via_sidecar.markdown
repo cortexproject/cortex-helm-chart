@@ -10,6 +10,14 @@ Cortex can be configured to use a sidecar container in the Ruler and AlertManage
 Put ConfigMaps into the specified namespace, and they are automatically detected and added as files to the Ruler and/or AlertManager containers, both of which are polling for changes on the filesystem and will make the new configurations go live dynamically.
 This feature is disabled by default. Here is a simple example:
 
+*Please not that this is only supported with the local or filesystem backend. Otherwise cortex will overwrite what the operator puts in the folder with what is in s3/gcs/azure/swift. Cortex does not 2-way sync the files*
+
+```yaml
+backend: "filesystem"
+```
+
+## Helm values config
+
 ```yaml
 ruler:
   sidecar:
