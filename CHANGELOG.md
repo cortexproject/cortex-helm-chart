@@ -3,6 +3,9 @@
 ## master / unreleased
 
 * [CHANGE] move from quay.io/kiwigrid/k8s-sidecar to omegavvweapon/kopf-k8s-sidecar image #302
+* [CHANGE] undo querier store optimization #304
+  * config.querier.query_ingesters_within: 13h -> 0s
+  * config.querier.query_store_after: 12h -> 0s
 
 ## 1.2.0 / 2021-12-29
 
