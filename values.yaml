@@ -115,12 +115,11 @@ config:
   querier:
     active_query_tracker_dir: /data/active-query-tracker
     # -- Maximum lookback beyond which queries are not sent to ingester. 0 means all
-    # queries are sent to ingester. Ingesters by default have no data older than 12 hours,
-    # so we can safely set this 13 hours
-    query_ingesters_within: 13h
+    # queries are sent to ingester.
+    query_ingesters_within: 0s
     # -- The time after which a metric should be queried from storage and not just
     # ingesters.
-    query_store_after: 12h
+    query_store_after: 0s
     # -- Comma separated list of store-gateway addresses in DNS Service Discovery
     # format. This option should is set automatically when using the blocks storage and the
     # store-gateway sharding is disabled (when enabled, the store-gateway instances
