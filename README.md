@@ -242,8 +242,6 @@ Kubernetes: `^1.19.0-0`
 | config.&ZeroWidthSpace;memberlist.&ZeroWidthSpace;bind_port | int | `7946` |  |
 | config.&ZeroWidthSpace;memberlist.&ZeroWidthSpace;join_members | list | `["{{ include \"cortex.fullname\" $ }}-memberlist"]` | the service name of the memberlist if using memberlist discovery |
 | config.&ZeroWidthSpace;querier.&ZeroWidthSpace;active_query_tracker_dir | string | `"/data/active-query-tracker"` |  |
-| config.&ZeroWidthSpace;querier.&ZeroWidthSpace;query_ingesters_within | string | `"0s"` | Maximum lookback beyond which queries are not sent to ingester. 0 means all queries are sent to ingester. |
-| config.&ZeroWidthSpace;querier.&ZeroWidthSpace;query_store_after | string | `"0s"` | The time after which a metric should be queried from storage and not just ingesters. |
 | config.&ZeroWidthSpace;querier.&ZeroWidthSpace;store_gateway_addresses | string | automatic | Comma separated list of store-gateway addresses in DNS Service Discovery format. This option should is set automatically when using the blocks storage and the store-gateway sharding is disabled (when enabled, the store-gateway instances form a ring and addresses are picked from the ring). |
 | config.&ZeroWidthSpace;query_range.&ZeroWidthSpace;align_queries_with_step | bool | `true` |  |
 | config.&ZeroWidthSpace;query_range.&ZeroWidthSpace;cache_results | bool | `true` |  |
