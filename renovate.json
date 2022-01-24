@@ -29,13 +29,13 @@
             "datasourceTemplate": "docker"
         },
         {
-            "description": "Update kiwigrid/k8s-sidecar image in README.md",
+            "description": "Update omegavveapon/kopf-k8s-sidecar image in README.md",
             "fileMatch": ["^README\\.md$"],
             "matchStrings": [
                 "\\|\\s+ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;tag\\s+\\|\\s+string\\s+\\|\\s+`\"(?<currentValue>.*?)\"`\\s+\\|\\s+\\|\\s+",
                 "\\|\\s+alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;tag\\s+\\|\\s+string\\s+\\|\\s+`\"(?<currentValue>.*?)\"`\\s+\\|\\s+\\|\\s+"
             ],
-            "depNameTemplate": "quay.io/kiwigrid/k8s-sidecar",
+            "depNameTemplate": "omegavveapon/kopf-k8s-sidecar",
             "datasourceTemplate": "docker"
         },
         {
