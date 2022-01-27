@@ -6,6 +6,7 @@
 * [CHANGE] undo querier store optimization #304
   * config.querier.query_ingesters_within: 13h -> 0s (default)
   * config.querier.query_store_after: 12h -> 0s (default)
+* [ENHANCEMENT] Fix the indentation of memcached guide #309
 
 ## 1.2.0 / 2021-12-29
 
