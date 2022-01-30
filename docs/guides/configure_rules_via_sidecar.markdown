@@ -10,10 +10,11 @@ Cortex can be configured to use a sidecar container in the Ruler and AlertManage
 Put ConfigMaps into the specified namespace, and they are automatically detected and added as files to the Ruler and/or AlertManager containers, both of which are polling for changes on the filesystem and will make the new configurations go live dynamically.
 This feature is disabled by default. Here is a simple example:
 
-*Please not that this is only supported with the local or filesystem backend. Otherwise cortex will overwrite what the operator puts in the folder with what is in s3/gcs/azure/swift. Cortex does not 2-way sync the files*
-
+Please not that this is only supported with the **local** backend. Otherwise cortex will overwrite what the operator puts in the folder with what is in s3/gcs/azure/swift. Cortex does not 2-way sync the files. Also please be aware of the following:
+- local alertmanager config storage is read-only (cortex API is severely limited to read-only requests)
+- local alertmanager storage does not support state persistency (however your configurations are saved in etcd via kubernetes)
 ```yaml
-backend: "filesystem"
+backend: "local"
 ```
 
 ## Helm values config
@@ -34,16 +35,19 @@ And here are the related configuration values in AlertManager and Ruler:
 config:
   alertmanager:
     data_dir: /data/
-    storage:
-      type : local
-      local:
-        path: /data
+
+  alertmanager_storage:
+    backend: "local"
+    local:
+      path: "/data"
+  
   ruler:
     rule_path: /data/rules
-    storage:
-      type : local
-      local:
-        directory: /tmp/rules
+
+  ruler_storage:
+    backend: "local"
+    local:
+      directory: "/tmp/rules"
 ```
 In AlertManager, the data_dir and local storage directory should be the same.
 In the Ruler, there needs to be two separate volumes. One is read-only and serves as the location shared with the sidecar that contains all of the rules that were derived from configmaps (/tmp/rules). The other is read-write and used by the Ruler itself for its own management of rules, etc (/data).
