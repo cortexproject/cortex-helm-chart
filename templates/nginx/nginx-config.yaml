@@ -98,8 +98,8 @@ data:
           proxy_pass      http://{{ template "cortex.fullname" . }}-alertmanager.{{ $rootDomain }}$request_uri;
         }
 
-        location ~ /api/prom/api/v1/alerts {
-          proxy_pass      http://{{ template "cortex.fullname" . }}-alertmanager.{{ $rootDomain }}$request_uri;
+        location = /api/prom/api/v1/alerts {
+          proxy_pass      http://{{ template "cortex.fullname" . }}-alertmanager.{{ $rootDomain }}/api/v1/alerts;
         }
 
         # Ruler Config
