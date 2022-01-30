@@ -13,6 +13,8 @@ This feature is disabled by default. Here is a simple example:
 Please not that this is only supported with the **local** backend. Otherwise cortex will overwrite what the operator puts in the folder with what is in s3/gcs/azure/swift. Cortex does not 2-way sync the files. Also please be aware of the following:
 - local alertmanager config storage is read-only (cortex API is severely limited to read-only requests)
 - local alertmanager storage does not support state persistency (however your configurations are saved in etcd via kubernetes)
+- local ruler storage does not support RuleGroups
+- local ruler storage does not support namespaces
 ```yaml
 backend: "local"
 ```
