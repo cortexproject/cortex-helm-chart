@@ -6,7 +6,7 @@
         ":rebaseStalePrs"
     ],
     "assignees": [
-        "ShuzZzle",
+        "nschad",
         "kd7lxl"
     ],
     "labels": ["dependencies"],
