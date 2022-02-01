@@ -8,6 +8,7 @@
   * config.querier.query_store_after: 12h -> 0s (default)
 * [ENHANCEMENT] Fix the indentation of memcached guide #309
 * [ENHANCEMENT] Added api endpoints for Grafana 8 unified alerting #291
+* [ENHANCEMENT] Add guide on how to configure alertmanager/ruler with configmap
 
 ## 1.2.0 / 2021-12-29
 
