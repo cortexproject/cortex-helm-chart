@@ -3,7 +3,7 @@ entries:
   cortex:
   - apiVersion: v2
     appVersion: v1.11.0
-    created: "2021-12-29T12:32:31.503943634+01:00"
+    created: "2022-02-01T12:14:55.528199712+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -53,9 +53,9 @@ entries:
     - email: thayward@infoblox.com
       name: Tom Hayward
       url: https://github.com/kd7lxl
-    - email: Niclas.Schad@plusserver.com
+    - email: Niclas.Schad@mail.schwarz
       name: Niclas Schad
-      url: https://github.com/ShuzZzle
+      url: https://github.com/nschad
     name: cortex
     sources:
     - https://github.com/cortexproject/cortex-helm-chart
@@ -64,7 +64,7 @@ entries:
     version: 1.2.0
   - apiVersion: v2
     appVersion: v1.10.0
-    created: "2021-12-29T12:32:31.498484467+01:00"
+    created: "2022-02-01T12:14:55.521215161+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -114,9 +114,9 @@ entries:
     - email: thayward@infoblox.com
       name: Tom Hayward
       url: https://github.com/kd7lxl
-    - email: Niclas.Schad@plusserver.com
+    - email: Niclas.Schad@mail.schwarz
       name: Niclas Schad
-      url: https://github.com/ShuzZzle
+      url: https://github.com/nschad
     name: cortex
     sources:
     - https://github.com/cortexproject/cortex-helm-chart
@@ -125,7 +125,7 @@ entries:
     version: 1.1.0
   - apiVersion: v2
     appVersion: v1.10.0
-    created: "2021-12-29T12:32:31.491622621+01:00"
+    created: "2022-02-01T12:14:55.513841685+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -175,9 +175,9 @@ entries:
     - email: thayward@infoblox.com
       name: Tom Hayward
       url: https://github.com/kd7lxl
-    - email: Niclas.Schad@plusserver.com
+    - email: Niclas.Schad@mail.schwarz
       name: Niclas Schad
-      url: https://github.com/ShuzZzle
+      url: https://github.com/nschad
     name: cortex
     sources:
     - https://github.com/cortexproject/cortex-helm-chart
@@ -186,7 +186,7 @@ entries:
     version: 1.0.1
   - apiVersion: v2
     appVersion: v1.10.0
-    created: "2021-12-29T12:32:31.484773808+01:00"
+    created: "2022-02-01T12:14:55.506733955+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -236,9 +236,9 @@ entries:
     - email: thayward@infoblox.com
       name: Tom Hayward
       url: https://github.com/kd7lxl
-    - email: Niclas.Schad@plusserver.com
+    - email: Niclas.Schad@mail.schwarz
       name: Niclas Schad
-      url: https://github.com/ShuzZzle
+      url: https://github.com/nschad
     name: cortex
     sources:
     - https://github.com/cortexproject/cortex-helm-chart
@@ -247,7 +247,7 @@ entries:
     version: 1.0.0
   - apiVersion: v2
     appVersion: v1.10.0
-    created: "2021-12-29T12:32:31.477665745+01:00"
+    created: "2022-02-01T12:14:55.498319133+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -297,9 +297,9 @@ entries:
     - email: thayward@infoblox.com
       name: Tom Hayward
       url: https://github.com/kd7lxl
-    - email: Niclas.Schad@plusserver.com
+    - email: Niclas.Schad@mail.schwarz
       name: Niclas Schad
-      url: https://github.com/ShuzZzle
+      url: https://github.com/nschad
     name: cortex
     sources:
     - https://github.com/cortexproject/cortex-helm-chart
@@ -308,7 +308,7 @@ entries:
     version: 0.7.0
   - apiVersion: v2
     appVersion: v1.9.0
-    created: "2021-12-29T12:32:31.471840052+01:00"
+    created: "2022-02-01T12:14:55.490871027+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -365,7 +365,7 @@ entries:
     version: 0.6.0
   - apiVersion: v2
     appVersion: v1.9.0
-    created: "2021-12-29T12:32:31.467655442+01:00"
+    created: "2022-02-01T12:14:55.486892987+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -422,7 +422,7 @@ entries:
     version: 0.5.0
   - apiVersion: v2
     appVersion: v1.7.0
-    created: "2021-12-29T12:32:31.463940796+01:00"
+    created: "2022-02-01T12:14:55.482479204+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -478,7 +478,7 @@ entries:
     version: 0.4.1
   - apiVersion: v2
     appVersion: v1.7.0
-    created: "2021-12-29T12:32:31.46053695+01:00"
+    created: "2022-02-01T12:14:55.477148971+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -534,7 +534,7 @@ entries:
     version: 0.4.0
   - apiVersion: v2
     appVersion: v1.6.0
-    created: "2021-12-29T12:32:31.457839006+01:00"
+    created: "2022-02-01T12:14:55.472696638+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -590,7 +590,7 @@ entries:
     version: 0.3.0
   - apiVersion: v2
     appVersion: v1.4.0
-    created: "2021-12-29T12:32:31.453263639+01:00"
+    created: "2022-02-01T12:14:55.468146956+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -621,4 +621,4 @@ entries:
     urls:
     - https://cortexproject.github.io/cortex-helm-chart/cortex-0.2.0.tgz
     version: 0.2.0
-generated: "2021-12-29T12:32:31.443653632+01:00"
+generated: "2022-02-01T12:14:55.460815609+01:00"
