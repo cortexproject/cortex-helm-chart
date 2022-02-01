@@ -10,7 +10,7 @@ Cortex can be configured to use a sidecar container in the Ruler and AlertManage
 Put ConfigMaps into the specified namespace, and they are automatically detected and added as files to the Ruler and/or AlertManager containers, both of which are polling for changes on the filesystem and will make the new configurations go live dynamically.
 This feature is disabled by default. Here is a simple example:
 
-Please not that this is only supported with the **local** backend. Otherwise cortex will overwrite what the operator puts in the folder with what is in s3/gcs/azure/swift. Cortex does not 2-way sync the files. Also please be aware of the following:
+Please note that this is only supported with the **local** backend. Otherwise cortex will overwrite what the operator puts in the folder with what is in s3/gcs/azure/swift. Cortex does not 2-way sync the files. Also please be aware of the following:
 - local alertmanager config storage is read-only (cortex API is severely limited to read-only requests)
 - local alertmanager storage does not support state persistency (however your configurations are saved in etcd via kubernetes)
 - local ruler storage does not support RuleGroups
