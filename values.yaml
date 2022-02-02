@@ -324,6 +324,22 @@ alertmanager:
     containerSecurityContext:
       enabled: true
       readOnlyRootFilesystem: true
+      # -- The kopf-k8s-sidecar by default uses a USER/GROUP (65534:65534) for the Image. This is fine if it would match whatever is used in cortex.
+      # Since user/group root is the default for this chart we also start the sidecar container as user/group root and therefore
+      # overwrite what is defined in the Dockerfile of kopf-k8s-sidecar.
+      # If you don't adjust the unix permissions you can have file permission errors!
+      runAsUser: 0
+      # -- The kopf-k8s-sidecar by default uses a USER/GROUP (65534:65534) for the Image. This is fine if it would match whatever is used in cortex.
+      # Since user/group root is the default for this chart we also start the sidecar container as user/group root and therefore
+      # overwrite what is defined in the Dockerfile of kopf-k8s-sidecar.
+      # If you don't adjust the unix permissions you can have file permission errors!
+      runAsGroup: 0
+      # -- The kopf-k8s-sidecar by default uses a USER/GROUP (65534:65534) for the Image. This is fine if it would match whatever is used in cortex.
+      # Since user/group root is the default for this chart we also start the sidecar container as user/group root and therefore
+      # overwrite what is defined in the Dockerfile of kopf-k8s-sidecar.
+      # If you don't adjust the unix permissions you can have file permission errors!
+      fsGroup: 0
+      allowPrivilegeEscalation: false
 
 distributor:
   replicas: 2
@@ -704,6 +720,22 @@ ruler:
     containerSecurityContext:
       enabled: true
       readOnlyRootFilesystem: true
+      # -- The kopf-k8s-sidecar by default uses a USER/GROUP (65534:65534) for the Image. This is fine if it would match whatever is used in cortex.
+      # Since user/group root is the default for this chart we also start the sidecar container as user/group root and therefore
+      # overwrite what is defined in the Dockerfile of kopf-k8s-sidecar.
+      # If you don't adjust the unix permissions you can have file permission errors!
+      runAsUser: 0
+      # -- The kopf-k8s-sidecar by default uses a USER/GROUP (65534:65534) for the Image. This is fine if it would match whatever is used in cortex.
+      # Since user/group root is the default for this chart we also start the sidecar container as user/group root and therefore
+      # overwrite what is defined in the Dockerfile of kopf-k8s-sidecar.
+      # If you don't adjust the unix permissions you can have file permission errors!
+      runAsGroup: 0
+      # -- The kopf-k8s-sidecar by default uses a USER/GROUP (65534:65534) for the Image. This is fine if it would match whatever is used in cortex.
+      # Since user/group root is the default for this chart we also start the sidecar container as user/group root and therefore
+      # overwrite what is defined in the Dockerfile of kopf-k8s-sidecar.
+      # If you don't adjust the unix permissions you can have file permission errors!
+      fsGroup: 0
+      allowPrivilegeEscalation: false
 
 querier:
   replicas: 2
