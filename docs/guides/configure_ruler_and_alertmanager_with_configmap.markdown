@@ -5,6 +5,16 @@ parent: Guides
 has_children: false
 has_toc: false
 ---
+# Configure Ruler and Alertmanager with Configmap
+{: .no_toc }
+
+## Table of contents
+{: .no_toc .text-delta }
+
+1. TOC
+{:toc}
+
+---
 # Preface
 
 Cortex's Ruler and Alertmanager can be setup to use ConfigMaps to provide themselves with a configuration that can be dynamically updated.
@@ -26,7 +36,7 @@ To provide the Ruler with the *rules* to alert on, we must create a ConfigMap wi
 **IMPORTANT** things to note:
 
 - This ruleset is ONLY for tenantfoo (We will explicitly map it to tenantfoo later)
-- The section under `tenantfoo.yaml` is validated and interpreted exactly as a [Prometheus rules configuration](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules//) would be. How you configure this is completely up to you.
+- The section under `tenantfoo.yaml` is validated and interpreted exactly as a [Prometheus rules configuration](https://prometheus.io/docs/prometheus/latest/configuration/recording_rules/) would be. How you configure this is completely up to you.
 
 ```yaml
 kind: ConfigMap
@@ -56,7 +66,7 @@ To provide the Alertmanager with the information needed to *route* notifications
 **IMPORTANT** things to note:
 
 - These routing rules are ONLY for tenantfoo. The Alertmanager takes the key under `data` (excluding `.yaml`) and uses it as the tenant name for that specific config.
-- The section under `tenantfoo.yaml` is validated and interpreted exactly as a [Prometheus alerting rules configuration](https://prometheus.io/docs/alerting/latest/configuration/) would be. How you configure this is completely up to you.
+- The section under `tenantfoo.yaml` is validated and interpreted exactly as a [Prometheus alerting rules configuration](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/) would be. How you configure this is completely up to you.
 
 ```yaml
 kind: ConfigMap
@@ -88,31 +98,36 @@ data:
 
 Now that the ConfigMaps are created, we can tinker the helm chart to achieve our goal.
 
-### Configuraion For Ruler and Alertmanager Config
+### Configuration for Ruler and Alertmanager Config
 Add this to the `values.yaml` under the `config` section as shown.
 
 ```yaml
 config:
   ruler:
     enable_api: true
+    # already set-up temporary emptyDir volume. Cortex will parse rules from /data/rules
+    # and copy them here for prometheus rule evaluation
     rule_path: /rules
 
   ruler_storage:
     backend: "local"
     local:
+      # where your mounted configmap data will be persistently stored
       directory: /data/rules
 
   alertmanager:
     enable_api: true
-    data_dir: /data/
+    # temporary volume if not using stateful alertmanagers
+    data_dir: /data
 
   alertmanager_storage:
     backend: "local"
     local:
+      # temporary volume if not using stateful alertmanagers
       path: /data
 ```
 
-### Configuraion For Ruler and Alertmanager
+### Configuration for Ruler and Alertmanager
 Add this to the `values.yaml`.
 Note that when we mount `tenantfoo-ruler-config`, we mount it under a folder which should be named after the tenant it corresponds to. In this situation, since we want `tenantfoo-ruler-config` to be the alerting rules for `tenantfoo`, we mount it under `/data/rules/tenantfoo`.
 Also note that for `tenantfoo-alertmanager-config`, we similarily mount it under a folder specific to that tenant. Although it will not use the folder name as the tenant name (it instead uses the key name under `data` in the ConfigMap), it simplifies things if you do so.
