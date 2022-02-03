@@ -55,9 +55,10 @@ data:
 To provide the Alertmanager with the information needed to *route* notifications to stakeholders, we must create a ConfigMap with the desired routing rules. How you maintain and deploy the ConfigMap is completely in your control, the only requirement is that the ConfigMap be on the same namespace as the Alertmanager.
 
 **IMPORTANT** things to note
-
+{% raw %}
 - These routing rules are ONLY for tenantfoo. The Alertmanager takes the key under `data` (excluding `.yaml`) and uses it as the tenant name for that specific config.
 - The section under `tenantfoo.yaml` is validated and interpreted exactly as a Prometheus alerting rules configuration would be. How you configure this is completely up to you.
+{% endraw %}
 
 ```yaml
 kind: ConfigMap
@@ -136,7 +137,7 @@ alertmanager:
         name: tenantfoo-alertmanager-config
       name: tenantfoo-alertmanager-config
   extraVolumeMounts:
-    - name: alertmanager-config
+    - name: tenantfoo-alertmanager-config
       mountPath: /data/tenantfoo
 ```
 
