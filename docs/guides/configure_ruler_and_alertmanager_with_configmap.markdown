@@ -2,7 +2,7 @@
 layout: page
 title: Configure Ruler and Alertmanager with Configmap
 parent: Guides
-has_children: true
+has_children: false
 has_toc: false
 ---
 # Preface
@@ -104,7 +104,6 @@ config:
 
   alertmanager:
     enable_api: true
-    external_url: "/api/prom/alertmanager"
     data_dir: /data/
 
   alertmanager_storage:
@@ -115,7 +114,7 @@ config:
 
 ### Configuraion For Ruler and Alertmanager
 Add this to the `values.yaml`.
-Note that when we mount `tenantfoo-ruler-config`, we mount it under a folder which should be named after the tenant it corresponds to. In this situation, since we want `tenantfoo-ruler-config` to be the alerting rules for `tenantfoo`, we mount it under `/rules/tenantfoo`.
+Note that when we mount `tenantfoo-ruler-config`, we mount it under a folder which should be named after the tenant it corresponds to. In this situation, since we want `tenantfoo-ruler-config` to be the alerting rules for `tenantfoo`, we mount it under `/data/rules/tenantfoo`.
 Also note that for `tenantfoo-alertmanager-config`, we similarily mount it under a folder specific to that tenant. Although it will not use the folder name as the tenant name (it instead uses the key name under `data` in the ConfigMap), it simplifies things if you do so.
 
 ```yaml
