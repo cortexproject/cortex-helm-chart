@@ -6,7 +6,7 @@ const template = `
 
 
 document.addEventListener("DOMContentLoaded", function () {
-  const codeBlocks = document.querySelectorAll('.highlighter-rouge');
+  const codeBlocks = document.querySelectorAll('div.highlighter-rouge');
   codeBlocks.forEach((codeBlock, index) => {
     const code = codeBlocks[index].innerText;
     const wrapper = document.createElement("div");
