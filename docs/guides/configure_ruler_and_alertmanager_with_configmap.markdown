@@ -97,12 +97,12 @@ Add this to the `values.yaml` under the `config` section as shown.
 config:
   ruler:
     enable_api: true
-    rule_path: /data/rules
+    rule_path: /rules
 
   ruler_storage:
     backend: "local"
     local:
-      directory: /rules
+      directory: /data/rules
 
   alertmanager:
     enable_api: true
@@ -129,7 +129,7 @@ ruler:
       name: tenantfoo-ruler-config
   extraVolumeMounts:
     - name: tenantfoo-ruler-config
-      mountPath: /rules/tenantfoo
+      mountPath: /data/rules/tenantfoo
 alertmanager:
   extraVolumes:
     - configMap:
