@@ -7,7 +7,7 @@ has_toc: false
 ---
 # Preface
 
-Cortex's Ruler and Alertmanager can be setup to use ConfigMaps to provide themselves with an configuration that can be dynamically updated.
+Cortex's Ruler and Alertmanager can be setup to use ConfigMaps to provide themselves with a configuration that can be dynamically updated.
 We simply put ConfigMaps into the same namespace where cortex is running, and they are automatically detected and mounted as files to the Ruler and/or AlertManager containers.
 The containers are also constantly polling for changes to the ConfigMaps. If any changes are found, the configuration file on the container will be updated.
 
@@ -17,16 +17,16 @@ auth_enabled: true
 ```
 # Setup
 
-In order to get this working, we must do a couple things
+In order to get this working, we must do a couple things.
 
 ## Create Ruler ConfigMap
 
 To provide the Ruler with the *rules* to alert on, we must create a ConfigMap with the desired ruleset. How you maintain and deploy the ConfigMap is completely in your control, the only requirement is that the ConfigMap be on the same namespace as the Ruler.
 
-**IMPORTANT** things to note
+**IMPORTANT** things to note:
 
 - This ruleset is ONLY for tenantfoo (We will explicitly map it to tenantfoo later)
-- The section under `tenantfoo.yaml` is validated and interpreted exactly as a Prometheus rules configuration would be. How you configure this is completely up to you.
+- The section under `tenantfoo.yaml` is validated and interpreted exactly as a [Prometheus rules configuration](https://prometheus.io/docs/prometheus/latest/configuration/recording_rules/) would be. How you configure this is completely up to you.
 
 ```yaml
 kind: ConfigMap
@@ -53,10 +53,10 @@ data:
 
 To provide the Alertmanager with the information needed to *route* notifications to stakeholders, we must create a ConfigMap with the desired routing rules. How you maintain and deploy the ConfigMap is completely in your control, the only requirement is that the ConfigMap be on the same namespace as the Alertmanager.
 
-**IMPORTANT** things to note
+**IMPORTANT** things to note:
 
 - These routing rules are ONLY for tenantfoo. The Alertmanager takes the key under `data` (excluding `.yaml`) and uses it as the tenant name for that specific config.
-- The section under `tenantfoo.yaml` is validated and interpreted exactly as a Prometheus alerting rules configuration would be. How you configure this is completely up to you.
+- The section under `tenantfoo.yaml` is validated and interpreted exactly as a [Prometheus alerting rules configuration](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/) would be. How you configure this is completely up to you.
 
 ```yaml
 kind: ConfigMap
