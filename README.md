@@ -27,7 +27,7 @@ Cortex requires a Key-Value (KV) store to store the ring. It can use traditional
 
 The recommended approach is to use the built-in memberlist as a KV store, where supported.
 
-External KV stores can be installed alongside Cortex using their respective helm charts https://github.com/bitnami/charts/tree/master/bitnami/etcd and https://github.com/helm/charts/tree/master/stable/consul.
+External KV stores can be installed alongside Cortex using their respective helm charts https://github.com/bitnami/charts/tree/master/bitnami/etcd and https://github.com/hashicorp/consul-k8s/tree/main/charts/consul.
 
 ### Storage
 
