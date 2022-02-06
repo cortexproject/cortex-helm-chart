@@ -140,7 +140,7 @@ Kubernetes: `^1.19.0-0`
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;defaultFolderName | string | `""` | The default folder name, it will create a subfolder under the `folder` and put rules in there instead |
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;enableUniqueFilenames | bool | `false` | A value of true will produce unique filenames to avoid issues when duplicate data keys exist between ConfigMaps and/or Secrets within the same or multiple Namespaces. |
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;enabled | bool | `false` | Enable sidecar that collect the configmaps with specified label and stores the included files them into the respective folders |
-| alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;folder | string | `"/data"` | Folder where the files should be placed. |
+| alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;folder | string | `"/data/rules"` | Folder where the files should be placed. |
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;folderAnnotation | string | `"k8s-sidecar-target-directory"` | The annotation the sidecar will look for in ConfigMaps and/or Secrets to override the destination folder for files. If the value is a relative path, it will be relative to FOLDER |
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;repository | string | `"omegavveapon/kopf-k8s-sidecar"` |  |
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;sha | string | `""` |  |
@@ -634,7 +634,6 @@ Kubernetes: `^1.19.0-0`
 | ruler.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
 | ruler.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
 | ruler.&ZeroWidthSpace;nodeSelector | object | `{}` |  |
-| ruler.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;subPath | string | `nil` |  |
 | ruler.&ZeroWidthSpace;podAnnotations | object | `{"prometheus.io/port":"8080","prometheus.io/scrape":"true"}` | Pod Annotations |
 | ruler.&ZeroWidthSpace;podDisruptionBudget.&ZeroWidthSpace;maxUnavailable | int | `1` |  |
 | ruler.&ZeroWidthSpace;podLabels | object | `{}` | Pod Labels |
@@ -656,7 +655,7 @@ Kubernetes: `^1.19.0-0`
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;defaultFolderName | string | `""` | The default folder name, it will create a subfolder under the `folder` and put rules in there instead |
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;enableUniqueFilenames | bool | `false` | A value of true will produce unique filenames to avoid issues when duplicate data keys exist between ConfigMaps and/or Secrets within the same or multiple Namespaces. |
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;enabled | bool | `false` | Enable sidecar that collect the configmaps with specified label and stores the included files them into the respective folders |
-| ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;folder | string | `"/tmp/rules"` | Folder where the files should be placed. |
+| ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;folder | string | `"/data"` | Folder where the files should be placed. |
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;folderAnnotation | string | `"k8s-sidecar-target-directory"` | The annotation the sidecar will look for in ConfigMaps and/or Secrets to override the destination folder for files. If the value is a relative path, it will be relative to FOLDER |
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;repository | string | `"omegavveapon/kopf-k8s-sidecar"` |  |
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;sha | string | `""` |  |
