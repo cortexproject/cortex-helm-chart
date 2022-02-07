@@ -309,7 +309,7 @@ alertmanager:
     # Don't set a value to filter by any value
     labelValue: ""
     # -- Folder where the files should be placed.
-    folder: /data/rules
+    folder: /data
     # -- The default folder name, it will create a subfolder under the `folder` and put rules in there instead
     defaultFolderName: ""
     # -- The Namespace(s) from which resources will be watched.
@@ -687,7 +687,7 @@ ruler:
     # Don't set a value to filter by any value
     labelValue: ""
     # -- Folder where the files should be placed.
-    folder: /data
+    folder: /data/rules
     # -- The default folder name, it will create a subfolder under the `folder` and put rules in there instead
     defaultFolderName: ""
     # -- The Namespace(s) from which resources will be watched.
