@@ -2,8 +2,18 @@
 layout: page
 title: Configure memcached
 parent: Guides
-has_children: true
+has_children: false
 has_toc: false
+---
+# Configuring memcached as the caching store
+{: .no_toc }
+
+## Table of contents
+{: .no_toc .text-delta }
+
+1. TOC
+{:toc}
+
 ---
 # Configuring memcached as the caching store
 

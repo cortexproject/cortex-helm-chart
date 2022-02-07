@@ -1,11 +1,11 @@
 ---
 layout: page
-title: Configure Ruler and Alertmanager with Configmap
+title: Configure Ruler and Alertmanager with configmap
 parent: Guides
 has_children: false
 has_toc: false
 ---
-# Configure Ruler and Alertmanager with Configmap
+# Configure Ruler and Alertmanager with configmap
 {: .no_toc }
 
 ## Table of contents
@@ -35,8 +35,9 @@ To provide the Ruler with the *rules* to alert on, we must create a ConfigMap wi
 
 **IMPORTANT** things to note:
 
-- This ruleset is ONLY for tenantfoo (We will explicitly map it to tenantfoo later)
-- The section under `tenantfoo.yaml` is validated and interpreted exactly as a [Prometheus rules configuration](https://prometheus.io/docs/prometheus/latest/configuration/recording_rules/) would be. How you configure this is completely up to you.
+- This ruleset is ONLY for tenantfoo (We will explicitly map it to tenantfoo later).
+- The section under `tenantfoo.yaml` is validated and interpreted exactly as a [Prometheus alerting rules configuration](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/) would be. How you configure this is completely up to you.
+- [Prometheus recording rules](https://prometheus.io/docs/prometheus/latest/configuration/recording_rules/) are also configured here in the same way as alerting rules.
 
 ```yaml
 kind: ConfigMap
@@ -66,7 +67,7 @@ To provide the Alertmanager with the information needed to *route* notifications
 **IMPORTANT** things to note:
 
 - These routing rules are ONLY for tenantfoo. The Alertmanager takes the key under `data` (excluding `.yaml`) and uses it as the tenant name for that specific config.
-- The section under `tenantfoo.yaml` is validated and interpreted exactly as a [Prometheus alerting rules configuration](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/) would be. How you configure this is completely up to you.
+- The section under `tenantfoo.yaml` is validated and interpreted exactly as a [Alertmanager configuration](hhttps://prometheus.io/docs/alerting/latest/configuration/#configuration-file) would be. How you configure this is completely up to you.
 
 ```yaml
 kind: ConfigMap
@@ -112,7 +113,7 @@ config:
   ruler_storage:
     backend: "local"
     local:
-      # where your mounted configmap data will be persistently stored
+      # where your mounted configmap data will be temporary stored
       directory: /data/rules
 
   alertmanager:

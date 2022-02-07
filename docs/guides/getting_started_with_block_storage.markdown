@@ -2,8 +2,19 @@
 layout: page
 title: Getting started with block storage
 parent: Guides
-has_children: true
+has_children: false
 has_toc: false
+nav_order: 1
+---
+# Getting started with block storage
+{: .no_toc }
+
+## Table of contents
+{: .no_toc .text-delta }
+
+1. TOC
+{:toc}
+
 ---
 # Getting Started
 
