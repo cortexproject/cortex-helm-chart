@@ -1,4 +1,4 @@
-{{- if and (gt (int .Values.query_frontend.replicas) 1) (.Values.query_frontend.podDisruptionBudget) }}
+{{- if and (gt (int .Values.query_frontend.replicas) 1) (.Values.query_frontend.podDisruptionBudget) (.Values.query_frontend.enabled) }}
 apiVersion: {{ include "cortex.pdbVersion" . }}
 kind: PodDisruptionBudget
 metadata:
