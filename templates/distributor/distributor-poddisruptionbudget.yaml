@@ -1,4 +1,4 @@
-{{- if and (gt (int .Values.distributor.replicas) 1) (.Values.distributor.podDisruptionBudget) }}
+{{- if and (gt (int .Values.distributor.replicas) 1) (.Values.distributor.podDisruptionBudget) (.Values.distributor.enabled) }}
 apiVersion: {{ include "cortex.pdbVersion" . }}
 kind: PodDisruptionBudget
 metadata:

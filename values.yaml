@@ -326,6 +326,7 @@ alertmanager:
       readOnlyRootFilesystem: true
 
 distributor:
+  enabled: true
   replicas: 2
 
   service:
