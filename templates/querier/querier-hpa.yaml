@@ -1,3 +1,4 @@
+{{- if .Values.querier.enabled -}}
 {{- with .Values.querier.autoscaling -}}
 {{- if .enabled }}
 apiVersion: autoscaling/v2beta2
@@ -35,5 +36,6 @@ spec:
   behavior:
     {{- toYaml . | nindent 4 }}
   {{- end }}
+{{- end }}
 {{- end }}
 {{- end }}

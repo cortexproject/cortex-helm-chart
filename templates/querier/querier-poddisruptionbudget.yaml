@@ -1,4 +1,4 @@
-{{- if and (gt (int .Values.querier.replicas) 1) (.Values.querier.podDisruptionBudget) }}
+{{- if and (gt (int .Values.querier.replicas) 1) (.Values.querier.podDisruptionBudget) (.Values.querier.enabled) }}
 apiVersion: {{ include "cortex.pdbVersion" . }}
 kind: PodDisruptionBudget
 metadata:

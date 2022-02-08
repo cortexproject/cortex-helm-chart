@@ -706,6 +706,7 @@ ruler:
       readOnlyRootFilesystem: true
 
 querier:
+  enabled: true
   replicas: 2
 
   service:
