@@ -1,4 +1,4 @@
-{{- if .Values.store_gateway.serviceMonitor.enabled }}
+{{- if and .Values.store_gateway.serviceMonitor.enabled .Values.store_gateway.enabled }}
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:

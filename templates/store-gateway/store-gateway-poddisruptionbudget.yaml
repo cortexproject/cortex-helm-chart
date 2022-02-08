@@ -1,4 +1,4 @@
-{{- if and (gt (int .Values.store_gateway.replicas) 1) (.Values.store_gateway.podDisruptionBudget) }}
+{{- if and (gt (int .Values.store_gateway.replicas) 1) (.Values.store_gateway.podDisruptionBudget) (.Values.store_gateway.enabled) }}
 apiVersion: {{ include "cortex.pdbVersion" . }}
 kind: PodDisruptionBudget
 metadata:

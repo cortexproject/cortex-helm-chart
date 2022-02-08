@@ -1178,6 +1178,7 @@ nginx:
     behavior: {}
 
 store_gateway:
+  enabled: true
   replicas: 1
 
   service:
