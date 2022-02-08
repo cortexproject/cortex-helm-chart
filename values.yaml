@@ -429,6 +429,7 @@ distributor:
   lifecycle: {}
 
 ingester:
+  enabled: true
   replicas: 3
 
   statefulSet:

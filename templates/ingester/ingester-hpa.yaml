@@ -1,3 +1,4 @@
+{{- if .Values.ingester.enabled -}}
 {{- with .Values.ingester.autoscaling -}}
 {{- if .enabled }}
 apiVersion: autoscaling/v2beta2
@@ -25,5 +26,6 @@ spec:
   behavior:
     {{- toYaml . | nindent 4 }}
   {{- end }}
+{{- end }}
 {{- end }}
 {{- end }}
