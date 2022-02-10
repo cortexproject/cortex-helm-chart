@@ -3,7 +3,68 @@ entries:
   cortex:
   - apiVersion: v2
     appVersion: v1.11.0
-    created: "2022-02-01T12:14:55.528199712+01:00"
+    created: "2022-02-10T15:50:17.194823481+01:00"
+    dependencies:
+    - alias: memcached
+      condition: memcached.enabled
+      name: memcached
+      repository: https://charts.bitnami.com/bitnami
+      version: 5.15.14
+    - alias: memcached-index-read
+      condition: memcached-index-read.enabled
+      name: memcached
+      repository: https://charts.bitnami.com/bitnami
+      version: 5.15.14
+    - alias: memcached-index-write
+      condition: memcached-index-write.enabled
+      name: memcached
+      repository: https://charts.bitnami.com/bitnami
+      version: 5.15.14
+    - alias: memcached-frontend
+      condition: memcached-frontend.enabled
+      name: memcached
+      repository: https://charts.bitnami.com/bitnami
+      version: 5.15.14
+    - alias: memcached-blocks-index
+      name: memcached
+      repository: https://charts.bitnami.com/bitnami
+      tags:
+      - blocks-storage-memcached
+      version: 5.15.14
+    - alias: memcached-blocks
+      name: memcached
+      repository: https://charts.bitnami.com/bitnami
+      tags:
+      - blocks-storage-memcached
+      version: 5.15.14
+    - alias: memcached-blocks-metadata
+      name: memcached
+      repository: https://charts.bitnami.com/bitnami
+      tags:
+      - blocks-storage-memcached
+      version: 5.15.14
+    description: Horizontally scalable, highly available, multi-tenant, long term
+      Prometheus.
+    digest: 5fbcb04f7a6396430eea431aef58bfcde95c9a58da4468338b0f0e4ac1f983a7
+    home: https://cortexmetrics.io/
+    icon: https://avatars2.githubusercontent.com/u/43045022?s=200&v=4
+    kubeVersion: ^1.19.0-0
+    maintainers:
+    - email: thayward@infoblox.com
+      name: Tom Hayward
+      url: https://github.com/kd7lxl
+    - email: Niclas.Schad@mail.schwarz
+      name: Niclas Schad
+      url: https://github.com/nschad
+    name: cortex
+    sources:
+    - https://github.com/cortexproject/cortex-helm-chart
+    urls:
+    - https://cortexproject.github.io/cortex-helm-chart/cortex-1.3.0.tgz
+    version: 1.3.0
+  - apiVersion: v2
+    appVersion: v1.11.0
+    created: "2022-02-10T15:50:17.188563108+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -45,7 +106,7 @@ entries:
       version: 5.15.12
     description: Horizontally scalable, highly available, multi-tenant, long term
       Prometheus.
-    digest: f2159c29201b0f37c74fbd4d198ea67a384fa5be6f40bbc036d2c9031f2a83fa
+    digest: deec676a2931bea6e777384f67fcc88b707014a482c13df92dc6a48351fb59ec
     home: https://cortexmetrics.io/
     icon: https://avatars2.githubusercontent.com/u/43045022?s=200&v=4
     kubeVersion: ^1.19.0-0
@@ -53,9 +114,9 @@ entries:
     - email: thayward@infoblox.com
       name: Tom Hayward
       url: https://github.com/kd7lxl
-    - email: Niclas.Schad@mail.schwarz
+    - email: Niclas.Schad@plusserver.com
       name: Niclas Schad
-      url: https://github.com/nschad
+      url: https://github.com/ShuzZzle
     name: cortex
     sources:
     - https://github.com/cortexproject/cortex-helm-chart
@@ -64,7 +125,7 @@ entries:
     version: 1.2.0
   - apiVersion: v2
     appVersion: v1.10.0
-    created: "2022-02-01T12:14:55.521215161+01:00"
+    created: "2022-02-10T15:50:17.184570804+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -106,7 +167,7 @@ entries:
       version: 5.15.9
     description: Horizontally scalable, highly available, multi-tenant, long term
       Prometheus.
-    digest: c4426c925a375c33fb02ed347ab8c818eb02bd25ac100122194259b291b5f2ce
+    digest: b6e8db75efc9a2f0beab49f39e672cbe2176597927c007ca362e1b66d851002c
     home: https://cortexmetrics.io/
     icon: https://avatars2.githubusercontent.com/u/43045022?s=200&v=4
     kubeVersion: ^1.19.0-0
@@ -114,9 +175,9 @@ entries:
     - email: thayward@infoblox.com
       name: Tom Hayward
       url: https://github.com/kd7lxl
-    - email: Niclas.Schad@mail.schwarz
+    - email: Niclas.Schad@plusserver.com
       name: Niclas Schad
-      url: https://github.com/nschad
+      url: https://github.com/ShuzZzle
     name: cortex
     sources:
     - https://github.com/cortexproject/cortex-helm-chart
@@ -125,7 +186,7 @@ entries:
     version: 1.1.0
   - apiVersion: v2
     appVersion: v1.10.0
-    created: "2022-02-01T12:14:55.513841685+01:00"
+    created: "2022-02-10T15:50:17.177947115+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -167,7 +228,7 @@ entries:
       version: 5.15.8
     description: Horizontally scalable, highly available, multi-tenant, long term
       Prometheus.
-    digest: 7ecbe5ced73ce8f394dde31a67cf81518581cd288c6cf61b4b733c4d034e29a7
+    digest: 982cc50648ec7120536e21a9a6b6e9dfa357fa607bb7da91e86e0964821c704d
     home: https://cortexmetrics.io/
     icon: https://avatars2.githubusercontent.com/u/43045022?s=200&v=4
     kubeVersion: ^1.19.0-0
@@ -175,9 +236,9 @@ entries:
     - email: thayward@infoblox.com
       name: Tom Hayward
       url: https://github.com/kd7lxl
-    - email: Niclas.Schad@mail.schwarz
+    - email: Niclas.Schad@plusserver.com
       name: Niclas Schad
-      url: https://github.com/nschad
+      url: https://github.com/ShuzZzle
     name: cortex
     sources:
     - https://github.com/cortexproject/cortex-helm-chart
@@ -186,7 +247,7 @@ entries:
     version: 1.0.1
   - apiVersion: v2
     appVersion: v1.10.0
-    created: "2022-02-01T12:14:55.506733955+01:00"
+    created: "2022-02-10T15:50:17.172238527+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -228,7 +289,7 @@ entries:
       version: 5.15.8
     description: Horizontally scalable, highly available, multi-tenant, long term
       Prometheus.
-    digest: 3c27d2941176790979570a3d40e1cd4a35401233e797ba49c326f03349976656
+    digest: acbd37df2d268072adb0650b0016e0a9779e893d54ce2acd380ff95c3d85af96
     home: https://cortexmetrics.io/
     icon: https://avatars2.githubusercontent.com/u/43045022?s=200&v=4
     kubeVersion: ^1.19.0-0
@@ -236,9 +297,9 @@ entries:
     - email: thayward@infoblox.com
       name: Tom Hayward
       url: https://github.com/kd7lxl
-    - email: Niclas.Schad@mail.schwarz
+    - email: Niclas.Schad@plusserver.com
       name: Niclas Schad
-      url: https://github.com/nschad
+      url: https://github.com/ShuzZzle
     name: cortex
     sources:
     - https://github.com/cortexproject/cortex-helm-chart
@@ -247,7 +308,7 @@ entries:
     version: 1.0.0
   - apiVersion: v2
     appVersion: v1.10.0
-    created: "2022-02-01T12:14:55.498319133+01:00"
+    created: "2022-02-10T15:50:17.166378039+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -289,7 +350,7 @@ entries:
       version: 5.15.4
     description: Horizontally scalable, highly available, multi-tenant, long term
       Prometheus.
-    digest: bc69f3ebd4aec81edfa2f742999f103416b6f1f56edc133a9ae7d088ac82630c
+    digest: 04835dd68822bf7cfa062258eceffc71ed6a756627252c33565935584a3a6a38
     home: https://cortexmetrics.io/
     icon: https://avatars2.githubusercontent.com/u/43045022?s=200&v=4
     kubeVersion: ^1.19.0-0
@@ -297,9 +358,9 @@ entries:
     - email: thayward@infoblox.com
       name: Tom Hayward
       url: https://github.com/kd7lxl
-    - email: Niclas.Schad@mail.schwarz
+    - email: Niclas.Schad@plusserver.com
       name: Niclas Schad
-      url: https://github.com/nschad
+      url: https://github.com/ShuzZzle
     name: cortex
     sources:
     - https://github.com/cortexproject/cortex-helm-chart
@@ -308,7 +369,7 @@ entries:
     version: 0.7.0
   - apiVersion: v2
     appVersion: v1.9.0
-    created: "2022-02-01T12:14:55.490871027+01:00"
+    created: "2022-02-10T15:50:17.161026367+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -365,7 +426,7 @@ entries:
     version: 0.6.0
   - apiVersion: v2
     appVersion: v1.9.0
-    created: "2022-02-01T12:14:55.486892987+01:00"
+    created: "2022-02-10T15:50:17.155426149+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -422,7 +483,7 @@ entries:
     version: 0.5.0
   - apiVersion: v2
     appVersion: v1.7.0
-    created: "2022-02-01T12:14:55.482479204+01:00"
+    created: "2022-02-10T15:50:17.152306307+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -478,7 +539,7 @@ entries:
     version: 0.4.1
   - apiVersion: v2
     appVersion: v1.7.0
-    created: "2022-02-01T12:14:55.477148971+01:00"
+    created: "2022-02-10T15:50:17.148812679+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -534,7 +595,7 @@ entries:
     version: 0.4.0
   - apiVersion: v2
     appVersion: v1.6.0
-    created: "2022-02-01T12:14:55.472696638+01:00"
+    created: "2022-02-10T15:50:17.145694217+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -590,7 +651,7 @@ entries:
     version: 0.3.0
   - apiVersion: v2
     appVersion: v1.4.0
-    created: "2022-02-01T12:14:55.468146956+01:00"
+    created: "2022-02-10T15:50:17.142416877+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -621,4 +682,4 @@ entries:
     urls:
     - https://cortexproject.github.io/cortex-helm-chart/cortex-0.2.0.tgz
     version: 0.2.0
-generated: "2022-02-01T12:14:55.460815609+01:00"
+generated: "2022-02-10T15:50:17.134021393+01:00"

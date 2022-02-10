@@ -2,7 +2,7 @@
 
 # cortex
 
-![Version: 1.2.0](https://img.shields.io/badge/Version-1.2.0-informational?style=flat-square) ![AppVersion: v1.11.0](https://img.shields.io/badge/AppVersion-v1.11.0-informational?style=flat-square)
+![Version: 1.3.0](https://img.shields.io/badge/Version-1.3.0-informational?style=flat-square) ![AppVersion: v1.11.0](https://img.shields.io/badge/AppVersion-v1.11.0-informational?style=flat-square)
 
 Horizontally scalable, highly available, multi-tenant, long term Prometheus.
 
@@ -86,13 +86,13 @@ Kubernetes: `^1.19.0-0`
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://charts.bitnami.com/bitnami | memcached(memcached) | 5.15.12 |
-| https://charts.bitnami.com/bitnami | memcached-index-read(memcached) | 5.15.12 |
-| https://charts.bitnami.com/bitnami | memcached-index-write(memcached) | 5.15.12 |
-| https://charts.bitnami.com/bitnami | memcached-frontend(memcached) | 5.15.12 |
-| https://charts.bitnami.com/bitnami | memcached-blocks-index(memcached) | 5.15.12 |
-| https://charts.bitnami.com/bitnami | memcached-blocks(memcached) | 5.15.12 |
-| https://charts.bitnami.com/bitnami | memcached-blocks-metadata(memcached) | 5.15.12 |
+| https://charts.bitnami.com/bitnami | memcached(memcached) | 5.15.14 |
+| https://charts.bitnami.com/bitnami | memcached-index-read(memcached) | 5.15.14 |
+| https://charts.bitnami.com/bitnami | memcached-index-write(memcached) | 5.15.14 |
+| https://charts.bitnami.com/bitnami | memcached-frontend(memcached) | 5.15.14 |
+| https://charts.bitnami.com/bitnami | memcached-blocks-index(memcached) | 5.15.14 |
+| https://charts.bitnami.com/bitnami | memcached-blocks(memcached) | 5.15.14 |
+| https://charts.bitnami.com/bitnami | memcached-blocks-metadata(memcached) | 5.15.14 |
 
 ## Values
 

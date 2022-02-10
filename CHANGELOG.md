@@ -2,6 +2,8 @@
 
 ## master / unreleased
 
+## 1.3.0 / 2022-02-10
+
 * [CHANGE] move from quay.io/kiwigrid/k8s-sidecar to omegavvweapon/kopf-k8s-sidecar image #302
 * [CHANGE] undo querier store optimization #304
   * config.querier.query_ingesters_within: 13h -> 0s (default)
@@ -12,6 +14,7 @@
 * [ENHANCEMENT] Added api endpoints for Grafana 8 unified alerting #291
 * [ENHANCEMENT] Add guide on how to configure alertmanager/ruler with configmap #313
 * [ENHANCEMENT] Includes enable flags for each component
+* [DEPENDENCY] Update Helm release memcached to v5.15.14 #301
 
 ## 1.2.0 / 2021-12-29
 
