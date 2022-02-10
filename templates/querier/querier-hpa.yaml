@@ -1,6 +1,5 @@
-{{- if .Values.querier.enabled -}}
+{{- if and .Values.querier.enabled .Values.querier.autoscaling.enabled -}}
 {{- with .Values.querier.autoscaling -}}
-{{- if .enabled }}
 apiVersion: autoscaling/v2beta2
 kind: HorizontalPodAutoscaler
 metadata:
@@ -36,6 +35,5 @@ spec:
   behavior:
     {{- toYaml . | nindent 4 }}
   {{- end }}
-{{- end }}
 {{- end }}
 {{- end }}
