@@ -2,6 +2,15 @@
 
 ## master / unreleased
 
+* [CHANGE] move from quay.io/kiwigrid/k8s-sidecar to omegavvweapon/kopf-k8s-sidecar image #302
+* [CHANGE] undo querier store optimization #304
+  * config.querier.query_ingesters_within: 13h -> 0s (default)
+  * config.querier.query_store_after: 12h -> 0s (default)
+* [CHANGE] Change sidecar default values to match values in documentation #317
+* [CHANGE] Remove ruler.persistentVolume.subPath since it was never persistent to begin with #317
+* [ENHANCEMENT] Fix the indentation of memcached guide #309
+* [ENHANCEMENT] Added api endpoints for Grafana 8 unified alerting #291
+* [ENHANCEMENT] Add guide on how to configure alertmanager/ruler with configmap #313
 * [DEPENDENCY] Update Helm release memcached to v5.15.14 #301
 
 ## 1.2.0 / 2021-12-29

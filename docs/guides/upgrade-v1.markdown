@@ -3,7 +3,17 @@ layout: page
 title: Upgrading to chart version v1.0.0
 parent: Guides
 has_children: false
-has_toc: true
+has_toc: false
+---
+# Upgrading to chart version v1.0.0
+{: .no_toc }
+
+## Table of contents
+{: .no_toc .text-delta }
+
+1. TOC
+{:toc}
+
 ---
 # Upgrading to chart version v1.0.0
 

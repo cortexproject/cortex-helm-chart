@@ -68,8 +68,10 @@ spec:
             {{- end }}
             - name: FOLDER
               value: "{{ .Values.alertmanager.sidecar.folder }}{{- with .Values.alertmanager.sidecar.defaultFolderName }}/{{ . }}{{- end }}"
+            {{- if .Values.alertmanager.sidecar.resource}}
             - name: RESOURCE
-              value: "both"
+              value: {{ quote .Values.alertmanager.sidecar.resource }}
+            {{- end }}
             {{- if .Values.alertmanager.sidecar.enableUniqueFilenames }}
             - name: UNIQUE_FILENAMES
               value: "{{ .Values.alertmanager.sidecar.enableUniqueFilenames }}"
@@ -85,7 +87,7 @@ spec:
             {{- if .Values.alertmanager.sidecar.folderAnnotation }}
             - name: FOLDER_ANNOTATION
               value: "{{ .Values.alertmanager.sidecar.folderAnnotation }}"
-          {{- end }}
+            {{- end }}
           resources:
             {{- toYaml .Values.alertmanager.sidecar.resources | nindent 12 }}
           {{- if .Values.alertmanager.sidecar.containerSecurityContext.enabled }}

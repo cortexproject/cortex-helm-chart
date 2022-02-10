@@ -9,9 +9,9 @@ maintainers:
   - email: thayward@infoblox.com
     name: Tom Hayward
     url: https://github.com/kd7lxl
-  - email: Niclas.Schad@plusserver.com
+  - email: Niclas.Schad@mail.schwarz
     name: Niclas Schad
-    url: https://github.com/ShuzZzle
+    url: https://github.com/nschad
 name: cortex
 sources:
   - https://github.com/cortexproject/cortex-helm-chart

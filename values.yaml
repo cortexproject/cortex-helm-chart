@@ -114,13 +114,6 @@ config:
       - '{{ include "cortex.fullname" $ }}-memberlist'
   querier:
     active_query_tracker_dir: /data/active-query-tracker
-    # -- Maximum lookback beyond which queries are not sent to ingester. 0 means all
-    # queries are sent to ingester. Ingesters by default have no data older than 12 hours,
-    # so we can safely set this 13 hours
-    query_ingesters_within: 13h
-    # -- The time after which a metric should be queried from storage and not just
-    # ingesters.
-    query_store_after: 12h
     # -- Comma separated list of store-gateway addresses in DNS Service Discovery
     # format. This option should is set automatically when using the blocks storage and the
     # store-gateway sharding is disabled (when enabled, the store-gateway instances
@@ -292,25 +285,42 @@ alertmanager:
   # -- Extra env variables to pass to the cortex container
   env: []
 
-  # -- Sidecars that collect the configmaps with specified label and stores the included files them into the respective folders
   sidecar:
+    # -- Enable sidecar that collect the configmaps with specified label and stores the included files them into the respective folders
+    enabled: false
     image:
-      repository: quay.io/kiwigrid/k8s-sidecar
-      tag: 1.10.7
+      repository: omegavveapon/kopf-k8s-sidecar
+      tag: 1.4.0
       sha: ""
     imagePullPolicy: IfNotPresent
     resources: {}
-    # -- skipTlsVerify Set to true to skip tls verification for kube api calls
+    # -- Set to true to skip tls verification for kube api calls
     skipTlsVerify: false
+    # -- A value of true will produce unique filenames to avoid issues when duplicate data keys exist between ConfigMaps
+    # and/or Secrets within the same or multiple Namespaces.
     enableUniqueFilenames: false
-    enabled: false
+    # -- Label that should be used for filtering
     label: cortex_alertmanager
-    watchMethod: null
-    labelValue: null
+    # -- Determines how kopf-k8s-sidecar will run. If WATCH it will run like a normal operator forever.
+    # If LIST it will gather the matching configmaps and secrets currently present,
+    # write those files to the destination directory and die
+    watchMethod: ""
+    # -- The value for the label you want to filter your resources on.
+    # Don't set a value to filter by any value
+    labelValue: ""
+    # -- Folder where the files should be placed.
     folder: /data
-    defaultFolderName: null
-    searchNamespace: null
-    folderAnnotation: null
+    # -- The default folder name, it will create a subfolder under the `folder` and put rules in there instead
+    defaultFolderName: ""
+    # -- The Namespace(s) from which resources will be watched.
+    # For multiple namespaces, use a comma-separated string like "default,test".
+    # If not set or set to ALL, it will watch all Namespaces.
+    searchNamespace: ""
+    # -- The annotation the sidecar will look for in ConfigMaps and/or Secrets to override the destination folder for files.
+    # If the value is a relative path, it will be relative to FOLDER
+    folderAnnotation: "k8s-sidecar-target-directory"
+    # -- The resource type that the operator will filter for. Can be configmap, secret or both
+    resource: "both"
     containerSecurityContext:
       enabled: true
       readOnlyRootFilesystem: true
@@ -610,8 +620,6 @@ ruler:
   nodeSelector: {}
   affinity: {}
   annotations: {}
-  persistentVolume:
-    subPath:
 
   startupProbe:
     httpGet:
@@ -655,40 +663,42 @@ ruler:
   # -- allow configuring rules via configmap. ref: https://cortexproject.github.io/cortex-helm-chart/guides/configure_rules_via_configmap.html
   directories: {}
 
-  # -- Sidecars that collect the configmaps with specified label and stores the included files them into the respective folders
   sidecar:
+    # -- Enable sidecar that collect the configmaps with specified label and stores the included files them into the respective folders
+    enabled: false
     image:
-      repository: quay.io/kiwigrid/k8s-sidecar
-      tag: 1.10.7
+      repository: omegavveapon/kopf-k8s-sidecar
+      tag: 1.4.0
       sha: ""
     imagePullPolicy: IfNotPresent
     resources: {}
-    #   limits:
-    #     cpu: 100m
-    #     memory: 100Mi
-    #   requests:
-    #     cpu: 50m
-    #     memory: 50Mi
-    # skipTlsVerify Set to true to skip tls verification for kube api calls
-    # skipTlsVerify: true
+    # -- Set to true to skip tls verification for kube api calls
+    skipTlsVerify: false
+    # -- A value of true will produce unique filenames to avoid issues when duplicate data keys exist between ConfigMaps
+    # and/or Secrets within the same or multiple Namespaces.
     enableUniqueFilenames: false
-    enabled: false
     # -- label that the configmaps with rules are marked with
     label: cortex_rules
-    watchMethod: null
-    # -- value of label that the configmaps with rules are set to
-    labelValue: null
-    # -- folder in the pod that should hold the collected rules (unless `defaultFolderName` is set)
-    folder: /tmp/rules
+    # -- Determines how kopf-k8s-sidecar will run. If WATCH it will run like a normal operator forever.
+    # If LIST it will gather the matching configmaps and secrets currently present,
+    # write those files to the destination directory and die
+    watchMethod: ""
+    # -- The value for the label you want to filter your resources on.
+    # Don't set a value to filter by any value
+    labelValue: ""
+    # -- Folder where the files should be placed.
+    folder: /data/rules
     # -- The default folder name, it will create a subfolder under the `folder` and put rules in there instead
-    defaultFolderName: null
-    # -- If specified, the sidecar will search for rules config-maps inside this namespace.
-    # Otherwise the namespace in which the sidecar is running will be used.
-    # It's also possible to specify ALL to search in all namespaces
-    searchNamespace: null
-    # -- If specified, the sidecar will look for annotation with this name to create folder and put graph here.
-    # You can use this parameter together with `provider.foldersFromFilesStructure`to annotate configmaps and create folder structure.
-    folderAnnotation: null
+    defaultFolderName: ""
+    # -- The Namespace(s) from which resources will be watched.
+    # For multiple namespaces, use a comma-separated string like "default,test".
+    # If not set or set to ALL, it will watch all Namespaces.
+    searchNamespace: ""
+    # -- The annotation the sidecar will look for in ConfigMaps and/or Secrets to override the destination folder for files.
+    # If the value is a relative path, it will be relative to FOLDER
+    folderAnnotation: "k8s-sidecar-target-directory"
+    # -- The resource type that the operator will filter for. Can be configmap, secret or both
+    resource: "both"
     containerSecurityContext:
       enabled: true
       readOnlyRootFilesystem: true

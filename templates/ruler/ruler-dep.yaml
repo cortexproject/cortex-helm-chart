@@ -67,8 +67,10 @@ spec:
             {{- end }}
             - name: FOLDER
               value: "{{ .Values.ruler.sidecar.folder }}{{- with .Values.ruler.sidecar.defaultFolderName }}/{{ . }}{{- end }}"
+            {{- if .Values.ruler.sidecar.resource}}
             - name: RESOURCE
-              value: "both"
+              value: {{ quote .Values.ruler.sidecar.resource }}
+            {{- end }}
             {{- if .Values.ruler.sidecar.enableUniqueFilenames }}
             - name: UNIQUE_FILENAMES
               value: "{{ .Values.ruler.sidecar.enableUniqueFilenames }}"
@@ -84,7 +86,7 @@ spec:
             {{- if .Values.ruler.sidecar.folderAnnotation }}
             - name: FOLDER_ANNOTATION
               value: "{{ .Values.ruler.sidecar.folderAnnotation }}"
-          {{- end }}
+            {{- end }}
           resources:
             {{- toYaml .Values.ruler.sidecar.resources | nindent 12 }}
           {{- if .Values.ruler.containerSecurityContext.enabled }}
@@ -128,7 +130,6 @@ spec:
               mountPath: /etc/cortex-runtime-config
             - name: storage
               mountPath: /data
-              subPath: {{ .Values.ruler.persistentVolume.subPath }}
             - name: tmp
               mountPath: /rules
             {{- range $dir, $_ := .Values.ruler.directories }}
