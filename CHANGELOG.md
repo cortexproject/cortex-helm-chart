@@ -13,7 +13,7 @@
 * [ENHANCEMENT] Fix the indentation of memcached guide #309
 * [ENHANCEMENT] Added api endpoints for Grafana 8 unified alerting #291
 * [ENHANCEMENT] Add guide on how to configure alertmanager/ruler with configmap #313
-* [ENHANCEMENT] Includes enable flags for each component
+* [ENHANCEMENT] Includes enable flags for each component #319
 * [DEPENDENCY] Update Helm release memcached to v5.15.14 #301
 
 ## 1.2.0 / 2021-12-29
