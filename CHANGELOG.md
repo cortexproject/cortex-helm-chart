@@ -1,6 +1,7 @@
 # Changelog
 
 ## master / unreleased
+* [BUGFIX] AlertManager sidecar was changed to not run as user 0 which broke the sidecar
 
 ## 1.3.0 / 2022-02-10
 
