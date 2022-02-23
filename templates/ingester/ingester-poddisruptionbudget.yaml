@@ -1,4 +1,4 @@
-{{- if and (gt (int .Values.ingester.replicas) 1) (.Values.ingester.podDisruptionBudget) }}
+{{- if and (gt (int .Values.ingester.replicas) 1) (.Values.ingester.podDisruptionBudget) (.Values.ingester.enabled) }}
 apiVersion: {{ include "cortex.pdbVersion" . }}
 kind: PodDisruptionBudget
 metadata:

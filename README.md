@@ -320,6 +320,7 @@ Kubernetes: `^1.19.0-0`
 | distributor.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;targetMemoryUtilizationPercentage | int | `0` |  |
 | distributor.&ZeroWidthSpace;containerSecurityContext.&ZeroWidthSpace;enabled | bool | `true` |  |
 | distributor.&ZeroWidthSpace;containerSecurityContext.&ZeroWidthSpace;readOnlyRootFilesystem | bool | `true` |  |
+| distributor.&ZeroWidthSpace;enabled | bool | `true` |  |
 | distributor.&ZeroWidthSpace;env | list | `[]` |  |
 | distributor.&ZeroWidthSpace;extraArgs | object | `{}` | Additional Cortex container arguments, e.g. log.level (debug, info, warn, error) |
 | distributor.&ZeroWidthSpace;extraContainers | list | `[]` |  |
@@ -377,6 +378,7 @@ Kubernetes: `^1.19.0-0`
 | ingester.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;targetMemoryUtilizationPercentage | int | `80` |  |
 | ingester.&ZeroWidthSpace;containerSecurityContext.&ZeroWidthSpace;enabled | bool | `true` |  |
 | ingester.&ZeroWidthSpace;containerSecurityContext.&ZeroWidthSpace;readOnlyRootFilesystem | bool | `true` |  |
+| ingester.&ZeroWidthSpace;enabled | bool | `true` |  |
 | ingester.&ZeroWidthSpace;env | list | `[]` |  |
 | ingester.&ZeroWidthSpace;extraArgs | object | `{}` | Additional Cortex container arguments, e.g. log.level (debug, info, warn, error) |
 | ingester.&ZeroWidthSpace;extraContainers | list | `[]` |  |
@@ -538,6 +540,7 @@ Kubernetes: `^1.19.0-0`
 | querier.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;targetMemoryUtilizationPercentage | int | `0` |  |
 | querier.&ZeroWidthSpace;containerSecurityContext.&ZeroWidthSpace;enabled | bool | `true` |  |
 | querier.&ZeroWidthSpace;containerSecurityContext.&ZeroWidthSpace;readOnlyRootFilesystem | bool | `true` |  |
+| querier.&ZeroWidthSpace;enabled | bool | `true` |  |
 | querier.&ZeroWidthSpace;env | list | `[]` |  |
 | querier.&ZeroWidthSpace;extraArgs | object | `{}` | Additional Cortex container arguments, e.g. log.level (debug, info, warn, error) |
 | querier.&ZeroWidthSpace;extraContainers | list | `[]` |  |
@@ -582,6 +585,7 @@ Kubernetes: `^1.19.0-0`
 | query_frontend.&ZeroWidthSpace;annotations | object | `{}` |  |
 | query_frontend.&ZeroWidthSpace;containerSecurityContext.&ZeroWidthSpace;enabled | bool | `true` |  |
 | query_frontend.&ZeroWidthSpace;containerSecurityContext.&ZeroWidthSpace;readOnlyRootFilesystem | bool | `true` |  |
+| query_frontend.&ZeroWidthSpace;enabled | bool | `true` |  |
 | query_frontend.&ZeroWidthSpace;env | list | `[]` |  |
 | query_frontend.&ZeroWidthSpace;extraArgs | object | `{}` | Additional Cortex container arguments, e.g. log.level (debug, info, warn, error) |
 | query_frontend.&ZeroWidthSpace;extraContainers | list | `[]` |  |
@@ -691,6 +695,7 @@ Kubernetes: `^1.19.0-0`
 | store_gateway.&ZeroWidthSpace;annotations | object | `{}` |  |
 | store_gateway.&ZeroWidthSpace;containerSecurityContext.&ZeroWidthSpace;enabled | bool | `true` |  |
 | store_gateway.&ZeroWidthSpace;containerSecurityContext.&ZeroWidthSpace;readOnlyRootFilesystem | bool | `true` |  |
+| store_gateway.&ZeroWidthSpace;enabled | bool | `true` |  |
 | store_gateway.&ZeroWidthSpace;env | list | `[]` |  |
 | store_gateway.&ZeroWidthSpace;extraArgs | object | `{}` | Additional Cortex container arguments, e.g. log.level (debug, info, warn, error) |
 | store_gateway.&ZeroWidthSpace;extraContainers | list | `[]` |  |

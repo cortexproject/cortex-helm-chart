@@ -1,4 +1,4 @@
-{{- if .Values.query_frontend.serviceMonitor.enabled }}
+{{- if and .Values.query_frontend.serviceMonitor.enabled .Values.query_frontend.enabled }}
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:

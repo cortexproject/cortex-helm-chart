@@ -2,6 +2,8 @@
 
 ## master / unreleased
 
+* [ENHANCEMENT] Includes enable flags for each component #319
+
 ## 1.3.0 / 2022-02-10
 
 * [CHANGE] move from quay.io/kiwigrid/k8s-sidecar to omegavvweapon/kopf-k8s-sidecar image #302

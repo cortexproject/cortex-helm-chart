@@ -1,4 +1,4 @@
-{{- if .Values.ingester.serviceMonitor.enabled }}
+{{- if and .Values.ingester.serviceMonitor.enabled .Values.ingester.enabled }}
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:

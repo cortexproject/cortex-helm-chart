@@ -1,4 +1,4 @@
-{{- if .Values.ingester.statefulSet.enabled -}}
+{{- if and .Values.ingester.statefulSet.enabled .Values.ingester.enabled -}}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:

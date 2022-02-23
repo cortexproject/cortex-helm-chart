@@ -326,6 +326,7 @@ alertmanager:
       readOnlyRootFilesystem: true
 
 distributor:
+  enabled: true
   replicas: 2
 
   service:
@@ -428,6 +429,7 @@ distributor:
   lifecycle: {}
 
 ingester:
+  enabled: true
   replicas: 3
 
   statefulSet:
@@ -704,6 +706,7 @@ ruler:
       readOnlyRootFilesystem: true
 
 querier:
+  enabled: true
   replicas: 2
 
   service:
@@ -806,6 +809,7 @@ querier:
   lifecycle: {}
 
 query_frontend:
+  enabled: true
   replicas: 2
 
   service:
@@ -1174,6 +1178,7 @@ nginx:
     behavior: {}
 
 store_gateway:
+  enabled: true
   replicas: 1
 
   service:
