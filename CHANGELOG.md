@@ -3,7 +3,7 @@
 ## master / unreleased
 
 * [ENHANCEMENT] Includes enable flags for each component #319
-* [ENHANCEMENT] Exclude cortex components endpoint when disabled from nginx config #325
+* [ENHANCEMENT] Exclude cortex components endpoint when disabled from nginx config #326
 
 ## 1.3.0 / 2022-02-10
 
