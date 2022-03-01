@@ -4,6 +4,10 @@
 
 * [ENHANCEMENT] Includes enable flags for each component #319
 
+## 1.3.1 / 2022-03-01
+
+* [ENHANCEMENT] Make altermanager config optional in nginx config #325
+
 ## 1.3.0 / 2022-02-10
 
 * [CHANGE] move from quay.io/kiwigrid/k8s-sidecar to omegavvweapon/kopf-k8s-sidecar image #302
@@ -39,8 +43,8 @@
 * [BUGFIX] alertmanager/ruler deployment: fix indentation #266
 
 ## 1.0.0 / 2021-11-25
-### This Release includes BREAKING CHANGES
 
+### This Release includes BREAKING CHANGES
 
 * [FEATURE] Add autoscaler for nginx #249
 * [FEATURE] Add in lifecycle for querier, querier-frontend, and distributor #243
