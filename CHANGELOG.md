@@ -3,7 +3,7 @@
 ## master / unreleased
 
 * [ENHANCEMENT] Includes enable flags for each component #319
-* [ENHANCEMENT] Make altermanager config optional in nginx config #325
+* [ENHANCEMENT] Make altermanager,distributor,rules and config.config configurations optional in nginx config #325
 
 ## 1.3.0 / 2022-02-10
 
