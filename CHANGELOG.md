@@ -3,6 +3,7 @@
 ## master / unreleased
 
 * [ENHANCEMENT] Includes enable flags for each component #319
+* [ENHANCEMENT] Exclude cortex components endpoint from nginx config when disabled #326
 
 ## 1.3.0 / 2022-02-10
 
@@ -39,8 +40,8 @@
 * [BUGFIX] alertmanager/ruler deployment: fix indentation #266
 
 ## 1.0.0 / 2021-11-25
-### This Release includes BREAKING CHANGES
 
+### This Release includes BREAKING CHANGES
 
 * [FEATURE] Add autoscaler for nginx #249
 * [FEATURE] Add in lifecycle for querier, querier-frontend, and distributor #243
