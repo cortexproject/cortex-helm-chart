@@ -488,6 +488,7 @@ Kubernetes: `^1.19.0-0`
 | nginx.&ZeroWidthSpace;config.&ZeroWidthSpace;mainSnippet | string | `""` | arbitrary snippet to inject in the top section of the nginx config |
 | nginx.&ZeroWidthSpace;config.&ZeroWidthSpace;serverSnippet | string | `""` | arbitrary snippet to inject in the server { } section of the nginx config |
 | nginx.&ZeroWidthSpace;config.&ZeroWidthSpace;setHeaders | object | `{}` |  |
+| nginx.&ZeroWidthSpace;config.&ZeroWidthSpace;upstream_keepalive | int | `16` | (optional) Maximum number of idle keepalive connections to upstream servers for each worker |
 | nginx.&ZeroWidthSpace;containerSecurityContext.&ZeroWidthSpace;enabled | bool | `true` |  |
 | nginx.&ZeroWidthSpace;containerSecurityContext.&ZeroWidthSpace;readOnlyRootFilesystem | bool | `false` |  |
 | nginx.&ZeroWidthSpace;enabled | bool | `true` |  |

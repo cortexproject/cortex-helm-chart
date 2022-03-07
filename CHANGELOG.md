@@ -13,6 +13,7 @@
 * [ENHANCEMENT] Upgrade to Cortex v1.11.1 #331
 * [ENHANCEMENT] Includes enable flags for each component #319
 * [ENHANCEMENT] Exclude cortex components endpoint from nginx config when disabled #326
+* [ENHANCEMENT] Enable keepalive from nginx to cortex components #330
 
 ## 1.3.0 / 2022-02-10
 
