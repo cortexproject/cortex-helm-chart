@@ -2,6 +2,9 @@
 
 ## master / unreleased
 
+## 1.4.0 / 2022-03-08
+
+* [ENHANCEMENT] Upgrade to Cortex v1.11.1 #331
 * [ENHANCEMENT] Includes enable flags for each component #319
 * [ENHANCEMENT] Exclude cortex components endpoint from nginx config when disabled #326
 
