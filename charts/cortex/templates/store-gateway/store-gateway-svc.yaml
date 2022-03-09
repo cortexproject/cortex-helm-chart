@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "cortex-store-gateway.headlessname" . }}
+  name: {{ template "cortex-store-gateway.fullname" . }}
   labels: {{ include "cortex-store-gateway.labels" . | nindent 4 }}
     {{- with .Values.store_gateway.service.labels }}
     {{- toYaml . | nindent 4 }}
