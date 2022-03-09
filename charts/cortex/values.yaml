@@ -103,7 +103,7 @@ config:
 
   # -- https://cortexmetrics.io/docs/configuration/configuration-file/#store_gateway_config
   store_gateway:
-    sharding_enabled: false # this is also default but allows for this to be used the templates
+    sharding_enabled: false  # this is also default but allows for this to be used the templates
 
   distributor:
     # -- Distribute samples based on all labels, as opposed to solely by user and
@@ -153,11 +153,11 @@ config:
     data_dir: /data/cortex-compactor
 
   limits: {}
-    # -- Enforce that every sample has a metric name
-    #enforce_metric_name: true
-    #reject_old_samples: true
-    #reject_old_samples_max_age: 168h
-    #max_query_lookback: 0s
+  # -- Enforce that every sample has a metric name
+  # enforce_metric_name: true
+  # reject_old_samples: true
+  # reject_old_samples_max_age: 168h
+  # max_query_lookback: 0s
 
 runtimeconfigmap:
   # -- If true, a configmap for the `runtime_config` will be created.
