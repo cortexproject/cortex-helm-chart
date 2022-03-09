@@ -113,6 +113,7 @@ config:
       health_check_ingesters: true
 
   memberlist:
+    bind_port: 7946
     # -- the service name of the memberlist
     join_members: []
     ## add here the service name of the ingesters
@@ -396,7 +397,6 @@ distributor:
   securityContext: {}
 
   containerSecurityContext:
-    enabled: true
     readOnlyRootFilesystem: true
 
   strategy:
@@ -553,7 +553,6 @@ ingester:
   securityContext: {}
 
   containerSecurityContext:
-    enabled: true
     readOnlyRootFilesystem: true
 
   strategy:
@@ -693,7 +692,6 @@ ruler:
     # You can use this parameter together with `provider.foldersFromFilesStructure`to annotate configmaps and create folder structure.
     folderAnnotation: null
     containerSecurityContext:
-      enabled: true
       readOnlyRootFilesystem: true
 
 querier:
@@ -774,7 +772,6 @@ querier:
   securityContext: {}
 
   containerSecurityContext:
-    enabled: true
     readOnlyRootFilesystem: true
 
   strategy:
@@ -864,7 +861,6 @@ query_frontend:
 
   securityContext: {}
   containerSecurityContext:
-    enabled: true
     readOnlyRootFilesystem: true
 
   strategy:
@@ -943,7 +939,6 @@ table_manager:
   securityContext: {}
 
   containerSecurityContext:
-    enabled: true
     readOnlyRootFilesystem: true
 
   strategy:
@@ -1022,7 +1017,6 @@ configs:
   securityContext: {}
 
   containerSecurityContext:
-    enabled: true
     readOnlyRootFilesystem: true
 
   strategy:
@@ -1135,7 +1129,6 @@ nginx:
   securityContext: {}
 
   containerSecurityContext:
-    enabled: true
     readOnlyRootFilesystem: false
 
   strategy:
@@ -1265,7 +1258,6 @@ store_gateway:
   securityContext: {}
 
   containerSecurityContext:
-    enabled: true
     readOnlyRootFilesystem: true
 
   strategy:
@@ -1382,7 +1374,6 @@ compactor:
 
   securityContext: {}
   containerSecurityContext:
-    enabled: true
     readOnlyRootFilesystem: true
 
   strategy:
