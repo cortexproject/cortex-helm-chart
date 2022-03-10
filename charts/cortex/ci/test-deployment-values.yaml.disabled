@@ -148,57 +148,45 @@ store_gateway:
 
 tags:
   blocks-storage-memcached: true
+
 memcached:
-  enabled: true
-  architecture: standalone
   replicaCount: 1
-  resources:
-    # https://github.com/helm/helm/issues/9136
-    requests:
-      cpu: 0
-      memory: 0
+  resources: null
+  metrics:
+    enabled: false
+
 memcached-index-read:
-  enabled: true
-  architecture: standalone
   replicaCount: 1
-  resources:
-    requests:
-      cpu: 0
-      memory: 0
+  resources: null
+  metrics:
+    enabled: false
+
 memcached-index-write:
-  enabled: true
-  architecture: standalone
   replicaCount: 1
-  resources:
-    requests:
-      cpu: 0
-      memory: 0
+  resources: null
+  metrics:
+    enabled: false
+
 memcached-frontend:
-  enabled: true
-  architecture: standalone
   replicaCount: 1
-  resources:
-    requests:
-      cpu: 0
-      memory: 0
-memcached-blocks:
-  architecture: standalone
+  resources: null
+  metrics:
+    enabled: false
+
+memcached-index:
   replicaCount: 1
-  resources:
-    requests:
-      cpu: 0
-      memory: 0
-memcached-blocks-index:
-  architecture: standalone
+  resources: null
+  metrics:
+    enabled: false
+
+memcached-chunks:
   replicaCount: 1
-  resources:
-    requests:
-      cpu: 0
-      memory: 0
-memcached-blocks-metadata:
-  architecture: standalone
+  resources: null
+  metrics:
+    enabled: false
+
+memcached-metadata:
   replicaCount: 1
-  resources:
-    requests:
-      cpu: 0
-      memory: 0
+  resources: null
+  metrics:
+    enabled: false
