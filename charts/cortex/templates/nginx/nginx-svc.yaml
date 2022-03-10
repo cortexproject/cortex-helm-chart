@@ -4,17 +4,18 @@ kind: Service
 metadata:
   name: {{ template "cortex-nginx.fullname" . }}
   labels: {{ include "cortex-nginx.labels" . | nindent 4 }}
-{{- with .Values.nginx.labels }}
-{{- toYaml . | indent 4 }}
-{{- end }}
+    {{- with .Values.nginx.service.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
   annotations:
-    {{- toYaml .Values.nginx.annotations | nindent 4 }}
+    {{- toYaml .Values.nginx.service.annotations | nindent 4 }}
 spec:
   type: {{ .Values.nginx.service.type }}
   ports:
     - port: {{ .Values.nginx.http_listen_port }}
       protocol: TCP
-      name: http
-      targetPort: http
-  selector: {{ include "cortex-nginx.matchLabels" . | nindent 4 }}
+      name: http-metrics
+      targetPort: http-metrics
+  selector:
+    {{- include "cortex-nginx.matchLabels" . | nindent 4 }}
 {{- end }}

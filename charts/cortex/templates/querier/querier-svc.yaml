@@ -3,11 +3,11 @@ kind: Service
 metadata:
   name: {{ template "cortex-querier.fullname" . }}
   labels: {{ include "cortex-querier.labels" . | nindent 4 }}
-{{- with .Values.querier.labels }}
-{{- toYaml . | indent 4 }}
-{{- end }}
+    {{- with .Values.querier.service.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
   annotations:
-    {{- toYaml .Values.querier.annotations | nindent 4 }}
+    {{- toYaml .Values.querier.service.annotations | nindent 4 }}
 spec:
   type: ClusterIP
   ports:
@@ -15,4 +15,5 @@ spec:
       protocol: TCP
       name: http-metrics
       targetPort: http-metrics
-  selector: {{ include "cortex-querier.matchLabels" . | nindent 4 }}
+  selector:
+    {{- include "cortex-querier.matchLabels" . | nindent 4 }}

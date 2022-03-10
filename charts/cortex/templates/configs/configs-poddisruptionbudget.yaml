@@ -1,5 +1,5 @@
-{{- if .Values.configs.podDisruptionBudget -}}
-apiVersion: policy/v1beta1
+{{- if and (gt (int .Values.configs.replicas) 1) (.Values.configs.podDisruptionBudget) }}
+apiVersion: {{ include "cortex.pdbVersion" . }}
 kind: PodDisruptionBudget
 metadata:
   name: {{ template "cortex-configs.fullname" . }}
@@ -8,4 +8,4 @@ spec:
   selector:
     matchLabels: {{ include "cortex-configs.matchLabels" . | nindent 6 }}
 {{ toYaml .Values.configs.podDisruptionBudget | indent 2 }}
-{{- end -}}
+{{- end }}

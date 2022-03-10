@@ -25,6 +25,45 @@ If release name contains chart name it will be used as a full name.
 {{- end -}}
 
 {{/*
+Create a default fully qualified memberlist service name.
+We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
+*/}}
+{{- define "cortex.memberlistname" -}}
+{{- $name := default .Chart.Name .Values.nameOverride -}}
+{{- if contains $name .Release.Name -}}
+{{- printf "%s-%s" .Release.Name "memberlist" | trunc 63 | trimSuffix "-" -}}
+{{- else -}}
+{{- printf "%s-%s-%s" .Release.Name $name "memberlist" | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Create a default fully qualified configmap name.
+We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
+*/}}
+{{- define "cortex.configname" -}}
+{{- $name := default .Chart.Name .Values.nameOverride -}}
+{{- if contains $name .Release.Name -}}
+{{- printf "%s-%s" .Release.Name "config" | trunc 63 | trimSuffix "-" -}}
+{{- else -}}
+{{- printf "%s-%s-%s" .Release.Name $name "config" | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Create a default fully qualified runtime configmap name.
+We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
+*/}}
+{{- define "cortex.runtimeconfigname" -}}
+{{- $name := default .Chart.Name .Values.nameOverride -}}
+{{- if contains $name .Release.Name -}}
+{{- printf "%s-%s" .Release.Name "runtime-config" | trunc 63 | trimSuffix "-" -}}
+{{- else -}}
+{{- printf "%s-%s-%s" .Release.Name $name "runtime-config" | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
 Create chart name and version as used by the chart label.
 */}}
 {{- define "cortex.chart" -}}
@@ -125,4 +164,45 @@ Create configuration for frontend memcached configuration
 {{- if index .Values "memcached-frontend" "enabled" }}
 - "-frontend.memcached.addresses=dns+{{ template "cortex.fullname" . }}-memcached-frontend:11211"
 {{- end -}}
+{{- end -}}
+
+{{/*
+Determine the policy api version
+*/}}
+{{- define "cortex.pdbVersion" -}}
+{{- if or (.Capabilities.APIVersions.Has "policy/v1/PodDisruptionBudget") (semverCompare ">=1.21" .Capabilities.KubeVersion.Version) -}}
+policy/v1
+{{- else -}}
+policy/v1beta1
+{{- end -}}
+{{- end -}}
+
+{{/*
+Get checksum of config secret or configMap
+*/}}
+{{- define "cortex.configChecksum" -}}
+{{- if .Values.useExternalConfig -}}
+{{- .Values.externalConfigVersion -}}
+{{- else if .Values.useConfigMap -}}
+{{- include (print $.Template.BasePath "/configmap.yaml") . | sha256sum -}}
+{{- else -}}
+{{- include (print $.Template.BasePath "/secret.yaml") . | sha256sum -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Get volume of config secret of configMap
+*/}}
+{{- define "cortex.configVolume" -}}
+- name: config
+  {{- if .Values.useExternalConfig }}
+  secret:
+    secretName: {{ .Values.externalConfigSecretName }}
+  {{- else if .Values.useConfigMap }}
+  configMap:
+    name: {{ template "cortex.configname" . }}
+  {{- else }}
+  secret:
+    secretName: {{ template "cortex.fullname" . }}
+  {{- end }}
 {{- end -}}

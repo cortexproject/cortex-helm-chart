@@ -1,21 +1,19 @@
-{{- if .Values.ingester.statefulSet.enabled -}}
 apiVersion: v1
 kind: Service
 metadata:
   name: {{ template "cortex-ingester.headlessname" . }}
   labels: {{ include "cortex-ingester.labels" . | nindent 4 }}
-{{- with .Values.ingester.labels }}
-{{- toYaml . | indent 4 }}
-{{- end }}
+    {{- with .Values.ingester.service.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
   annotations:
-    {{- toYaml .Values.ingester.annotations | nindent 4 }}
+    {{- toYaml .Values.ingester.service.annotations | nindent 4 }}
 spec:
   type: ClusterIP
   clusterIP: None
   ports:
-    - port: {{ .Values.config.server.http_listen_port }}
+    - port: {{ .Values.config.server.grpc_listen_port }}
       protocol: TCP
-      name: http-metrics
-      targetPort: http-metrics
-  selector: {{ include "cortex-ingester.matchLabels" . | nindent 4 }}
-{{- end }}
+      name: grpc
+      targetPort: grpc
+  selector: {{- include "cortex-ingester.matchLabels" . | nindent 4 }}

@@ -1,5 +1,5 @@
-{{- if .Values.ingester.podDisruptionBudget -}}
-apiVersion: policy/v1beta1
+{{- if and (gt (int .Values.ingester.replicas) 1) (.Values.ingester.podDisruptionBudget) }}
+apiVersion: {{ include "cortex.pdbVersion" . }}
 kind: PodDisruptionBudget
 metadata:
   name: {{ template "cortex-ingester.fullname" . }}
@@ -8,4 +8,4 @@ spec:
   selector:
     matchLabels: {{ include "cortex-ingester.matchLabels" . | nindent 6 }}
 {{ toYaml .Values.ingester.podDisruptionBudget | indent 2 }}
-{{- end -}}
+{{- end }}

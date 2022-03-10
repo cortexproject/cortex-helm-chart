@@ -1,13 +1,14 @@
+{{- if .Values.ruler.enabled -}}
 apiVersion: v1
 kind: Service
 metadata:
   name: {{ template "cortex-ruler.fullname" . }}
   labels: {{ include "cortex-ruler.labels" . | nindent 4 }}
-{{- with .Values.ruler.labels }}
-{{- toYaml . | indent 4 }}
-{{- end }}
+    {{- with .Values.ruler.service.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
   annotations:
-    {{- toYaml .Values.ruler.annotations | nindent 4 }}
+    {{- toYaml .Values.ruler.service.annotations | nindent 4 }}
 spec:
   type: ClusterIP
   ports:
@@ -15,4 +16,6 @@ spec:
       protocol: TCP
       name: http-metrics
       targetPort: http-metrics
-  selector: {{ include "cortex-ruler.matchLabels" . | nindent 4 }}
+  selector:
+    {{- include "cortex-ruler.matchLabels" . | nindent 4 }}
+{{- end }}

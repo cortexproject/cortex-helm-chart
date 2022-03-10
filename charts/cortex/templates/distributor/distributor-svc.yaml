@@ -3,11 +3,11 @@ kind: Service
 metadata:
   name: {{ template "cortex-distributor.fullname" . }}
   labels: {{ include "cortex-distributor.labels" . | nindent 4 }}
-    {{- with .Values.distributor.labels }}
-{{- toYaml . | indent 4 }}
+    {{- with .Values.distributor.service.labels }}
+    {{- toYaml . | nindent 4 }}
     {{- end }}
   annotations:
-    {{- toYaml .Values.distributor.annotations | nindent 4 }}
+    {{- toYaml .Values.distributor.service.annotations | nindent 4 }}
 spec:
   type: ClusterIP
   ports:

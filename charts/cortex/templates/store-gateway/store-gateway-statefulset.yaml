@@ -30,7 +30,7 @@ spec:
         {{- end }}
         {{- end }}
         accessModes:
-          {{ toYaml .Values.store_gateway.persistentVolume.accessModes | nindent 10 }}
+          {{- toYaml .Values.store_gateway.persistentVolume.accessModes | nindent 10 }}
         resources:
           requests:
             storage: "{{ .Values.store_gateway.persistentVolume.size }}"
@@ -38,25 +38,20 @@ spec:
   template:
     metadata:
       labels: {{ include "cortex-store-gateway.labels" . | nindent 8 }}
-{{- with .Values.store_gateway.podLabels }}
-{{- toYaml . | indent 8 }}
-{{- end }}
-      annotations:
-        {{- if .Values.useExternalConfig }}
-        checksum/config: {{ .Values.externalConfigVersion }}
-        {{- else }}
-        checksum/config: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+        {{- with .Values.store_gateway.podLabels }}
+        {{- toYaml . | nindent 8 }}
         {{- end }}
+      annotations:
+        checksum/config: {{ include "cortex.configChecksum" . }}
         {{- with .Values.store_gateway.podAnnotations }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
-      serviceAccountName: {{ template "cortex.serviceAccountName" . }}
+      serviceAccountName: {{ .Values.store_gateway.serviceAccount.name | default (include "cortex.serviceAccountName" . ) }}
       {{- if .Values.store_gateway.priorityClassName }}
       priorityClassName: {{ .Values.store_gateway.priorityClassName }}
       {{- end }}
-      securityContext:
-        {{- toYaml .Values.store_gateway.securityContext | nindent 8 }}
+      securityContext: {{- toYaml .Values.store_gateway.securityContext | nindent 8 }}
       initContainers:
         {{- toYaml .Values.store_gateway.initContainers | nindent 8 }}
       {{- if .Values.image.pullSecrets }}
@@ -73,25 +68,22 @@ spec:
         {{- toYaml .Values.store_gateway.tolerations | nindent 8 }}
       terminationGracePeriodSeconds: {{ .Values.store_gateway.terminationGracePeriodSeconds }}
       volumes:
-        - name: config
-          secret:
-            {{- if .Values.useExternalConfig }}
-            secretName: {{ .Values.externalConfigSecretName }}
-            {{- else }}
-            secretName: {{ template "cortex.fullname" . }}
-            {{- end }}
+        {{- include "cortex.configVolume" . | nindent 8 }}
+        - name: runtime-config
+          configMap:
+            name: {{ template "cortex.runtimeconfigname" . }}
         {{- if not .Values.store_gateway.persistentVolume.enabled }}
         - name: storage
           emptyDir: {}
         {{- end }}
         {{- if .Values.store_gateway.extraVolumes }}
-        {{ toYaml .Values.store_gateway.extraVolumes | nindent 8 }}
+        {{- toYaml .Values.store_gateway.extraVolumes | nindent 8 }}
         {{- end }}
       containers:
         {{- if .Values.store_gateway.extraContainers }}
         {{ toYaml .Values.store_gateway.extraContainers | nindent 8 }}
         {{- end }}
-        - name: {{ .Chart.Name }}
+        - name: store-gateway
           image: "{{ .Values.image.repository }}:{{ include "cortex.imageTag" . }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args:
@@ -103,14 +95,16 @@ spec:
             {{- end }}
           volumeMounts:
             {{- if .Values.store_gateway.extraVolumeMounts }}
-            {{ toYaml .Values.store_gateway.extraVolumeMounts | nindent 12}}
+            {{- toYaml .Values.store_gateway.extraVolumeMounts | nindent 12}}
             {{- end }}
             - name: config
               mountPath: /etc/cortex
+            - name: runtime-config
+              mountPath: /etc/cortex-runtime-config
             - name: storage
               mountPath: "/data"
               {{- if .Values.store_gateway.persistentVolume.subPath }}
-              subPath: {{ .Values.store_gateway.persistentVolume.subPath }}             
+              subPath: {{ .Values.store_gateway.persistentVolume.subPath }}
               {{- end }}
           ports:
             - name: http-metrics
@@ -118,17 +112,21 @@ spec:
               protocol: TCP
             - name: grpc
               containerPort: {{ .Values.config.server.grpc_listen_port }}
-              protocol: TCP            
+              protocol: TCP
+            - name: gossip
+              containerPort: {{ .Values.config.memberlist.bind_port }}
+              protocol: TCP
+          startupProbe:
+            {{- toYaml .Values.store_gateway.startupProbe | nindent 12 }}
           livenessProbe:
             {{- toYaml .Values.store_gateway.livenessProbe | nindent 12 }}
           readinessProbe:
             {{- toYaml .Values.store_gateway.readinessProbe | nindent 12 }}
           resources:
             {{- toYaml .Values.store_gateway.resources | nindent 12 }}
-          securityContext:
-            readOnlyRootFilesystem: true
+          securityContext: {{- toYaml .Values.store_gateway.containerSecurityContext | nindent 12 }}
+          {{- if .Values.store_gateway.env }}
           env:
-            {{- if .Values.store_gateway.env }}
-              {{- toYaml .Values.store_gateway.env | nindent 12 }}
-            {{- end }}
+            {{- toYaml .Values.store_gateway.env | nindent 12 }}
+          {{- end }}
 {{- end -}}

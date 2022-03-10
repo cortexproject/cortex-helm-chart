@@ -25,4 +25,15 @@ spec:
     {{- if .Values.configs.serviceMonitor.scrapeTimeout }}
     scrapeTimeout: {{ .Values.configs.serviceMonitor.scrapeTimeout }}
     {{- end }}
+    {{- if .Values.configs.serviceMonitor.relabelings }}
+    relabelings:
+    {{- toYaml .Values.configs.serviceMonitor.relabelings | nindent 4 }}
+    {{- end }}
+    {{- if .Values.configs.serviceMonitor.metricRelabelings }}
+    metricRelabelings:
+    {{- toYaml .Values.configs.serviceMonitor.metricRelabelings | nindent 4 }}
+    {{- end }}
+    {{- with .Values.configs.serviceMonitor.extraEndpointSpec }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
 {{- end }}

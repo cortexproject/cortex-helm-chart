@@ -42,6 +42,12 @@ config:
     join_members:
     - "{{ .Release.Name }}-ingester"
 
+alertmanager:
+  enabled: false
+
+ruler:
+  enabled: false
+
 ingester:
   replicas: 1
   statefulSet:

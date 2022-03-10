@@ -1,0 +1,12 @@
+{{- if and (.Values.nginx.enabled) (gt (int .Values.nginx.replicas) 1) (.Values.nginx.podDisruptionBudget) }}
+apiVersion: {{ include "cortex.pdbVersion" . }}
+kind: PodDisruptionBudget
+metadata:
+  name: {{ template "cortex-nginx.fullname" . }}
+  labels: {{ include "cortex-nginx.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "cortex-nginx.matchLabels" . | nindent 6 }}
+  {{- toYaml .Values.nginx.podDisruptionBudget | nindent 2 }}
+{{- end }}

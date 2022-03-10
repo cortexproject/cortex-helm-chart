@@ -96,12 +96,6 @@ compactor:
 nginx:
   enabled: false
 
-consul:
-  enabled: false
-  server:
-    replicas: 1
-    bootstrapExpect: 1
-
 memcached:
   replicaCount: 1
   resources: null

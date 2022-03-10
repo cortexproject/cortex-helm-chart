@@ -1,3 +1,4 @@
+{{- if .Values.alertmanager.enabled -}}
 {{- if .Values.alertmanager.statefulSet.enabled -}}
 {{- $clusterPort := regexReplaceAll ".+[:]" (default "0.0.0.0:9094" .Values.config.alertmanager.cluster_bind_address) "" -}}
 apiVersion: v1
@@ -23,3 +24,4 @@ spec:
       name: cluster
   selector: {{ include "cortex-alertmanager.matchLabels" . | nindent 4 }}
 {{- end }}
+{{- end -}}
