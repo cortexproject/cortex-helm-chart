@@ -716,6 +716,7 @@ Kubernetes: `^1.19.0-0`
 | store_gateway.&ZeroWidthSpace;podAnnotations | object | `{"prometheus.io/port":"8080","prometheus.io/scrape":"true"}` | Pod Annotations |
 | store_gateway.&ZeroWidthSpace;podDisruptionBudget.&ZeroWidthSpace;maxUnavailable | int | `1` |  |
 | store_gateway.&ZeroWidthSpace;podLabels | object | `{}` | Pod Labels |
+| store_gateway.&ZeroWidthSpace;podManagementPolicy | string | `"OrderedReady"` | https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#pod-management-policies |
 | store_gateway.&ZeroWidthSpace;readinessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
 | store_gateway.&ZeroWidthSpace;readinessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
 | store_gateway.&ZeroWidthSpace;replicas | int | `1` |  |

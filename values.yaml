@@ -1180,6 +1180,8 @@ nginx:
 store_gateway:
   enabled: true
   replicas: 1
+  # -- https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#pod-management-policies
+  podManagementPolicy: OrderedReady
 
   service:
     annotations: {}
