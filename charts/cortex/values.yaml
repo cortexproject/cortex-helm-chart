@@ -1556,6 +1556,6 @@ configsdb_postgresql:
       key:
 
 consul:
-  enabled: true
+  enabled: false
   client:
     enabled: false

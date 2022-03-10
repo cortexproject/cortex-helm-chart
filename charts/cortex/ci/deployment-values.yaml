@@ -21,12 +21,6 @@ config:
     engine: blocks
   blocks_storage:
     backend: "filesystem"
-    s3:  # Ruler and alertmanager seems to need this
-      endpoint: minio.default.svc:9000
-      bucket_name: cortex
-      secret_access_key: '3P1yXv2bnVjKx8yaLvXkcCRje0tK9rONFWRxB1gZ'
-      access_key_id: 'ssRtFvgGMdtc2b8vcPZ4'
-      insecure: true
     tsdb:
       dir: "/data/tsdb"
     bucket_store:
@@ -47,6 +41,12 @@ config:
   memberlist:
     join_members:
     - "{{ .Release.Name }}-ingester"
+
+alertmanager:
+  enabled: false
+
+ruler:
+  enabled: false
 
 ingester:
   replicas: 1
