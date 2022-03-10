@@ -61,7 +61,7 @@ spec:
               readOnly: true
             {{- end }}
           ports:
-            - name: http
+            - name: http-metrics
               containerPort: {{ .Values.nginx.http_listen_port }}
               protocol: TCP
           startupProbe:
