@@ -16,6 +16,7 @@ spec:
       {{- include "cortex.storeGatewaySelectorLabels" . | nindent 6 }}
   updateStrategy:
     {{- toYaml .Values.store_gateway.strategy | nindent 4 }}
+  podManagementPolicy: {{ .Values.store_gateway.podManagementPolicy | quote }}
   serviceName: {{ template "cortex.fullname" . }}-store-gateway-headless
   {{- if .Values.store_gateway.persistentVolume.enabled }}
   volumeClaimTemplates:
