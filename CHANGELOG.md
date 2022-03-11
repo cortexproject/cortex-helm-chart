@@ -4,6 +4,7 @@
 
 * [FEATURE] Add Query-Scheduler #268
 * [ENHANCEMENT] Allow StoreGateway podManagementPolicy to be changed #332
+* [ENHANCEMENT] Improve load-balancing to cortex components via nginx pod #330
 * [BUGFIX] Correct a typo in enabling distributor HPA #334
 * [BUGFIX] Frontend memcached address did not match the Service #337
 * [BUGFIX] Add service discovery method for query-scheduler addresses #338
@@ -13,7 +14,6 @@
 * [ENHANCEMENT] Upgrade to Cortex v1.11.1 #331
 * [ENHANCEMENT] Includes enable flags for each component #319
 * [ENHANCEMENT] Exclude cortex components endpoint from nginx config when disabled #326
-* [ENHANCEMENT] Enable keepalive from nginx to cortex components #330
 
 ## 1.3.0 / 2022-02-10
 
