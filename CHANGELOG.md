@@ -3,6 +3,7 @@
 ## master / unreleased
 
 * [ENHANCEMENT] Allow StoreGateway podManagementPolicy to be changed #332
+* [BUGFIX] Correct a typo in enabling distribtuor HPA #334
 
 ## 1.4.0 / 2022-03-08
 

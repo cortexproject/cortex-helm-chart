@@ -1,4 +1,4 @@
-{{- if and .Values.distributor.enable .Values.distributor.autoscaling.enabled }}
+{{- if and .Values.distributor.enabled .Values.distributor.autoscaling.enabled }}
 {{- with .Values.distributor.autoscaling -}}
 apiVersion: autoscaling/v2beta2
 kind: HorizontalPodAutoscaler
