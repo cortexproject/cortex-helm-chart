@@ -109,7 +109,7 @@ query_scheduler:
   enabled: true
   extraVolumes:
     - name: tmp-test
-      emptyDir: { }
+      emptyDir: {}
   extraVolumeMounts:
     - name: tmp-test
       mountPath: /tmp-test
