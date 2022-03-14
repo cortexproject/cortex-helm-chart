@@ -1,0 +1,42 @@
+{{- if and .Values.query_scheduler.enabled .Values.query_scheduler.serviceMonitor.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "cortex.querySchedulerFullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "cortex.querySchedulerLabels" . | nindent 4 }}
+    {{- if .Values.query_scheduler.serviceMonitor.additionalLabels }}
+{{ toYaml .Values.query_scheduler.serviceMonitor.additionalLabels | indent 4 }}
+    {{- end }}
+  {{- if .Values.query_scheduler.serviceMonitor.annotations }}
+  annotations:
+{{ toYaml .Values.query_scheduler.serviceMonitor.annotations | indent 4 }}
+  {{- end }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "cortex.querySchedulerSelectorLabels" . | nindent 6 }}
+  namespaceSelector:
+    matchNames:
+      - {{ .Release.Namespace | quote }}
+  endpoints:
+  - port: http-metrics
+    {{- if .Values.query_scheduler.serviceMonitor.interval }}
+    interval: {{ .Values.query_scheduler.serviceMonitor.interval }}
+    {{- end }}
+    {{- if .Values.query_scheduler.serviceMonitor.scrapeTimeout }}
+    scrapeTimeout: {{ .Values.query_scheduler.serviceMonitor.scrapeTimeout }}
+    {{- end }}
+    {{- if .Values.query_scheduler.serviceMonitor.relabelings }}
+    relabelings:
+    {{- toYaml .Values.query_scheduler.serviceMonitor.relabelings | nindent 4 }}
+    {{- end }}
+    {{- if .Values.query_scheduler.serviceMonitor.metricRelabelings }}
+    metricRelabelings:
+    {{- toYaml .Values.query_scheduler.serviceMonitor.metricRelabelings | nindent 4 }}
+    {{- end }}
+    {{- with .Values.query_scheduler.serviceMonitor.extraEndpointSpec }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+{{- end }}

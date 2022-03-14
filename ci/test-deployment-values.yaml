@@ -48,6 +48,12 @@ config:
     join_members:
       - '{{ include "cortex.fullname" $ }}-memberlist'
 
+  frontend:
+    scheduler_address: 'dns+{{ include "cortex.querySchedulerFullname" $ }}-headless:9095'
+
+  frontend_worker:
+    scheduler_address: 'dns+{{ include "cortex.querySchedulerFullname" $ }}-headless:9095'
+
 ingester:
   replicas: 1
   autoscaling:
@@ -92,6 +98,15 @@ querier:
       mountPath: /tmp-test
 query_frontend:
   replicas: 1
+  extraVolumes:
+    - name: tmp-test
+      emptyDir: {}
+  extraVolumeMounts:
+    - name: tmp-test
+      mountPath: /tmp-test
+query_scheduler:
+  replicas: 1
+  enabled: true
   extraVolumes:
     - name: tmp-test
       emptyDir: {}

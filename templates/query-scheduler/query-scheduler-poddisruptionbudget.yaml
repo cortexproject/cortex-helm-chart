@@ -1,0 +1,14 @@
+{{- if and (.Values.query_scheduler.enabled) (gt (int .Values.query_scheduler.replicas) 1) (.Values.query_scheduler.podDisruptionBudget) }}
+apiVersion: {{ include "cortex.pdbVersion" . }}
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "cortex.querySchedulerFullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "cortex.querySchedulerLabels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "cortex.querySchedulerSelectorLabels" . | nindent 6 }}
+  {{- toYaml .Values.query_scheduler.podDisruptionBudget | nindent 2 }}
+{{- end }}
