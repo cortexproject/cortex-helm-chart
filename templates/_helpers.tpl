@@ -109,7 +109,7 @@ Create configuration for frontend memcached configuration
 */}}
 {{- define "cortex.frontend-memcached" -}}
 {{- if index .Values "memcached-frontend" "enabled" }}
-- "-frontend.memcached.addresses=dns+{{ template "cortex.fullname" . }}-memcached-frontend.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:11211"
+- "-frontend.memcached.addresses=dns+{{ .Release.Name }}-memcached-frontend.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:11211"
 {{- end -}}
 {{- end -}}
 
