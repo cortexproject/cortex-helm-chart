@@ -4,13 +4,13 @@
 
 * [ENHANCEMENT] Allow StoreGateway podManagementPolicy to be changed #332
 * [BUGFIX] Correct a typo in enabling distribtuor HPA #334
+* [FEATURE] Add Query-Scheduler #268
 
 ## 1.4.0 / 2022-03-08
 
 * [ENHANCEMENT] Upgrade to Cortex v1.11.1 #331
 * [ENHANCEMENT] Includes enable flags for each component #319
 * [ENHANCEMENT] Exclude cortex components endpoint from nginx config when disabled #326
-* [FEATURE] Add Query-Scheduler #268
 
 ## 1.3.0 / 2022-02-10
 
