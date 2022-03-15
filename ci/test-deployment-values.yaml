@@ -48,12 +48,6 @@ config:
     join_members:
       - '{{ include "cortex.fullname" $ }}-memberlist'
 
-  frontend:
-    scheduler_address: 'dns+{{ include "cortex.querySchedulerFullname" $ }}-headless:9095'
-
-  frontend_worker:
-    scheduler_address: 'dns+{{ include "cortex.querySchedulerFullname" $ }}-headless:9095'
-
 ingester:
   replicas: 1
   autoscaling:
