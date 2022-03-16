@@ -3,8 +3,6 @@
 ## master / unreleased
 
 * [FEATURE] Add Query-Scheduler #268
-
-
 * [ENHANCEMENT] Allow StoreGateway podManagementPolicy to be changed #332
 * [BUGFIX] Correct a typo in enabling distributor HPA #334
 * [BUGFIX] Frontend memcached address did not match the Service #337
