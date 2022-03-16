@@ -2,10 +2,13 @@
 
 ## master / unreleased
 
-* [ENHANCEMENT] Allow StoreGateway podManagementPolicy to be changed #332
-* [BUGFIX] Correct a typo in enabling distribtuor HPA #334
 * [FEATURE] Add Query-Scheduler #268
+
+
+* [ENHANCEMENT] Allow StoreGateway podManagementPolicy to be changed #332
+* [BUGFIX] Correct a typo in enabling distributor HPA #334
 * [BUGFIX] Frontend memcached address did not match the Service #337
+* [BUGFIX] Add service discovery method for query-scheduler addresses #338
 
 ## 1.4.0 / 2022-03-08
 
