@@ -1162,8 +1162,6 @@ nginx:
     setHeaders: {}
     # -- (optional) List of [auth tenants](https://cortexmetrics.io/docs/guides/auth/) to set in the nginx config
     auth_orgs: []
-    # -- (optional) Maximum number of idle keepalive connections to upstream servers for each worker
-    upstream_keepalive: 16
     # -- (optional) Name of basic auth secret.
     # In order to use this option, a secret with htpasswd formatted contents at
     # the key ".htpasswd" must exist. For example:

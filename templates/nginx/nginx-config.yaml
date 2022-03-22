@@ -40,35 +40,35 @@ data:
       {{- if .Values.alertmanager.enabled }}
       upstream alertmanager {
         server {{ template "cortex.fullname" . }}-alertmanager.{{ $rootDomain }};
-        keepalive {{ .Values.nginx.config.upstream_keepalive }};
+        keepalive_timeout 0;
       }
       {{- end }}
 
       {{- if .Values.configs.enabled }}
       upstream configs {
         server {{ template "cortex.fullname" . }}-configs.{{ $rootDomain }};
-        keepalive {{ .Values.nginx.config.upstream_keepalive }};
+        keepalive_timeout 0;
       }
       {{- end }}
 
       {{- if .Values.distributor.enabled }}
       upstream distributor {
         server {{ template "cortex.fullname" . }}-distributor.{{ $rootDomain }};
-        keepalive {{ .Values.nginx.config.upstream_keepalive }};
+        keepalive_timeout 0;
       }
       {{- end }}
 
       {{- if .Values.query_frontend.enabled }}
       upstream query-frontend {
         server {{ template "cortex.fullname" . }}-query-frontend.{{ $rootDomain }};
-        keepalive {{ .Values.nginx.config.upstream_keepalive }};
+        keepalive_timeout 0;
       }
       {{- end }}
 
       {{- if .Values.ruler.enabled }}
       upstream ruler {
         server {{ template "cortex.fullname" . }}-ruler.{{ $rootDomain }};
-        keepalive {{ .Values.nginx.config.upstream_keepalive }};
+        keepalive_timeout 0;
       }
       {{- end }}
 
@@ -78,7 +78,6 @@ data:
         proxy_send_timeout 300s;
         proxy_read_timeout 300s;
         proxy_http_version 1.1;
-        proxy_set_header Connection "";  ## Enable keepalive to upstreams
 
         {{- range $key, $value := .Values.nginx.config.setHeaders }}
         proxy_set_header {{ $key }} {{ $value }};
