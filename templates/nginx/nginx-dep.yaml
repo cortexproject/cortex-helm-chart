@@ -90,6 +90,10 @@ spec:
         {{- end }}
       nodeSelector:
         {{- toYaml .Values.nginx.nodeSelector | nindent 8 }}
+      {{- if .Values.nginx.topologySpreadConstraints }}
+      topologySpreadConstraints:
+      {{- toYaml .Values.nginx.topologySpreadConstraints | nindent 8}}
+      {{- end }}
       affinity:
         {{- toYaml .Values.nginx.affinity | nindent 8 }}
       tolerations:

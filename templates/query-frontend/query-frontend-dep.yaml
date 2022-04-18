@@ -96,6 +96,10 @@ spec:
         {{- end }}
       nodeSelector:
         {{- toYaml .Values.query_frontend.nodeSelector | nindent 8 }}
+      {{- if .Values.query_frontend.topologySpreadConstraints }}
+      topologySpreadConstraints:
+      {{- toYaml .Values.query_frontend.topologySpreadConstraints | nindent 8}}
+      {{- end }}
       affinity:
         {{- toYaml .Values.query_frontend.affinity | nindent 8 }}
       tolerations:
