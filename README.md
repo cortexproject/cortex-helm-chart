@@ -12,8 +12,8 @@ Horizontally scalable, highly available, multi-tenant, long term Prometheus.
 
 | Name | Email | Url |
 | ---- | ------ | --- |
-| Tom Hayward | thayward@infoblox.com | https://github.com/kd7lxl |
-| Niclas Schad | Niclas.Schad@mail.schwarz | https://github.com/nschad |
+| Tom Hayward | <thayward@infoblox.com> | <https://github.com/kd7lxl> |
+| Niclas Schad | <Niclas.Schad@mail.schwarz> | <https://github.com/nschad> |
 
 ## Documentation
 
@@ -163,7 +163,7 @@ Kubernetes: `^1.19.0-0`
 | alertmanager.&ZeroWidthSpace;strategy.&ZeroWidthSpace;type | string | `"RollingUpdate"` |  |
 | alertmanager.&ZeroWidthSpace;terminationGracePeriodSeconds | int | `60` |  |
 | alertmanager.&ZeroWidthSpace;tolerations | list | `[]` | Tolerations for pod assignment ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/ |
-| alertmanager.&ZeroWidthSpace;topologySpreadConstraints | list | `[]` | Pod topology spread constraints ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/ |
+| alertmanager.&ZeroWidthSpace;topologySpreadConstraints | list | `[]` |  |
 | clusterDomain | string | `"cluster.local"` | Kubernetes cluster DNS domain |
 | compactor.&ZeroWidthSpace;affinity.&ZeroWidthSpace;podAntiAffinity.&ZeroWidthSpace;preferredDuringSchedulingIgnoredDuringExecution[0].&ZeroWidthSpace;podAffinityTerm.&ZeroWidthSpace;labelSelector.&ZeroWidthSpace;matchExpressions[0].&ZeroWidthSpace;key | string | `"app.kubernetes.io/component"` |  |
 | compactor.&ZeroWidthSpace;affinity.&ZeroWidthSpace;podAntiAffinity.&ZeroWidthSpace;preferredDuringSchedulingIgnoredDuringExecution[0].&ZeroWidthSpace;podAffinityTerm.&ZeroWidthSpace;labelSelector.&ZeroWidthSpace;matchExpressions[0].&ZeroWidthSpace;operator | string | `"In"` |  |
@@ -216,7 +216,7 @@ Kubernetes: `^1.19.0-0`
 | compactor.&ZeroWidthSpace;strategy.&ZeroWidthSpace;type | string | `"RollingUpdate"` |  |
 | compactor.&ZeroWidthSpace;terminationGracePeriodSeconds | int | `240` |  |
 | compactor.&ZeroWidthSpace;tolerations | list | `[]` |  |
-| compactor.&ZeroWidthSpace;topologySpreadConstraints | list | `[]` | Pod topology spread constraints ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/ |
+| compactor.&ZeroWidthSpace;topologySpreadConstraints | list | `[]` |  |
 | config.&ZeroWidthSpace;alertmanager.&ZeroWidthSpace;enable_api | bool | `false` | Enable the experimental alertmanager config api. |
 | config.&ZeroWidthSpace;alertmanager.&ZeroWidthSpace;external_url | string | `"/api/prom/alertmanager"` |  |
 | config.&ZeroWidthSpace;alertmanager.&ZeroWidthSpace;storage | object | `{}` | Type of backend to use to store alertmanager configs. Supported values are: "configdb", "gcs", "s3", "local". refer to: https://cortexmetrics.io/docs/configuration/configuration-file/#alertmanager_config |
@@ -303,7 +303,7 @@ Kubernetes: `^1.19.0-0`
 | configs.&ZeroWidthSpace;strategy.&ZeroWidthSpace;type | string | `"RollingUpdate"` |  |
 | configs.&ZeroWidthSpace;terminationGracePeriodSeconds | int | `180` |  |
 | configs.&ZeroWidthSpace;tolerations | list | `[]` |  |
-| configs.&ZeroWidthSpace;topologySpreadConstraints | list | `[]` | Pod topology spread constraints ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/ |
+| configs.&ZeroWidthSpace;topologySpreadConstraints | list | `[]` |  |
 | configsdb_postgresql.&ZeroWidthSpace;auth.&ZeroWidthSpace;existing_secret.&ZeroWidthSpace;key | string | `nil` |  |
 | configsdb_postgresql.&ZeroWidthSpace;auth.&ZeroWidthSpace;existing_secret.&ZeroWidthSpace;name | string | `nil` |  |
 | configsdb_postgresql.&ZeroWidthSpace;auth.&ZeroWidthSpace;password | string | `nil` |  |
@@ -360,7 +360,7 @@ Kubernetes: `^1.19.0-0`
 | distributor.&ZeroWidthSpace;strategy.&ZeroWidthSpace;type | string | `"RollingUpdate"` |  |
 | distributor.&ZeroWidthSpace;terminationGracePeriodSeconds | int | `60` |  |
 | distributor.&ZeroWidthSpace;tolerations | list | `[]` |  |
-| distributor.&ZeroWidthSpace;topologySpreadConstraints | list | `[]` | Pod topology spread constraints ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/ |
+| distributor.&ZeroWidthSpace;topologySpreadConstraints | list | `[]` |  |
 | externalConfigSecretName | string | `"secret-with-config.yaml"` |  |
 | externalConfigVersion | string | `"0"` |  |
 | image.&ZeroWidthSpace;pullPolicy | string | `"IfNotPresent"` |  |
@@ -424,7 +424,7 @@ Kubernetes: `^1.19.0-0`
 | ingester.&ZeroWidthSpace;strategy.&ZeroWidthSpace;type | string | `"RollingUpdate"` |  |
 | ingester.&ZeroWidthSpace;terminationGracePeriodSeconds | int | `240` |  |
 | ingester.&ZeroWidthSpace;tolerations | list | `[]` |  |
-| ingester.&ZeroWidthSpace;topologySpreadConstraints | list | `[]` | Pod topology spread constraints ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/ |
+| ingester.&ZeroWidthSpace;topologySpreadConstraints | list | `[]` |  |
 | ingress.&ZeroWidthSpace;annotations | object | `{}` |  |
 | ingress.&ZeroWidthSpace;enabled | bool | `false` |  |
 | ingress.&ZeroWidthSpace;hosts[0].&ZeroWidthSpace;host | string | `"chart-example.local"` |  |
@@ -432,7 +432,6 @@ Kubernetes: `^1.19.0-0`
 | ingress.&ZeroWidthSpace;ingressClass.&ZeroWidthSpace;enabled | bool | `false` |  |
 | ingress.&ZeroWidthSpace;ingressClass.&ZeroWidthSpace;name | string | `"nginx"` |  |
 | ingress.&ZeroWidthSpace;tls | list | `[]` |  |
-| ingress.&ZeroWidthSpace;topologySpreadConstraints | list | `[]` | Pod topology spread constraints ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/ |
 | memcached | object | `{"architecture":"high-availability","enabled":false,"extraEnv":[{"name":"MEMCACHED_CACHE_SIZE","value":"1024"},{"name":"MEMCACHED_MAX_CONNECTIONS","value":"1024"},{"name":"MEMCACHED_THREADS","value":"4"}],"metrics":{"enabled":true,"serviceMonitor":{"enabled":false}},"replicaCount":2,"resources":{}}` | chunk caching for legacy chunk storage engine |
 | memcached-blocks-index.&ZeroWidthSpace;architecture | string | `"high-availability"` |  |
 | memcached-blocks-index.&ZeroWidthSpace;extraEnv[0] | object | `{"name":"MEMCACHED_CACHE_SIZE","value":"1024"}` | MEMCACHED_CACHE_SIZE is the amount of memory allocated to memcached for object storage |
@@ -532,7 +531,7 @@ Kubernetes: `^1.19.0-0`
 | nginx.&ZeroWidthSpace;strategy.&ZeroWidthSpace;type | string | `"RollingUpdate"` |  |
 | nginx.&ZeroWidthSpace;terminationGracePeriodSeconds | int | `10` |  |
 | nginx.&ZeroWidthSpace;tolerations | list | `[]` |  |
-| nginx.&ZeroWidthSpace;topologySpreadConstraints | list | `[]` | Pod topology spread constraints ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/ |
+| nginx.&ZeroWidthSpace;topologySpreadConstraints | list | `[]` |  |
 | querier.&ZeroWidthSpace;affinity.&ZeroWidthSpace;podAntiAffinity.&ZeroWidthSpace;preferredDuringSchedulingIgnoredDuringExecution[0].&ZeroWidthSpace;podAffinityTerm.&ZeroWidthSpace;labelSelector.&ZeroWidthSpace;matchExpressions[0].&ZeroWidthSpace;key | string | `"app.kubernetes.io/component"` |  |
 | querier.&ZeroWidthSpace;affinity.&ZeroWidthSpace;podAntiAffinity.&ZeroWidthSpace;preferredDuringSchedulingIgnoredDuringExecution[0].&ZeroWidthSpace;podAffinityTerm.&ZeroWidthSpace;labelSelector.&ZeroWidthSpace;matchExpressions[0].&ZeroWidthSpace;operator | string | `"In"` |  |
 | querier.&ZeroWidthSpace;affinity.&ZeroWidthSpace;podAntiAffinity.&ZeroWidthSpace;preferredDuringSchedulingIgnoredDuringExecution[0].&ZeroWidthSpace;podAffinityTerm.&ZeroWidthSpace;labelSelector.&ZeroWidthSpace;matchExpressions[0].&ZeroWidthSpace;values[0] | string | `"querier"` |  |
@@ -584,7 +583,7 @@ Kubernetes: `^1.19.0-0`
 | querier.&ZeroWidthSpace;strategy.&ZeroWidthSpace;type | string | `"RollingUpdate"` |  |
 | querier.&ZeroWidthSpace;terminationGracePeriodSeconds | int | `180` |  |
 | querier.&ZeroWidthSpace;tolerations | list | `[]` |  |
-| querier.&ZeroWidthSpace;topologySpreadConstraints | list | `[]` | Pod topology spread constraints ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/ |
+| querier.&ZeroWidthSpace;topologySpreadConstraints | list | `[]` |  |
 | query_frontend.&ZeroWidthSpace;affinity.&ZeroWidthSpace;podAntiAffinity.&ZeroWidthSpace;preferredDuringSchedulingIgnoredDuringExecution[0].&ZeroWidthSpace;podAffinityTerm.&ZeroWidthSpace;labelSelector.&ZeroWidthSpace;matchExpressions[0].&ZeroWidthSpace;key | string | `"app.kubernetes.io/component"` |  |
 | query_frontend.&ZeroWidthSpace;affinity.&ZeroWidthSpace;podAntiAffinity.&ZeroWidthSpace;preferredDuringSchedulingIgnoredDuringExecution[0].&ZeroWidthSpace;podAffinityTerm.&ZeroWidthSpace;labelSelector.&ZeroWidthSpace;matchExpressions[0].&ZeroWidthSpace;operator | string | `"In"` |  |
 | query_frontend.&ZeroWidthSpace;affinity.&ZeroWidthSpace;podAntiAffinity.&ZeroWidthSpace;preferredDuringSchedulingIgnoredDuringExecution[0].&ZeroWidthSpace;podAffinityTerm.&ZeroWidthSpace;labelSelector.&ZeroWidthSpace;matchExpressions[0].&ZeroWidthSpace;values[0] | string | `"query-frontend"` |  |
@@ -630,7 +629,7 @@ Kubernetes: `^1.19.0-0`
 | query_frontend.&ZeroWidthSpace;strategy.&ZeroWidthSpace;type | string | `"RollingUpdate"` |  |
 | query_frontend.&ZeroWidthSpace;terminationGracePeriodSeconds | int | `180` |  |
 | query_frontend.&ZeroWidthSpace;tolerations | list | `[]` |  |
-| query_frontend.&ZeroWidthSpace;topologySpreadConstraints | list | `[]` | Pod topology spread constraints ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/ |
+| query_frontend.&ZeroWidthSpace;topologySpreadConstraints | list | `[]` |  |
 | query_scheduler.&ZeroWidthSpace;affinity.&ZeroWidthSpace;podAntiAffinity.&ZeroWidthSpace;preferredDuringSchedulingIgnoredDuringExecution[0].&ZeroWidthSpace;podAffinityTerm.&ZeroWidthSpace;labelSelector.&ZeroWidthSpace;matchExpressions[0].&ZeroWidthSpace;key | string | `"app.kubernetes.io/component"` |  |
 | query_scheduler.&ZeroWidthSpace;affinity.&ZeroWidthSpace;podAntiAffinity.&ZeroWidthSpace;preferredDuringSchedulingIgnoredDuringExecution[0].&ZeroWidthSpace;podAffinityTerm.&ZeroWidthSpace;labelSelector.&ZeroWidthSpace;matchExpressions[0].&ZeroWidthSpace;operator | string | `"In"` |  |
 | query_scheduler.&ZeroWidthSpace;affinity.&ZeroWidthSpace;podAntiAffinity.&ZeroWidthSpace;preferredDuringSchedulingIgnoredDuringExecution[0].&ZeroWidthSpace;podAffinityTerm.&ZeroWidthSpace;labelSelector.&ZeroWidthSpace;matchExpressions[0].&ZeroWidthSpace;values[0] | string | `"query-scheduler"` |  |
@@ -675,7 +674,7 @@ Kubernetes: `^1.19.0-0`
 | query_scheduler.&ZeroWidthSpace;strategy.&ZeroWidthSpace;type | string | `"RollingUpdate"` |  |
 | query_scheduler.&ZeroWidthSpace;terminationGracePeriodSeconds | int | `180` |  |
 | query_scheduler.&ZeroWidthSpace;tolerations | list | `[]` |  |
-| query_scheduler.&ZeroWidthSpace;topologySpreadConstraints | list | `[]` | Pod topology spread constraints ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/ |
+| query_scheduler.&ZeroWidthSpace;topologySpreadConstraints | list | `[]` |  |
 | ruler.&ZeroWidthSpace;affinity | object | `{}` |  |
 | ruler.&ZeroWidthSpace;annotations | object | `{}` |  |
 | ruler.&ZeroWidthSpace;containerSecurityContext.&ZeroWidthSpace;enabled | bool | `true` |  |
@@ -734,7 +733,7 @@ Kubernetes: `^1.19.0-0`
 | ruler.&ZeroWidthSpace;strategy.&ZeroWidthSpace;type | string | `"RollingUpdate"` |  |
 | ruler.&ZeroWidthSpace;terminationGracePeriodSeconds | int | `180` |  |
 | ruler.&ZeroWidthSpace;tolerations | list | `[]` |  |
-| ruler.&ZeroWidthSpace;topologySpreadConstraints | list | `[]` | Pod topology spread constraints ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/ |
+| ruler.&ZeroWidthSpace;topologySpreadConstraints | list | `[]` |  |
 | runtimeconfigmap.&ZeroWidthSpace;annotations | object | `{}` |  |
 | runtimeconfigmap.&ZeroWidthSpace;create | bool | `true` | If true, a configmap for the `runtime_config` will be created. If false, the configmap _must_ exist already on the cluster or pods will fail to create. |
 | runtimeconfigmap.&ZeroWidthSpace;runtime_config | object | `{}` | https://cortexmetrics.io/docs/configuration/arguments/#runtime-configuration-file |
@@ -794,7 +793,7 @@ Kubernetes: `^1.19.0-0`
 | store_gateway.&ZeroWidthSpace;strategy.&ZeroWidthSpace;type | string | `"RollingUpdate"` |  |
 | store_gateway.&ZeroWidthSpace;terminationGracePeriodSeconds | int | `240` |  |
 | store_gateway.&ZeroWidthSpace;tolerations | list | `[]` |  |
-| store_gateway.&ZeroWidthSpace;topologySpreadConstraints | list | `[]` | Pod topology spread constraints ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/ |
+| store_gateway.&ZeroWidthSpace;topologySpreadConstraints | list | `[]` |  |
 | table_manager.&ZeroWidthSpace;affinity | object | `{}` |  |
 | table_manager.&ZeroWidthSpace;annotations | object | `{}` |  |
 | table_manager.&ZeroWidthSpace;containerSecurityContext.&ZeroWidthSpace;enabled | bool | `true` |  |
@@ -834,7 +833,7 @@ Kubernetes: `^1.19.0-0`
 | table_manager.&ZeroWidthSpace;strategy.&ZeroWidthSpace;type | string | `"RollingUpdate"` |  |
 | table_manager.&ZeroWidthSpace;terminationGracePeriodSeconds | int | `180` |  |
 | table_manager.&ZeroWidthSpace;tolerations | list | `[]` |  |
-| table_manager.&ZeroWidthSpace;topologySpreadConstraints | list | `[]` | Pod topology spread constraints ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/ |
+| table_manager.&ZeroWidthSpace;topologySpreadConstraints | list | `[]` |  |
 | tags.&ZeroWidthSpace;blocks-storage-memcached | bool | `false` | Set to true to enable block storage memcached caching |
 | useConfigMap | bool | `false` |  |
 | useExternalConfig | bool | `false` |  |
