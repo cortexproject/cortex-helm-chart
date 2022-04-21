@@ -88,6 +88,10 @@ spec:
         {{- end }}
       nodeSelector:
         {{- toYaml .Values.table_manager.nodeSelector | nindent 8 }}
+      {{- if .Values.table_manager.topologySpreadConstraints }}
+      topologySpreadConstraints:
+      {{- toYaml .Values.table_manager.topologySpreadConstraints | nindent 8}}
+      {{- end }}
       affinity:
         {{- toYaml .Values.table_manager.affinity | nindent 8 }}
       tolerations:

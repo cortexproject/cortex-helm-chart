@@ -101,6 +101,10 @@ spec:
         {{- end }}
       nodeSelector:
         {{- toYaml .Values.querier.nodeSelector | nindent 8 }}
+      {{- if .Values.querier.topologySpreadConstraints }}
+      topologySpreadConstraints:
+      {{- toYaml .Values.querier.topologySpreadConstraints | nindent 8}}
+      {{- end }}
       affinity:
         {{- toYaml .Values.querier.affinity | nindent 8 }}
       tolerations:

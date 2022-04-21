@@ -197,6 +197,7 @@ alertmanager:
     prometheus.io/port: '8080'
 
   nodeSelector: {}
+  topologySpreadConstraints: []
   affinity: {}
   annotations: {}
 
@@ -359,6 +360,7 @@ distributor:
     prometheus.io/port: '8080'
 
   nodeSelector: {}
+  topologySpreadConstraints: []
   affinity:
     podAntiAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:
@@ -468,6 +470,7 @@ ingester:
     prometheus.io/port: '8080'
 
   nodeSelector: {}
+  topologySpreadConstraints: []
   affinity:
     podAntiAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:
@@ -620,6 +623,7 @@ ruler:
     prometheus.io/port: '8080'
 
   nodeSelector: {}
+  topologySpreadConstraints: []
   affinity: {}
   annotations: {}
 
@@ -739,6 +743,7 @@ querier:
     prometheus.io/port: '8080'
 
   nodeSelector: {}
+  topologySpreadConstraints: []
   affinity:
     podAntiAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:
@@ -842,6 +847,7 @@ query_frontend:
     prometheus.io/port: '8080'
 
   nodeSelector: {}
+  topologySpreadConstraints: []
   affinity:
     podAntiAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:
@@ -931,6 +937,7 @@ query_scheduler:
     prometheus.io/port: 'http-metrics'
 
   nodeSelector: {}
+  topologySpreadConstraints: []
   affinity:
     podAntiAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:
@@ -1021,6 +1028,7 @@ table_manager:
     prometheus.io/port: '8080'
 
   nodeSelector: {}
+  topologySpreadConstraints: []
   affinity: {}
   annotations: {}
   persistentVolume:
@@ -1100,6 +1108,7 @@ configs:
     prometheus.io/port: '8080'
 
   nodeSelector: {}
+  topologySpreadConstraints: []
   affinity: {}
   annotations: {}
   persistentVolume:
@@ -1211,6 +1220,7 @@ nginx:
   podAnnotations: {}
 
   nodeSelector: {}
+  topologySpreadConstraints: []
   affinity: {}
   annotations: {}
   persistentVolume:
@@ -1302,6 +1312,7 @@ store_gateway:
     prometheus.io/port: '8080'
 
   nodeSelector: {}
+  topologySpreadConstraints: []
   affinity:
     podAntiAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:
@@ -1420,6 +1431,7 @@ compactor:
     prometheus.io/port: '8080'
 
   nodeSelector: {}
+  topologySpreadConstraints: []
   affinity:
     podAntiAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:

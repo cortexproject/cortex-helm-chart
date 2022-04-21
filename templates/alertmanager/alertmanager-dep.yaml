@@ -149,6 +149,10 @@ spec:
         {{- end }}
       nodeSelector:
         {{- toYaml .Values.alertmanager.nodeSelector | nindent 8 }}
+      {{- if .Values.alertmanager.topologySpreadConstraints }}
+      topologySpreadConstraints:
+      {{- toYaml .Values.alertmanager.topologySpreadConstraints | nindent 8}}
+      {{- end }}
       affinity:
         {{- toYaml .Values.alertmanager.affinity | nindent 8 }}
       tolerations:
