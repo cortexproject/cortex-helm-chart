@@ -1399,18 +1399,15 @@ memcached:
   architecture: "high-availability"
   replicaCount: 2
   resources: {}
-  extraEnv:
-    # -- MEMCACHED_CACHE_SIZE is the amount of memory allocated to memcached for object storage
-    - name: MEMCACHED_CACHE_SIZE
-      value: "1024"
-    # -- MEMCACHED_MAX_CONNECTIONS is the maximum number of simultaneous connections to the memcached service
-    - name: MEMCACHED_MAX_CONNECTIONS
-      value: "1024"
-    # -- MEMCACHED_THREADS is the number of threads to use when processing incoming requests.
-    # By default, memcached is configured to use 4 concurrent threads. The threading improves the performance of
-    # storing and retrieving data in the cache, using a locking system to prevent different threads overwriting or updating the same values.
-    - name: MEMCACHED_THREADS
-      value: "4"
+  args:
+    - /run.sh
+    - -m 1024
+    - -o
+    - modern
+    - -v
+    - -I 1m
+    - -c 1024
+    - -t 4
   metrics:
     enabled: true
     serviceMonitor:
@@ -1422,18 +1419,15 @@ memcached-index-read:
   architecture: "high-availability"
   replicaCount: 2
   resources: {}
-  extraEnv:
-    # -- MEMCACHED_CACHE_SIZE is the amount of memory allocated to memcached for object storage
-    - name: MEMCACHED_CACHE_SIZE
-      value: "1024"
-    # -- MEMCACHED_MAX_CONNECTIONS is the maximum number of simultaneous connections to the memcached service
-    - name: MEMCACHED_MAX_CONNECTIONS
-      value: "1024"
-    # -- MEMCACHED_THREADS is the number of threads to use when processing incoming requests.
-    # By default, memcached is configured to use 4 concurrent threads. The threading improves the performance of
-    # storing and retrieving data in the cache, using a locking system to prevent different threads overwriting or updating the same values.
-    - name: MEMCACHED_THREADS
-      value: "4"
+  args:
+    - /run.sh
+    - -m 1024
+    - -o
+    - modern
+    - -v
+    - -I 1m
+    - -c 1024
+    - -t 4
   metrics:
     enabled: true
     serviceMonitor:
@@ -1445,18 +1439,15 @@ memcached-index-write:
   architecture: "high-availability"
   replicaCount: 2
   resources: {}
-  extraEnv:
-    # -- MEMCACHED_CACHE_SIZE is the amount of memory allocated to memcached for object storage
-    - name: MEMCACHED_CACHE_SIZE
-      value: "1024"
-    # -- MEMCACHED_MAX_CONNECTIONS is the maximum number of simultaneous connections to the memcached service
-    - name: MEMCACHED_MAX_CONNECTIONS
-      value: "1024"
-    # -- MEMCACHED_THREADS is the number of threads to use when processing incoming requests.
-    # By default, memcached is configured to use 4 concurrent threads. The threading improves the performance of
-    # storing and retrieving data in the cache, using a locking system to prevent different threads overwriting or updating the same values.
-    - name: MEMCACHED_THREADS
-      value: "4"
+  args:
+    - /run.sh
+    - -m 1024
+    - -o
+    - modern
+    - -v
+    - -I 1m
+    - -c 1024
+    - -t 4
   metrics:
     enabled: true
     serviceMonitor:
@@ -1466,14 +1457,15 @@ memcached-frontend:
   enabled: false
   architecture: "high-availability"
   replicaCount: 2
-  # dpdbMinAvailable: 1
-  # image: memcached:1.5.7-alpine
-  memcached:
-    maxItemMemory: 1024
-    extraArgs:
-      - -I 32m
-      - -c 1024
-    threads: 32
+  args:
+    - /run.sh
+    - -m 1024
+    - -o
+    - modern
+    - -v
+    - -I 1m
+    - -c 1024
+    - -t 32
   resources: {}
   metrics:
     enabled: true
@@ -1484,21 +1476,21 @@ memcached-index:
   # enabled/disabled via the tags.blocks-storage-memcached boolean
   architecture: "high-availability"
   replicaCount: 2
-  # dpdbMinAvailable: 1
-  # image: memcached:1.5.7-alpine
-  memcached:
-    maxItemMemory: 1024
-    extraArgs:
-      - -I 5m
-      - -c 1024
-    threads: 32
+  args:
+    - /run.sh
+    - -m 1024
+    - -o
+    - modern
+    - -v
+    - -I 5m
+    - -c 1024
+    - -t 32
   resources:
     requests:
       memory: 1329Mi
       cpu: 500m
     limits:
       memory: 1536Mi
-      cpu: 1
   metrics:
     enabled: true
     serviceMonitor:
@@ -1508,14 +1500,15 @@ memcached-chunks:
   # enabled/disabled via the tags.blocks-storage-memcached boolean
   architecture: "high-availability"
   replicaCount: 2
-  # dpdbMinAvailable: 1
-  # image: memcached:1.5.7-alpine
-  memcached:
-    maxItemMemory: 6144
-    extraArgs:
-      - -I 1m
-      - -c 4096
-    threads: 32
+  args:
+    - /run.sh
+    - -m 6144
+    - -o
+    - modern
+    - -v
+    - -I 1m
+    - -c 4096
+    - -t 32
   resources: {}
   metrics:
     enabled: true
@@ -1526,21 +1519,21 @@ memcached-metadata:
   # enabled/disabled via the tags.blocks-storage-memcached boolean
   architecture: "high-availability"
   replicaCount: 2
-  # dpdbMinAvailable: 1
-  # image: memcached:1.5.7-alpine
-  memcached:
-    maxItemMemory: 512
-    extraArgs:
-      - -I 1m
-      - -c 1024
-    threads: 32
+  args:
+    - /run.sh
+    - -m 512
+    - -o
+    - modern
+    - -v
+    - -I 1m
+    - -c 1024
+    - -t 32
   resources:
     requests:
       memory: 715Mi
       cpu: 500m
     limits:
       memory: 768Mi
-      cpu: 1
   metrics:
     enabled: true
     serviceMonitor:
