@@ -2,7 +2,7 @@
 
 # cortex
 
-![Version: 1.0.1](https://img.shields.io/badge/Version-1.0.1-informational?style=flat-square) ![AppVersion: v1.10.0](https://img.shields.io/badge/AppVersion-v1.10.0-informational?style=flat-square)
+![Version: 1.4.0](https://img.shields.io/badge/Version-1.4.0-informational?style=flat-square) ![AppVersion: v1.11.1](https://img.shields.io/badge/AppVersion-v1.11.1-informational?style=flat-square)
 
 Horizontally scalable, highly available, multi-tenant, long term Prometheus.
 
@@ -12,8 +12,8 @@ Horizontally scalable, highly available, multi-tenant, long term Prometheus.
 
 | Name | Email | Url |
 | ---- | ------ | --- |
-| Tom Hayward | thayward@infoblox.com | https://github.com/kd7lxl |
-| Niclas Schad | Niclas.Schad@plusserver.com | https://github.com/ShuzZzle |
+| Tom Hayward | <thayward@infoblox.com> | <https://github.com/kd7lxl> |
+| Niclas Schad | <Niclas.Schad@mail.schwarz> | <https://github.com/nschad> |
 
 ## Documentation
 
@@ -27,7 +27,7 @@ Cortex requires a Key-Value (KV) store to store the ring. It can use traditional
 
 The recommended approach is to use the built-in memberlist as a KV store, where supported.
 
-External KV stores can be installed alongside Cortex using their respective helm charts https://github.com/bitnami/charts/tree/master/bitnami/etcd and https://github.com/helm/charts/tree/master/stable/consul.
+External KV stores can be installed alongside Cortex using their respective helm charts https://github.com/bitnami/charts/tree/master/bitnami/etcd and https://github.com/hashicorp/consul-k8s/tree/main/charts/consul.
 
 ### Storage
 
@@ -86,13 +86,13 @@ Kubernetes: `^1.19.0-0`
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://charts.bitnami.com/bitnami | memcached(memcached) | 5.15.9 |
-| https://charts.bitnami.com/bitnami | memcached-index-read(memcached) | 5.15.9 |
-| https://charts.bitnami.com/bitnami | memcached-index-write(memcached) | 5.15.9 |
-| https://charts.bitnami.com/bitnami | memcached-frontend(memcached) | 5.15.9 |
-| https://charts.bitnami.com/bitnami | memcached-blocks-index(memcached) | 5.15.9 |
-| https://charts.bitnami.com/bitnami | memcached-blocks(memcached) | 5.15.9 |
-| https://charts.bitnami.com/bitnami | memcached-blocks-metadata(memcached) | 5.15.9 |
+| https://charts.bitnami.com/bitnami | memcached(memcached) | 5.15.14 |
+| https://charts.bitnami.com/bitnami | memcached-index-read(memcached) | 5.15.14 |
+| https://charts.bitnami.com/bitnami | memcached-index-write(memcached) | 5.15.14 |
+| https://charts.bitnami.com/bitnami | memcached-frontend(memcached) | 5.15.14 |
+| https://charts.bitnami.com/bitnami | memcached-blocks-index(memcached) | 5.15.14 |
+| https://charts.bitnami.com/bitnami | memcached-blocks(memcached) | 5.15.14 |
+| https://charts.bitnami.com/bitnami | memcached-blocks-metadata(memcached) | 5.15.14 |
 
 ## Values
 
@@ -119,7 +119,7 @@ Kubernetes: `^1.19.0-0`
 | alertmanager.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;size | string | `"2Gi"` | Alertmanager data Persistent Volume size |
 | alertmanager.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;storageClass | string | `nil` | Alertmanager data Persistent Volume Storage Class If defined, storageClassName: <storageClass> If set to "-", storageClassName: "", which disables dynamic provisioning If undefined (the default) or set to null, no storageClassName spec is set, choosing the default provisioner. |
 | alertmanager.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;subPath | string | `""` | Subdirectory of Alertmanager data Persistent Volume to mount Useful if the volume's root directory is not empty |
-| alertmanager.&ZeroWidthSpace;podAnnotations | object | `{"prometheus.io/port":"http-metrics","prometheus.io/scrape":"true"}` | Pod Annotations |
+| alertmanager.&ZeroWidthSpace;podAnnotations | object | `{"prometheus.io/port":"8080","prometheus.io/scrape":"true"}` | Pod Annotations |
 | alertmanager.&ZeroWidthSpace;podDisruptionBudget | object | `{"maxUnavailable":1}` | If not set then a PodDisruptionBudget will not be created |
 | alertmanager.&ZeroWidthSpace;podLabels | object | `{}` | Pod Labels |
 | alertmanager.&ZeroWidthSpace;readinessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
@@ -135,8 +135,24 @@ Kubernetes: `^1.19.0-0`
 | alertmanager.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;extraEndpointSpec | object | `{}` | Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint |
 | alertmanager.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;metricRelabelings | list | `[]` |  |
 | alertmanager.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;relabelings | list | `[]` |  |
-| alertmanager.&ZeroWidthSpace;sidecar | object | `{"containerSecurityContext":{"enabled":true,"readOnlyRootFilesystem":true},"defaultFolderName":null,"enableUniqueFilenames":false,"enabled":false,"folder":"/data","folderAnnotation":null,"image":{"repository":"quay.io/kiwigrid/k8s-sidecar","sha":"","tag":"1.10.7"},"imagePullPolicy":"IfNotPresent","label":"cortex_alertmanager","labelValue":null,"resources":{},"searchNamespace":null,"skipTlsVerify":false,"watchMethod":null}` | Sidecars that collect the configmaps with specified label and stores the included files them into the respective folders |
-| alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;skipTlsVerify | bool | `false` | skipTlsVerify Set to true to skip tls verification for kube api calls |
+| alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;containerSecurityContext.&ZeroWidthSpace;enabled | bool | `true` |  |
+| alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;containerSecurityContext.&ZeroWidthSpace;readOnlyRootFilesystem | bool | `true` |  |
+| alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;defaultFolderName | string | `""` | The default folder name, it will create a subfolder under the `folder` and put rules in there instead |
+| alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;enableUniqueFilenames | bool | `false` | A value of true will produce unique filenames to avoid issues when duplicate data keys exist between ConfigMaps and/or Secrets within the same or multiple Namespaces. |
+| alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;enabled | bool | `false` | Enable sidecar that collect the configmaps with specified label and stores the included files them into the respective folders |
+| alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;folder | string | `"/data"` | Folder where the files should be placed. |
+| alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;folderAnnotation | string | `"k8s-sidecar-target-directory"` | The annotation the sidecar will look for in ConfigMaps and/or Secrets to override the destination folder for files. If the value is a relative path, it will be relative to FOLDER |
+| alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;repository | string | `"omegavveapon/kopf-k8s-sidecar"` |  |
+| alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;sha | string | `""` |  |
+| alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"1.4.0"` |  |
+| alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;imagePullPolicy | string | `"IfNotPresent"` |  |
+| alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;label | string | `"cortex_alertmanager"` | Label that should be used for filtering |
+| alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;labelValue | string | `""` | The value for the label you want to filter your resources on. Don't set a value to filter by any value |
+| alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;resource | string | `"both"` | The resource type that the operator will filter for. Can be configmap, secret or both |
+| alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;resources | object | `{}` |  |
+| alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;searchNamespace | string | `""` | The Namespace(s) from which resources will be watched. For multiple namespaces, use a comma-separated string like "default,test". If not set or set to ALL, it will watch all Namespaces. |
+| alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;skipTlsVerify | bool | `false` | Set to true to skip tls verification for kube api calls |
+| alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;watchMethod | string | `""` | Determines how kopf-k8s-sidecar will run. If WATCH it will run like a normal operator forever. If LIST it will gather the matching configmaps and secrets currently present, write those files to the destination directory and die |
 | alertmanager.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;failureThreshold | int | `10` |  |
 | alertmanager.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
 | alertmanager.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
@@ -147,6 +163,7 @@ Kubernetes: `^1.19.0-0`
 | alertmanager.&ZeroWidthSpace;strategy.&ZeroWidthSpace;type | string | `"RollingUpdate"` |  |
 | alertmanager.&ZeroWidthSpace;terminationGracePeriodSeconds | int | `60` |  |
 | alertmanager.&ZeroWidthSpace;tolerations | list | `[]` | Tolerations for pod assignment ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/ |
+| alertmanager.&ZeroWidthSpace;topologySpreadConstraints | list | `[]` |  |
 | clusterDomain | string | `"cluster.local"` | Kubernetes cluster DNS domain |
 | compactor.&ZeroWidthSpace;affinity.&ZeroWidthSpace;podAntiAffinity.&ZeroWidthSpace;preferredDuringSchedulingIgnoredDuringExecution[0].&ZeroWidthSpace;podAffinityTerm.&ZeroWidthSpace;labelSelector.&ZeroWidthSpace;matchExpressions[0].&ZeroWidthSpace;key | string | `"app.kubernetes.io/component"` |  |
 | compactor.&ZeroWidthSpace;affinity.&ZeroWidthSpace;podAntiAffinity.&ZeroWidthSpace;preferredDuringSchedulingIgnoredDuringExecution[0].&ZeroWidthSpace;podAffinityTerm.&ZeroWidthSpace;labelSelector.&ZeroWidthSpace;matchExpressions[0].&ZeroWidthSpace;operator | string | `"In"` |  |
@@ -174,7 +191,7 @@ Kubernetes: `^1.19.0-0`
 | compactor.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;size | string | `"2Gi"` |  |
 | compactor.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;storageClass | string | `nil` | compactor data Persistent Volume Storage Class If defined, storageClassName: <storageClass> If set to "-", storageClassName: "", which disables dynamic provisioning If undefined (the default) or set to null, no storageClassName spec is set, choosing the default provisioner. |
 | compactor.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;subPath | string | `""` | Subdirectory of compactor data Persistent Volume to mount Useful if the volume's root directory is not empty |
-| compactor.&ZeroWidthSpace;podAnnotations | object | `{"prometheus.io/port":"http-metrics","prometheus.io/scrape":"true"}` | Pod Annotations |
+| compactor.&ZeroWidthSpace;podAnnotations | object | `{"prometheus.io/port":"8080","prometheus.io/scrape":"true"}` | Pod Annotations |
 | compactor.&ZeroWidthSpace;podDisruptionBudget.&ZeroWidthSpace;maxUnavailable | int | `1` |  |
 | compactor.&ZeroWidthSpace;podLabels | object | `{}` | Pod Labels |
 | compactor.&ZeroWidthSpace;readinessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
@@ -199,6 +216,7 @@ Kubernetes: `^1.19.0-0`
 | compactor.&ZeroWidthSpace;strategy.&ZeroWidthSpace;type | string | `"RollingUpdate"` |  |
 | compactor.&ZeroWidthSpace;terminationGracePeriodSeconds | int | `240` |  |
 | compactor.&ZeroWidthSpace;tolerations | list | `[]` |  |
+| compactor.&ZeroWidthSpace;topologySpreadConstraints | list | `[]` |  |
 | config.&ZeroWidthSpace;alertmanager.&ZeroWidthSpace;enable_api | bool | `false` | Enable the experimental alertmanager config api. |
 | config.&ZeroWidthSpace;alertmanager.&ZeroWidthSpace;external_url | string | `"/api/prom/alertmanager"` |  |
 | config.&ZeroWidthSpace;alertmanager.&ZeroWidthSpace;storage | object | `{}` | Type of backend to use to store alertmanager configs. Supported values are: "configdb", "gcs", "s3", "local". refer to: https://cortexmetrics.io/docs/configuration/configuration-file/#alertmanager_config |
@@ -226,8 +244,6 @@ Kubernetes: `^1.19.0-0`
 | config.&ZeroWidthSpace;memberlist.&ZeroWidthSpace;bind_port | int | `7946` |  |
 | config.&ZeroWidthSpace;memberlist.&ZeroWidthSpace;join_members | list | `["{{ include \"cortex.fullname\" $ }}-memberlist"]` | the service name of the memberlist if using memberlist discovery |
 | config.&ZeroWidthSpace;querier.&ZeroWidthSpace;active_query_tracker_dir | string | `"/data/active-query-tracker"` |  |
-| config.&ZeroWidthSpace;querier.&ZeroWidthSpace;query_ingesters_within | string | `"13h"` | Maximum lookback beyond which queries are not sent to ingester. 0 means all queries are sent to ingester. Ingesters by default have no data older than 12 hours, so we can safely set this 13 hours |
-| config.&ZeroWidthSpace;querier.&ZeroWidthSpace;query_store_after | string | `"12h"` | The time after which a metric should be queried from storage and not just ingesters. |
 | config.&ZeroWidthSpace;querier.&ZeroWidthSpace;store_gateway_addresses | string | automatic | Comma separated list of store-gateway addresses in DNS Service Discovery format. This option should is set automatically when using the blocks storage and the store-gateway sharding is disabled (when enabled, the store-gateway instances form a ring and addresses are picked from the ring). |
 | config.&ZeroWidthSpace;query_range.&ZeroWidthSpace;align_queries_with_step | bool | `true` |  |
 | config.&ZeroWidthSpace;query_range.&ZeroWidthSpace;cache_results | bool | `true` |  |
@@ -263,7 +279,7 @@ Kubernetes: `^1.19.0-0`
 | configs.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
 | configs.&ZeroWidthSpace;nodeSelector | object | `{}` |  |
 | configs.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;subPath | string | `nil` |  |
-| configs.&ZeroWidthSpace;podAnnotations | object | `{"prometheus.io/port":"http-metrics","prometheus.io/scrape":"true"}` | Pod Annotations |
+| configs.&ZeroWidthSpace;podAnnotations | object | `{"prometheus.io/port":"8080","prometheus.io/scrape":"true"}` | Pod Annotations |
 | configs.&ZeroWidthSpace;podDisruptionBudget.&ZeroWidthSpace;maxUnavailable | int | `1` |  |
 | configs.&ZeroWidthSpace;podLabels | object | `{}` | Pod Labels |
 | configs.&ZeroWidthSpace;readinessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
@@ -287,6 +303,7 @@ Kubernetes: `^1.19.0-0`
 | configs.&ZeroWidthSpace;strategy.&ZeroWidthSpace;type | string | `"RollingUpdate"` |  |
 | configs.&ZeroWidthSpace;terminationGracePeriodSeconds | int | `180` |  |
 | configs.&ZeroWidthSpace;tolerations | list | `[]` |  |
+| configs.&ZeroWidthSpace;topologySpreadConstraints | list | `[]` |  |
 | configsdb_postgresql.&ZeroWidthSpace;auth.&ZeroWidthSpace;existing_secret.&ZeroWidthSpace;key | string | `nil` |  |
 | configsdb_postgresql.&ZeroWidthSpace;auth.&ZeroWidthSpace;existing_secret.&ZeroWidthSpace;name | string | `nil` |  |
 | configsdb_postgresql.&ZeroWidthSpace;auth.&ZeroWidthSpace;password | string | `nil` |  |
@@ -306,6 +323,7 @@ Kubernetes: `^1.19.0-0`
 | distributor.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;targetMemoryUtilizationPercentage | int | `0` |  |
 | distributor.&ZeroWidthSpace;containerSecurityContext.&ZeroWidthSpace;enabled | bool | `true` |  |
 | distributor.&ZeroWidthSpace;containerSecurityContext.&ZeroWidthSpace;readOnlyRootFilesystem | bool | `true` |  |
+| distributor.&ZeroWidthSpace;enabled | bool | `true` |  |
 | distributor.&ZeroWidthSpace;env | list | `[]` |  |
 | distributor.&ZeroWidthSpace;extraArgs | object | `{}` | Additional Cortex container arguments, e.g. log.level (debug, info, warn, error) |
 | distributor.&ZeroWidthSpace;extraContainers | list | `[]` |  |
@@ -318,7 +336,7 @@ Kubernetes: `^1.19.0-0`
 | distributor.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
 | distributor.&ZeroWidthSpace;nodeSelector | object | `{}` |  |
 | distributor.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;subPath | string | `nil` |  |
-| distributor.&ZeroWidthSpace;podAnnotations | object | `{"prometheus.io/port":"http-metrics","prometheus.io/scrape":"true"}` | Pod Annotations |
+| distributor.&ZeroWidthSpace;podAnnotations | object | `{"prometheus.io/port":"8080","prometheus.io/scrape":"true"}` | Pod Annotations |
 | distributor.&ZeroWidthSpace;podDisruptionBudget.&ZeroWidthSpace;maxUnavailable | int | `1` |  |
 | distributor.&ZeroWidthSpace;podLabels | object | `{}` | Pod Labels |
 | distributor.&ZeroWidthSpace;readinessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
@@ -342,6 +360,7 @@ Kubernetes: `^1.19.0-0`
 | distributor.&ZeroWidthSpace;strategy.&ZeroWidthSpace;type | string | `"RollingUpdate"` |  |
 | distributor.&ZeroWidthSpace;terminationGracePeriodSeconds | int | `60` |  |
 | distributor.&ZeroWidthSpace;tolerations | list | `[]` |  |
+| distributor.&ZeroWidthSpace;topologySpreadConstraints | list | `[]` |  |
 | externalConfigSecretName | string | `"secret-with-config.yaml"` |  |
 | externalConfigVersion | string | `"0"` |  |
 | image.&ZeroWidthSpace;pullPolicy | string | `"IfNotPresent"` |  |
@@ -363,6 +382,7 @@ Kubernetes: `^1.19.0-0`
 | ingester.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;targetMemoryUtilizationPercentage | int | `80` |  |
 | ingester.&ZeroWidthSpace;containerSecurityContext.&ZeroWidthSpace;enabled | bool | `true` |  |
 | ingester.&ZeroWidthSpace;containerSecurityContext.&ZeroWidthSpace;readOnlyRootFilesystem | bool | `true` |  |
+| ingester.&ZeroWidthSpace;enabled | bool | `true` |  |
 | ingester.&ZeroWidthSpace;env | list | `[]` |  |
 | ingester.&ZeroWidthSpace;extraArgs | object | `{}` | Additional Cortex container arguments, e.g. log.level (debug, info, warn, error) |
 | ingester.&ZeroWidthSpace;extraContainers | list | `[]` |  |
@@ -371,7 +391,7 @@ Kubernetes: `^1.19.0-0`
 | ingester.&ZeroWidthSpace;extraVolumes | list | `[]` |  |
 | ingester.&ZeroWidthSpace;initContainers | list | `[]` |  |
 | ingester.&ZeroWidthSpace;lifecycle.&ZeroWidthSpace;preStop | object | `{"httpGet":{"path":"/ingester/shutdown","port":"http-metrics"}}` | The /shutdown preStop hook is recommended as part of the ingester scaledown process, but can be removed to optimize rolling restarts in instances that will never be scaled down or when using chunks storage with WAL disabled. https://cortexmetrics.io/docs/guides/ingesters-scaling-up-and-down/#scaling-down |
-| ingester.&ZeroWidthSpace;livenessProbe | object | `{}` | Liveness probes for ingesters are not recommended.  Ref: https://cortexmetrics.io/docs/guides/running-cortex-on-kubernetes/#take-extra-care-with-ingesters |
+| ingester.&ZeroWidthSpace;livenessProbe | object | `{}` | Startup/liveness probes for ingesters are not recommended.  Ref: https://cortexmetrics.io/docs/guides/running-cortex-on-kubernetes/#take-extra-care-with-ingesters |
 | ingester.&ZeroWidthSpace;nodeSelector | object | `{}` |  |
 | ingester.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;accessModes | list | `["ReadWriteOnce"]` | Ingester data Persistent Volume access modes Must match those of existing PV or dynamic provisioner Ref: http://kubernetes.io/docs/user-guide/persistent-volumes/ |
 | ingester.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;annotations | object | `{}` | Ingester data Persistent Volume Claim annotations |
@@ -379,7 +399,7 @@ Kubernetes: `^1.19.0-0`
 | ingester.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;size | string | `"2Gi"` | Ingester data Persistent Volume size |
 | ingester.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;storageClass | string | `nil` | Ingester data Persistent Volume Storage Class If defined, storageClassName: <storageClass> If set to "-", storageClassName: "", which disables dynamic provisioning If undefined (the default) or set to null, no storageClassName spec is set, choosing the default provisioner. |
 | ingester.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;subPath | string | `""` | Subdirectory of Ingester data Persistent Volume to mount Useful if the volume's root directory is not empty |
-| ingester.&ZeroWidthSpace;podAnnotations | object | `{"prometheus.io/port":"http-metrics","prometheus.io/scrape":"true"}` | Pod Annotations |
+| ingester.&ZeroWidthSpace;podAnnotations | object | `{"prometheus.io/port":"8080","prometheus.io/scrape":"true"}` | Pod Annotations |
 | ingester.&ZeroWidthSpace;podDisruptionBudget.&ZeroWidthSpace;maxUnavailable | int | `1` |  |
 | ingester.&ZeroWidthSpace;podLabels | object | `{}` | Pod Labels |
 | ingester.&ZeroWidthSpace;readinessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
@@ -395,12 +415,7 @@ Kubernetes: `^1.19.0-0`
 | ingester.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;extraEndpointSpec | object | `{}` | Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint |
 | ingester.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;metricRelabelings | list | `[]` |  |
 | ingester.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;relabelings | list | `[]` |  |
-| ingester.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;failureThreshold | int | `60` |  |
-| ingester.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
-| ingester.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
-| ingester.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;scheme | string | `"HTTP"` |  |
-| ingester.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;initialDelaySeconds | int | `120` |  |
-| ingester.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;periodSeconds | int | `30` |  |
+| ingester.&ZeroWidthSpace;startupProbe | object | `{}` | Startup/liveness probes for ingesters are not recommended.  Ref: https://cortexmetrics.io/docs/guides/running-cortex-on-kubernetes/#take-extra-care-with-ingesters |
 | ingester.&ZeroWidthSpace;statefulSet.&ZeroWidthSpace;enabled | bool | `false` | If true, use a statefulset instead of a deployment for pod management. This is useful when using WAL |
 | ingester.&ZeroWidthSpace;statefulSet.&ZeroWidthSpace;podManagementPolicy | string | `"OrderedReady"` | ref: https://cortexmetrics.io/docs/guides/ingesters-scaling-up-and-down/#scaling-down and https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#pod-management-policies for scaledown details |
 | ingester.&ZeroWidthSpace;statefulStrategy.&ZeroWidthSpace;type | string | `"RollingUpdate"` |  |
@@ -409,6 +424,7 @@ Kubernetes: `^1.19.0-0`
 | ingester.&ZeroWidthSpace;strategy.&ZeroWidthSpace;type | string | `"RollingUpdate"` |  |
 | ingester.&ZeroWidthSpace;terminationGracePeriodSeconds | int | `240` |  |
 | ingester.&ZeroWidthSpace;tolerations | list | `[]` |  |
+| ingester.&ZeroWidthSpace;topologySpreadConstraints | list | `[]` |  |
 | ingress.&ZeroWidthSpace;annotations | object | `{}` |  |
 | ingress.&ZeroWidthSpace;enabled | bool | `false` |  |
 | ingress.&ZeroWidthSpace;hosts[0].&ZeroWidthSpace;host | string | `"chart-example.local"` |  |
@@ -470,7 +486,7 @@ Kubernetes: `^1.19.0-0`
 | nginx.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;targetCPUUtilizationPercentage | int | `80` |  |
 | nginx.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;targetMemoryUtilizationPercentage | int | `0` |  |
 | nginx.&ZeroWidthSpace;config.&ZeroWidthSpace;auth_orgs | list | `[]` | (optional) List of [auth tenants](https://cortexmetrics.io/docs/guides/auth/) to set in the nginx config |
-| nginx.&ZeroWidthSpace;config.&ZeroWidthSpace;basicAuthSecretName | string | `""` | (optional) Name of basic auth secret. In order to use this option, a secret with htpasswd formatted contents at the key ".htpasswd" must exist. For example:   apiVersion: v1   kind: Secret   metadata:     name: my-secret     namespace: <same as cortex installation>   stringData:     .htpasswd: |       user1:$apr1$/woC1jnP$KAh0SsVn5qeSMjTtn0E9Q0       user2:$apr1$QdR8fNLT$vbCEEzDj7LyqCMyNpSoBh/ Please note that the use of basic auth will not identify organizations the way X-Scope-OrgID does. Thus, the use of basic auth alone will not prevent one tenant from viewing the metrics of another. To ensure tenants are scoped appropriately, explicitly set the `X-Scope-OrgID` header in the nginx config. Example   setHeaders:     X-Scope-Org-Id: $remote_user |
+| nginx.&ZeroWidthSpace;config.&ZeroWidthSpace;basicAuthSecretName | string | `""` | (optional) Name of basic auth secret. In order to use this option, a secret with htpasswd formatted contents at the key ".htpasswd" must exist. For example:   apiVersion: v1   kind: Secret   metadata:     name: my-secret     namespace: <same as cortex installation>   stringData:     .htpasswd: |       user1:$apr1$/woC1jnP$KAh0SsVn5qeSMjTtn0E9Q0       user2:$apr1$QdR8fNLT$vbCEEzDj7LyqCMyNpSoBh/ Please note that the use of basic auth will not identify organizations the way X-Scope-OrgID does. Thus, the use of basic auth alone will not prevent one tenant from viewing the metrics of another. To ensure tenants are scoped appropriately, explicitly set the `X-Scope-OrgID` header in the nginx config. Example   setHeaders:     X-Scope-OrgID: $remote_user |
 | nginx.&ZeroWidthSpace;config.&ZeroWidthSpace;client_max_body_size | string | `"1M"` | ref: http://nginx.org/en/docs/http/ngx_http_core_module.html#client_max_body_size |
 | nginx.&ZeroWidthSpace;config.&ZeroWidthSpace;dnsResolver | string | `"kube-dns.kube-system.svc.cluster.local"` |  |
 | nginx.&ZeroWidthSpace;config.&ZeroWidthSpace;httpSnippet | string | `""` | arbitrary snippet to inject in the http { } section of the nginx config |
@@ -495,7 +511,7 @@ Kubernetes: `^1.19.0-0`
 | nginx.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
 | nginx.&ZeroWidthSpace;nodeSelector | object | `{}` |  |
 | nginx.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;subPath | string | `nil` |  |
-| nginx.&ZeroWidthSpace;podAnnotations | object | `{"prometheus.io/port":"http-metrics","prometheus.io/scrape":""}` | Pod Annotations |
+| nginx.&ZeroWidthSpace;podAnnotations | object | `{}` | Pod Annotations |
 | nginx.&ZeroWidthSpace;podDisruptionBudget.&ZeroWidthSpace;maxUnavailable | int | `1` |  |
 | nginx.&ZeroWidthSpace;podLabels | object | `{}` | Pod Labels |
 | nginx.&ZeroWidthSpace;readinessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/healthz"` |  |
@@ -515,6 +531,7 @@ Kubernetes: `^1.19.0-0`
 | nginx.&ZeroWidthSpace;strategy.&ZeroWidthSpace;type | string | `"RollingUpdate"` |  |
 | nginx.&ZeroWidthSpace;terminationGracePeriodSeconds | int | `10` |  |
 | nginx.&ZeroWidthSpace;tolerations | list | `[]` |  |
+| nginx.&ZeroWidthSpace;topologySpreadConstraints | list | `[]` |  |
 | querier.&ZeroWidthSpace;affinity.&ZeroWidthSpace;podAntiAffinity.&ZeroWidthSpace;preferredDuringSchedulingIgnoredDuringExecution[0].&ZeroWidthSpace;podAffinityTerm.&ZeroWidthSpace;labelSelector.&ZeroWidthSpace;matchExpressions[0].&ZeroWidthSpace;key | string | `"app.kubernetes.io/component"` |  |
 | querier.&ZeroWidthSpace;affinity.&ZeroWidthSpace;podAntiAffinity.&ZeroWidthSpace;preferredDuringSchedulingIgnoredDuringExecution[0].&ZeroWidthSpace;podAffinityTerm.&ZeroWidthSpace;labelSelector.&ZeroWidthSpace;matchExpressions[0].&ZeroWidthSpace;operator | string | `"In"` |  |
 | querier.&ZeroWidthSpace;affinity.&ZeroWidthSpace;podAntiAffinity.&ZeroWidthSpace;preferredDuringSchedulingIgnoredDuringExecution[0].&ZeroWidthSpace;podAffinityTerm.&ZeroWidthSpace;labelSelector.&ZeroWidthSpace;matchExpressions[0].&ZeroWidthSpace;values[0] | string | `"querier"` |  |
@@ -529,6 +546,7 @@ Kubernetes: `^1.19.0-0`
 | querier.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;targetMemoryUtilizationPercentage | int | `0` |  |
 | querier.&ZeroWidthSpace;containerSecurityContext.&ZeroWidthSpace;enabled | bool | `true` |  |
 | querier.&ZeroWidthSpace;containerSecurityContext.&ZeroWidthSpace;readOnlyRootFilesystem | bool | `true` |  |
+| querier.&ZeroWidthSpace;enabled | bool | `true` |  |
 | querier.&ZeroWidthSpace;env | list | `[]` |  |
 | querier.&ZeroWidthSpace;extraArgs | object | `{}` | Additional Cortex container arguments, e.g. log.level (debug, info, warn, error) |
 | querier.&ZeroWidthSpace;extraContainers | list | `[]` |  |
@@ -541,7 +559,7 @@ Kubernetes: `^1.19.0-0`
 | querier.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
 | querier.&ZeroWidthSpace;nodeSelector | object | `{}` |  |
 | querier.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;subPath | string | `nil` |  |
-| querier.&ZeroWidthSpace;podAnnotations | object | `{"prometheus.io/port":"http-metrics","prometheus.io/scrape":"true"}` | Pod Annotations |
+| querier.&ZeroWidthSpace;podAnnotations | object | `{"prometheus.io/port":"8080","prometheus.io/scrape":"true"}` | Pod Annotations |
 | querier.&ZeroWidthSpace;podDisruptionBudget.&ZeroWidthSpace;maxUnavailable | int | `1` |  |
 | querier.&ZeroWidthSpace;podLabels | object | `{}` | Pod Labels |
 | querier.&ZeroWidthSpace;readinessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
@@ -565,6 +583,7 @@ Kubernetes: `^1.19.0-0`
 | querier.&ZeroWidthSpace;strategy.&ZeroWidthSpace;type | string | `"RollingUpdate"` |  |
 | querier.&ZeroWidthSpace;terminationGracePeriodSeconds | int | `180` |  |
 | querier.&ZeroWidthSpace;tolerations | list | `[]` |  |
+| querier.&ZeroWidthSpace;topologySpreadConstraints | list | `[]` |  |
 | query_frontend.&ZeroWidthSpace;affinity.&ZeroWidthSpace;podAntiAffinity.&ZeroWidthSpace;preferredDuringSchedulingIgnoredDuringExecution[0].&ZeroWidthSpace;podAffinityTerm.&ZeroWidthSpace;labelSelector.&ZeroWidthSpace;matchExpressions[0].&ZeroWidthSpace;key | string | `"app.kubernetes.io/component"` |  |
 | query_frontend.&ZeroWidthSpace;affinity.&ZeroWidthSpace;podAntiAffinity.&ZeroWidthSpace;preferredDuringSchedulingIgnoredDuringExecution[0].&ZeroWidthSpace;podAffinityTerm.&ZeroWidthSpace;labelSelector.&ZeroWidthSpace;matchExpressions[0].&ZeroWidthSpace;operator | string | `"In"` |  |
 | query_frontend.&ZeroWidthSpace;affinity.&ZeroWidthSpace;podAntiAffinity.&ZeroWidthSpace;preferredDuringSchedulingIgnoredDuringExecution[0].&ZeroWidthSpace;podAffinityTerm.&ZeroWidthSpace;labelSelector.&ZeroWidthSpace;matchExpressions[0].&ZeroWidthSpace;values[0] | string | `"query-frontend"` |  |
@@ -573,6 +592,7 @@ Kubernetes: `^1.19.0-0`
 | query_frontend.&ZeroWidthSpace;annotations | object | `{}` |  |
 | query_frontend.&ZeroWidthSpace;containerSecurityContext.&ZeroWidthSpace;enabled | bool | `true` |  |
 | query_frontend.&ZeroWidthSpace;containerSecurityContext.&ZeroWidthSpace;readOnlyRootFilesystem | bool | `true` |  |
+| query_frontend.&ZeroWidthSpace;enabled | bool | `true` |  |
 | query_frontend.&ZeroWidthSpace;env | list | `[]` |  |
 | query_frontend.&ZeroWidthSpace;extraArgs | object | `{}` | Additional Cortex container arguments, e.g. log.level (debug, info, warn, error) |
 | query_frontend.&ZeroWidthSpace;extraContainers | list | `[]` |  |
@@ -585,7 +605,7 @@ Kubernetes: `^1.19.0-0`
 | query_frontend.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
 | query_frontend.&ZeroWidthSpace;nodeSelector | object | `{}` |  |
 | query_frontend.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;subPath | string | `nil` |  |
-| query_frontend.&ZeroWidthSpace;podAnnotations | object | `{"prometheus.io/port":"http-metrics","prometheus.io/scrape":"true"}` | Pod Annotations |
+| query_frontend.&ZeroWidthSpace;podAnnotations | object | `{"prometheus.io/port":"8080","prometheus.io/scrape":"true"}` | Pod Annotations |
 | query_frontend.&ZeroWidthSpace;podDisruptionBudget.&ZeroWidthSpace;maxUnavailable | int | `1` |  |
 | query_frontend.&ZeroWidthSpace;podLabels | object | `{}` | Pod Labels |
 | query_frontend.&ZeroWidthSpace;readinessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
@@ -609,6 +629,52 @@ Kubernetes: `^1.19.0-0`
 | query_frontend.&ZeroWidthSpace;strategy.&ZeroWidthSpace;type | string | `"RollingUpdate"` |  |
 | query_frontend.&ZeroWidthSpace;terminationGracePeriodSeconds | int | `180` |  |
 | query_frontend.&ZeroWidthSpace;tolerations | list | `[]` |  |
+| query_frontend.&ZeroWidthSpace;topologySpreadConstraints | list | `[]` |  |
+| query_scheduler.&ZeroWidthSpace;affinity.&ZeroWidthSpace;podAntiAffinity.&ZeroWidthSpace;preferredDuringSchedulingIgnoredDuringExecution[0].&ZeroWidthSpace;podAffinityTerm.&ZeroWidthSpace;labelSelector.&ZeroWidthSpace;matchExpressions[0].&ZeroWidthSpace;key | string | `"app.kubernetes.io/component"` |  |
+| query_scheduler.&ZeroWidthSpace;affinity.&ZeroWidthSpace;podAntiAffinity.&ZeroWidthSpace;preferredDuringSchedulingIgnoredDuringExecution[0].&ZeroWidthSpace;podAffinityTerm.&ZeroWidthSpace;labelSelector.&ZeroWidthSpace;matchExpressions[0].&ZeroWidthSpace;operator | string | `"In"` |  |
+| query_scheduler.&ZeroWidthSpace;affinity.&ZeroWidthSpace;podAntiAffinity.&ZeroWidthSpace;preferredDuringSchedulingIgnoredDuringExecution[0].&ZeroWidthSpace;podAffinityTerm.&ZeroWidthSpace;labelSelector.&ZeroWidthSpace;matchExpressions[0].&ZeroWidthSpace;values[0] | string | `"query-scheduler"` |  |
+| query_scheduler.&ZeroWidthSpace;affinity.&ZeroWidthSpace;podAntiAffinity.&ZeroWidthSpace;preferredDuringSchedulingIgnoredDuringExecution[0].&ZeroWidthSpace;podAffinityTerm.&ZeroWidthSpace;topologyKey | string | `"kubernetes.io/hostname"` |  |
+| query_scheduler.&ZeroWidthSpace;affinity.&ZeroWidthSpace;podAntiAffinity.&ZeroWidthSpace;preferredDuringSchedulingIgnoredDuringExecution[0].&ZeroWidthSpace;weight | int | `100` |  |
+| query_scheduler.&ZeroWidthSpace;annotations | object | `{}` |  |
+| query_scheduler.&ZeroWidthSpace;containerSecurityContext.&ZeroWidthSpace;enabled | bool | `true` |  |
+| query_scheduler.&ZeroWidthSpace;containerSecurityContext.&ZeroWidthSpace;readOnlyRootFilesystem | bool | `true` |  |
+| query_scheduler.&ZeroWidthSpace;enabled | bool | `false` | If true, querier and query-frontend will connect to it (requires Cortex v1.6.0+) https://cortexmetrics.io/docs/operations/scaling-query-frontend/#query-scheduler |
+| query_scheduler.&ZeroWidthSpace;env | list | `[]` |  |
+| query_scheduler.&ZeroWidthSpace;extraArgs | object | `{}` | Additional Cortex container arguments, e.g. log.level (debug, info, warn, error) |
+| query_scheduler.&ZeroWidthSpace;extraContainers | list | `[]` |  |
+| query_scheduler.&ZeroWidthSpace;extraPorts | list | `[]` |  |
+| query_scheduler.&ZeroWidthSpace;extraVolumeMounts | list | `[]` |  |
+| query_scheduler.&ZeroWidthSpace;extraVolumes | list | `[]` |  |
+| query_scheduler.&ZeroWidthSpace;initContainers | list | `[]` |  |
+| query_scheduler.&ZeroWidthSpace;lifecycle | object | `{}` |  |
+| query_scheduler.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
+| query_scheduler.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
+| query_scheduler.&ZeroWidthSpace;nodeSelector | object | `{}` |  |
+| query_scheduler.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;subPath | string | `nil` |  |
+| query_scheduler.&ZeroWidthSpace;podAnnotations | object | `{"prometheus.io/port":"http-metrics","prometheus.io/scrape":"true"}` | Pod Annotations |
+| query_scheduler.&ZeroWidthSpace;podDisruptionBudget.&ZeroWidthSpace;maxUnavailable | int | `1` |  |
+| query_scheduler.&ZeroWidthSpace;podLabels | object | `{}` | Pod Labels |
+| query_scheduler.&ZeroWidthSpace;readinessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
+| query_scheduler.&ZeroWidthSpace;readinessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
+| query_scheduler.&ZeroWidthSpace;replicas | int | `2` |  |
+| query_scheduler.&ZeroWidthSpace;resources | object | `{}` |  |
+| query_scheduler.&ZeroWidthSpace;securityContext | object | `{}` |  |
+| query_scheduler.&ZeroWidthSpace;service.&ZeroWidthSpace;annotations | object | `{}` |  |
+| query_scheduler.&ZeroWidthSpace;service.&ZeroWidthSpace;labels | object | `{}` |  |
+| query_scheduler.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;additionalLabels | object | `{}` |  |
+| query_scheduler.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;enabled | bool | `false` |  |
+| query_scheduler.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;extraEndpointSpec | object | `{}` | Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint |
+| query_scheduler.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;metricRelabelings | list | `[]` |  |
+| query_scheduler.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;relabelings | list | `[]` |  |
+| query_scheduler.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;failureThreshold | int | `10` |  |
+| query_scheduler.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
+| query_scheduler.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
+| query_scheduler.&ZeroWidthSpace;strategy.&ZeroWidthSpace;rollingUpdate.&ZeroWidthSpace;maxSurge | int | `0` |  |
+| query_scheduler.&ZeroWidthSpace;strategy.&ZeroWidthSpace;rollingUpdate.&ZeroWidthSpace;maxUnavailable | int | `1` |  |
+| query_scheduler.&ZeroWidthSpace;strategy.&ZeroWidthSpace;type | string | `"RollingUpdate"` |  |
+| query_scheduler.&ZeroWidthSpace;terminationGracePeriodSeconds | int | `180` |  |
+| query_scheduler.&ZeroWidthSpace;tolerations | list | `[]` |  |
+| query_scheduler.&ZeroWidthSpace;topologySpreadConstraints | list | `[]` |  |
 | ruler.&ZeroWidthSpace;affinity | object | `{}` |  |
 | ruler.&ZeroWidthSpace;annotations | object | `{}` |  |
 | ruler.&ZeroWidthSpace;containerSecurityContext.&ZeroWidthSpace;enabled | bool | `true` |  |
@@ -625,8 +691,7 @@ Kubernetes: `^1.19.0-0`
 | ruler.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
 | ruler.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
 | ruler.&ZeroWidthSpace;nodeSelector | object | `{}` |  |
-| ruler.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;subPath | string | `nil` |  |
-| ruler.&ZeroWidthSpace;podAnnotations | object | `{"prometheus.io/port":"http-metrics","prometheus.io/scrape":"true"}` | Pod Annotations |
+| ruler.&ZeroWidthSpace;podAnnotations | object | `{"prometheus.io/port":"8080","prometheus.io/scrape":"true"}` | Pod Annotations |
 | ruler.&ZeroWidthSpace;podDisruptionBudget.&ZeroWidthSpace;maxUnavailable | int | `1` |  |
 | ruler.&ZeroWidthSpace;podLabels | object | `{}` | Pod Labels |
 | ruler.&ZeroWidthSpace;readinessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
@@ -642,13 +707,24 @@ Kubernetes: `^1.19.0-0`
 | ruler.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;extraEndpointSpec | object | `{}` | Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint |
 | ruler.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;metricRelabelings | list | `[]` |  |
 | ruler.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;relabelings | list | `[]` |  |
-| ruler.&ZeroWidthSpace;sidecar | object | `{"containerSecurityContext":{"enabled":true,"readOnlyRootFilesystem":true},"defaultFolderName":null,"enableUniqueFilenames":false,"enabled":false,"folder":"/tmp/rules","folderAnnotation":null,"image":{"repository":"quay.io/kiwigrid/k8s-sidecar","sha":"","tag":"1.10.7"},"imagePullPolicy":"IfNotPresent","label":"cortex_rules","labelValue":null,"resources":{},"searchNamespace":null,"watchMethod":null}` | Sidecars that collect the configmaps with specified label and stores the included files them into the respective folders |
-| ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;defaultFolderName | string | `nil` | The default folder name, it will create a subfolder under the `folder` and put rules in there instead |
-| ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;folder | string | `"/tmp/rules"` | folder in the pod that should hold the collected rules (unless `defaultFolderName` is set) |
-| ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;folderAnnotation | string | `nil` | If specified, the sidecar will look for annotation with this name to create folder and put graph here. You can use this parameter together with `provider.foldersFromFilesStructure`to annotate configmaps and create folder structure. |
+| ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;containerSecurityContext.&ZeroWidthSpace;enabled | bool | `true` |  |
+| ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;containerSecurityContext.&ZeroWidthSpace;readOnlyRootFilesystem | bool | `true` |  |
+| ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;defaultFolderName | string | `""` | The default folder name, it will create a subfolder under the `folder` and put rules in there instead |
+| ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;enableUniqueFilenames | bool | `false` | A value of true will produce unique filenames to avoid issues when duplicate data keys exist between ConfigMaps and/or Secrets within the same or multiple Namespaces. |
+| ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;enabled | bool | `false` | Enable sidecar that collect the configmaps with specified label and stores the included files them into the respective folders |
+| ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;folder | string | `"/data/rules"` | Folder where the files should be placed. |
+| ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;folderAnnotation | string | `"k8s-sidecar-target-directory"` | The annotation the sidecar will look for in ConfigMaps and/or Secrets to override the destination folder for files. If the value is a relative path, it will be relative to FOLDER |
+| ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;repository | string | `"omegavveapon/kopf-k8s-sidecar"` |  |
+| ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;sha | string | `""` |  |
+| ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"1.4.0"` |  |
+| ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;imagePullPolicy | string | `"IfNotPresent"` |  |
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;label | string | `"cortex_rules"` | label that the configmaps with rules are marked with |
-| ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;labelValue | string | `nil` | value of label that the configmaps with rules are set to |
-| ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;searchNamespace | string | `nil` | If specified, the sidecar will search for rules config-maps inside this namespace. Otherwise the namespace in which the sidecar is running will be used. It's also possible to specify ALL to search in all namespaces |
+| ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;labelValue | string | `""` | The value for the label you want to filter your resources on. Don't set a value to filter by any value |
+| ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;resource | string | `"both"` | The resource type that the operator will filter for. Can be configmap, secret or both |
+| ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;resources | object | `{}` |  |
+| ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;searchNamespace | string | `""` | The Namespace(s) from which resources will be watched. For multiple namespaces, use a comma-separated string like "default,test". If not set or set to ALL, it will watch all Namespaces. |
+| ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;skipTlsVerify | bool | `false` | Set to true to skip tls verification for kube api calls |
+| ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;watchMethod | string | `""` | Determines how kopf-k8s-sidecar will run. If WATCH it will run like a normal operator forever. If LIST it will gather the matching configmaps and secrets currently present, write those files to the destination directory and die |
 | ruler.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;failureThreshold | int | `10` |  |
 | ruler.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
 | ruler.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
@@ -657,6 +733,7 @@ Kubernetes: `^1.19.0-0`
 | ruler.&ZeroWidthSpace;strategy.&ZeroWidthSpace;type | string | `"RollingUpdate"` |  |
 | ruler.&ZeroWidthSpace;terminationGracePeriodSeconds | int | `180` |  |
 | ruler.&ZeroWidthSpace;tolerations | list | `[]` |  |
+| ruler.&ZeroWidthSpace;topologySpreadConstraints | list | `[]` |  |
 | runtimeconfigmap.&ZeroWidthSpace;annotations | object | `{}` |  |
 | runtimeconfigmap.&ZeroWidthSpace;create | bool | `true` | If true, a configmap for the `runtime_config` will be created. If false, the configmap _must_ exist already on the cluster or pods will fail to create. |
 | runtimeconfigmap.&ZeroWidthSpace;runtime_config | object | `{}` | https://cortexmetrics.io/docs/configuration/arguments/#runtime-configuration-file |
@@ -672,6 +749,7 @@ Kubernetes: `^1.19.0-0`
 | store_gateway.&ZeroWidthSpace;annotations | object | `{}` |  |
 | store_gateway.&ZeroWidthSpace;containerSecurityContext.&ZeroWidthSpace;enabled | bool | `true` |  |
 | store_gateway.&ZeroWidthSpace;containerSecurityContext.&ZeroWidthSpace;readOnlyRootFilesystem | bool | `true` |  |
+| store_gateway.&ZeroWidthSpace;enabled | bool | `true` |  |
 | store_gateway.&ZeroWidthSpace;env | list | `[]` |  |
 | store_gateway.&ZeroWidthSpace;extraArgs | object | `{}` | Additional Cortex container arguments, e.g. log.level (debug, info, warn, error) |
 | store_gateway.&ZeroWidthSpace;extraContainers | list | `[]` |  |
@@ -689,9 +767,10 @@ Kubernetes: `^1.19.0-0`
 | store_gateway.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;size | string | `"2Gi"` | Store-gateway data Persistent Volume size |
 | store_gateway.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;storageClass | string | `nil` | Store-gateway data Persistent Volume Storage Class If defined, storageClassName: <storageClass> If set to "-", storageClassName: "", which disables dynamic provisioning If undefined (the default) or set to null, no storageClassName spec is set, choosing the default provisioner. |
 | store_gateway.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;subPath | string | `""` | Subdirectory of Store-gateway data Persistent Volume to mount Useful if the volume's root directory is not empty |
-| store_gateway.&ZeroWidthSpace;podAnnotations | object | `{"prometheus.io/port":"http-metrics","prometheus.io/scrape":"true"}` | Pod Annotations |
+| store_gateway.&ZeroWidthSpace;podAnnotations | object | `{"prometheus.io/port":"8080","prometheus.io/scrape":"true"}` | Pod Annotations |
 | store_gateway.&ZeroWidthSpace;podDisruptionBudget.&ZeroWidthSpace;maxUnavailable | int | `1` |  |
 | store_gateway.&ZeroWidthSpace;podLabels | object | `{}` | Pod Labels |
+| store_gateway.&ZeroWidthSpace;podManagementPolicy | string | `"OrderedReady"` | https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#pod-management-policies |
 | store_gateway.&ZeroWidthSpace;readinessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
 | store_gateway.&ZeroWidthSpace;readinessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
 | store_gateway.&ZeroWidthSpace;replicas | int | `1` |  |
@@ -714,6 +793,7 @@ Kubernetes: `^1.19.0-0`
 | store_gateway.&ZeroWidthSpace;strategy.&ZeroWidthSpace;type | string | `"RollingUpdate"` |  |
 | store_gateway.&ZeroWidthSpace;terminationGracePeriodSeconds | int | `240` |  |
 | store_gateway.&ZeroWidthSpace;tolerations | list | `[]` |  |
+| store_gateway.&ZeroWidthSpace;topologySpreadConstraints | list | `[]` |  |
 | table_manager.&ZeroWidthSpace;affinity | object | `{}` |  |
 | table_manager.&ZeroWidthSpace;annotations | object | `{}` |  |
 | table_manager.&ZeroWidthSpace;containerSecurityContext.&ZeroWidthSpace;enabled | bool | `true` |  |
@@ -729,7 +809,7 @@ Kubernetes: `^1.19.0-0`
 | table_manager.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
 | table_manager.&ZeroWidthSpace;nodeSelector | object | `{}` |  |
 | table_manager.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;subPath | string | `nil` |  |
-| table_manager.&ZeroWidthSpace;podAnnotations | object | `{"prometheus.io/port":"http-metrics","prometheus.io/scrape":"true"}` | Pod Annotations |
+| table_manager.&ZeroWidthSpace;podAnnotations | object | `{"prometheus.io/port":"8080","prometheus.io/scrape":"true"}` | Pod Annotations |
 | table_manager.&ZeroWidthSpace;podDisruptionBudget.&ZeroWidthSpace;maxUnavailable | int | `1` |  |
 | table_manager.&ZeroWidthSpace;podLabels | object | `{}` | Pod Labels |
 | table_manager.&ZeroWidthSpace;readinessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
@@ -753,6 +833,8 @@ Kubernetes: `^1.19.0-0`
 | table_manager.&ZeroWidthSpace;strategy.&ZeroWidthSpace;type | string | `"RollingUpdate"` |  |
 | table_manager.&ZeroWidthSpace;terminationGracePeriodSeconds | int | `180` |  |
 | table_manager.&ZeroWidthSpace;tolerations | list | `[]` |  |
+| table_manager.&ZeroWidthSpace;topologySpreadConstraints | list | `[]` |  |
 | tags.&ZeroWidthSpace;blocks-storage-memcached | bool | `false` | Set to true to enable block storage memcached caching |
+| useConfigMap | bool | `false` |  |
 | useExternalConfig | bool | `false` |  |
 

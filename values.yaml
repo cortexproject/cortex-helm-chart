@@ -34,6 +34,7 @@ serviceAccount:
   annotations: {}
   automountServiceAccountToken: true
 
+useConfigMap: false
 useExternalConfig: false
 externalConfigSecretName: 'secret-with-config.yaml'
 externalConfigVersion: '0'
@@ -113,13 +114,6 @@ config:
       - '{{ include "cortex.fullname" $ }}-memberlist'
   querier:
     active_query_tracker_dir: /data/active-query-tracker
-    # -- Maximum lookback beyond which queries are not sent to ingester. 0 means all
-    # queries are sent to ingester. Ingesters by default have no data older than 12 hours,
-    # so we can safely set this 13 hours
-    query_ingesters_within: 13h
-    # -- The time after which a metric should be queried from storage and not just
-    # ingesters.
-    query_store_after: 12h
     # -- Comma separated list of store-gateway addresses in DNS Service Discovery
     # format. This option should is set automatically when using the blocks storage and the
     # store-gateway sharding is disabled (when enabled, the store-gateway instances
@@ -200,9 +194,10 @@ alertmanager:
   # -- Pod Annotations
   podAnnotations:
     prometheus.io/scrape: 'true'
-    prometheus.io/port: 'http-metrics'
+    prometheus.io/port: '8080'
 
   nodeSelector: {}
+  topologySpreadConstraints: []
   affinity: {}
   annotations: {}
 
@@ -291,30 +286,48 @@ alertmanager:
   # -- Extra env variables to pass to the cortex container
   env: []
 
-  # -- Sidecars that collect the configmaps with specified label and stores the included files them into the respective folders
   sidecar:
+    # -- Enable sidecar that collect the configmaps with specified label and stores the included files them into the respective folders
+    enabled: false
     image:
-      repository: quay.io/kiwigrid/k8s-sidecar
-      tag: 1.10.7
+      repository: omegavveapon/kopf-k8s-sidecar
+      tag: 1.4.0
       sha: ""
     imagePullPolicy: IfNotPresent
     resources: {}
-    # -- skipTlsVerify Set to true to skip tls verification for kube api calls
+    # -- Set to true to skip tls verification for kube api calls
     skipTlsVerify: false
+    # -- A value of true will produce unique filenames to avoid issues when duplicate data keys exist between ConfigMaps
+    # and/or Secrets within the same or multiple Namespaces.
     enableUniqueFilenames: false
-    enabled: false
+    # -- Label that should be used for filtering
     label: cortex_alertmanager
-    watchMethod: null
-    labelValue: null
+    # -- Determines how kopf-k8s-sidecar will run. If WATCH it will run like a normal operator forever.
+    # If LIST it will gather the matching configmaps and secrets currently present,
+    # write those files to the destination directory and die
+    watchMethod: ""
+    # -- The value for the label you want to filter your resources on.
+    # Don't set a value to filter by any value
+    labelValue: ""
+    # -- Folder where the files should be placed.
     folder: /data
-    defaultFolderName: null
-    searchNamespace: null
-    folderAnnotation: null
+    # -- The default folder name, it will create a subfolder under the `folder` and put rules in there instead
+    defaultFolderName: ""
+    # -- The Namespace(s) from which resources will be watched.
+    # For multiple namespaces, use a comma-separated string like "default,test".
+    # If not set or set to ALL, it will watch all Namespaces.
+    searchNamespace: ""
+    # -- The annotation the sidecar will look for in ConfigMaps and/or Secrets to override the destination folder for files.
+    # If the value is a relative path, it will be relative to FOLDER
+    folderAnnotation: "k8s-sidecar-target-directory"
+    # -- The resource type that the operator will filter for. Can be configmap, secret or both
+    resource: "both"
     containerSecurityContext:
       enabled: true
       readOnlyRootFilesystem: true
 
 distributor:
+  enabled: true
   replicas: 2
 
   service:
@@ -344,9 +357,10 @@ distributor:
   # -- Pod Annotations
   podAnnotations:
     prometheus.io/scrape: 'true'
-    prometheus.io/port: 'http-metrics'
+    prometheus.io/port: '8080'
 
   nodeSelector: {}
+  topologySpreadConstraints: []
   affinity:
     podAntiAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:
@@ -417,6 +431,7 @@ distributor:
   lifecycle: {}
 
 ingester:
+  enabled: true
   replicas: 3
 
   statefulSet:
@@ -452,9 +467,10 @@ ingester:
   # -- Pod Annotations
   podAnnotations:
     prometheus.io/scrape: 'true'
-    prometheus.io/port: 'http-metrics'
+    prometheus.io/port: '8080'
 
   nodeSelector: {}
+  topologySpreadConstraints: []
   affinity:
     podAntiAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:
@@ -533,15 +549,11 @@ ingester:
     # set, choosing the default provisioner.
     storageClass: null
 
-  startupProbe:
-    failureThreshold: 60
-    initialDelaySeconds: 120
-    periodSeconds: 30
-    httpGet:
-      path: /ready
-      port: http-metrics
-      scheme: HTTP
-  # -- Liveness probes for ingesters are not recommended.
+  # -- Startup/liveness probes for ingesters are not recommended.
+  #  Ref: https://cortexmetrics.io/docs/guides/running-cortex-on-kubernetes/#take-extra-care-with-ingesters
+  startupProbe: {}
+
+  # -- Startup/liveness probes for ingesters are not recommended.
   #  Ref: https://cortexmetrics.io/docs/guides/running-cortex-on-kubernetes/#take-extra-care-with-ingesters
   livenessProbe: {}
   readinessProbe:
@@ -608,13 +620,12 @@ ruler:
   # -- Pod Annotations
   podAnnotations:
     prometheus.io/scrape: 'true'
-    prometheus.io/port: 'http-metrics'
+    prometheus.io/port: '8080'
 
   nodeSelector: {}
+  topologySpreadConstraints: []
   affinity: {}
   annotations: {}
-  persistentVolume:
-    subPath:
 
   startupProbe:
     httpGet:
@@ -658,45 +669,48 @@ ruler:
   # -- allow configuring rules via configmap. ref: https://cortexproject.github.io/cortex-helm-chart/guides/configure_rules_via_configmap.html
   directories: {}
 
-  # -- Sidecars that collect the configmaps with specified label and stores the included files them into the respective folders
   sidecar:
+    # -- Enable sidecar that collect the configmaps with specified label and stores the included files them into the respective folders
+    enabled: false
     image:
-      repository: quay.io/kiwigrid/k8s-sidecar
-      tag: 1.10.7
+      repository: omegavveapon/kopf-k8s-sidecar
+      tag: 1.4.0
       sha: ""
     imagePullPolicy: IfNotPresent
     resources: {}
-    #   limits:
-    #     cpu: 100m
-    #     memory: 100Mi
-    #   requests:
-    #     cpu: 50m
-    #     memory: 50Mi
-    # skipTlsVerify Set to true to skip tls verification for kube api calls
-    # skipTlsVerify: true
+    # -- Set to true to skip tls verification for kube api calls
+    skipTlsVerify: false
+    # -- A value of true will produce unique filenames to avoid issues when duplicate data keys exist between ConfigMaps
+    # and/or Secrets within the same or multiple Namespaces.
     enableUniqueFilenames: false
-    enabled: false
     # -- label that the configmaps with rules are marked with
     label: cortex_rules
-    watchMethod: null
-    # -- value of label that the configmaps with rules are set to
-    labelValue: null
-    # -- folder in the pod that should hold the collected rules (unless `defaultFolderName` is set)
-    folder: /tmp/rules
+    # -- Determines how kopf-k8s-sidecar will run. If WATCH it will run like a normal operator forever.
+    # If LIST it will gather the matching configmaps and secrets currently present,
+    # write those files to the destination directory and die
+    watchMethod: ""
+    # -- The value for the label you want to filter your resources on.
+    # Don't set a value to filter by any value
+    labelValue: ""
+    # -- Folder where the files should be placed.
+    folder: /data/rules
     # -- The default folder name, it will create a subfolder under the `folder` and put rules in there instead
-    defaultFolderName: null
-    # -- If specified, the sidecar will search for rules config-maps inside this namespace.
-    # Otherwise the namespace in which the sidecar is running will be used.
-    # It's also possible to specify ALL to search in all namespaces
-    searchNamespace: null
-    # -- If specified, the sidecar will look for annotation with this name to create folder and put graph here.
-    # You can use this parameter together with `provider.foldersFromFilesStructure`to annotate configmaps and create folder structure.
-    folderAnnotation: null
+    defaultFolderName: ""
+    # -- The Namespace(s) from which resources will be watched.
+    # For multiple namespaces, use a comma-separated string like "default,test".
+    # If not set or set to ALL, it will watch all Namespaces.
+    searchNamespace: ""
+    # -- The annotation the sidecar will look for in ConfigMaps and/or Secrets to override the destination folder for files.
+    # If the value is a relative path, it will be relative to FOLDER
+    folderAnnotation: "k8s-sidecar-target-directory"
+    # -- The resource type that the operator will filter for. Can be configmap, secret or both
+    resource: "both"
     containerSecurityContext:
       enabled: true
       readOnlyRootFilesystem: true
 
 querier:
+  enabled: true
   replicas: 2
 
   service:
@@ -726,9 +740,10 @@ querier:
   # -- Pod Annotations
   podAnnotations:
     prometheus.io/scrape: 'true'
-    prometheus.io/port: 'http-metrics'
+    prometheus.io/port: '8080'
 
   nodeSelector: {}
+  topologySpreadConstraints: []
   affinity:
     podAntiAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:
@@ -799,6 +814,7 @@ querier:
   lifecycle: {}
 
 query_frontend:
+  enabled: true
   replicas: 2
 
   service:
@@ -828,9 +844,10 @@ query_frontend:
   # -- Pod Annotations
   podAnnotations:
     prometheus.io/scrape: 'true'
-    prometheus.io/port: 'http-metrics'
+    prometheus.io/port: '8080'
 
   nodeSelector: {}
+  topologySpreadConstraints: []
   affinity:
     podAntiAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:
@@ -842,6 +859,96 @@ query_frontend:
                   operator: In
                   values:
                     - query-frontend
+            topologyKey: 'kubernetes.io/hostname'
+
+  annotations: {}
+  persistentVolume:
+    subPath:
+
+  startupProbe:
+    httpGet:
+      path: /ready
+      port: http-metrics
+    failureThreshold: 10
+  livenessProbe:
+    httpGet:
+      path: /ready
+      port: http-metrics
+  readinessProbe:
+    httpGet:
+      path: /ready
+      port: http-metrics
+
+  securityContext: {}
+  containerSecurityContext:
+    enabled: true
+    readOnlyRootFilesystem: true
+
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 1
+
+  terminationGracePeriodSeconds: 180
+
+  tolerations: []
+
+  podDisruptionBudget:
+    maxUnavailable: 1
+
+  initContainers: []
+  extraContainers: []
+  extraVolumes: []
+  extraVolumeMounts: []
+  extraPorts: []
+  env: []
+  lifecycle: {}
+
+query_scheduler:
+  # -- If true, querier and query-frontend will connect to it (requires Cortex v1.6.0+)
+  # https://cortexmetrics.io/docs/operations/scaling-query-frontend/#query-scheduler
+  enabled: false
+  replicas: 2
+
+  service:
+    annotations: {}
+    labels: {}
+
+  serviceMonitor:
+    enabled: false
+    additionalLabels: {}
+    relabelings: []
+    metricRelabelings: []
+    # -- Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint
+    extraEndpointSpec: {}
+
+  resources: {}
+
+  # -- Additional Cortex container arguments, e.g. log.level (debug, info, warn, error)
+  extraArgs: {}
+
+  # -- Pod Labels
+  podLabels: {}
+
+  # -- Pod Annotations
+  podAnnotations:
+    prometheus.io/scrape: 'true'
+    prometheus.io/port: 'http-metrics'
+
+  nodeSelector: {}
+  topologySpreadConstraints: []
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 100
+          podAffinityTerm:
+            labelSelector:
+              matchExpressions:
+                - key: app.kubernetes.io/component
+                  operator: In
+                  values:
+                    - query-scheduler
             topologyKey: 'kubernetes.io/hostname'
 
   annotations: {}
@@ -918,9 +1025,10 @@ table_manager:
   # -- Pod Annotations
   podAnnotations:
     prometheus.io/scrape: 'true'
-    prometheus.io/port: 'http-metrics'
+    prometheus.io/port: '8080'
 
   nodeSelector: {}
+  topologySpreadConstraints: []
   affinity: {}
   annotations: {}
   persistentVolume:
@@ -997,9 +1105,10 @@ configs:
   # -- Pod Annotations
   podAnnotations:
     prometheus.io/scrape: 'true'
-    prometheus.io/port: 'http-metrics'
+    prometheus.io/port: '8080'
 
   nodeSelector: {}
+  topologySpreadConstraints: []
   affinity: {}
   annotations: {}
   persistentVolume:
@@ -1082,7 +1191,7 @@ nginx:
     # are scoped appropriately, explicitly set the `X-Scope-OrgID` header
     # in the nginx config. Example
     #   setHeaders:
-    #     X-Scope-Org-Id: $remote_user
+    #     X-Scope-OrgID: $remote_user
     basicAuthSecretName: ""
 
   image:
@@ -1108,11 +1217,10 @@ nginx:
   podLabels: {}
 
   # -- Pod Annotations
-  podAnnotations:
-    prometheus.io/scrape: ''
-    prometheus.io/port: 'http-metrics'
+  podAnnotations: {}
 
   nodeSelector: {}
+  topologySpreadConstraints: []
   affinity: {}
   annotations: {}
   persistentVolume:
@@ -1169,7 +1277,10 @@ nginx:
     behavior: {}
 
 store_gateway:
+  enabled: true
   replicas: 1
+  # -- https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#pod-management-policies
+  podManagementPolicy: OrderedReady
 
   service:
     annotations: {}
@@ -1198,9 +1309,10 @@ store_gateway:
   # -- Pod Annotations
   podAnnotations:
     prometheus.io/scrape: 'true'
-    prometheus.io/port: 'http-metrics'
+    prometheus.io/port: '8080'
 
   nodeSelector: {}
+  topologySpreadConstraints: []
   affinity:
     podAntiAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:
@@ -1316,9 +1428,10 @@ compactor:
   # -- Pod Annotations
   podAnnotations:
     prometheus.io/scrape: 'true'
-    prometheus.io/port: 'http-metrics'
+    prometheus.io/port: '8080'
 
   nodeSelector: {}
+  topologySpreadConstraints: []
   affinity:
     podAntiAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:

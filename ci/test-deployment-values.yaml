@@ -98,6 +98,15 @@ query_frontend:
   extraVolumeMounts:
     - name: tmp-test
       mountPath: /tmp-test
+query_scheduler:
+  replicas: 1
+  enabled: true
+  extraVolumes:
+    - name: tmp-test
+      emptyDir: {}
+  extraVolumeMounts:
+    - name: tmp-test
+      mountPath: /tmp-test
 nginx:
   replicas: 1
   autoscaling:

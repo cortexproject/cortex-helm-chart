@@ -1,3 +1,4 @@
+{{- if .Values.querier.enabled -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -24,11 +25,7 @@ spec:
         {{- toYaml . | nindent 8 }}
         {{- end }}
       annotations:
-        {{- if .Values.useExternalConfig }}
-        checksum/config: {{ .Values.externalConfigVersion }}
-        {{- else }}
-        checksum/config: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
-        {{- end }}
+        checksum/config: {{ include "cortex.configChecksum" . }}
         {{- with .Values.querier.podAnnotations }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
@@ -46,7 +43,7 @@ spec:
       imagePullSecrets:
       {{- range .Values.image.pullSecrets }}
         - name: {{ . }}
-      {{- end}}
+      {{- end }}
       {{- end }}
       containers:
         - name: querier
@@ -55,7 +52,12 @@ spec:
           args:
             - "-target=querier"
             - "-config.file=/etc/cortex/cortex.yaml"
-            - "-querier.frontend-address={{ template "cortex.fullname" . }}-query-frontend-headless.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.config.server.grpc_listen_port }}"
+          {{- if .Values.query_scheduler.enabled }}
+            - "-querier.scheduler-address={{ template "cortex.querySchedulerFullname" . }}-headless.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.config.server.grpc_listen_port }}"
+          {{- end }}
+          {{- if and .Values.query_frontend.enabled (not .Values.query_scheduler.enabled) }}
+            - "-querier.frontend-address={{ template "cortex.queryFrontendFullname" . }}-headless.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.config.server.grpc_listen_port }}"
+          {{- end }}
           {{- include "cortex.memcached" . | nindent 12}}
           {{- range $key, $value := .Values.querier.extraArgs }}
             - "-{{ $key }}={{ $value }}"
@@ -99,19 +101,17 @@ spec:
         {{- end }}
       nodeSelector:
         {{- toYaml .Values.querier.nodeSelector | nindent 8 }}
+      {{- if .Values.querier.topologySpreadConstraints }}
+      topologySpreadConstraints:
+      {{- toYaml .Values.querier.topologySpreadConstraints | nindent 8}}
+      {{- end }}
       affinity:
         {{- toYaml .Values.querier.affinity | nindent 8 }}
       tolerations:
         {{- toYaml .Values.querier.tolerations | nindent 8 }}
       terminationGracePeriodSeconds: {{ .Values.querier.terminationGracePeriodSeconds }}
       volumes:
-        - name: config
-          secret:
-          {{- if .Values.useExternalConfig }}
-            secretName: {{ .Values.externalConfigSecretName }}
-          {{- else }}
-            secretName: {{ template "cortex.fullname" . }}
-          {{- end }}
+        {{- include "cortex.configVolume" . | nindent 8 }}
         - name: runtime-config
           configMap:
             name: {{ template "cortex.fullname" . }}-runtime-config
@@ -120,3 +120,4 @@ spec:
         {{- if .Values.querier.extraVolumes }}
         {{- toYaml .Values.querier.extraVolumes | nindent 8}}
         {{- end }}
+{{- end -}}

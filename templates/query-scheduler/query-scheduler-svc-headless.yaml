@@ -1,0 +1,25 @@
+{{- if .Values.query_scheduler.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "cortex.querySchedulerFullname" . }}-headless
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "cortex.querySchedulerLabels" . | nindent 4 }}
+    {{- with .Values.query_scheduler.service.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  annotations:
+    {{- toYaml .Values.query_scheduler.service.annotations | nindent 4 }}
+spec:
+  type: ClusterIP
+  clusterIP: None
+  publishNotReadyAddresses: true
+  ports:
+    - port: {{ .Values.config.server.grpc_listen_port }}
+      protocol: TCP
+      name: grpc
+      targetPort: grpc
+  selector:
+    {{- include "cortex.querySchedulerSelectorLabels" . | nindent 4 }}
+{{- end }}

@@ -2,17 +2,56 @@
 
 ## master / unreleased
 
-* [DEPENDENCY] Update Helm release memcached to v5.15.9 #273
+* [FEATURE] Add Query-Scheduler #268
+* [ENHANCEMENT] Allow StoreGateway podManagementPolicy to be changed #332
+* [ENHANCEMENT] Add pod topology spread constrant option #343
+* [BUGFIX] Correct a typo in enabling distributor HPA #334
+* [BUGFIX] Frontend memcached address did not match the Service #337
+* [BUGFIX] Add service discovery method for query-scheduler addresses #338
+
+## 1.4.0 / 2022-03-08
+
+* [ENHANCEMENT] Upgrade to Cortex v1.11.1 #331
+* [ENHANCEMENT] Includes enable flags for each component #319
+* [ENHANCEMENT] Exclude cortex components endpoint from nginx config when disabled #326
+
+## 1.3.0 / 2022-02-10
+
+* [CHANGE] move from quay.io/kiwigrid/k8s-sidecar to omegavvweapon/kopf-k8s-sidecar image #302
+* [CHANGE] undo querier store optimization #304
+  * config.querier.query_ingesters_within: 13h -> 0s (default)
+  * config.querier.query_store_after: 12h -> 0s (default)
+* [CHANGE] Change sidecar default values to match values in documentation #317
+* [CHANGE] Remove ruler.persistentVolume.subPath since it was never persistent to begin with #317
+* [ENHANCEMENT] Fix the indentation of memcached guide #309
+* [ENHANCEMENT] Added api endpoints for Grafana 8 unified alerting #291
+* [ENHANCEMENT] Add guide on how to configure alertmanager/ruler with configmap #313
+* [DEPENDENCY] Update Helm release memcached to v5.15.14 #301
+
+## 1.2.0 / 2021-12-29
+
+* [CHANGE] Use port number for prometheus port annotations. #288
+* [CHANGE] Disable ingester startup probes by default. #286
+* [CHANGE] Moved HPA memory specification to be the first item in the list. #284
+* [FEATURE] Optionally manage cortex config as configmap. #280
+* [ENHANCEMENT] Upgrade to Cortex v1.11.0 #272
+* [DEPENDENCY] Update Helm release memcached to v5.15.12 #274
+
+## 1.1.0 / 2021-12-01
+
+* [FEATURE] Allow different service accounts per dep/statefulset. #264
 * [CHANGE] Enable bucket index by default #275
 * [CHANGE] Disable ingester liveness probes by default. #263
-* [FEATURE] Allow different service accounts per dep/statefulset. #264
+* [BUGFIX] workaround for .Capabilities.APIVersions. #277
+* [DEPENDENCY] Update Helm release memcached to v5.15.9 #273
 
 ## 1.0.1 / 2021-11-26
+
 * [BUGFIX] alertmanager/ruler deployment: fix indentation #266
 
 ## 1.0.0 / 2021-11-25
-### This Release includes BREAKING CHANGES
 
+### This Release includes BREAKING CHANGES
 
 * [FEATURE] Add autoscaler for nginx #249
 * [FEATURE] Add in lifecycle for querier, querier-frontend, and distributor #243

@@ -23,11 +23,7 @@ spec:
         {{- toYaml . | nindent 8 }}
         {{- end }}
       annotations:
-      {{- if .Values.useExternalConfig }}
-        checksum/config: {{ .Values.externalConfigVersion }}
-      {{- else }}
-        checksum/config: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
-      {{- end}}
+        checksum/config: {{ include "cortex.configChecksum" . }}
         {{- with .Values.table_manager.podAnnotations }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
@@ -45,7 +41,7 @@ spec:
       imagePullSecrets:
       {{- range .Values.image.pullSecrets }}
         - name: {{ . }}
-      {{- end}}
+      {{- end }}
       {{- end }}
       containers:
         - name: table-manager
@@ -92,19 +88,17 @@ spec:
         {{- end }}
       nodeSelector:
         {{- toYaml .Values.table_manager.nodeSelector | nindent 8 }}
+      {{- if .Values.table_manager.topologySpreadConstraints }}
+      topologySpreadConstraints:
+      {{- toYaml .Values.table_manager.topologySpreadConstraints | nindent 8}}
+      {{- end }}
       affinity:
         {{- toYaml .Values.table_manager.affinity | nindent 8 }}
       tolerations:
         {{- toYaml .Values.table_manager.tolerations | nindent 8 }}
       terminationGracePeriodSeconds: {{ .Values.table_manager.terminationGracePeriodSeconds }}
       volumes:
-        - name: config
-          secret:
-          {{- if .Values.useExternalConfig }}
-            secretName: {{ .Values.externalConfigSecretName }}
-          {{- else }}
-            secretName: {{ template "cortex.fullname" . }}
-          {{- end }}
+        {{- include "cortex.configVolume" . | nindent 8 }}
         - name: runtime-config
           configMap:
             name: {{ template "cortex.fullname" . }}-runtime-config

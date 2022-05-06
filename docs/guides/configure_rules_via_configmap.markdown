@@ -2,9 +2,18 @@
 layout: page
 title: Configure rules via configmap
 parent: Guides
-has_children: true
+has_children: false
 has_toc: false
-nav_order: 3
+---
+# Configure rules via configmap
+{: .no_toc }
+
+## Table of contents
+{: .no_toc .text-delta }
+
+1. TOC
+{:toc}
+
 ---
 # Configure rules via configmap
 

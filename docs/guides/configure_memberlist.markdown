@@ -1,10 +1,19 @@
 ---
 layout: page
-title: Memberlist
+title: Configure memberlist
 parent: Guides
-has_children: true
+has_children: false
 has_toc: false
-nav_order: 2
+---
+# Configure memberlist
+{: .no_toc }
+
+## Table of contents
+{: .no_toc .text-delta }
+
+1. TOC
+{:toc}
+
 ---
 # Setup
 

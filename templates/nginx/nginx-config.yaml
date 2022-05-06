@@ -67,6 +67,8 @@ data:
           return 200 'alive';
         }
 
+        {{- if .Values.distributor.enabled }}
+
         # Distributor Config
         location = /ring {
           proxy_pass      http://{{ template "cortex.fullname" . }}-distributor.{{ $rootDomain }}$request_uri;
@@ -85,6 +87,10 @@ data:
           proxy_pass      http://{{ template "cortex.fullname" . }}-distributor.{{ $rootDomain }}$request_uri;
         }
 
+        {{- end }}
+
+        {{- if .Values.alertmanager.enabled }}
+
         # Alertmanager Config
         location ~ /api/prom/alertmanager/.* {
           proxy_pass      http://{{ template "cortex.fullname" . }}-alertmanager.{{ $rootDomain }}$request_uri;
@@ -98,6 +104,14 @@ data:
           proxy_pass      http://{{ template "cortex.fullname" . }}-alertmanager.{{ $rootDomain }}$request_uri;
         }
 
+        location = /api/prom/api/v1/alerts {
+          proxy_pass      http://{{ template "cortex.fullname" . }}-alertmanager.{{ $rootDomain }}/api/v1/alerts;
+        }
+
+        {{- end }}
+
+        {{- if .Values.ruler.enabled }}
+
         # Ruler Config
         location ~ /api/v1/rules {
           proxy_pass      http://{{ template "cortex.fullname" . }}-ruler.{{ $rootDomain }}$request_uri;
@@ -107,10 +121,22 @@ data:
           proxy_pass      http://{{ template "cortex.fullname" . }}-ruler.{{ $rootDomain }}$request_uri;
         }
 
+        location ~ /api/prom/rules {
+          proxy_pass      http://{{ template "cortex.fullname" . }}-ruler.{{ $rootDomain }}$request_uri;
+        }
+
+        {{- end }}
+
+        {{- if .Values.configs.enabled }}
+
         # Config Config
         location ~ /api/prom/configs/.* {
           proxy_pass      http://{{ template "cortex.fullname" . }}-configs.{{ $rootDomain }}$request_uri;
         }
+
+        {{- end }}
+
+        {{- if .Values.query_frontend.enabled }}
 
         # Query Config
         location ~ /api/prom/.* {
@@ -125,6 +151,9 @@ data:
         location ~ {{.Values.config.api.prometheus_http_prefix}}/api/v1/label/.* {
           proxy_pass      http://{{ template "cortex.fullname" . }}-query-frontend.{{ $rootDomain }}$request_uri;
         }
+
+        {{- end }}
+
         {{- if and (.Values.config.auth_enabled) (.Values.nginx.config.auth_orgs) }}
         # Auth orgs
         {{- range $org := compact .Values.nginx.config.auth_orgs | uniq }}

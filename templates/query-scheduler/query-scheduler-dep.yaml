@@ -1,0 +1,122 @@
+{{- if .Values.query_scheduler.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "cortex.querySchedulerFullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "cortex.querySchedulerLabels" . | nindent 4 }}
+  annotations:
+    {{- toYaml .Values.query_scheduler.annotations | nindent 4 }}
+spec:
+  replicas: {{ .Values.query_scheduler.replicas }}
+  selector:
+    matchLabels:
+      {{- include "cortex.querySchedulerSelectorLabels" . | nindent 6 }}
+  strategy:
+    {{- toYaml .Values.query_scheduler.strategy | nindent 4 }}
+  template:
+    metadata:
+      labels:
+        {{- include "cortex.querySchedulerLabels" . | nindent 8 }}
+        {{- with .Values.query_scheduler.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      annotations:
+      {{- if .Values.useExternalConfig }}
+        checksum/config: {{ .Values.externalConfigVersion }}
+      {{- else }}
+        checksum/config: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+      {{- end }}
+      {{- with .Values.query_scheduler.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    spec:
+      serviceAccountName: {{ template "cortex.serviceAccountName" . }}
+      {{- if .Values.query_scheduler.priorityClassName }}
+      priorityClassName: {{ .Values.query_scheduler.priorityClassName }}
+      {{- end }}
+      {{- if .Values.query_scheduler.securityContext.enabled }}
+      securityContext: {{- omit .Values.query_scheduler.securityContext "enabled" | toYaml | nindent 8 }}
+      {{- end }}
+      initContainers:
+        {{- toYaml .Values.query_scheduler.initContainers | nindent 8 }}
+      {{- if .Values.image.pullSecrets }}
+      imagePullSecrets:
+      {{- range .Values.image.pullSecrets }}
+        - name: {{ . }}
+      {{- end }}
+      {{- end }}
+      containers:
+        - name: query-scheduler
+          image: "{{ .Values.image.repository }}:{{ default .Chart.AppVersion .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args:
+            - "-target=query-scheduler"
+            - "-config.file=/etc/cortex/cortex.yaml"
+          {{- range $key, $value := .Values.query_scheduler.extraArgs }}
+            - "-{{ $key }}={{ $value }}"
+          {{- end }}
+          volumeMounts:
+            {{- if .Values.query_scheduler.extraVolumeMounts }}
+            {{- toYaml .Values.query_scheduler.extraVolumeMounts | nindent 12 }}
+            {{- end }}
+            - name: config
+              mountPath: /etc/cortex
+            - name: runtime-config
+              mountPath: /etc/cortex-runtime-config
+          ports:
+            - name: http-metrics
+              containerPort: {{ .Values.config.server.http_listen_port }}
+              protocol: TCP
+            - name: grpc
+              containerPort: {{ .Values.config.server.grpc_listen_port }}
+              protocol: TCP
+          startupProbe:
+            {{- toYaml .Values.query_scheduler.startupProbe | nindent 12 }}
+          livenessProbe:
+            {{- toYaml .Values.query_scheduler.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.query_scheduler.readinessProbe | nindent 12 }}
+          resources:
+            {{- toYaml .Values.query_scheduler.resources | nindent 12 }}
+          {{- if .Values.query_scheduler.containerSecurityContext.enabled }}
+          securityContext: {{- omit .Values.query_scheduler.containerSecurityContext "enabled" | toYaml | nindent 12 }}
+          {{- end }}
+          {{- if .Values.query_scheduler.env }}
+          env:
+            {{- toYaml .Values.query_scheduler.env | nindent 12 }}
+          {{- end }}
+          {{- with .Values.query_scheduler.lifecycle }}
+          lifecycle:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+        {{- if .Values.query_scheduler.extraContainers }}
+        {{- toYaml .Values.query_scheduler.extraContainers | nindent 8 }}
+        {{- end }}
+      nodeSelector:
+        {{- toYaml .Values.query_scheduler.nodeSelector | nindent 8 }}
+      {{- if .Values.query_scheduler.topologySpreadConstraints }}
+      topologySpreadConstraints:
+      {{- toYaml .Values.query_scheduler.topologySpreadConstraints | nindent 8}}
+      {{- end }}
+      affinity:
+        {{- toYaml .Values.query_scheduler.affinity | nindent 8 }}
+      tolerations:
+        {{- toYaml .Values.query_scheduler.tolerations | nindent 8 }}
+      terminationGracePeriodSeconds: {{ .Values.query_scheduler.terminationGracePeriodSeconds }}
+      volumes:
+        - name: config
+          secret:
+          {{- if .Values.useExternalConfig }}
+            secretName: {{ .Values.externalConfigSecretName }}
+          {{- else }}
+            secretName: {{ template "cortex.fullname" . }}
+          {{- end }}
+        - name: runtime-config
+          configMap:
+            name: {{ template "cortex.fullname" . }}-runtime-config
+        {{- if .Values.query_scheduler.extraVolumes }}
+        {{- toYaml .Values.query_scheduler.extraVolumes | nindent 8 }}
+        {{- end }}
+{{- end }}

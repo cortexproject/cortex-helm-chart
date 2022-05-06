@@ -25,11 +25,7 @@ spec:
         {{- toYaml . | nindent 8 }}
         {{- end }}
       annotations:
-      {{- if .Values.useExternalConfig }}
-        checksum/config: {{ .Values.externalConfigVersion }}
-      {{- else }}
-        checksum/config: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
-      {{- end }}
+        checksum/config: {{ include "cortex.configChecksum" . }}
       {{- with .Values.ruler.podAnnotations }}
         {{- toYaml . | nindent 8 }}
       {{- end }}
@@ -47,7 +43,7 @@ spec:
       imagePullSecrets:
       {{- range .Values.image.pullSecrets }}
         - name: {{ . }}
-      {{- end}}
+      {{- end }}
       {{- end }}
       containers:
         {{- if .Values.ruler.sidecar.enabled }}
@@ -71,8 +67,10 @@ spec:
             {{- end }}
             - name: FOLDER
               value: "{{ .Values.ruler.sidecar.folder }}{{- with .Values.ruler.sidecar.defaultFolderName }}/{{ . }}{{- end }}"
+            {{- if .Values.ruler.sidecar.resource}}
             - name: RESOURCE
-              value: "both"
+              value: {{ quote .Values.ruler.sidecar.resource }}
+            {{- end }}
             {{- if .Values.ruler.sidecar.enableUniqueFilenames }}
             - name: UNIQUE_FILENAMES
               value: "{{ .Values.ruler.sidecar.enableUniqueFilenames }}"
@@ -88,7 +86,7 @@ spec:
             {{- if .Values.ruler.sidecar.folderAnnotation }}
             - name: FOLDER_ANNOTATION
               value: "{{ .Values.ruler.sidecar.folderAnnotation }}"
-          {{- end }}
+            {{- end }}
           resources:
             {{- toYaml .Values.ruler.sidecar.resources | nindent 12 }}
           {{- if .Values.ruler.containerSecurityContext.enabled }}
@@ -97,7 +95,7 @@ spec:
           volumeMounts:
             - name: sc-rules-volume
               mountPath: {{ .Values.ruler.sidecar.folder | quote }}
-        {{- end}}
+        {{- end }}
         - name: rules
           image: "{{ .Values.image.repository }}:{{ default .Chart.AppVersion .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
@@ -132,7 +130,6 @@ spec:
               mountPath: /etc/cortex-runtime-config
             - name: storage
               mountPath: /data
-              subPath: {{ .Values.ruler.persistentVolume.subPath }}
             - name: tmp
               mountPath: /rules
             {{- range $dir, $_ := .Values.ruler.directories }}
@@ -166,19 +163,17 @@ spec:
         {{- end }}
       nodeSelector:
         {{- toYaml .Values.ruler.nodeSelector | nindent 8 }}
+      {{- if .Values.ruler.topologySpreadConstraints }}
+      topologySpreadConstraints:
+      {{- toYaml .Values.ruler.topologySpreadConstraints | nindent 8}}
+      {{- end }}
       affinity:
         {{- toYaml .Values.ruler.affinity | nindent 8 }}
       tolerations:
         {{- toYaml .Values.ruler.tolerations | nindent 8 }}
       terminationGracePeriodSeconds: {{ .Values.ruler.terminationGracePeriodSeconds }}
       volumes:
-        - name: config
-          secret:
-            {{- if .Values.useExternalConfig }}
-            secretName: {{ .Values.externalConfigSecretName }}
-            {{- else }}
-            secretName: {{ template "cortex.fullname" . }}
-            {{- end }}
+        {{- include "cortex.configVolume" . | nindent 8 }}
         - name: runtime-config
           configMap:
             name: {{ template "cortex.fullname" . }}-runtime-config
