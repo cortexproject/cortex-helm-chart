@@ -2,6 +2,8 @@
 
 ## master / unreleased
 
+## 1.5.0 / 2022-05-12
+
 * [FEATURE] Add Query-Scheduler #268
 * [ENHANCEMENT] Allow StoreGateway podManagementPolicy to be changed #332
 * [ENHANCEMENT] Add pod topology spread constrant option #343
