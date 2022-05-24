@@ -291,7 +291,7 @@ alertmanager:
     enabled: false
     image:
       repository: omegavveapon/kopf-k8s-sidecar
-      tag: 1.4.0
+      tag: 1.4.1
       sha: ""
     imagePullPolicy: IfNotPresent
     resources: {}
@@ -674,7 +674,7 @@ ruler:
     enabled: false
     image:
       repository: omegavveapon/kopf-k8s-sidecar
-      tag: 1.4.0
+      tag: 1.4.1
       sha: ""
     imagePullPolicy: IfNotPresent
     resources: {}
