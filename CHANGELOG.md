@@ -3,6 +3,7 @@
 ## master / unreleased
 
 * [BUGFIX] Fix mounting cortex config when using configmap #355
+* [DEPENDENCY] Update dependency omegavveapon/kopf-k8s-sidecar to v1.4.1 #353
 
 ## 1.5.0 / 2022-05-24
 
