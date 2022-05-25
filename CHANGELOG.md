@@ -2,6 +2,8 @@
 
 ## master / unreleased
 
+* [BUGFIX] Fix mounting cortex config when using configmap #355
+
 ## 1.5.0 / 2022-05-24
 
 * [FEATURE] Add Query-Scheduler #268
