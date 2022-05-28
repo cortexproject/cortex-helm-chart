@@ -996,7 +996,7 @@ query_scheduler:
   lifecycle: {}
 
 overrides_exporter:
-  # https://cortexmetrics.io/docs/guides/overrides-exporter/
+  # -- https://cortexmetrics.io/docs/guides/overrides-exporter/
   enabled: false
 
   service:
