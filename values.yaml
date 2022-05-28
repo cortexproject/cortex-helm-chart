@@ -1040,8 +1040,6 @@ overrides_exporter:
             topologyKey: 'kubernetes.io/hostname'
 
   annotations: {}
-  persistentVolume:
-    subPath:
 
   startupProbe:
     httpGet:
