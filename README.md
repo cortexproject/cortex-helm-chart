@@ -2,7 +2,7 @@
 
 # cortex
 
-![Version: 1.5.2](https://img.shields.io/badge/Version-1.5.2-informational?style=flat-square) ![AppVersion: v1.11.1](https://img.shields.io/badge/AppVersion-v1.11.1-informational?style=flat-square)
+![Version: 1.5.1](https://img.shields.io/badge/Version-1.5.1-informational?style=flat-square) ![AppVersion: v1.11.1](https://img.shields.io/badge/AppVersion-v1.11.1-informational?style=flat-square)
 
 Horizontally scalable, highly available, multi-tenant, long term Prometheus.
 
@@ -540,7 +540,7 @@ Kubernetes: `^1.19.0-0`
 | overrides_exporter.&ZeroWidthSpace;annotations | object | `{}` |  |
 | overrides_exporter.&ZeroWidthSpace;containerSecurityContext.&ZeroWidthSpace;enabled | bool | `true` |  |
 | overrides_exporter.&ZeroWidthSpace;containerSecurityContext.&ZeroWidthSpace;readOnlyRootFilesystem | bool | `true` |  |
-| overrides_exporter.&ZeroWidthSpace;enabled | bool | `false` |  |
+| overrides_exporter.&ZeroWidthSpace;enabled | bool | `false` | https://cortexmetrics.io/docs/guides/overrides-exporter/ |
 | overrides_exporter.&ZeroWidthSpace;env | list | `[]` |  |
 | overrides_exporter.&ZeroWidthSpace;extraArgs | object | `{}` | Additional Cortex container arguments, e.g. log.level (debug, info, warn, error) |
 | overrides_exporter.&ZeroWidthSpace;extraContainers | list | `[]` |  |
@@ -552,7 +552,6 @@ Kubernetes: `^1.19.0-0`
 | overrides_exporter.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
 | overrides_exporter.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
 | overrides_exporter.&ZeroWidthSpace;nodeSelector | object | `{}` |  |
-| overrides_exporter.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;subPath | string | `nil` |  |
 | overrides_exporter.&ZeroWidthSpace;podAnnotations | object | `{"prometheus.io/port":"http-metrics","prometheus.io/scrape":"true"}` | Pod Annotations |
 | overrides_exporter.&ZeroWidthSpace;podLabels | object | `{}` | Pod Labels |
 | overrides_exporter.&ZeroWidthSpace;readinessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
