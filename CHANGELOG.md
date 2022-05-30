@@ -2,7 +2,7 @@
 
 ## master / unreleased
 
-# [FEATURE] Add Overrides-Exporter #360
+* [FEATURE] Add Overrides-Exporter #360
 
 ## 1.5.1 / 2022-05-25
 
