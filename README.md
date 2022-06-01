@@ -532,6 +532,48 @@ Kubernetes: `^1.19.0-0`
 | nginx.&ZeroWidthSpace;terminationGracePeriodSeconds | int | `10` |  |
 | nginx.&ZeroWidthSpace;tolerations | list | `[]` |  |
 | nginx.&ZeroWidthSpace;topologySpreadConstraints | list | `[]` |  |
+| overrides_exporter.&ZeroWidthSpace;affinity.&ZeroWidthSpace;podAntiAffinity.&ZeroWidthSpace;preferredDuringSchedulingIgnoredDuringExecution[0].&ZeroWidthSpace;podAffinityTerm.&ZeroWidthSpace;labelSelector.&ZeroWidthSpace;matchExpressions[0].&ZeroWidthSpace;key | string | `"app.kubernetes.io/component"` |  |
+| overrides_exporter.&ZeroWidthSpace;affinity.&ZeroWidthSpace;podAntiAffinity.&ZeroWidthSpace;preferredDuringSchedulingIgnoredDuringExecution[0].&ZeroWidthSpace;podAffinityTerm.&ZeroWidthSpace;labelSelector.&ZeroWidthSpace;matchExpressions[0].&ZeroWidthSpace;operator | string | `"In"` |  |
+| overrides_exporter.&ZeroWidthSpace;affinity.&ZeroWidthSpace;podAntiAffinity.&ZeroWidthSpace;preferredDuringSchedulingIgnoredDuringExecution[0].&ZeroWidthSpace;podAffinityTerm.&ZeroWidthSpace;labelSelector.&ZeroWidthSpace;matchExpressions[0].&ZeroWidthSpace;values[0] | string | `"query-scheduler"` |  |
+| overrides_exporter.&ZeroWidthSpace;affinity.&ZeroWidthSpace;podAntiAffinity.&ZeroWidthSpace;preferredDuringSchedulingIgnoredDuringExecution[0].&ZeroWidthSpace;podAffinityTerm.&ZeroWidthSpace;topologyKey | string | `"kubernetes.io/hostname"` |  |
+| overrides_exporter.&ZeroWidthSpace;affinity.&ZeroWidthSpace;podAntiAffinity.&ZeroWidthSpace;preferredDuringSchedulingIgnoredDuringExecution[0].&ZeroWidthSpace;weight | int | `100` |  |
+| overrides_exporter.&ZeroWidthSpace;annotations | object | `{}` |  |
+| overrides_exporter.&ZeroWidthSpace;containerSecurityContext.&ZeroWidthSpace;enabled | bool | `true` |  |
+| overrides_exporter.&ZeroWidthSpace;containerSecurityContext.&ZeroWidthSpace;readOnlyRootFilesystem | bool | `true` |  |
+| overrides_exporter.&ZeroWidthSpace;enabled | bool | `false` | https://cortexmetrics.io/docs/guides/overrides-exporter/ |
+| overrides_exporter.&ZeroWidthSpace;env | list | `[]` |  |
+| overrides_exporter.&ZeroWidthSpace;extraArgs | object | `{}` | Additional Cortex container arguments, e.g. log.level (debug, info, warn, error) |
+| overrides_exporter.&ZeroWidthSpace;extraContainers | list | `[]` |  |
+| overrides_exporter.&ZeroWidthSpace;extraPorts | list | `[]` |  |
+| overrides_exporter.&ZeroWidthSpace;extraVolumeMounts | list | `[]` |  |
+| overrides_exporter.&ZeroWidthSpace;extraVolumes | list | `[]` |  |
+| overrides_exporter.&ZeroWidthSpace;initContainers | list | `[]` |  |
+| overrides_exporter.&ZeroWidthSpace;lifecycle | object | `{}` |  |
+| overrides_exporter.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
+| overrides_exporter.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
+| overrides_exporter.&ZeroWidthSpace;nodeSelector | object | `{}` |  |
+| overrides_exporter.&ZeroWidthSpace;podAnnotations | object | `{"prometheus.io/port":"http-metrics","prometheus.io/scrape":"true"}` | Pod Annotations |
+| overrides_exporter.&ZeroWidthSpace;podLabels | object | `{}` | Pod Labels |
+| overrides_exporter.&ZeroWidthSpace;readinessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
+| overrides_exporter.&ZeroWidthSpace;readinessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
+| overrides_exporter.&ZeroWidthSpace;resources | object | `{}` |  |
+| overrides_exporter.&ZeroWidthSpace;securityContext | object | `{}` |  |
+| overrides_exporter.&ZeroWidthSpace;service.&ZeroWidthSpace;annotations | object | `{}` |  |
+| overrides_exporter.&ZeroWidthSpace;service.&ZeroWidthSpace;labels | object | `{}` |  |
+| overrides_exporter.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;additionalLabels | object | `{}` |  |
+| overrides_exporter.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;enabled | bool | `false` |  |
+| overrides_exporter.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;extraEndpointSpec | object | `{}` | Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint |
+| overrides_exporter.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;metricRelabelings | list | `[]` |  |
+| overrides_exporter.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;relabelings | list | `[]` |  |
+| overrides_exporter.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;failureThreshold | int | `10` |  |
+| overrides_exporter.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
+| overrides_exporter.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
+| overrides_exporter.&ZeroWidthSpace;strategy.&ZeroWidthSpace;rollingUpdate.&ZeroWidthSpace;maxSurge | int | `0` |  |
+| overrides_exporter.&ZeroWidthSpace;strategy.&ZeroWidthSpace;rollingUpdate.&ZeroWidthSpace;maxUnavailable | int | `1` |  |
+| overrides_exporter.&ZeroWidthSpace;strategy.&ZeroWidthSpace;type | string | `"RollingUpdate"` |  |
+| overrides_exporter.&ZeroWidthSpace;terminationGracePeriodSeconds | int | `180` |  |
+| overrides_exporter.&ZeroWidthSpace;tolerations | list | `[]` |  |
+| overrides_exporter.&ZeroWidthSpace;topologySpreadConstraints | list | `[]` |  |
 | querier.&ZeroWidthSpace;affinity.&ZeroWidthSpace;podAntiAffinity.&ZeroWidthSpace;preferredDuringSchedulingIgnoredDuringExecution[0].&ZeroWidthSpace;podAffinityTerm.&ZeroWidthSpace;labelSelector.&ZeroWidthSpace;matchExpressions[0].&ZeroWidthSpace;key | string | `"app.kubernetes.io/component"` |  |
 | querier.&ZeroWidthSpace;affinity.&ZeroWidthSpace;podAntiAffinity.&ZeroWidthSpace;preferredDuringSchedulingIgnoredDuringExecution[0].&ZeroWidthSpace;podAffinityTerm.&ZeroWidthSpace;labelSelector.&ZeroWidthSpace;matchExpressions[0].&ZeroWidthSpace;operator | string | `"In"` |  |
 | querier.&ZeroWidthSpace;affinity.&ZeroWidthSpace;podAntiAffinity.&ZeroWidthSpace;preferredDuringSchedulingIgnoredDuringExecution[0].&ZeroWidthSpace;podAffinityTerm.&ZeroWidthSpace;labelSelector.&ZeroWidthSpace;matchExpressions[0].&ZeroWidthSpace;values[0] | string | `"querier"` |  |
