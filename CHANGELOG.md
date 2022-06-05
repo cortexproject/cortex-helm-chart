@@ -3,6 +3,7 @@
 ## master / unreleased
 
 * [FEATURE] Add Overrides-Exporter #360
+* [BUGFIX] Fix query-scheduler address for query-frontend to use correct address #364
 
 ## 1.5.1 / 2022-05-25
 
