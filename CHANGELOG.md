@@ -3,6 +3,7 @@
 ## master / unreleased
 
 * [FEATURE] Add Overrides-Exporter #360
+* [CHANGE] move from omegavvweapon/kopf-k8s-sidecar to kiwigrid/k8s-sidecar #365
 
 ## 1.5.1 / 2022-05-25
 
