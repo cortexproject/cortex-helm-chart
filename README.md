@@ -505,7 +505,7 @@ Kubernetes: `^1.19.0-0`
 | nginx.&ZeroWidthSpace;http_listen_port | int | `80` |  |
 | nginx.&ZeroWidthSpace;image.&ZeroWidthSpace;pullPolicy | string | `"IfNotPresent"` |  |
 | nginx.&ZeroWidthSpace;image.&ZeroWidthSpace;repository | string | `"nginx"` |  |
-| nginx.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | float | `1.21` |  |
+| nginx.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | float | `1.22` |  |
 | nginx.&ZeroWidthSpace;initContainers | list | `[]` |  |
 | nginx.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/healthz"` |  |
 | nginx.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
