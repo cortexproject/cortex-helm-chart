@@ -31,7 +31,7 @@ data:
       access_log   /dev/stderr  main;
       sendfile     on;
       tcp_nopush   on;
-      resolver {{ default (printf "kube-dns.kube-system.svc.%s" .Values.clusterDomain ) .Values.nginx.config.dnsResolver }}.{{ $rootDomain }}{{- if .Values.nginx.config.dnsValid }} {{ .Values.nginx.config.dnsValid }}{{- end }};
+      resolver {{ default (printf "kube-dns.kube-system.svc.%s" .Values.clusterDomain ) .Values.nginx.config.dnsResolver }}{{- if .Values.nginx.config.dnsValid }} {{ .Values.nginx.config.dnsValid }}{{- end }};
 
       {{- with .Values.nginx.config.httpSnippet }}
       {{ tpl . $ | nindent 6 }}
