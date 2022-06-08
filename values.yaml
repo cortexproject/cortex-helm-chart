@@ -1276,7 +1276,10 @@ nginx:
     #   setHeaders:
     #     X-Scope-OrgID: $remote_user
     basicAuthSecretName: ""
-
+    # -- (optional) Including the valid parameter to the `resolver` directive to re-resolve names every `dnsValid` seconds/minutes
+    dnsValid: ""
+    # -- (optional) If true Nginx will use the distributor headless service for `/ring` path. See https://github.com/kubernetes/kubernetes/issues/24092
+    distributorHeadless: false 
   image:
     repository: nginx
     tag: 1.21
