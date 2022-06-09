@@ -2,6 +2,7 @@
 
 ## master / unreleased
 
+* [CHANGE] move from omegavvweapon/kopf-k8s-sidecar to kiwigrid/k8s-sidecar #365
 * [FEATURE] Add Overrides-Exporter #360
 * [BUGFIX] Fix query-scheduler address for query-frontend to use correct address #364
 
