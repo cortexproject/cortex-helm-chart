@@ -31,7 +31,7 @@ data:
       access_log   /dev/stderr  main;
       sendfile     on;
       tcp_nopush   on;
-      resolver {{ default (printf "kube-dns.kube-system.svc.%s" .Values.clusterDomain ) .Values.nginx.config.dnsResolver }} valid={{ default "10s" .Values.nginx.config.dnsTtl }};
+      resolver {{ default (printf "kube-dns.kube-system.svc.%s" .Values.clusterDomain ) .Values.nginx.config.dnsResolver }}{{ with .Values.nginx.config.dnsTTL }} valid={{ . }}{{ end }};
 
       {{- with .Values.nginx.config.httpSnippet }}
       {{ tpl . $ | nindent 6 }}
