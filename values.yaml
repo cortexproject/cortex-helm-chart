@@ -1279,7 +1279,7 @@ nginx:
 
   image:
     repository: nginx
-    tag: 1.21
+    tag: 1.22
     pullPolicy: IfNotPresent
 
   service:
