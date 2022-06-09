@@ -1151,7 +1151,7 @@ nginx:
   http_listen_port: 80
   config:
     dnsResolver: kube-dns.kube-system.svc.cluster.local
-    dnsTtl: 10s
+    dnsTTL: 10s
     # -- ref: http://nginx.org/en/docs/http/ngx_http_core_module.html#client_max_body_size
     client_max_body_size: 1M
     # -- arbitrary snippet to inject in the http { } section of the nginx config
