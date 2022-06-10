@@ -8,7 +8,6 @@
 * [BUGFIX] Fix query-scheduler address for query-frontend to use correct address #364
 * [DEPENDENCY] Update dependency nginx to v1.22 #357
 
-
 ## 1.5.1 / 2022-05-25
 
 * [BUGFIX] Fix mounting cortex config when using configmap #355
