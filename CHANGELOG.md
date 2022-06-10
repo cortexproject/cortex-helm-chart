@@ -2,6 +2,8 @@
 
 ## master / unreleased
 
+## 1.6.0 / 2022-06-10
+
 * [CHANGE] move from omegavvweapon/kopf-k8s-sidecar to kiwigrid/k8s-sidecar #365
 * [FEATURE] Add Overrides-Exporter #360
 * [ENHANCEMENT] Add dnsTTL option to nginx config #366
