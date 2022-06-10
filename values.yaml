@@ -290,8 +290,8 @@ alertmanager:
     # -- Enable sidecar that collect the configmaps with specified label and stores the included files them into the respective folders
     enabled: false
     image:
-      repository: omegavveapon/kopf-k8s-sidecar
-      tag: 1.4.1
+      repository: kiwigrid/k8s-sidecar
+      tag: 1.19.0
       sha: ""
     imagePullPolicy: IfNotPresent
     resources: {}
@@ -673,8 +673,8 @@ ruler:
     # -- Enable sidecar that collect the configmaps with specified label and stores the included files them into the respective folders
     enabled: false
     image:
-      repository: omegavveapon/kopf-k8s-sidecar
-      tag: 1.4.1
+      repository: kiwigrid/k8s-sidecar
+      tag: 1.19.0
       sha: ""
     imagePullPolicy: IfNotPresent
     resources: {}
@@ -1280,7 +1280,7 @@ nginx:
     dnsTTL: "15s"
   image:
     repository: nginx
-    tag: 1.21
+    tag: 1.22
     pullPolicy: IfNotPresent
 
   service:

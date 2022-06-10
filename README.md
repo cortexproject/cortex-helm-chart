@@ -142,9 +142,9 @@ Kubernetes: `^1.19.0-0`
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;enabled | bool | `false` | Enable sidecar that collect the configmaps with specified label and stores the included files them into the respective folders |
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;folder | string | `"/data"` | Folder where the files should be placed. |
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;folderAnnotation | string | `"k8s-sidecar-target-directory"` | The annotation the sidecar will look for in ConfigMaps and/or Secrets to override the destination folder for files. If the value is a relative path, it will be relative to FOLDER |
-| alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;repository | string | `"omegavveapon/kopf-k8s-sidecar"` |  |
+| alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;repository | string | `"kiwigrid/k8s-sidecar"` |  |
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;sha | string | `""` |  |
-| alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"1.4.1"` |  |
+| alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"1.19.0"` |  |
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;imagePullPolicy | string | `"IfNotPresent"` |  |
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;label | string | `"cortex_alertmanager"` | Label that should be used for filtering |
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;labelValue | string | `""` | The value for the label you want to filter your resources on. Don't set a value to filter by any value |
@@ -506,7 +506,7 @@ Kubernetes: `^1.19.0-0`
 | nginx.&ZeroWidthSpace;http_listen_port | int | `80` |  |
 | nginx.&ZeroWidthSpace;image.&ZeroWidthSpace;pullPolicy | string | `"IfNotPresent"` |  |
 | nginx.&ZeroWidthSpace;image.&ZeroWidthSpace;repository | string | `"nginx"` |  |
-| nginx.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | float | `1.21` |  |
+| nginx.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | float | `1.22` |  |
 | nginx.&ZeroWidthSpace;initContainers | list | `[]` |  |
 | nginx.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/healthz"` |  |
 | nginx.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
@@ -757,9 +757,9 @@ Kubernetes: `^1.19.0-0`
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;enabled | bool | `false` | Enable sidecar that collect the configmaps with specified label and stores the included files them into the respective folders |
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;folder | string | `"/data/rules"` | Folder where the files should be placed. |
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;folderAnnotation | string | `"k8s-sidecar-target-directory"` | The annotation the sidecar will look for in ConfigMaps and/or Secrets to override the destination folder for files. If the value is a relative path, it will be relative to FOLDER |
-| ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;repository | string | `"omegavveapon/kopf-k8s-sidecar"` |  |
+| ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;repository | string | `"kiwigrid/k8s-sidecar"` |  |
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;sha | string | `""` |  |
-| ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"1.4.1"` |  |
+| ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"1.19.0"` |  |
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;imagePullPolicy | string | `"IfNotPresent"` |  |
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;label | string | `"cortex_rules"` | label that the configmaps with rules are marked with |
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;labelValue | string | `""` | The value for the label you want to filter your resources on. Don't set a value to filter by any value |
