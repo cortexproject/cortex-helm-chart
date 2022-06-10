@@ -3,7 +3,7 @@
 ## master / unreleased
 
 * [FEATURE] Add Overrides-Exporter #360
-* [ENHANCEMENT] Add dnsValid and headless distributor options to nginx config #366
+* [ENHANCEMENT] Add dnsTTL option to nginx config #366
 
 ## 1.5.1 / 2022-05-25
 

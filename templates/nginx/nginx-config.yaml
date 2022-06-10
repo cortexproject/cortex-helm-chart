@@ -31,7 +31,7 @@ data:
       access_log   /dev/stderr  main;
       sendfile     on;
       tcp_nopush   on;
-      resolver {{ default (printf "kube-dns.kube-system.svc.%s" .Values.clusterDomain ) .Values.nginx.config.dnsResolver }}{{- if .Values.nginx.config.dnsValid }} {{ .Values.nginx.config.dnsValid }}{{- end }};
+      resolver {{ default (printf "kube-dns.kube-system.svc.%s" .Values.clusterDomain ) .Values.nginx.config.dnsResolver }}{{- if .Values.nginx.config.dnsTTL }} {{ .Values.nginx.config.dnsTTL }}{{- end }};
 
       {{- with .Values.nginx.config.httpSnippet }}
       {{ tpl . $ | nindent 6 }}
@@ -71,7 +71,7 @@ data:
 
         # Distributor Config
         location = /ring {
-          proxy_pass      http://{{ template "cortex.fullname" . }}-distributor{{- if .Values.nginx.config.distributorHeadless }}-headless{{- end }}.{{ $rootDomain }}$request_uri;
+          proxy_pass      http://{{ template "cortex.fullname" . }}-distributor.{{ $rootDomain }}$request_uri;
         }
 
         location = /all_user_stats {
