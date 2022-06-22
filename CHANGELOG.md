@@ -2,6 +2,8 @@
 
 ## master / unreleased
 
+* [BUGFIX] Fix nginx extraContainers to indent correctly #373
+
 ## 1.6.0 / 2022-06-10
 
 * [CHANGE] move from omegavvweapon/kopf-k8s-sidecar to kiwigrid/k8s-sidecar #365
