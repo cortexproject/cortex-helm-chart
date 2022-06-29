@@ -3,6 +3,7 @@
 ## master / unreleased
 
 * [BUGFIX] Fix nginx extraContainers to indent correctly #373
+* [DEPENDENCY] Update dependency nginx to v1.23 #375
 
 ## 1.6.0 / 2022-06-10
 
