@@ -1,0 +1,14 @@
+{{- if and (gt (int .Values.monolith.replicas) 1) (.Values.monolith.podDisruptionBudget) (.Values.monolith.enabled) }}
+apiVersion: {{ include "cortex.pdbVersion" . }}
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "cortex.monolithFullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "cortex.monolithLabels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "cortex.monolithSelectorLabels" . | nindent 6 }}
+  {{- toYaml .Values.monolith.podDisruptionBudget | nindent 2 }}
+{{- end }}

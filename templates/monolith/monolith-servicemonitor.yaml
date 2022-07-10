@@ -1,0 +1,42 @@
+{{- if and .Values.monolith.serviceMonitor.enabled .Values.monolith.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "cortex.monolithFullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "cortex.monolithLabels" . | nindent 4 }}
+    {{- if .Values.monolith.serviceMonitor.additionalLabels }}
+{{ toYaml .Values.monolith.serviceMonitor.additionalLabels | indent 4 }}
+    {{- end }}
+  {{- if .Values.monolith.serviceMonitor.annotations }}
+  annotations:
+{{ toYaml .Values.monolith.serviceMonitor.annotations | indent 4 }}
+  {{- end }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "cortex.monolithSelectorLabels" . | nindent 6 }}
+  namespaceSelector:
+    matchNames:
+      - {{ .Release.Namespace | quote }}
+  endpoints:
+  - port: http-metrics
+    {{- if .Values.monolith.serviceMonitor.interval }}
+    interval: {{ .Values.monolith.serviceMonitor.interval }}
+    {{- end }}
+    {{- if .Values.monolith.serviceMonitor.scrapeTimeout }}
+    scrapeTimeout: {{ .Values.monolith.serviceMonitor.scrapeTimeout }}
+    {{- end }}
+    {{- if .Values.monolith.serviceMonitor.relabelings }}
+    relabelings:
+    {{- toYaml .Values.monolith.serviceMonitor.relabelings | nindent 4 }}
+    {{- end }}
+    {{- if .Values.monolith.serviceMonitor.metricRelabelings }}
+    metricRelabelings:
+    {{- toYaml .Values.monolith.serviceMonitor.metricRelabelings | nindent 4 }}
+    {{- end }}
+    {{- with .Values.monolith.serviceMonitor.extraEndpointSpec }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+{{- end }}

@@ -1,0 +1,131 @@
+{{- if and (not .Values.monolith.statefulSet.enabled) .Values.monolith.enabled -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "cortex.monolithFullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "cortex.monolithLabels" . | nindent 4 }}
+    app.kubernetes.io/part-of: memberlist
+  annotations:
+    {{- toYaml .Values.monolith.annotations | nindent 4 }}
+spec:
+  {{- if not .Values.monolith.autoscaling.enabled }}
+  replicas: {{ .Values.monolith.replicas }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "cortex.monolithSelectorLabels" . | nindent 6 }}
+  strategy:
+    {{- toYaml .Values.monolith.strategy | nindent 4 }}
+  template:
+    metadata:
+      labels:
+        {{- include "cortex.monolithLabels" . | nindent 8 }}
+        app.kubernetes.io/part-of: memberlist
+        {{- with .Values.monolith.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      annotations:
+        checksum/config: {{ include "cortex.configChecksum" . }}
+        {{- with .Values.monolith.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      serviceAccountName: {{ .Values.monolith.serviceAccount.name | default (include "cortex.serviceAccountName" . ) }}
+      {{- if .Values.monolith.priorityClassName }}
+      priorityClassName: {{ .Values.monolith.priorityClassName }}
+      {{- end }}
+      {{- if .Values.monolith.securityContext.enabled }}
+      securityContext: {{- omit .Values.monolith.securityContext "enabled" | toYaml | nindent 8 }}
+      {{- end }}
+      initContainers:
+        {{- toYaml .Values.monolith.initContainers | nindent 8 }}
+      {{- if .Values.image.pullSecrets }}
+      imagePullSecrets:
+      {{- range .Values.image.pullSecrets }}
+        - name: {{ . }}
+      {{- end }}
+      {{- end }}
+      containers:
+        - name: monolith
+          image: "{{ .Values.image.repository }}:{{ default .Chart.AppVersion .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args:
+            - "-target=all"
+            - "-config.file=/etc/cortex/cortex.yaml"
+            {{- include "cortex.memcached" . | nindent 12}}
+            {{- range $key, $value := .Values.monolith.extraArgs }}
+            - "-{{ $key }}={{ $value }}"
+            {{- end }}
+          volumeMounts:
+            {{- if .Values.monolith.extraVolumeMounts }}
+            {{- toYaml .Values.monolith.extraVolumeMounts | nindent 12}}
+            {{- end }}
+            - name: config
+              mountPath: /etc/cortex
+            - name: runtime-config
+              mountPath: /etc/cortex-runtime-config
+            - name: storage
+              mountPath: "/data"
+              {{- with .Values.monolith.persistentVolume.subPath }}
+              subPath: {{ . }}
+              {{- end }}
+          ports:
+            - name: http-metrics
+              containerPort: {{ .Values.config.server.http_listen_port }}
+              protocol: TCP
+            - name: grpc
+              containerPort: {{ .Values.config.server.grpc_listen_port }}
+              protocol: TCP
+            - name: gossip
+              containerPort: {{ .Values.config.memberlist.bind_port }}
+              protocol: TCP
+          {{- if .Values.monolith.startupProbe }}
+          startupProbe:
+            {{- toYaml .Values.monolith.startupProbe | nindent 12 }}
+          {{- end }}
+          {{- if .Values.monolith.livenessProbe }}
+          livenessProbe:
+            {{- toYaml .Values.monolith.livenessProbe | nindent 12 }}
+          {{- end }}
+          readinessProbe:
+            {{- toYaml .Values.monolith.readinessProbe | nindent 12 }}
+          resources:
+            {{- toYaml .Values.monolith.resources | nindent 12 }}
+          {{- if .Values.monolith.containerSecurityContext.enabled }}
+          securityContext: {{- omit .Values.monolith.containerSecurityContext "enabled" | toYaml | nindent 12 }}
+          {{- end }}
+          env:
+            {{- if .Values.monolith.env }}
+            {{ toYaml .Values.monolith.env | nindent 12 }}
+            {{- end }}
+          {{- with .Values.monolith.lifecycle }}
+          lifecycle:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+        {{- with .Values.monolith.extraContainers }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      nodeSelector:
+        {{- toYaml .Values.monolith.nodeSelector | nindent 8 }}
+      {{- if .Values.monolith.topologySpreadConstraints }}
+      topologySpreadConstraints:
+      {{- toYaml .Values.monolith.topologySpreadConstraints | nindent 8}}
+      {{- end }}
+      affinity:
+        {{- toYaml .Values.monolith.affinity | nindent 8 }}
+      tolerations:
+        {{- toYaml .Values.monolith.tolerations | nindent 8 }}
+      terminationGracePeriodSeconds: {{ .Values.monolith.terminationGracePeriodSeconds }}
+      volumes:
+        {{- include "cortex.configVolume" . | nindent 8 }}
+        - name: runtime-config
+          configMap:
+            name: {{ template "cortex.fullname" . }}-runtime-config
+        - name: storage
+          emptyDir: {}
+        {{- if .Values.monolith.extraVolumes }}
+        {{- toYaml .Values.monolith.extraVolumes | nindent 8}}
+        {{- end }}
+{{- end -}}
