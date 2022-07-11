@@ -5,6 +5,7 @@
 * [BUGFIX] Fix nginx extraContainers to indent correctly #373
 * [DEPENDENCY] Update dependency nginx to v1.23 #375
 * [DEPENDENCY] Update dependency kiwigrid/k8s-sidecar to v1.19.2 #370
+* [FEATURE] Add monolithic mode options #379
 
 ## 1.6.0 / 2022-06-10
 
