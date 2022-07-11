@@ -1,4 +1,5 @@
-{{- if and .Values.monolith.statefulSet.enabled .Values.monolith.enabled -}}
+{{- if eq .Values.mode "monolithic" -}}
+{{- if .Values.monolith.statefulSet.enabled -}}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -150,4 +151,5 @@ spec:
           lifecycle:
             {{- toYaml . | nindent 12 }}
           {{- end }}
+{{- end -}}
 {{- end -}}

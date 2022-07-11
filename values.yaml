@@ -12,6 +12,12 @@ image:
 # -- Kubernetes cluster DNS domain
 clusterDomain: cluster.local
 
+# -- Determine the mode in which to deploy Cortex.
+# Options are:
+# - 1) "distributed" microservices mode (default), or
+# - 2) "monolithic" (useful for evaluating cortex or using in integration tests)
+mode: "distributed"
+
 tags:
   # -- Set to true to enable block storage memcached caching
   blocks-storage-memcached: false
@@ -120,8 +126,10 @@ config:
     # form a ring and addresses are picked from the ring).
     # @default -- automatic
     store_gateway_addresses: |-
+      {{ if ne .Values.mode "monolithic" -}}
       {{ if and (eq .Values.config.storage.engine "blocks") (not .Values.config.store_gateway.sharding_enabled) -}}
       dns+{{ include "cortex.storeGatewayFullname" $ }}-headless:9095
+      {{- end }}
       {{- end }}
   query_range:
     split_queries_by_interval: 24h
@@ -157,6 +165,165 @@ runtimeconfigmap:
   annotations: {}
   # -- https://cortexmetrics.io/docs/configuration/arguments/#runtime-configuration-file
   runtime_config: {}
+
+monolith:
+  enabled: true
+  replicas: 1
+
+  statefulSet:
+    # -- If true, use a statefulset instead of a deployment for pod management.
+    # This is useful when using WAL
+    enabled: false
+    # -- ref: https://cortexmetrics.io/docs/guides/ingesters-scaling-up-and-down/#scaling-down and https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#pod-management-policies for scaledown details
+    podManagementPolicy: OrderedReady
+
+  service:
+    annotations: {}
+    labels: {}
+
+  serviceAccount:
+    name:
+
+  serviceMonitor:
+    enabled: false
+    additionalLabels: {}
+    relabelings: []
+    metricRelabelings: []
+    # -- Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint
+    extraEndpointSpec: {}
+
+  resources: {}
+
+  # -- Additional Cortex container arguments, e.g. log.level (debug, info, warn, error)
+  extraArgs: {}
+
+  # -- Pod Labels
+  podLabels: {}
+
+  # -- Pod Annotations
+  podAnnotations:
+    prometheus.io/scrape: 'true'
+    prometheus.io/port: '8080'
+
+  nodeSelector: {}
+  topologySpreadConstraints: []
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 100
+          podAffinityTerm:
+            labelSelector:
+              matchExpressions:
+                - key: app.kubernetes.io/component
+                  operator: In
+                  values:
+                    - monolith
+            topologyKey: 'kubernetes.io/hostname'
+
+  annotations: {}
+
+  autoscaling:
+    enabled: false
+    minReplicas: 3
+    maxReplicas: 30
+    targetMemoryUtilizationPercentage: 80
+    behavior:
+      scaleDown:
+        # -- see https://cortexmetrics.io/docs/guides/ingesters-scaling-up-and-down/#scaling-down for scaledown details
+        policies:
+          - type: Pods
+            value: 1
+            # set to no less than 2x the maximum between -blocks-storage.bucket-store.sync-interval and -compactor.cleanup-interval
+            periodSeconds: 1800
+        # -- uses metrics from the past 1h to make scaleDown decisions
+        stabilizationWindowSeconds: 3600
+      scaleUp:
+        # -- This default scaleup policy allows adding 1 pod every 30 minutes.
+        # Ref: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#support-for-configurable-scaling-behavior
+        policies:
+          - type: Pods
+            value: 1
+            periodSeconds: 1800
+
+  lifecycle:
+    # -- The /shutdown preStop hook is recommended as part of the ingester
+    # scaledown process, but can be removed to optimize rolling restarts in
+    # instances that will never be scaled down or when using chunks storage
+    # with WAL disabled.
+    # https://cortexmetrics.io/docs/guides/ingesters-scaling-up-and-down/#scaling-down
+    preStop:
+      httpGet:
+        path: "/ingester/shutdown"
+        port: http-metrics
+
+  persistentVolume:
+    # -- If true and monolith.statefulSet.enabled is true,
+    # Ingester will create/use a Persistent Volume Claim
+    # If false, use emptyDir
+    enabled: true
+
+    # -- Ingester data Persistent Volume Claim annotations
+    annotations: {}
+
+    # -- Ingester data Persistent Volume access modes
+    # Must match those of existing PV or dynamic provisioner
+    # Ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
+    accessModes:
+      - ReadWriteOnce
+
+    # -- Ingester data Persistent Volume size
+    size: 2Gi
+
+    # -- Subdirectory of Ingester data Persistent Volume to mount
+    # Useful if the volume's root directory is not empty
+    subPath: ''
+
+    # -- Ingester data Persistent Volume Storage Class
+    # If defined, storageClassName: <storageClass>
+    # If set to "-", storageClassName: "", which disables dynamic provisioning
+    # If undefined (the default) or set to null, no storageClassName spec is
+    # set, choosing the default provisioner.
+    storageClass: null
+
+  # -- Startup/liveness probes for ingesters are not recommended.
+  #  Ref: https://cortexmetrics.io/docs/guides/running-cortex-on-kubernetes/#take-extra-care-with-ingesters
+  startupProbe: {}
+
+  # -- Startup/liveness probes for ingesters are not recommended.
+  #  Ref: https://cortexmetrics.io/docs/guides/running-cortex-on-kubernetes/#take-extra-care-with-ingesters
+  livenessProbe: {}
+  readinessProbe:
+    httpGet:
+      path: /ready
+      port: http-metrics
+
+  securityContext: {}
+
+  containerSecurityContext:
+    enabled: true
+    readOnlyRootFilesystem: true
+
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 1
+  statefulStrategy:
+    type: RollingUpdate
+
+  terminationGracePeriodSeconds: 240
+
+  tolerations: []
+
+  podDisruptionBudget:
+    maxUnavailable: 1
+
+  initContainers: []
+  extraContainers: []
+  extraVolumes: []
+  extraVolumeMounts: []
+  extraPorts: []
+  env: []
 
 alertmanager:
   enabled: true

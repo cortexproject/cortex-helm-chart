@@ -1,4 +1,5 @@
-{{- if and .Values.monolith.serviceMonitor.enabled .Values.monolith.enabled }}
+{{- if eq .Values.mode "monolithic" -}}
+{{- if .Values.monolith.serviceMonitor.enabled -}}
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
@@ -39,4 +40,5 @@ spec:
     {{- with .Values.monolith.serviceMonitor.extraEndpointSpec }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
-{{- end }}
+{{- end -}}
+{{- end -}}

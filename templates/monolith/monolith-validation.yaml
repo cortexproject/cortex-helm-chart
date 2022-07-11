@@ -1,0 +1,5 @@
+# Validate that either "distributed" or "monolithic" configuration is defined
+{{- $validModes := list "distributed" "monolithic" -}}
+{{- if not (has .Values.mode $validModes) -}}
+{{- fail "Invalid 'mode' value set. 'mode' must be one of [distributed, monolithic]" -}}
+{{- end -}}

@@ -1,4 +1,4 @@
-{{- if .Values.monolith.enabled -}}
+{{- if eq .Values.mode "monolithic" -}}
 apiVersion: v1
 kind: Service
 metadata:
@@ -20,4 +20,4 @@ spec:
       targetPort: http-metrics
   selector:
     {{- include "cortex.monolithSelectorLabels" . | nindent 4 }}
-{{- end }}
+{{- end -}}
