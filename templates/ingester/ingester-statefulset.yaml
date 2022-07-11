@@ -1,3 +1,4 @@
+{{- if eq .Values.mode "distributed" -}}
 {{- if and .Values.ingester.statefulSet.enabled .Values.ingester.enabled -}}
 apiVersion: apps/v1
 kind: StatefulSet
@@ -150,4 +151,5 @@ spec:
           lifecycle:
             {{- toYaml . | nindent 12 }}
           {{- end }}
+{{- end -}}
 {{- end -}}

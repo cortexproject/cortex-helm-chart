@@ -1,3 +1,4 @@
+{{- if eq .Values.mode "distributed" -}}
 {{- if eq .Values.config.storage.engine "blocks" -}}
 {{- if .Values.compactor.enabled -}}
 apiVersion: apps/v1
@@ -141,5 +142,6 @@ spec:
           env:
             {{- toYaml .Values.compactor.env | nindent 12 }}
           {{- end }}
+{{- end -}}
 {{- end -}}
 {{- end -}}

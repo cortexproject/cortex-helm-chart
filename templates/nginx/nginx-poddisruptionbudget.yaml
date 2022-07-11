@@ -1,3 +1,4 @@
+{{- if eq .Values.mode "distributed" }}
 {{- if and (.Values.nginx.enabled) (gt (int .Values.nginx.replicas) 1) (.Values.nginx.podDisruptionBudget) }}
 apiVersion: {{ include "cortex.pdbVersion" . }}
 kind: PodDisruptionBudget
@@ -11,4 +12,5 @@ spec:
     matchLabels:
       {{- include "cortex.nginxSelectorLabels" . | nindent 6 }}
   {{- toYaml .Values.nginx.podDisruptionBudget | nindent 2 }}
+{{- end }}
 {{- end }}

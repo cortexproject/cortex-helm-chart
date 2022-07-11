@@ -1,3 +1,4 @@
+{{- if eq .Values.mode "distributed" -}}
 {{- if eq .Values.config.storage.engine "blocks" -}}
 {{- if .Values.compactor.enabled -}}
 apiVersion: v1
@@ -21,5 +22,6 @@ spec:
       targetPort: http-metrics
   selector:
     {{- include "cortex.compactorSelectorLabels" . | nindent 4 }}
+{{- end -}}
 {{- end -}}
 {{- end -}}

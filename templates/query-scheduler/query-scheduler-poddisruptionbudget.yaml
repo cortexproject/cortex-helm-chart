@@ -1,3 +1,4 @@
+{{- if eq .Values.mode "distributed" -}}
 {{- if and (.Values.query_scheduler.enabled) (gt (int .Values.query_scheduler.replicas) 1) (.Values.query_scheduler.podDisruptionBudget) }}
 apiVersion: {{ include "cortex.pdbVersion" . }}
 kind: PodDisruptionBudget
@@ -12,3 +13,4 @@ spec:
       {{- include "cortex.querySchedulerSelectorLabels" . | nindent 6 }}
   {{- toYaml .Values.query_scheduler.podDisruptionBudget | nindent 2 }}
 {{- end }}
+{{- end -}}

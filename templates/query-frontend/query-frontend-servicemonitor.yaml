@@ -1,3 +1,4 @@
+{{- if eq .Values.mode "distributed" -}}
 {{- if and .Values.query_frontend.serviceMonitor.enabled .Values.query_frontend.enabled }}
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
@@ -40,3 +41,4 @@ spec:
     {{- toYaml . | nindent 4 }}
     {{- end }}
 {{- end }}
+{{- end -}}

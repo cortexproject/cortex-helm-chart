@@ -1,3 +1,4 @@
+{{- if eq .Values.mode "distributed" -}}
 {{- if and (gt (int .Values.ingester.replicas) 1) (.Values.ingester.podDisruptionBudget) (.Values.ingester.enabled) }}
 apiVersion: {{ include "cortex.pdbVersion" . }}
 kind: PodDisruptionBudget
@@ -12,3 +13,4 @@ spec:
       {{- include "cortex.ingesterSelectorLabels" . | nindent 6 }}
   {{- toYaml .Values.ingester.podDisruptionBudget | nindent 2 }}
 {{- end }}
+{{- end -}}

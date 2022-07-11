@@ -1,4 +1,5 @@
-{{- if and (gt (int .Values.distributor.replicas) 1) (.Values.distributor.podDisruptionBudget) (.Values.distributor.enabled) }}
+{{- if eq .Values.mode "distributed" -}}
+{{- if and (gt (int .Values.distributor.replicas) 1) (.Values.distributor.podDisruptionBudget) (.Values.distributor.enabled) -}}
 apiVersion: {{ include "cortex.pdbVersion" . }}
 kind: PodDisruptionBudget
 metadata:
@@ -11,4 +12,5 @@ spec:
     matchLabels:
       {{- include "cortex.distributorSelectorLabels" . | nindent 6 }}
   {{- toYaml .Values.distributor.podDisruptionBudget | nindent 2 }}
-{{- end }}
+{{- end -}}
+{{- end -}}

@@ -1,3 +1,4 @@
+{{- if eq .Values.mode "distributed" -}}
 {{- if .Values.alertmanager.enabled -}}
 {{- if .Values.alertmanager.statefulSet.enabled -}}
 apiVersion: v1
@@ -23,5 +24,6 @@ spec:
       targetPort: http-metrics
   selector:
     {{- include "cortex.alertmanagerSelectorLabels" . | nindent 4 }}
+{{- end -}}
 {{- end -}}
 {{- end -}}

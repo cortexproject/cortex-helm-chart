@@ -1,3 +1,4 @@
+{{- if eq .Values.mode "distributed" }}
 {{- if .Values.nginx.enabled }}
 {{- $rootDomain := printf "%s.svc.%s:%d" .Release.Namespace .Values.clusterDomain (.Values.config.server.http_listen_port | int) }}
 kind: ConfigMap
@@ -165,4 +166,5 @@ data:
         {{- end }}
       }
     }
+{{- end }}
 {{- end }}

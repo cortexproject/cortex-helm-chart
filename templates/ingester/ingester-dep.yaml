@@ -1,3 +1,4 @@
+{{- if eq .Values.mode "distributed" -}}
 {{- if and (not .Values.ingester.statefulSet.enabled) .Values.ingester.enabled -}}
 apiVersion: apps/v1
 kind: Deployment
@@ -128,4 +129,5 @@ spec:
         {{- if .Values.ingester.extraVolumes }}
         {{- toYaml .Values.ingester.extraVolumes | nindent 8}}
         {{- end }}
+{{- end -}}
 {{- end -}}

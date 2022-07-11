@@ -1,3 +1,4 @@
+{{- if eq .Values.mode "distributed" -}}
 {{- if and (gt (int .Values.store_gateway.replicas) 1) (.Values.store_gateway.podDisruptionBudget) (.Values.store_gateway.enabled) }}
 apiVersion: {{ include "cortex.pdbVersion" . }}
 kind: PodDisruptionBudget
@@ -12,3 +13,4 @@ spec:
       {{- include "cortex.storeGatewaySelectorLabels" . | nindent 6 }}
   {{- toYaml .Values.store_gateway.podDisruptionBudget | nindent 2 }}
 {{- end }}
+{{- end -}}

@@ -1,3 +1,4 @@
+{{- if eq .Values.mode "distributed" -}}
 {{- if and (gt (int .Values.query_frontend.replicas) 1) (.Values.query_frontend.podDisruptionBudget) (.Values.query_frontend.enabled) }}
 apiVersion: {{ include "cortex.pdbVersion" . }}
 kind: PodDisruptionBudget
@@ -12,3 +13,4 @@ spec:
       {{- include "cortex.queryFrontendSelectorLabels" . | nindent 6 }}
   {{- toYaml .Values.query_frontend.podDisruptionBudget | nindent 2 }}
 {{- end }}
+{{- end -}}

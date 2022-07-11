@@ -1,3 +1,4 @@
+{{- if eq .Values.mode "distributed" -}}
 {{- if and (eq .Values.config.storage.engine "blocks") (.Values.store_gateway.enabled) -}}
 apiVersion: apps/v1
 kind: StatefulSet
@@ -144,4 +145,5 @@ spec:
           env:
             {{- toYaml .Values.store_gateway.env | nindent 12 }}
           {{- end }}
+{{- end -}}
 {{- end -}}

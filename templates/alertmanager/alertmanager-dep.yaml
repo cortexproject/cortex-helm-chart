@@ -1,3 +1,4 @@
+{{- if eq .Values.mode "distributed" -}}
 {{- if .Values.alertmanager.enabled -}}
 {{- if not .Values.alertmanager.statefulSet.enabled -}}
 apiVersion: apps/v1
@@ -168,5 +169,6 @@ spec:
         {{- if .Values.alertmanager.extraVolumes }}
         {{- toYaml .Values.alertmanager.extraVolumes | nindent 8 }}
         {{- end }}
+{{- end -}}
 {{- end -}}
 {{- end -}}

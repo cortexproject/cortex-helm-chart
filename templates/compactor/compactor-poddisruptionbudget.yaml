@@ -1,4 +1,5 @@
-{{- if and (gt (int .Values.compactor.replicas) 1) (.Values.compactor.podDisruptionBudget) }}
+{{- if eq .Values.mode "distributed" -}}
+{{- if and (gt (int .Values.compactor.replicas) 1) (.Values.compactor.podDisruptionBudget) -}}
 apiVersion: {{ include "cortex.pdbVersion" . }}
 kind: PodDisruptionBudget
 metadata:
@@ -11,4 +12,5 @@ spec:
     matchLabels:
       {{- include "cortex.compactorSelectorLabels" . | nindent 6 }}
   {{- toYaml .Values.compactor.podDisruptionBudget | nindent 2 }}
-{{- end }}
+{{- end -}}
+{{- end -}}
