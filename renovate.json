@@ -20,7 +20,7 @@
             "datasourceTemplate": "docker"
         },
         {
-            "description": "Update cortex in CREADME.md",
+            "description": "Update cortex in README.md",
             "fileMatch": ["^README\\.md$"],
             "matchStrings": [
                 "\\bAppVersion:\\s+(?<currentValue>v\\d+\\.\\d+\\.\\d+(?:\\+\\d+)?)",
