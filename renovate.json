@@ -20,6 +20,16 @@
             "datasourceTemplate": "docker"
         },
         {
+            "description": "Update cortex in README.md",
+            "fileMatch": ["^README\\.md$"],
+            "matchStrings": [
+                "\\bAppVersion:\\s+(?<currentValue>v\\d+\\.\\d+\\.\\d+(?:\\+\\d+)?)",
+                "\\bAppVersion-+(?<currentValue>v\\d+\\.\\d+\\.\\d+(?:\\+\\d+)?)"
+            ],
+            "depNameTemplate": "quay.io/cortexproject/cortex",
+            "datasourceTemplate": "docker"
+        },
+        {
             "description": "Update nginx image in README.md",
             "fileMatch": ["^README\\.md$"],
             "matchStrings": [
