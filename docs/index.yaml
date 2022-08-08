@@ -3,6 +3,67 @@ entries:
   cortex:
   - apiVersion: v2
     appVersion: v1.11.1
+    created: "2022-08-12T00:00:00.00000000+02:00"
+    dependencies:
+    - alias: memcached
+      condition: memcached.enabled
+      name: memcached
+      repository: https://charts.bitnami.com/bitnami
+      version: 5.15.14
+    - alias: memcached-index-read
+      condition: memcached-index-read.enabled
+      name: memcached
+      repository: https://charts.bitnami.com/bitnami
+      version: 5.15.14
+    - alias: memcached-index-write
+      condition: memcached-index-write.enabled
+      name: memcached
+      repository: https://charts.bitnami.com/bitnami
+      version: 5.15.14
+    - alias: memcached-frontend
+      condition: memcached-frontend.enabled
+      name: memcached
+      repository: https://charts.bitnami.com/bitnami
+      version: 5.15.14
+    - alias: memcached-blocks-index
+      name: memcached
+      repository: https://charts.bitnami.com/bitnami
+      tags:
+      - blocks-storage-memcached
+      version: 5.15.14
+    - alias: memcached-blocks
+      name: memcached
+      repository: https://charts.bitnami.com/bitnami
+      tags:
+      - blocks-storage-memcached
+      version: 5.15.14
+    - alias: memcached-blocks-metadata
+      name: memcached
+      repository: https://charts.bitnami.com/bitnami
+      tags:
+      - blocks-storage-memcached
+      version: 5.15.14
+    description: Horizontally scalable, highly available, multi-tenant, long term
+      Prometheus.
+    digest: 6d4f643081754d21e6b0b260c42a4a7aa8277963f9489decd05d9be9815b80fa
+    home: https://cortexmetrics.io/
+    icon: https://avatars2.githubusercontent.com/u/43045022?s=200&v=4
+    kubeVersion: ^1.19.0-0
+    maintainers:
+    - email: thayward@infoblox.com
+      name: Tom Hayward
+      url: https://github.com/kd7lxl
+    - email: Niclas.Schad@mail.schwarz
+      name: Niclas Schad
+      url: https://github.com/nschad
+    name: cortex
+    sources:
+    - https://github.com/vivacitylabs/cortex-helm-chart
+    urls:
+    - https://vivacitylabs.github.io/cortex-helm-chart/cortex-1.6.1.tgz
+    version: 1.6.1
+  - apiVersion: v2
+    appVersion: v1.11.1
     created: "2022-06-10T13:22:30.46839387+02:00"
     dependencies:
     - alias: memcached
@@ -58,9 +119,9 @@ entries:
       url: https://github.com/nschad
     name: cortex
     sources:
-    - https://github.com/cortexproject/cortex-helm-chart
+    - https://github.com/vivacitylabs/cortex-helm-chart
     urls:
-    - https://cortexproject.github.io/cortex-helm-chart/cortex-1.6.0.tgz
+    - https://vivacitylabs.github.io/cortex-helm-chart/cortex-1.6.0.tgz
     version: 1.6.0
   - apiVersion: v2
     appVersion: v1.11.1
@@ -119,9 +180,9 @@ entries:
       url: https://github.com/nschad
     name: cortex
     sources:
-    - https://github.com/cortexproject/cortex-helm-chart
+    - https://github.com/vivacitylabs/cortex-helm-chart
     urls:
-    - https://cortexproject.github.io/cortex-helm-chart/cortex-1.5.1.tgz
+    - https://vivacitylabs.github.io/cortex-helm-chart/cortex-1.5.1.tgz
     version: 1.5.1
   - apiVersion: v2
     appVersion: v1.11.1
@@ -180,9 +241,9 @@ entries:
       url: https://github.com/nschad
     name: cortex
     sources:
-    - https://github.com/cortexproject/cortex-helm-chart
+    - https://github.com/vivacitylabs/cortex-helm-chart
     urls:
-    - https://cortexproject.github.io/cortex-helm-chart/cortex-1.5.0.tgz
+    - https://vivacitylabs.github.io/cortex-helm-chart/cortex-1.5.0.tgz
     version: 1.5.0
   - apiVersion: v2
     appVersion: v1.11.1
@@ -241,9 +302,9 @@ entries:
       url: https://github.com/nschad
     name: cortex
     sources:
-    - https://github.com/cortexproject/cortex-helm-chart
+    - https://github.com/vivacitylabs/cortex-helm-chart
     urls:
-    - https://cortexproject.github.io/cortex-helm-chart/cortex-1.4.0.tgz
+    - https://vivacitylabs.github.io/cortex-helm-chart/cortex-1.4.0.tgz
     version: 1.4.0
   - apiVersion: v2
     appVersion: v1.11.0
@@ -302,9 +363,9 @@ entries:
       url: https://github.com/nschad
     name: cortex
     sources:
-    - https://github.com/cortexproject/cortex-helm-chart
+    - https://github.com/vivacitylabs/cortex-helm-chart
     urls:
-    - https://cortexproject.github.io/cortex-helm-chart/cortex-1.3.0.tgz
+    - https://vivacitylabs.github.io/cortex-helm-chart/cortex-1.3.0.tgz
     version: 1.3.0
   - apiVersion: v2
     appVersion: v1.11.0
@@ -363,9 +424,9 @@ entries:
       url: https://github.com/ShuzZzle
     name: cortex
     sources:
-    - https://github.com/cortexproject/cortex-helm-chart
+    - https://github.com/vivacitylabs/cortex-helm-chart
     urls:
-    - https://cortexproject.github.io/cortex-helm-chart/cortex-1.2.0.tgz
+    - https://vivacitylabs.github.io/cortex-helm-chart/cortex-1.2.0.tgz
     version: 1.2.0
   - apiVersion: v2
     appVersion: v1.10.0
@@ -424,9 +485,9 @@ entries:
       url: https://github.com/ShuzZzle
     name: cortex
     sources:
-    - https://github.com/cortexproject/cortex-helm-chart
+    - https://github.com/vivacitylabs/cortex-helm-chart
     urls:
-    - https://cortexproject.github.io/cortex-helm-chart/cortex-1.1.0.tgz
+    - https://vivacitylabs.github.io/cortex-helm-chart/cortex-1.1.0.tgz
     version: 1.1.0
   - apiVersion: v2
     appVersion: v1.10.0
@@ -485,9 +546,9 @@ entries:
       url: https://github.com/ShuzZzle
     name: cortex
     sources:
-    - https://github.com/cortexproject/cortex-helm-chart
+    - https://github.com/vivacitylabs/cortex-helm-chart
     urls:
-    - https://cortexproject.github.io/cortex-helm-chart/cortex-1.0.1.tgz
+    - https://vivacitylabs.github.io/cortex-helm-chart/cortex-1.0.1.tgz
     version: 1.0.1
   - apiVersion: v2
     appVersion: v1.10.0
@@ -546,9 +607,9 @@ entries:
       url: https://github.com/ShuzZzle
     name: cortex
     sources:
-    - https://github.com/cortexproject/cortex-helm-chart
+    - https://github.com/vivacitylabs/cortex-helm-chart
     urls:
-    - https://cortexproject.github.io/cortex-helm-chart/cortex-1.0.0.tgz
+    - https://vivacitylabs.github.io/cortex-helm-chart/cortex-1.0.0.tgz
     version: 1.0.0
   - apiVersion: v2
     appVersion: v1.10.0
@@ -607,9 +668,9 @@ entries:
       url: https://github.com/ShuzZzle
     name: cortex
     sources:
-    - https://github.com/cortexproject/cortex-helm-chart
+    - https://github.com/vivacitylabs/cortex-helm-chart
     urls:
-    - https://cortexproject.github.io/cortex-helm-chart/cortex-0.7.0.tgz
+    - https://vivacitylabs.github.io/cortex-helm-chart/cortex-0.7.0.tgz
     version: 0.7.0
   - apiVersion: v2
     appVersion: v1.9.0
@@ -664,9 +725,9 @@ entries:
       name: Cortex Maintainers
     name: cortex
     sources:
-    - https://github.com/cortexproject/cortex-helm-chart
+    - https://github.com/vivacitylabs/cortex-helm-chart
     urls:
-    - https://cortexproject.github.io/cortex-helm-chart/cortex-0.6.0.tgz
+    - https://vivacitylabs.github.io/cortex-helm-chart/cortex-0.6.0.tgz
     version: 0.6.0
   - apiVersion: v2
     appVersion: v1.9.0
@@ -721,9 +782,9 @@ entries:
       name: Cortex Maintainers
     name: cortex
     sources:
-    - https://github.com/cortexproject/cortex-helm-chart
+    - https://github.com/vivacitylabs/cortex-helm-chart
     urls:
-    - https://cortexproject.github.io/cortex-helm-chart/cortex-0.5.0.tgz
+    - https://vivacitylabs.github.io/cortex-helm-chart/cortex-0.5.0.tgz
     version: 0.5.0
   - apiVersion: v2
     appVersion: v1.7.0
@@ -777,9 +838,9 @@ entries:
       name: Cortex Maintainers
     name: cortex
     sources:
-    - https://github.com/cortexproject/cortex-helm-chart
+    - https://github.com/vivacitylabs/cortex-helm-chart
     urls:
-    - https://cortexproject.github.io/cortex-helm-chart/cortex-0.4.1.tgz
+    - https://vivacitylabs.github.io/cortex-helm-chart/cortex-0.4.1.tgz
     version: 0.4.1
   - apiVersion: v2
     appVersion: v1.7.0
@@ -833,9 +894,9 @@ entries:
       name: Cortex Maintainers
     name: cortex
     sources:
-    - https://github.com/cortexproject/cortex-helm-chart
+    - https://github.com/vivacitylabs/cortex-helm-chart
     urls:
-    - https://cortexproject.github.io/cortex-helm-chart/cortex-0.4.0.tgz
+    - https://vivacitylabs.github.io/cortex-helm-chart/cortex-0.4.0.tgz
     version: 0.4.0
   - apiVersion: v2
     appVersion: v1.6.0
@@ -889,9 +950,9 @@ entries:
       name: Cortex Maintainers
     name: cortex
     sources:
-    - https://github.com/cortexproject/cortex-helm-chart
+    - https://github.com/vivacitylabs/cortex-helm-chart
     urls:
-    - https://cortexproject.github.io/cortex-helm-chart/cortex-0.3.0.tgz
+    - https://vivacitylabs.github.io/cortex-helm-chart/cortex-0.3.0.tgz
     version: 0.3.0
   - apiVersion: v2
     appVersion: v1.4.0
@@ -922,8 +983,8 @@ entries:
       name: Cortex Maintainers
     name: cortex
     sources:
-    - https://github.com/cortexproject/cortex-helm-chart
+    - https://github.com/vivacitylabs/cortex-helm-chart
     urls:
-    - https://cortexproject.github.io/cortex-helm-chart/cortex-0.2.0.tgz
+    - https://vivacitylabs.github.io/cortex-helm-chart/cortex-0.2.0.tgz
     version: 0.2.0
 generated: "2022-06-10T13:22:30.381396083+02:00"
