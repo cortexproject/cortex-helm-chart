@@ -14,7 +14,7 @@ spec:
   selector:
     matchLabels:
       {{- include "cortex.rulerSelectorLabels" . | nindent 6 }}
-updateStrategy:
+  updateStrategy:
     {{- toYaml .Values.ruler.statefulStrategy | nindent 4 }}          
   podManagementPolicy: "{{ .Values.ruler.statefulSet.podManagementPolicy }}"
   serviceName: {{ template "cortex.fullname" . }}-ruler
