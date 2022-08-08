@@ -154,7 +154,7 @@ spec:
             - name: runtime-config
               mountPath: /etc/cortex-runtime-config
             - name: storage
-              mountPath: /data/rules
+              mountPath: /data
               {{- with .Values.ruler.persistentVolume.subPath }}
               subPath: {{ . }}
               {{- end }}
