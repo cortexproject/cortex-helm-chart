@@ -69,6 +69,7 @@ updateStrategy:
         - name: {{ . }}
       {{- end }}
       {{- end }}
+      
       containers:
         {{- if .Values.ruler.sidecar.enabled }}
         - name: {{ template "cortex.name" . }}-sc-rules
