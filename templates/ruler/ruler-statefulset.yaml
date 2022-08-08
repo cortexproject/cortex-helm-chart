@@ -1,6 +1,6 @@
-{{- if and (not .Values.ruler.statefulSet.enabled) .Values.ruler.enabled -}}
+{{- if and .Values.ruler.statefulSet.enabled .Values.ruler.enabled -}}
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: {{ include "cortex.rulerFullname" . }}
   namespace: {{ .Release.Namespace }}
@@ -14,8 +14,32 @@ spec:
   selector:
     matchLabels:
       {{- include "cortex.rulerSelectorLabels" . | nindent 6 }}
-  strategy:
-    {{- toYaml .Values.ruler.strategy | nindent 4 }}
+updateStrategy:
+    {{- toYaml .Values.ruler.statefulStrategy | nindent 4 }}          
+  podManagementPolicy: "{{ .Values.ruler.statefulSet.podManagementPolicy }}"
+  serviceName: {{ template "cortex.fullname" . }}-ruler-headless
+  {{- if .Values.ruler.persistentVolume.enabled }}
+  volumeClaimTemplates:
+    - metadata:
+        name: storage
+        {{- if .Values.ruler.persistentVolume.annotations }}
+        annotations:
+          {{ toYaml .Values.ruler.persistentVolume.annotations | nindent 10 }}
+        {{- end }}
+      spec:
+        {{- if .Values.ruler.persistentVolume.storageClass }}
+        {{- if (eq "-" .Values.ruler.persistentVolume.storageClass) }}
+        storageClassName: ""
+        {{- else }}
+        storageClassName: "{{ .Values.ruler.persistentVolume.storageClass }}"
+        {{- end }}
+        {{- end }}
+        accessModes:
+          {{ toYaml .Values.ruler.persistentVolume.accessModes | nindent 10 }}
+        resources:
+          requests:
+            storage: "{{ .Values.ruler.persistentVolume.size }}"
+  {{- end }}
   template:
     metadata:
       labels:
