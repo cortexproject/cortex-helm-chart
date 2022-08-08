@@ -20,6 +20,16 @@
             "datasourceTemplate": "docker"
         },
         {
+            "description": "Update cortex in README.md",
+            "fileMatch": ["^README\\.md$"],
+            "matchStrings": [
+                "\\bAppVersion:\\s+(?<currentValue>v\\d+\\.\\d+\\.\\d+(?:\\+\\d+)?)",
+                "\\bAppVersion-+(?<currentValue>v\\d+\\.\\d+\\.\\d+(?:\\+\\d+)?)"
+            ],
+            "depNameTemplate": "quay.io/cortexproject/cortex",
+            "datasourceTemplate": "docker"
+        },
+        {
             "description": "Update nginx image in README.md",
             "fileMatch": ["^README\\.md$"],
             "matchStrings": [
@@ -29,13 +39,13 @@
             "datasourceTemplate": "docker"
         },
         {
-            "description": "Update omegavveapon/kopf-k8s-sidecar image in README.md",
+            "description": "Update kiwigrid/k8s-sidecar image in README.md",
             "fileMatch": ["^README\\.md$"],
             "matchStrings": [
                 "\\|\\s+ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;tag\\s+\\|\\s+string\\s+\\|\\s+`\"(?<currentValue>.*?)\"`\\s+\\|\\s+\\|\\s+",
                 "\\|\\s+alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;tag\\s+\\|\\s+string\\s+\\|\\s+`\"(?<currentValue>.*?)\"`\\s+\\|\\s+\\|\\s+"
             ],
-            "depNameTemplate": "omegavveapon/kopf-k8s-sidecar",
+            "depNameTemplate": "kiwigrid/k8s-sidecar",
             "datasourceTemplate": "docker"
         },
         {

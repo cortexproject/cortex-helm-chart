@@ -290,8 +290,8 @@ alertmanager:
     # -- Enable sidecar that collect the configmaps with specified label and stores the included files them into the respective folders
     enabled: false
     image:
-      repository: omegavveapon/kopf-k8s-sidecar
-      tag: 1.4.0
+      repository: kiwigrid/k8s-sidecar
+      tag: 1.19.2
       sha: ""
     imagePullPolicy: IfNotPresent
     resources: {}
@@ -673,8 +673,8 @@ ruler:
     # -- Enable sidecar that collect the configmaps with specified label and stores the included files them into the respective folders
     enabled: false
     image:
-      repository: omegavveapon/kopf-k8s-sidecar
-      tag: 1.4.0
+      repository: kiwigrid/k8s-sidecar
+      tag: 1.19.2
       sha: ""
     imagePullPolicy: IfNotPresent
     resources: {}
@@ -995,6 +995,89 @@ query_scheduler:
   env: []
   lifecycle: {}
 
+overrides_exporter:
+  # -- https://cortexmetrics.io/docs/guides/overrides-exporter/
+  enabled: false
+
+  service:
+    annotations: {}
+    labels: {}
+
+  serviceMonitor:
+    enabled: false
+    additionalLabels: {}
+    relabelings: []
+    metricRelabelings: []
+    # -- Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint
+    extraEndpointSpec: {}
+
+  resources: {}
+
+  # -- Additional Cortex container arguments, e.g. log.level (debug, info, warn, error)
+  extraArgs: {}
+
+  # -- Pod Labels
+  podLabels: {}
+
+  # -- Pod Annotations
+  podAnnotations:
+    prometheus.io/scrape: 'true'
+    prometheus.io/port: 'http-metrics'
+
+  nodeSelector: {}
+  topologySpreadConstraints: []
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 100
+          podAffinityTerm:
+            labelSelector:
+              matchExpressions:
+                - key: app.kubernetes.io/component
+                  operator: In
+                  values:
+                    - query-scheduler
+            topologyKey: 'kubernetes.io/hostname'
+
+  annotations: {}
+
+  startupProbe:
+    httpGet:
+      path: /ready
+      port: http-metrics
+    failureThreshold: 10
+  livenessProbe:
+    httpGet:
+      path: /ready
+      port: http-metrics
+  readinessProbe:
+    httpGet:
+      path: /ready
+      port: http-metrics
+
+  securityContext: {}
+  containerSecurityContext:
+    enabled: true
+    readOnlyRootFilesystem: true
+
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 1
+
+  terminationGracePeriodSeconds: 180
+
+  tolerations: []
+
+  initContainers: []
+  extraContainers: []
+  extraVolumes: []
+  extraVolumeMounts: []
+  extraPorts: []
+  env: []
+  lifecycle: {}
+
 table_manager:
   replicas: 1
 
@@ -1193,10 +1276,11 @@ nginx:
     #   setHeaders:
     #     X-Scope-OrgID: $remote_user
     basicAuthSecretName: ""
-
+    # -- (optional) Including the valid parameter to the `resolver` directive to re-resolve names every `dnsTTL` seconds/minutes
+    dnsTTL: "15s"
   image:
     repository: nginx
-    tag: 1.21
+    tag: 1.23
     pullPolicy: IfNotPresent
 
   service:

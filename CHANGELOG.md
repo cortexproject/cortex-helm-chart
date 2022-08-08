@@ -2,6 +2,25 @@
 
 ## master / unreleased
 
+* [BUGFIX] Fix nginx extraContainers to indent correctly #373
+* [DEPENDENCY] Update dependency nginx to v1.23 #375
+* [DEPENDENCY] Update dependency kiwigrid/k8s-sidecar to v1.19.2 #370
+
+## 1.6.0 / 2022-06-10
+
+* [CHANGE] move from omegavvweapon/kopf-k8s-sidecar to kiwigrid/k8s-sidecar #365
+* [FEATURE] Add Overrides-Exporter #360
+* [ENHANCEMENT] Add dnsTTL option to nginx config #366
+* [BUGFIX] Fix query-scheduler address for query-frontend to use correct address #364
+* [DEPENDENCY] Update dependency nginx to v1.22 #357
+
+## 1.5.1 / 2022-05-25
+
+* [BUGFIX] Fix mounting cortex config when using configmap #355
+* [DEPENDENCY] Update dependency omegavveapon/kopf-k8s-sidecar to v1.4.1 #353
+
+## 1.5.0 / 2022-05-24
+
 * [FEATURE] Add Query-Scheduler #268
 * [ENHANCEMENT] Allow StoreGateway podManagementPolicy to be changed #332
 * [ENHANCEMENT] Add pod topology spread constrant option #343

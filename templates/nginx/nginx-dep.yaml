@@ -86,7 +86,7 @@ spec:
             {{- toYaml .Values.nginx.env | nindent 12 }}
           {{- end }}
         {{- if .Values.nginx.extraContainers }}
-        {{ toYaml .Values.nginx.extraContainers | indent 8}}
+        {{- toYaml .Values.nginx.extraContainers | nindent 8}}
         {{- end }}
       nodeSelector:
         {{- toYaml .Values.nginx.nodeSelector | nindent 8 }}

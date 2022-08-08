@@ -106,13 +106,7 @@ spec:
         {{- toYaml .Values.query_scheduler.tolerations | nindent 8 }}
       terminationGracePeriodSeconds: {{ .Values.query_scheduler.terminationGracePeriodSeconds }}
       volumes:
-        - name: config
-          secret:
-          {{- if .Values.useExternalConfig }}
-            secretName: {{ .Values.externalConfigSecretName }}
-          {{- else }}
-            secretName: {{ template "cortex.fullname" . }}
-          {{- end }}
+        {{- include "cortex.configVolume" . | nindent 8 }}
         - name: runtime-config
           configMap:
             name: {{ template "cortex.fullname" . }}-runtime-config
