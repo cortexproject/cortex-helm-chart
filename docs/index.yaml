@@ -60,7 +60,7 @@ entries:
     sources:
     - https://github.com/vivacitylabs/cortex-helm-chart
     urls:
-    - https://vivacitylabs.github.io/cortex-helm-chart/cortex-1.6.2.tgz
+    - https://vivacitylabs.github.io/cortex-helm-chart/cortex-1.6.4.tgz
     version: 1.6.4
   - apiVersion: v2
     appVersion: v1.11.1
@@ -121,7 +121,7 @@ entries:
     sources:
     - https://github.com/vivacitylabs/cortex-helm-chart
     urls:
-    - https://vivacitylabs.github.io/cortex-helm-chart/cortex-1.6.2.tgz
+    - https://vivacitylabs.github.io/cortex-helm-chart/cortex-1.6.3.tgz
     version: 1.6.3
   - apiVersion: v2
     appVersion: v1.11.1
