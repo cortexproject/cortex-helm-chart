@@ -17,7 +17,7 @@ spec:
 updateStrategy:
     {{- toYaml .Values.ruler.statefulStrategy | nindent 4 }}          
   podManagementPolicy: "{{ .Values.ruler.statefulSet.podManagementPolicy }}"
-  serviceName: {{ template "cortex.fullname" . }}-ruler-headless
+  serviceName: {{ template "cortex.fullname" . }}-ruler
   {{- if .Values.ruler.persistentVolume.enabled }}
   volumeClaimTemplates:
     - metadata:
@@ -69,7 +69,7 @@ updateStrategy:
         - name: {{ . }}
       {{- end }}
       {{- end }}
-      
+
       containers:
         {{- if .Values.ruler.sidecar.enabled }}
         - name: {{ template "cortex.name" . }}-sc-rules
