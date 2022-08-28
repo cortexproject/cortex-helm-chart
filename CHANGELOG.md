@@ -6,6 +6,7 @@
 * [DEPENDENCY] Update dependency nginx to v1.23 #375
 * [DEPENDENCY] Update dependency kiwigrid/k8s-sidecar to v1.19.2 #370
 * [DEPENDENCY] Update quay.io/cortexproject/cortex Docker tag to v1.13.0 #381
+* [DEPENDENCY] Update kiwigrid/k8s-sidecar Docker tag to v1.19.4 #387
 
 ## 1.6.0 / 2022-06-10
 
