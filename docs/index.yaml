@@ -3,7 +3,7 @@ entries:
   cortex:
   - apiVersion: v2
     appVersion: v1.11.1
-    created: "2022-09-05T18:59:55.201755737+01:00"
+    created: "2022-09-05T19:13:34.99970798+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -45,7 +45,7 @@ entries:
       version: 5.15.14
     description: Horizontally scalable, highly available, multi-tenant, long term
       Prometheus.
-    digest: f4d8d84f0d3d649a20622964b3652b8d699127495aba6bbcb5a99f526a991a93
+    digest: 6233417c7aba05332aa503635329e34efbd8d442680d5a22d18870f5a4596b8c
     home: https://cortexmetrics.io/
     icon: https://avatars2.githubusercontent.com/u/43045022?s=200&v=4
     kubeVersion: ^1.19.0-0
@@ -64,7 +64,7 @@ entries:
     version: 1.6.6
   - apiVersion: v2
     appVersion: v1.11.1
-    created: "2022-09-05T18:59:55.189974496+01:00"
+    created: "2022-09-05T19:13:34.988055254+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -125,7 +125,7 @@ entries:
     version: 1.6.5
   - apiVersion: v2
     appVersion: v1.11.1
-    created: "2022-09-05T18:59:55.171825397+01:00"
+    created: "2022-09-05T19:13:34.969579283+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -186,7 +186,7 @@ entries:
     version: 1.6.4
   - apiVersion: v2
     appVersion: v1.11.1
-    created: "2022-09-05T18:59:55.156827528+01:00"
+    created: "2022-09-05T19:13:34.954949703+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -247,7 +247,7 @@ entries:
     version: 1.6.3
   - apiVersion: v2
     appVersion: v1.11.1
-    created: "2022-09-05T18:59:55.141823338+01:00"
+    created: "2022-09-05T19:13:34.940744308+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -308,7 +308,7 @@ entries:
     version: 1.6.2
   - apiVersion: v2
     appVersion: v1.11.1
-    created: "2022-09-05T18:59:55.126299053+01:00"
+    created: "2022-09-05T19:13:34.927353257+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -369,7 +369,7 @@ entries:
     version: 1.6.0
   - apiVersion: v2
     appVersion: v1.11.1
-    created: "2022-09-05T18:59:55.094574555+01:00"
+    created: "2022-09-05T19:13:34.908750433+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -430,7 +430,7 @@ entries:
     version: 1.6.0
   - apiVersion: v2
     appVersion: v1.11.1
-    created: "2022-09-05T18:59:55.080684299+01:00"
+    created: "2022-09-05T19:13:34.894138338+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -491,7 +491,7 @@ entries:
     version: 1.5.1
   - apiVersion: v2
     appVersion: v1.11.1
-    created: "2022-09-05T18:59:55.068060397+01:00"
+    created: "2022-09-05T19:13:34.880254733+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -552,7 +552,7 @@ entries:
     version: 1.5.0
   - apiVersion: v2
     appVersion: v1.11.1
-    created: "2022-09-05T18:59:55.055044332+01:00"
+    created: "2022-09-05T19:13:34.87062284+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -613,7 +613,7 @@ entries:
     version: 1.4.0
   - apiVersion: v2
     appVersion: v1.11.0
-    created: "2022-09-05T18:59:55.042537483+01:00"
+    created: "2022-09-05T19:13:34.860851122+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -674,7 +674,7 @@ entries:
     version: 1.3.0
   - apiVersion: v2
     appVersion: v1.11.0
-    created: "2022-09-05T18:59:55.031839115+01:00"
+    created: "2022-09-05T19:13:34.850338278+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -735,7 +735,7 @@ entries:
     version: 1.2.0
   - apiVersion: v2
     appVersion: v1.10.0
-    created: "2022-09-05T18:59:55.025683401+01:00"
+    created: "2022-09-05T19:13:34.840967891+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -796,7 +796,7 @@ entries:
     version: 1.1.0
   - apiVersion: v2
     appVersion: v1.10.0
-    created: "2022-09-05T18:59:55.015507666+01:00"
+    created: "2022-09-05T19:13:34.829268097+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -857,7 +857,7 @@ entries:
     version: 1.0.1
   - apiVersion: v2
     appVersion: v1.10.0
-    created: "2022-09-05T18:59:55.004840608+01:00"
+    created: "2022-09-05T19:13:34.816923049+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -918,7 +918,7 @@ entries:
     version: 1.0.0
   - apiVersion: v2
     appVersion: v1.10.0
-    created: "2022-09-05T18:59:54.99843518+01:00"
+    created: "2022-09-05T19:13:34.80362235+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -979,7 +979,7 @@ entries:
     version: 0.7.0
   - apiVersion: v2
     appVersion: v1.9.0
-    created: "2022-09-05T18:59:54.989680243+01:00"
+    created: "2022-09-05T19:13:34.790811909+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -1036,7 +1036,7 @@ entries:
     version: 0.6.0
   - apiVersion: v2
     appVersion: v1.9.0
-    created: "2022-09-05T18:59:54.984165466+01:00"
+    created: "2022-09-05T19:13:34.785272085+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -1093,7 +1093,7 @@ entries:
     version: 0.5.0
   - apiVersion: v2
     appVersion: v1.7.0
-    created: "2022-09-05T18:59:54.979665284+01:00"
+    created: "2022-09-05T19:13:34.780726326+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -1149,7 +1149,7 @@ entries:
     version: 0.4.1
   - apiVersion: v2
     appVersion: v1.7.0
-    created: "2022-09-05T18:59:54.97390004+01:00"
+    created: "2022-09-05T19:13:34.776435079+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -1205,7 +1205,7 @@ entries:
     version: 0.4.0
   - apiVersion: v2
     appVersion: v1.6.0
-    created: "2022-09-05T18:59:54.967726773+01:00"
+    created: "2022-09-05T19:13:34.772548881+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -1261,7 +1261,7 @@ entries:
     version: 0.3.0
   - apiVersion: v2
     appVersion: v1.4.0
-    created: "2022-09-05T18:59:54.960812248+01:00"
+    created: "2022-09-05T19:13:34.76772271+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -1292,4 +1292,4 @@ entries:
     urls:
     - cortex-0.2.0.tgz
     version: 0.2.0
-generated: "2022-09-05T18:59:54.949118541+01:00"
+generated: "2022-09-05T19:13:34.754640835+01:00"
