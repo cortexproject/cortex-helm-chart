@@ -153,8 +153,8 @@ spec:
               mountPath: /etc/cortex
             - name: runtime-config
               mountPath: /etc/cortex-runtime-config
-            - name: storage
-              mountPath: /data/rules
+            - name: rules-storage
+              mountPath: /rulesData/rules
               {{- with .Values.ruler.persistentVolume.subPath }}
               subPath: {{ . }}
               {{- end }}
@@ -206,7 +206,7 @@ spec:
           configMap:
             name: {{ template "cortex.fullname" . }}-runtime-config
         {{- if not .Values.ingester.persistentVolume.enabled }}
-        - name: storage
+        - name: rules-storage
           emptyDir: {}
         {{- end }}
         - name: tmp
@@ -216,7 +216,7 @@ spec:
           configMap:
             name: {{ include "cortex.rulerFullname" $ }}-{{ include "cortex.rulerRulesDirName" $dir }}
         {{- end }}
-        - name: storage
+        - name: rules-storage
           emptyDir: {}
         {{- if .Values.ruler.sidecar.enabled }}
         - name: sc-rules-volume
