@@ -220,6 +220,8 @@ spec:
         {{- end }}
         - name: storage
           emptyDir: {}
+        - name: rules-storage
+          emptyDir: {}
         {{- if .Values.ruler.sidecar.enabled }}
         - name: sc-rules-volume
           emptyDir: {}
