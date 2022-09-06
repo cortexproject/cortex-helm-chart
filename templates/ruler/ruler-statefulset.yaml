@@ -207,7 +207,7 @@ spec:
         - name: runtime-config
           configMap:
             name: {{ template "cortex.fullname" . }}-runtime-config
-        {{- if not .Values.ingester.persistentVolume.enabled }}
+        {{- if not .Values.ruler.persistentVolume.enabled }}
         - name: storage
           emptyDir: {}
         {{- end }}
@@ -218,10 +218,10 @@ spec:
           configMap:
             name: {{ include "cortex.rulerFullname" $ }}-{{ include "cortex.rulerRulesDirName" $dir }}
         {{- end }}
-        - name: storage
-          emptyDir: {}
-        - name: rules-storage
-          emptyDir: {}
+        # - name: storage
+        #   emptyDir: {}
+        # - name: rules-storage
+        #   emptyDir: {}
         {{- if .Values.ruler.sidecar.enabled }}
         - name: sc-rules-volume
           emptyDir: {}
