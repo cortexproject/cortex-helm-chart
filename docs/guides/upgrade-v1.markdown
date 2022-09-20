@@ -62,8 +62,6 @@ config:
     lifecycler:
       ring:
         kvstore: *kvstore
-    ring:
-      kvstore: *kvstore
   store_gateway:
     sharding_ring:
       kvstore: *kvstore
@@ -109,8 +107,6 @@ config:
     lifecycler:
       ring:
         kvstore: *kvstore
-    ring:
-      kvstore: *kvstore
   store_gateway:
     sharding_ring:
       kvstore: *kvstore
