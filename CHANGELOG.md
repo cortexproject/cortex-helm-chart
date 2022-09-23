@@ -2,6 +2,8 @@
 
 ## master / unreleased
 
+# 1.7.0 / 2022-09-23
+
 * [BUGFIX] Fix nginx extraContainers to indent correctly #373
 * [DEPENDENCY] Update dependency nginx to v1.23 #375
 * [DEPENDENCY] Update dependency kiwigrid/k8s-sidecar to v1.19.2 #370
