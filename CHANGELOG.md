@@ -2,7 +2,7 @@
 
 ## master / unreleased
 
-# 1.7.0 / 2022-09-21
+# 1.7.0 / 2022-09-23
 
 * [BUGFIX] Fix nginx extraContainers to indent correctly #373
 * [DEPENDENCY] Update dependency nginx to v1.23 #375
