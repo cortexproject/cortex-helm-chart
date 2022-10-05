@@ -2,6 +2,8 @@
 
 ## master / unreleased
 
+* [DEPENDENCY] Update quay.io/cortexproject/cortex Docker tag to v1.13.1 #401
+
 # 1.7.0 / 2022-09-23
 
 * [BUGFIX] Fix nginx extraContainers to indent correctly #373
