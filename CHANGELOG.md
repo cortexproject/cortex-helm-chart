@@ -3,6 +3,7 @@
 ## master / unreleased
 
 * [DEPENDENCY] Update quay.io/cortexproject/cortex Docker tag to v1.13.1 #401
+* [ENHANCEMENT] Add pod topology spread constrant option to Ingester/Alertmanager statefulset
 
 # 1.7.0 / 2022-09-23
 
