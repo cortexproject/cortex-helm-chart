@@ -1252,9 +1252,9 @@ nginx:
     # -- arbitrary snippet to inject in the server { } section of the nginx config
     serverSnippet: ""
     setHeaders: {}
-    # -- (optional) List of [auth tenants](https://cortexmetrics.io/docs/guides/auth/) to set in the nginx config
+    # -- Optional list of [auth tenants](https://cortexmetrics.io/docs/guides/auth/) to set in the nginx config
     auth_orgs: []
-    # -- (optional) Name of basic auth secret.
+    # -- Optional name of basic auth secret.
     # In order to use this option, a secret with htpasswd formatted contents at
     # the key ".htpasswd" must exist. For example:
     #
@@ -1276,7 +1276,7 @@ nginx:
     #   setHeaders:
     #     X-Scope-OrgID: $remote_user
     basicAuthSecretName: ""
-    # -- (optional) Including the valid parameter to the `resolver` directive to re-resolve names every `dnsTTL` seconds/minutes
+    # -- Including the valid parameter to the `resolver` directive to re-resolve names every `dnsTTL` seconds/minutes
     dnsTTL: "15s"
   image:
     repository: nginx
