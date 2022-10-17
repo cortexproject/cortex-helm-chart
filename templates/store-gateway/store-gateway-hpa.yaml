@@ -1,0 +1,29 @@
+{{- if and .Values.store_gateway.enabled .Values.store_gateway.autoscaling.enabled -}}
+{{- with .Values.store_gateway.autoscaling -}}
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ include "cortex.storeGatewayFullname" $ }}
+  namespace: {{ $.Release.Namespace }}
+  labels:
+    {{- include "cortex.storeGatewayLabels" $ | nindent 4 }}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: StatefulSet
+    name: {{ include "cortex.storeGatewayFullname" $ }}
+  minReplicas: {{ .minReplicas }}
+  maxReplicas: {{ .maxReplicas }}
+  metrics:
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: {{ .targetMemoryUtilizationPercentage }}
+  {{- with .behavior }}
+  behavior:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+{{- end }}
+{{- end }}

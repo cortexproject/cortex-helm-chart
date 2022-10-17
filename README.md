@@ -791,6 +791,11 @@ Kubernetes: `^1.19.0-0`
 | store_gateway.&ZeroWidthSpace;affinity.&ZeroWidthSpace;podAntiAffinity.&ZeroWidthSpace;preferredDuringSchedulingIgnoredDuringExecution[0].&ZeroWidthSpace;podAffinityTerm.&ZeroWidthSpace;topologyKey | string | `"kubernetes.io/hostname"` |  |
 | store_gateway.&ZeroWidthSpace;affinity.&ZeroWidthSpace;podAntiAffinity.&ZeroWidthSpace;preferredDuringSchedulingIgnoredDuringExecution[0].&ZeroWidthSpace;weight | int | `100` |  |
 | store_gateway.&ZeroWidthSpace;annotations | object | `{}` |  |
+| store_gateway.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;behavior | object | `{}` | Ref: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#support-for-configurable-scaling-behavior |
+| store_gateway.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;enabled | bool | `false` |  |
+| store_gateway.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;maxReplicas | int | `30` |  |
+| store_gateway.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;minReplicas | int | `3` |  |
+| store_gateway.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;targetMemoryUtilizationPercentage | int | `80` |  |
 | store_gateway.&ZeroWidthSpace;containerSecurityContext.&ZeroWidthSpace;enabled | bool | `true` |  |
 | store_gateway.&ZeroWidthSpace;containerSecurityContext.&ZeroWidthSpace;readOnlyRootFilesystem | bool | `true` |  |
 | store_gateway.&ZeroWidthSpace;enabled | bool | `true` |  |
