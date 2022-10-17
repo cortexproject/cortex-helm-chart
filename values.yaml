@@ -1278,6 +1278,7 @@ nginx:
     basicAuthSecretName: ""
     # -- Including the valid parameter to the `resolver` directive to re-resolve names every `dnsTTL` seconds/minutes
     dnsTTL: "15s"
+    verboseLogging: true
   image:
     repository: nginx
     tag: 1.23
