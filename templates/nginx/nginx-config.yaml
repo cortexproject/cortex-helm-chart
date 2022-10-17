@@ -28,9 +28,17 @@ data:
       log_format   main '$remote_addr - $remote_user [$time_local]  $status '
         '"$request" $body_bytes_sent "$http_referer" '
         '"$http_user_agent" "$http_x_forwarded_for" $http_x_scope_orgid';
+
       {{- if .Values.nginx.config.verboseLogging }}
       access_log   /dev/stderr  main;
+      {{- else }}
+      map $status $loggable {
+        ~^[23]  0;
+        default 1;
+      }
+      access_log   /dev/stderr  main  if=$loggable;
       {{- end }}
+
       sendfile     on;
       tcp_nopush   on;
       resolver {{ default (printf "kube-dns.kube-system.svc.%s" .Values.clusterDomain ) .Values.nginx.config.dnsResolver }}{{- if .Values.nginx.config.dnsTTL }} valid={{ .Values.nginx.config.dnsTTL }}{{- end }};
