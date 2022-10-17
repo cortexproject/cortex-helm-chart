@@ -2,6 +2,7 @@
 
 ## master / unreleased
 
+* [ENHANCEMENT] Add verboseLogging option to nginx config #402
 * [DEPENDENCY] Update quay.io/cortexproject/cortex Docker tag to v1.13.1 #401
 * [ENHANCEMENT] Add pod topology spread constrant option to Ingester/Alertmanager statefulset #403
 
