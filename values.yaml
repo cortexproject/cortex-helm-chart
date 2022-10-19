@@ -1414,6 +1414,14 @@ store_gateway:
 
   annotations: {}
 
+  autoscaling:
+    enabled: false
+    minReplicas: 3
+    maxReplicas: 30
+    targetMemoryUtilizationPercentage: 80
+    # -- Ref: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#support-for-configurable-scaling-behavior
+    behavior: {}
+
   persistentVolume:
     # -- If true Store-gateway will create/use a Persistent Volume Claim
     # If false, use emptyDir
