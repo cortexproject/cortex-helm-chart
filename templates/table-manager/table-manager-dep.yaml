@@ -50,6 +50,9 @@ spec:
           args:
             - "-target=table-manager"
             - "-config.file=/etc/cortex/cortex.yaml"
+          {{- if .Values.purger.enabled }}
+            - "-purger.enable"
+          {{- end }}
           {{- range $key, $value := .Values.table_manager.extraArgs }}
             - "-{{ $key }}={{ $value }}"
           {{- end }}
