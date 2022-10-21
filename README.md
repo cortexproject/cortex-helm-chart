@@ -576,6 +576,48 @@ Kubernetes: `^1.19.0-0`
 | overrides_exporter.&ZeroWidthSpace;terminationGracePeriodSeconds | int | `180` |  |
 | overrides_exporter.&ZeroWidthSpace;tolerations | list | `[]` |  |
 | overrides_exporter.&ZeroWidthSpace;topologySpreadConstraints | list | `[]` |  |
+| purger.&ZeroWidthSpace;affinity | object | `{}` |  |
+| purger.&ZeroWidthSpace;annotations | object | `{}` |  |
+| purger.&ZeroWidthSpace;containerSecurityContext.&ZeroWidthSpace;enabled | bool | `true` |  |
+| purger.&ZeroWidthSpace;containerSecurityContext.&ZeroWidthSpace;readOnlyRootFilesystem | bool | `true` |  |
+| purger.&ZeroWidthSpace;enabled | bool | `false` |  |
+| purger.&ZeroWidthSpace;env | list | `[]` | Extra env variables to pass to the cortex container |
+| purger.&ZeroWidthSpace;extraArgs | object | `{}` | Additional Cortex container arguments, e.g. log.level (debug, info, warn, error) |
+| purger.&ZeroWidthSpace;extraContainers | list | `[]` | Additional containers to be added to the cortex pod. |
+| purger.&ZeroWidthSpace;extraPorts | list | `[]` | Additional ports to the cortex services. Useful to expose extra container ports. |
+| purger.&ZeroWidthSpace;extraVolumeMounts | list | `[]` | Extra volume mounts that will be added to the cortex container |
+| purger.&ZeroWidthSpace;extraVolumes | list | `[]` | Additional volumes to the cortex pod. |
+| purger.&ZeroWidthSpace;initContainers | list | `[]` | Init containers to be added to the cortex pod. |
+| purger.&ZeroWidthSpace;lifecycle | object | `{}` |  |
+| purger.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
+| purger.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
+| purger.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;scheme | string | `"HTTP"` |  |
+| purger.&ZeroWidthSpace;nodeSelector | object | `{}` |  |
+| purger.&ZeroWidthSpace;podAnnotations.&ZeroWidthSpace;"prometheus.&ZeroWidthSpace;io/port" | string | `"8080"` |  |
+| purger.&ZeroWidthSpace;podAnnotations.&ZeroWidthSpace;"prometheus.&ZeroWidthSpace;io/scrape" | string | `"true"` |  |
+| purger.&ZeroWidthSpace;podLabels | object | `{}` |  |
+| purger.&ZeroWidthSpace;readinessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
+| purger.&ZeroWidthSpace;readinessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
+| purger.&ZeroWidthSpace;replicas | int | `1` |  |
+| purger.&ZeroWidthSpace;resources | object | `{}` |  |
+| purger.&ZeroWidthSpace;securityContext | object | `{}` |  |
+| purger.&ZeroWidthSpace;service.&ZeroWidthSpace;annotations | object | `{}` |  |
+| purger.&ZeroWidthSpace;service.&ZeroWidthSpace;labels | object | `{}` |  |
+| purger.&ZeroWidthSpace;serviceAccount.&ZeroWidthSpace;name | string | `""` |  |
+| purger.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;additionalLabels | object | `{}` |  |
+| purger.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;enabled | bool | `false` |  |
+| purger.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;extraEndpointSpec | object | `{}` |  |
+| purger.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;metricRelabelings | list | `[]` |  |
+| purger.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;relabelings | list | `[]` |  |
+| purger.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;failureThreshold | int | `60` |  |
+| purger.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
+| purger.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
+| purger.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;scheme | string | `"HTTP"` |  |
+| purger.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;initialDelaySeconds | int | `120` |  |
+| purger.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;periodSeconds | int | `30` |  |
+| purger.&ZeroWidthSpace;strategy.&ZeroWidthSpace;type | string | `"RollingUpdate"` |  |
+| purger.&ZeroWidthSpace;terminationGracePeriodSeconds | int | `60` |  |
+| purger.&ZeroWidthSpace;topologySpreadConstraints | list | `[]` |  |
 | querier.&ZeroWidthSpace;affinity.&ZeroWidthSpace;podAntiAffinity.&ZeroWidthSpace;preferredDuringSchedulingIgnoredDuringExecution[0].&ZeroWidthSpace;podAffinityTerm.&ZeroWidthSpace;labelSelector.&ZeroWidthSpace;matchExpressions[0].&ZeroWidthSpace;key | string | `"app.kubernetes.io/component"` |  |
 | querier.&ZeroWidthSpace;affinity.&ZeroWidthSpace;podAntiAffinity.&ZeroWidthSpace;preferredDuringSchedulingIgnoredDuringExecution[0].&ZeroWidthSpace;podAffinityTerm.&ZeroWidthSpace;labelSelector.&ZeroWidthSpace;matchExpressions[0].&ZeroWidthSpace;operator | string | `"In"` |  |
 | querier.&ZeroWidthSpace;affinity.&ZeroWidthSpace;podAntiAffinity.&ZeroWidthSpace;preferredDuringSchedulingIgnoredDuringExecution[0].&ZeroWidthSpace;podAffinityTerm.&ZeroWidthSpace;labelSelector.&ZeroWidthSpace;matchExpressions[0].&ZeroWidthSpace;values[0] | string | `"querier"` |  |
