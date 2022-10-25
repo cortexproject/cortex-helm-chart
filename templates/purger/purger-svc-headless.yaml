@@ -1,0 +1,25 @@
+{{- if .Values.purger.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "cortex.purgerFullname" . }}-headless
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "cortex.purgerLabels" . | nindent 4 }}
+    {{- with .Values.purger.service.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  annotations:
+    {{- toYaml .Values.purger.service.annotations | nindent 4 }}
+spec:
+  type: ClusterIP
+  clusterIP: None
+  publishNotReadyAddresses: true
+  ports:
+    - port: {{ .Values.config.server.grpc_listen_port }}
+      protocol: TCP
+      name: grpc
+      targetPort: grpc
+  selector:
+    {{- include "cortex.purgerSelectorLabels" . | nindent 4 }}
+{{- end }}

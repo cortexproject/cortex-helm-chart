@@ -112,6 +112,9 @@ spec:
             - "-ruler.alertmanager-url=http://{{ template "cortex.alertmanagerFullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.config.server.http_listen_port }}/api/prom/alertmanager/"
               {{- end }}
             {{- end }}
+          {{- if .Values.purger.enabled }}
+            - "-purger.enable"
+          {{- end }}
             {{- include "cortex.memcached" . | nindent 12}}
           {{- range $key, $value := .Values.ruler.extraArgs }}
             - "-{{ $key }}={{ $value }}"
