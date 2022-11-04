@@ -38,7 +38,7 @@ jobs:
           git diff --exit-code -- README.md
 
       - name: Create kind cluster
-        uses: helm/kind-action@v1.3.0
+        uses: helm/kind-action@v1.4.0
 
       - name: Run chart-testing (install)
         run: |
