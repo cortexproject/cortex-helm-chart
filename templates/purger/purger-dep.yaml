@@ -1,0 +1,109 @@
+{{- if .Values.purger.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "cortex.purgerFullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "cortex.purgerLabels" . | nindent 4 }}
+  annotations:
+    {{- toYaml .Values.purger.annotations | nindent 4 }}
+spec:
+  replicas: {{ .Values.purger.replicas }}
+  selector:
+    matchLabels:
+      {{- include "cortex.purgerSelectorLabels" . | nindent 6 }}
+  strategy:
+    {{- toYaml .Values.purger.strategy | nindent 4 }}
+  template:
+    metadata:
+      labels:
+        {{- include "cortex.purgerLabels" . | nindent 8 }}
+        {{- with .Values.purger.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      annotations:
+        checksum/config: {{ include "cortex.configChecksum" . }}
+      {{- with .Values.query_frontend.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    spec:
+      serviceAccountName: {{ .Values.purger.serviceAccount.name | default (include "cortex.serviceAccountName" . ) }}
+      {{- if .Values.purger.securityContext.enabled }}
+      securityContext: {{- omit .Values.purger.securityContext "enabled" | toYaml | nindent 8 }}
+      {{- end }}
+      initContainers:
+        {{- toYaml .Values.purger.initContainers | nindent 8 }}
+      {{- if .Values.image.pullSecrets }}
+      imagePullSecrets:
+      {{- range .Values.image.pullSecrets }}
+        - name: {{ . }}
+      {{- end }}
+      {{- end }}
+      containers:
+        - name: purger
+          image: "{{ .Values.image.repository }}:{{ default .Chart.AppVersion .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args:
+            - "-target=purger"
+            - "-config.file=/etc/cortex/cortex.yaml"
+          {{- range $key, $value := .Values.purger.extraArgs }}
+            - "-{{ $key }}={{ $value }}"
+          {{- end }}
+          volumeMounts:
+            {{- if .Values.purger.extraVolumeMounts }}
+            {{- toYaml .Values.purger.extraVolumeMounts | nindent 12}}
+            {{- end }}
+            - name: config
+              mountPath: /etc/cortex
+            - name: runtime-config
+              mountPath: /etc/cortex-runtime-config
+          ports:
+            - name: http-metrics
+              containerPort: {{ .Values.config.server.http_listen_port }}
+              protocol: TCP
+            - name: grpc
+              containerPort: {{ .Values.config.server.grpc_listen_port }}
+              protocol: TCP
+          startupProbe:
+            {{- toYaml .Values.purger.startupProbe | nindent 12 }}
+          livenessProbe:
+            {{- toYaml .Values.purger.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.purger.readinessProbe | nindent 12 }}
+          resources:
+            {{- toYaml .Values.purger.resources | nindent 12 }}
+          {{- if .Values.purger.containerSecurityContext.enabled }}
+          securityContext: {{- omit .Values.purger.containerSecurityContext "enabled" | toYaml | nindent 12 }}
+          {{- end }}
+          {{- if .Values.purger.env }}
+          env:
+            {{- toYaml .Values.purger.env | nindent 12 }}
+          {{- end }}
+          {{- with .Values.purger.lifecycle }}
+          lifecycle:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+        {{- if .Values.purger.extraContainers }}
+        {{- toYaml .Values.purger.extraContainers | nindent 8}}
+        {{- end }}
+      nodeSelector:
+        {{- toYaml .Values.purger.nodeSelector | nindent 8 }}
+      {{- if .Values.purger.topologySpreadConstraints }}
+      topologySpreadConstraints:
+      {{- toYaml .Values.purger.topologySpreadConstraints | nindent 8}}
+      {{- end }}
+      affinity:
+        {{- toYaml .Values.purger.affinity | nindent 8 }}
+      tolerations:
+        {{- toYaml .Values.purger.tolerations | nindent 8 }}
+      terminationGracePeriodSeconds: {{ .Values.purger.terminationGracePeriodSeconds }}
+      volumes:
+        {{- include "cortex.configVolume" . | nindent 8 }}
+        - name: runtime-config
+          configMap:
+            name: {{ template "cortex.fullname" . }}-runtime-config
+        {{- if .Values.purger.extraVolumes }}
+        {{- toYaml .Values.purger.extraVolumes | nindent 8}}
+        {{- end }}
+{{- end -}}

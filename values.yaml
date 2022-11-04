@@ -1078,6 +1078,89 @@ overrides_exporter:
   env: []
   lifecycle: {}
 
+purger:
+  enabled: false
+  replicas: 1
+
+  service:
+    annotations: {}
+    labels: {}
+
+  serviceAccount:
+    name: ""
+
+  serviceMonitor:
+    enabled: false
+    additionalLabels: {}
+    relabelings: []
+    metricRelabelings: []
+    extraEndpointSpec: {}
+
+  resources: {}
+
+  strategy:
+    type: RollingUpdate
+
+  podLabels: {}
+
+  podAnnotations:
+    prometheus.io/scrape: 'true'
+    prometheus.io/port: '8080'
+
+  nodeSelector: {}
+  topologySpreadConstraints: []
+  affinity: {}
+  annotations: {}
+  terminationGracePeriodSeconds: 60
+
+  lifecycle: {}
+
+  securityContext: {}
+
+  containerSecurityContext:
+    enabled: true
+    readOnlyRootFilesystem: true
+
+  # -- Additional Cortex container arguments, e.g. log.level (debug, info, warn, error)
+  extraArgs: {}
+
+  # -- Init containers to be added to the cortex pod.
+  initContainers: []
+
+  # -- Additional containers to be added to the cortex pod.
+  extraContainers: []
+
+  # -- Additional volumes to the cortex pod.
+  extraVolumes: []
+
+  # -- Extra volume mounts that will be added to the cortex container
+  extraVolumeMounts: []
+
+  # -- Additional ports to the cortex services. Useful to expose extra container ports.
+  extraPorts: []
+
+  # -- Extra env variables to pass to the cortex container
+  env: []
+
+  startupProbe:
+    failureThreshold: 60
+    initialDelaySeconds: 120
+    periodSeconds: 30
+    httpGet:
+      path: /ready
+      port: http-metrics
+      scheme: HTTP
+  livenessProbe:
+    httpGet:
+      path: /ready
+      port: http-metrics
+      scheme: HTTP
+  readinessProbe:
+    httpGet:
+      path: /ready
+      port: http-metrics
+
+
 table_manager:
   replicas: 1
 
