@@ -153,3 +153,14 @@ Get volume of config secret of configMap
     secretName: {{ template "cortex.fullname" . }}
   {{- end }}
 {{- end -}}
+
+{{/*
+Get cortex hpa version by k8s version
+*/}}
+{{- define "cortex.hpaVersion" -}}
+{{- if or (.Capabilities.APIVersions.Has "autoscaling/v2/HorizontalPodAutoscaler") (semverCompare ">=1.23" .Capabilities.KubeVersion.Version) -}}
+autoscaling/v2
+{{- else -}}
+autoscaling/v2beta2
+{{- end -}}
+{{- end -}}

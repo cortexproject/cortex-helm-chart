@@ -1,6 +1,6 @@
 {{- if and .Values.distributor.enabled .Values.distributor.autoscaling.enabled }}
 {{- with .Values.distributor.autoscaling -}}
-apiVersion: autoscaling/v2beta2
+apiVersion: {{ include "cortex.hpaVersion" $ }}
 kind: HorizontalPodAutoscaler
 metadata:
   name: {{ include "cortex.distributorFullname" $ }}

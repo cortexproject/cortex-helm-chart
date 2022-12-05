@@ -1,6 +1,6 @@
 {{- if and .Values.store_gateway.enabled .Values.store_gateway.autoscaling.enabled -}}
 {{- with .Values.store_gateway.autoscaling -}}
-apiVersion: autoscaling/v2beta2
+apiVersion: {{ include "cortex.hpaVersion" $ }}
 kind: HorizontalPodAutoscaler
 metadata:
   name: {{ include "cortex.storeGatewayFullname" $ }}
