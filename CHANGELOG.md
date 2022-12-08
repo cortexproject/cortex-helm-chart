@@ -2,12 +2,13 @@
 
 ## master / unreleased
 
-* [ENHANCEMENT] Start using autoscaling/v2 for HorizontalPodAutoscaler in v1.23+ #414
 * [FEATURE] add purger components to cortex #407
 * [ENHANCEMENT] Add verboseLogging option to nginx config #402
-* [DEPENDENCY] Update quay.io/cortexproject/cortex Docker tag to v1.13.1 #401
+* [ENHANCEMENT] Start using autoscaling/v2 for HorizontalPodAutoscaler in v1.23+ #414
 * [ENHANCEMENT] Add pod topology spread constrant option to Ingester/Alertmanager statefulset #403
 * [ENHANCEMENT] Add HPA to store gateways #406
+* [DEPENDENCY] Update quay.io/cortexproject/cortex Docker tag to v1.13.1 #401
+* [DEPENDENCY] Update Helm release memcached to v6 #303
 
 # 1.7.0 / 2022-09-23
 
