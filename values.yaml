@@ -1698,7 +1698,7 @@ memcached:
   architecture: "high-availability"
   replicaCount: 2
   resources: {}
-  extraEnv:
+  extraEnvVars:
     # -- MEMCACHED_CACHE_SIZE is the amount of memory allocated to memcached for object storage
     - name: MEMCACHED_CACHE_SIZE
       value: "1024"
@@ -1721,7 +1721,7 @@ memcached-index-read:
   architecture: "high-availability"
   replicaCount: 2
   resources: {}
-  extraEnv:
+  extraEnvVars:
     # -- MEMCACHED_CACHE_SIZE is the amount of memory allocated to memcached for object storage
     - name: MEMCACHED_CACHE_SIZE
       value: "1024"
@@ -1744,7 +1744,7 @@ memcached-index-write:
   architecture: "high-availability"
   replicaCount: 2
   resources: {}
-  extraEnv:
+  extraEnvVars:
     # -- MEMCACHED_CACHE_SIZE is the amount of memory allocated to memcached for object storage
     - name: MEMCACHED_CACHE_SIZE
       value: "1024"
@@ -1766,7 +1766,7 @@ memcached-frontend:
   architecture: "high-availability"
   replicaCount: 2
   resources: {}
-  extraEnv:
+  extraEnvVars:
     # -- MEMCACHED_CACHE_SIZE is the amount of memory allocated to memcached for object storage
     - name: MEMCACHED_CACHE_SIZE
       value: "1024"
@@ -1787,7 +1787,7 @@ memcached-blocks-index:
   architecture: "high-availability"
   replicaCount: 2
   resources: {}
-  extraEnv:
+  extraEnvVars:
     # -- MEMCACHED_CACHE_SIZE is the amount of memory allocated to memcached for object storage
     - name: MEMCACHED_CACHE_SIZE
       value: "1024"
@@ -1808,7 +1808,7 @@ memcached-blocks:
   architecture: "high-availability"
   replicaCount: 2
   resources: {}
-  extraEnv:
+  extraEnvVars:
     # -- MEMCACHED_CACHE_SIZE is the amount of memory allocated to memcached for object storage
     - name: MEMCACHED_CACHE_SIZE
       value: "1024"
@@ -1830,7 +1830,7 @@ memcached-blocks-metadata:
   architecture: "high-availability"
   replicaCount: 2
   resources: {}
-  extraEnv:
+  extraEnvVars:
     # -- MEMCACHED_CACHE_SIZE is the amount of memory allocated to memcached for object storage
     - name: MEMCACHED_CACHE_SIZE
       value: "1024"
