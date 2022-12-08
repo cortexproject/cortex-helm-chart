@@ -1,6 +1,6 @@
 {{- if and .Values.ingester.enabled .Values.ingester.autoscaling.enabled -}}
 {{- with .Values.ingester.autoscaling -}}
-apiVersion: autoscaling/v2beta2
+apiVersion: {{ include "cortex.hpaVersion" $ }}
 kind: HorizontalPodAutoscaler
 metadata:
   name: {{ include "cortex.ingesterFullname" $ }}

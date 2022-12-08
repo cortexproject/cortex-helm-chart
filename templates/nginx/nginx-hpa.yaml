@@ -1,6 +1,6 @@
 {{- if and .Values.nginx.enabled .Values.nginx.autoscaling.enabled }}
 {{- with .Values.nginx.autoscaling -}}
-apiVersion: autoscaling/v2beta2
+apiVersion: {{ include "cortex.hpaVersion" $ }}
 kind: HorizontalPodAutoscaler
 metadata:
   name: {{ include "cortex.nginxFullname" $ }}
