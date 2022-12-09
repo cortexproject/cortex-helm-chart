@@ -12,10 +12,6 @@ image:
 # -- Kubernetes cluster DNS domain
 clusterDomain: cluster.local
 
-tags:
-  # -- Set to true to enable block storage memcached caching
-  blocks-storage-memcached: false
-
 ingress:
   enabled: false
   ingressClass:
@@ -512,8 +508,7 @@ ingester:
   lifecycle:
     # -- The /shutdown preStop hook is recommended as part of the ingester
     # scaledown process, but can be removed to optimize rolling restarts in
-    # instances that will never be scaled down or when using chunks storage
-    # with WAL disabled.
+    # instances that will never be scaled down.
     # https://cortexmetrics.io/docs/guides/ingesters-scaling-up-and-down/#scaling-down
     preStop:
       httpGet:
@@ -1160,166 +1155,6 @@ purger:
       path: /ready
       port: http-metrics
 
-
-table_manager:
-  replicas: 1
-
-  service:
-    annotations: {}
-    labels: {}
-
-  serviceAccount:
-    # -- "" disables the individual serviceAccount and uses the global serviceAccount for that component
-    name: ""
-
-  serviceMonitor:
-    enabled: false
-    additionalLabels: {}
-    relabelings: []
-    metricRelabelings: []
-    # -- Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint
-    extraEndpointSpec: {}
-
-  resources: {}
-
-  # -- Additional Cortex container arguments, e.g. log.level (debug, info, warn, error)
-  extraArgs: {}
-
-  # -- Pod Labels
-  podLabels: {}
-
-  # -- Pod Annotations
-  podAnnotations:
-    prometheus.io/scrape: 'true'
-    prometheus.io/port: '8080'
-
-  nodeSelector: {}
-  topologySpreadConstraints: []
-  affinity: {}
-  annotations: {}
-  persistentVolume:
-    subPath:
-
-  startupProbe:
-    httpGet:
-      path: /ready
-      port: http-metrics
-    failureThreshold: 10
-  livenessProbe:
-    httpGet:
-      path: /ready
-      port: http-metrics
-  readinessProbe:
-    httpGet:
-      path: /ready
-      port: http-metrics
-
-  securityContext: {}
-
-  containerSecurityContext:
-    enabled: true
-    readOnlyRootFilesystem: true
-
-  strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxSurge: 0
-      maxUnavailable: 1
-
-  terminationGracePeriodSeconds: 180
-
-  tolerations: []
-
-  podDisruptionBudget:
-    maxUnavailable: 1
-
-  initContainers: []
-  extraContainers: []
-  extraVolumes: []
-  extraVolumeMounts: []
-  extraPorts: []
-  env: []
-
-configs:
-  enabled: false
-  replicas: 1
-
-  service:
-    annotations: {}
-    labels: {}
-
-  serviceAccount:
-    # -- "" disables the individual serviceAccount and uses the global serviceAccount for that component
-    name: ""
-
-  serviceMonitor:
-    enabled: false
-    additionalLabels: {}
-    relabelings: []
-    metricRelabelings: []
-    # -- Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint
-    extraEndpointSpec: {}
-
-  resources: {}
-
-  # -- Additional Cortex container arguments, e.g. log.level (debug, info, warn, error)
-  extraArgs: {}
-
-  # -- Pod Labels
-  podLabels: {}
-
-  # -- Pod Annotations
-  podAnnotations:
-    prometheus.io/scrape: 'true'
-    prometheus.io/port: '8080'
-
-  nodeSelector: {}
-  topologySpreadConstraints: []
-  affinity: {}
-  annotations: {}
-  persistentVolume:
-    subPath:
-
-  startupProbe:
-    httpGet:
-      path: /ready
-      port: http-metrics
-    failureThreshold: 10
-  livenessProbe:
-    httpGet:
-      path: /ready
-      port: http-metrics
-  readinessProbe:
-    httpGet:
-      path: /ready
-      port: http-metrics
-
-  securityContext: {}
-
-  containerSecurityContext:
-    enabled: true
-    readOnlyRootFilesystem: true
-
-  strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxSurge: 0
-      maxUnavailable: 1
-
-  terminationGracePeriodSeconds: 180
-
-  tolerations: []
-
-  podDisruptionBudget:
-    maxUnavailable: 1
-
-  initContainers: []
-  extraContainers: []
-  extraVolumes: []
-  extraVolumeMounts: []
-  extraPorts: []
-  env: []
-
 nginx:
   enabled: true
   replicas: 2
@@ -1846,12 +1681,3 @@ memcached-blocks-metadata:
     enabled: true
     serviceMonitor:
       enabled: false
-
-configsdb_postgresql:
-  enabled: false
-  uri:
-  auth:
-    password:
-    existing_secret:
-      name:
-      key:

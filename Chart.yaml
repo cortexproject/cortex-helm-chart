@@ -40,17 +40,11 @@ dependencies:
     alias: memcached-blocks-index
     version: 6.3.1
     repository: https://charts.bitnami.com/bitnami
-    tags:
-      - blocks-storage-memcached
   - name: memcached
     alias: memcached-blocks
     version: 6.3.1
     repository: https://charts.bitnami.com/bitnami
-    tags:
-      - blocks-storage-memcached
   - name: memcached
     alias: memcached-blocks-metadata
     version: 6.3.1
     repository: https://charts.bitnami.com/bitnami
-    tags:
-      - blocks-storage-memcached

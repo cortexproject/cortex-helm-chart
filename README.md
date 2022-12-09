@@ -263,52 +263,6 @@ Kubernetes: `^1.19.0-0`
 | config.&ZeroWidthSpace;storage.&ZeroWidthSpace;index_queries_cache_config.&ZeroWidthSpace;memcached.&ZeroWidthSpace;expiration | string | `"1h"` | How long keys stay in the memcache |
 | config.&ZeroWidthSpace;storage.&ZeroWidthSpace;index_queries_cache_config.&ZeroWidthSpace;memcached_client.&ZeroWidthSpace;timeout | string | `"1s"` | Maximum time to wait before giving up on memcached requests. |
 | config.&ZeroWidthSpace;store_gateway | object | `{"sharding_enabled":false}` | https://cortexmetrics.io/docs/configuration/configuration-file/#store_gateway_config |
-| configs.&ZeroWidthSpace;affinity | object | `{}` |  |
-| configs.&ZeroWidthSpace;annotations | object | `{}` |  |
-| configs.&ZeroWidthSpace;containerSecurityContext.&ZeroWidthSpace;enabled | bool | `true` |  |
-| configs.&ZeroWidthSpace;containerSecurityContext.&ZeroWidthSpace;readOnlyRootFilesystem | bool | `true` |  |
-| configs.&ZeroWidthSpace;enabled | bool | `false` |  |
-| configs.&ZeroWidthSpace;env | list | `[]` |  |
-| configs.&ZeroWidthSpace;extraArgs | object | `{}` | Additional Cortex container arguments, e.g. log.level (debug, info, warn, error) |
-| configs.&ZeroWidthSpace;extraContainers | list | `[]` |  |
-| configs.&ZeroWidthSpace;extraPorts | list | `[]` |  |
-| configs.&ZeroWidthSpace;extraVolumeMounts | list | `[]` |  |
-| configs.&ZeroWidthSpace;extraVolumes | list | `[]` |  |
-| configs.&ZeroWidthSpace;initContainers | list | `[]` |  |
-| configs.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
-| configs.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
-| configs.&ZeroWidthSpace;nodeSelector | object | `{}` |  |
-| configs.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;subPath | string | `nil` |  |
-| configs.&ZeroWidthSpace;podAnnotations | object | `{"prometheus.io/port":"8080","prometheus.io/scrape":"true"}` | Pod Annotations |
-| configs.&ZeroWidthSpace;podDisruptionBudget.&ZeroWidthSpace;maxUnavailable | int | `1` |  |
-| configs.&ZeroWidthSpace;podLabels | object | `{}` | Pod Labels |
-| configs.&ZeroWidthSpace;readinessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
-| configs.&ZeroWidthSpace;readinessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
-| configs.&ZeroWidthSpace;replicas | int | `1` |  |
-| configs.&ZeroWidthSpace;resources | object | `{}` |  |
-| configs.&ZeroWidthSpace;securityContext | object | `{}` |  |
-| configs.&ZeroWidthSpace;service.&ZeroWidthSpace;annotations | object | `{}` |  |
-| configs.&ZeroWidthSpace;service.&ZeroWidthSpace;labels | object | `{}` |  |
-| configs.&ZeroWidthSpace;serviceAccount.&ZeroWidthSpace;name | string | `""` | "" disables the individual serviceAccount and uses the global serviceAccount for that component |
-| configs.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;additionalLabels | object | `{}` |  |
-| configs.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;enabled | bool | `false` |  |
-| configs.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;extraEndpointSpec | object | `{}` | Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint |
-| configs.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;metricRelabelings | list | `[]` |  |
-| configs.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;relabelings | list | `[]` |  |
-| configs.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;failureThreshold | int | `10` |  |
-| configs.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
-| configs.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
-| configs.&ZeroWidthSpace;strategy.&ZeroWidthSpace;rollingUpdate.&ZeroWidthSpace;maxSurge | int | `0` |  |
-| configs.&ZeroWidthSpace;strategy.&ZeroWidthSpace;rollingUpdate.&ZeroWidthSpace;maxUnavailable | int | `1` |  |
-| configs.&ZeroWidthSpace;strategy.&ZeroWidthSpace;type | string | `"RollingUpdate"` |  |
-| configs.&ZeroWidthSpace;terminationGracePeriodSeconds | int | `180` |  |
-| configs.&ZeroWidthSpace;tolerations | list | `[]` |  |
-| configs.&ZeroWidthSpace;topologySpreadConstraints | list | `[]` |  |
-| configsdb_postgresql.&ZeroWidthSpace;auth.&ZeroWidthSpace;existing_secret.&ZeroWidthSpace;key | string | `nil` |  |
-| configsdb_postgresql.&ZeroWidthSpace;auth.&ZeroWidthSpace;existing_secret.&ZeroWidthSpace;name | string | `nil` |  |
-| configsdb_postgresql.&ZeroWidthSpace;auth.&ZeroWidthSpace;password | string | `nil` |  |
-| configsdb_postgresql.&ZeroWidthSpace;enabled | bool | `false` |  |
-| configsdb_postgresql.&ZeroWidthSpace;uri | string | `nil` |  |
 | distributor.&ZeroWidthSpace;affinity.&ZeroWidthSpace;podAntiAffinity.&ZeroWidthSpace;preferredDuringSchedulingIgnoredDuringExecution[0].&ZeroWidthSpace;podAffinityTerm.&ZeroWidthSpace;labelSelector.&ZeroWidthSpace;matchExpressions[0].&ZeroWidthSpace;key | string | `"app.kubernetes.io/component"` |  |
 | distributor.&ZeroWidthSpace;affinity.&ZeroWidthSpace;podAntiAffinity.&ZeroWidthSpace;preferredDuringSchedulingIgnoredDuringExecution[0].&ZeroWidthSpace;podAffinityTerm.&ZeroWidthSpace;labelSelector.&ZeroWidthSpace;matchExpressions[0].&ZeroWidthSpace;operator | string | `"In"` |  |
 | distributor.&ZeroWidthSpace;affinity.&ZeroWidthSpace;podAntiAffinity.&ZeroWidthSpace;preferredDuringSchedulingIgnoredDuringExecution[0].&ZeroWidthSpace;podAffinityTerm.&ZeroWidthSpace;labelSelector.&ZeroWidthSpace;matchExpressions[0].&ZeroWidthSpace;values[0] | string | `"distributor"` |  |
@@ -390,7 +344,7 @@ Kubernetes: `^1.19.0-0`
 | ingester.&ZeroWidthSpace;extraVolumeMounts | list | `[]` |  |
 | ingester.&ZeroWidthSpace;extraVolumes | list | `[]` |  |
 | ingester.&ZeroWidthSpace;initContainers | list | `[]` |  |
-| ingester.&ZeroWidthSpace;lifecycle.&ZeroWidthSpace;preStop | object | `{"httpGet":{"path":"/ingester/shutdown","port":"http-metrics"}}` | The /shutdown preStop hook is recommended as part of the ingester scaledown process, but can be removed to optimize rolling restarts in instances that will never be scaled down or when using chunks storage with WAL disabled. https://cortexmetrics.io/docs/guides/ingesters-scaling-up-and-down/#scaling-down |
+| ingester.&ZeroWidthSpace;lifecycle.&ZeroWidthSpace;preStop | object | `{"httpGet":{"path":"/ingester/shutdown","port":"http-metrics"}}` | The /shutdown preStop hook is recommended as part of the ingester scaledown process, but can be removed to optimize rolling restarts in instances that will never be scaled down. https://cortexmetrics.io/docs/guides/ingesters-scaling-up-and-down/#scaling-down |
 | ingester.&ZeroWidthSpace;livenessProbe | object | `{}` | Startup/liveness probes for ingesters are not recommended.  Ref: https://cortexmetrics.io/docs/guides/running-cortex-on-kubernetes/#take-extra-care-with-ingesters |
 | ingester.&ZeroWidthSpace;nodeSelector | object | `{}` |  |
 | ingester.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;accessModes | list | `["ReadWriteOnce"]` | Ingester data Persistent Volume access modes Must match those of existing PV or dynamic provisioner Ref: http://kubernetes.io/docs/user-guide/persistent-volumes/ |
@@ -885,47 +839,6 @@ Kubernetes: `^1.19.0-0`
 | store_gateway.&ZeroWidthSpace;terminationGracePeriodSeconds | int | `240` |  |
 | store_gateway.&ZeroWidthSpace;tolerations | list | `[]` |  |
 | store_gateway.&ZeroWidthSpace;topologySpreadConstraints | list | `[]` |  |
-| table_manager.&ZeroWidthSpace;affinity | object | `{}` |  |
-| table_manager.&ZeroWidthSpace;annotations | object | `{}` |  |
-| table_manager.&ZeroWidthSpace;containerSecurityContext.&ZeroWidthSpace;enabled | bool | `true` |  |
-| table_manager.&ZeroWidthSpace;containerSecurityContext.&ZeroWidthSpace;readOnlyRootFilesystem | bool | `true` |  |
-| table_manager.&ZeroWidthSpace;env | list | `[]` |  |
-| table_manager.&ZeroWidthSpace;extraArgs | object | `{}` | Additional Cortex container arguments, e.g. log.level (debug, info, warn, error) |
-| table_manager.&ZeroWidthSpace;extraContainers | list | `[]` |  |
-| table_manager.&ZeroWidthSpace;extraPorts | list | `[]` |  |
-| table_manager.&ZeroWidthSpace;extraVolumeMounts | list | `[]` |  |
-| table_manager.&ZeroWidthSpace;extraVolumes | list | `[]` |  |
-| table_manager.&ZeroWidthSpace;initContainers | list | `[]` |  |
-| table_manager.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
-| table_manager.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
-| table_manager.&ZeroWidthSpace;nodeSelector | object | `{}` |  |
-| table_manager.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;subPath | string | `nil` |  |
-| table_manager.&ZeroWidthSpace;podAnnotations | object | `{"prometheus.io/port":"8080","prometheus.io/scrape":"true"}` | Pod Annotations |
-| table_manager.&ZeroWidthSpace;podDisruptionBudget.&ZeroWidthSpace;maxUnavailable | int | `1` |  |
-| table_manager.&ZeroWidthSpace;podLabels | object | `{}` | Pod Labels |
-| table_manager.&ZeroWidthSpace;readinessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
-| table_manager.&ZeroWidthSpace;readinessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
-| table_manager.&ZeroWidthSpace;replicas | int | `1` |  |
-| table_manager.&ZeroWidthSpace;resources | object | `{}` |  |
-| table_manager.&ZeroWidthSpace;securityContext | object | `{}` |  |
-| table_manager.&ZeroWidthSpace;service.&ZeroWidthSpace;annotations | object | `{}` |  |
-| table_manager.&ZeroWidthSpace;service.&ZeroWidthSpace;labels | object | `{}` |  |
-| table_manager.&ZeroWidthSpace;serviceAccount.&ZeroWidthSpace;name | string | `""` | "" disables the individual serviceAccount and uses the global serviceAccount for that component |
-| table_manager.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;additionalLabels | object | `{}` |  |
-| table_manager.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;enabled | bool | `false` |  |
-| table_manager.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;extraEndpointSpec | object | `{}` | Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint |
-| table_manager.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;metricRelabelings | list | `[]` |  |
-| table_manager.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;relabelings | list | `[]` |  |
-| table_manager.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;failureThreshold | int | `10` |  |
-| table_manager.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
-| table_manager.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
-| table_manager.&ZeroWidthSpace;strategy.&ZeroWidthSpace;rollingUpdate.&ZeroWidthSpace;maxSurge | int | `0` |  |
-| table_manager.&ZeroWidthSpace;strategy.&ZeroWidthSpace;rollingUpdate.&ZeroWidthSpace;maxUnavailable | int | `1` |  |
-| table_manager.&ZeroWidthSpace;strategy.&ZeroWidthSpace;type | string | `"RollingUpdate"` |  |
-| table_manager.&ZeroWidthSpace;terminationGracePeriodSeconds | int | `180` |  |
-| table_manager.&ZeroWidthSpace;tolerations | list | `[]` |  |
-| table_manager.&ZeroWidthSpace;topologySpreadConstraints | list | `[]` |  |
-| tags.&ZeroWidthSpace;blocks-storage-memcached | bool | `false` | Set to true to enable block storage memcached caching |
 | useConfigMap | bool | `false` |  |
 | useExternalConfig | bool | `false` |  |
 

@@ -137,15 +137,6 @@ data:
 
         {{- end }}
 
-        {{- if .Values.configs.enabled }}
-
-        # Config Config
-        location ~ /api/prom/configs/.* {
-          proxy_pass      http://{{ template "cortex.fullname" . }}-configs.{{ $rootDomain }}$request_uri;
-        }
-
-        {{- end }}
-
         {{- if .Values.query_frontend.enabled }}
 
         # Query Config

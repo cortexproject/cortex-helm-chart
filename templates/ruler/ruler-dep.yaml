@@ -102,9 +102,6 @@ spec:
           args:
             - "-target=ruler"
             - "-config.file=/etc/cortex/cortex.yaml"
-            {{- if .Values.configs.enabled }}
-            - "-ruler.configs.url=http://{{ template "cortex.configsFullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.config.server.http_listen_port }}"
-            {{- end }}
             {{- if not .Values.config.ruler.alertmanager_url }}
               {{- if .Values.config.ruler.enable_alertmanager_discovery }}
             - "-ruler.alertmanager-url=http://_http-metrics._tcp.{{ template "cortex.name" . }}-alertmanager-headless.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}/api/prom/alertmanager/"

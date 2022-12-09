@@ -103,9 +103,6 @@ spec:
           args:
             - "-target=alertmanager"
             - "-config.file=/etc/cortex/cortex.yaml"
-          {{- if .Values.configs.enabled }}
-            - "-alertmanager.configs.url=http://{{ template "cortex.configsFullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.config.server.http_listen_port }}"
-          {{- end }}
           {{- range $key, $value := .Values.alertmanager.extraArgs }}
             - "-{{ $key }}={{ $value }}"
           {{- end }}
