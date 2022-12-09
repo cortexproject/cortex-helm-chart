@@ -79,13 +79,6 @@ config:
   # -- See https://github.com/cortexproject/cortex/blob/master/docs/configuration/config-file-reference.md#storage_config
   storage:
     engine: blocks
-    index_queries_cache_config:
-      memcached:
-        # -- How long keys stay in the memcache
-        expiration: 1h
-      memcached_client:
-        # -- Maximum time to wait before giving up on memcached requests.
-        timeout: 1s
   blocks_storage:
     tsdb:
       dir: /data/tsdb
@@ -133,16 +126,12 @@ config:
     enable_alertmanager_discovery: false
     # -- Enable the experimental ruler config api.
     enable_api: true
-    # -- Method to use for backend rule storage (configdb, azure, gcs, s3, swift, local) refer to https://cortexmetrics.io/docs/configuration/configuration-file/#ruler_config
-    storage: {}
   runtime_config:
     file: /etc/cortex-runtime-config/runtime_config.yaml
   alertmanager:
     # -- Enable the experimental alertmanager config api.
     enable_api: false
     external_url: '/api/prom/alertmanager'
-    # -- Type of backend to use to store alertmanager configs. Supported values are: "configdb", "gcs", "s3", "local". refer to: https://cortexmetrics.io/docs/configuration/configuration-file/#alertmanager_config
-    storage: {}
   frontend:
     log_queries_longer_than: 10s
 
