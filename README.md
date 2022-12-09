@@ -219,7 +219,6 @@ Kubernetes: `^1.19.0-0`
 | compactor.&ZeroWidthSpace;topologySpreadConstraints | list | `[]` |  |
 | config.&ZeroWidthSpace;alertmanager.&ZeroWidthSpace;enable_api | bool | `false` | Enable the experimental alertmanager config api. |
 | config.&ZeroWidthSpace;alertmanager.&ZeroWidthSpace;external_url | string | `"/api/prom/alertmanager"` |  |
-| config.&ZeroWidthSpace;alertmanager.&ZeroWidthSpace;storage | object | `{}` | Type of backend to use to store alertmanager configs. Supported values are: "configdb", "gcs", "s3", "local". refer to: https://cortexmetrics.io/docs/configuration/configuration-file/#alertmanager_config |
 | config.&ZeroWidthSpace;api.&ZeroWidthSpace;prometheus_http_prefix | string | `"/prometheus"` |  |
 | config.&ZeroWidthSpace;api.&ZeroWidthSpace;response_compression_enabled | bool | `true` | Use GZIP compression for API responses. Some endpoints serve large YAML or JSON blobs which can benefit from compression. |
 | config.&ZeroWidthSpace;auth_enabled | bool | `false` |  |
@@ -252,16 +251,13 @@ Kubernetes: `^1.19.0-0`
 | config.&ZeroWidthSpace;query_range.&ZeroWidthSpace;split_queries_by_interval | string | `"24h"` |  |
 | config.&ZeroWidthSpace;ruler.&ZeroWidthSpace;enable_alertmanager_discovery | bool | `false` |  |
 | config.&ZeroWidthSpace;ruler.&ZeroWidthSpace;enable_api | bool | `true` | Enable the experimental ruler config api. |
-| config.&ZeroWidthSpace;ruler.&ZeroWidthSpace;storage | object | `{}` | Method to use for backend rule storage (configdb, azure, gcs, s3, swift, local) refer to https://cortexmetrics.io/docs/configuration/configuration-file/#ruler_config |
 | config.&ZeroWidthSpace;runtime_config.&ZeroWidthSpace;file | string | `"/etc/cortex-runtime-config/runtime_config.yaml"` |  |
 | config.&ZeroWidthSpace;server.&ZeroWidthSpace;grpc_listen_port | int | `9095` |  |
 | config.&ZeroWidthSpace;server.&ZeroWidthSpace;grpc_server_max_concurrent_streams | int | `10000` |  |
 | config.&ZeroWidthSpace;server.&ZeroWidthSpace;grpc_server_max_recv_msg_size | int | `10485760` |  |
 | config.&ZeroWidthSpace;server.&ZeroWidthSpace;grpc_server_max_send_msg_size | int | `10485760` |  |
 | config.&ZeroWidthSpace;server.&ZeroWidthSpace;http_listen_port | int | `8080` |  |
-| config.&ZeroWidthSpace;storage | object | `{"engine":"blocks","index_queries_cache_config":{"memcached":{"expiration":"1h"},"memcached_client":{"timeout":"1s"}}}` | See https://github.com/cortexproject/cortex/blob/master/docs/configuration/config-file-reference.md#storage_config |
-| config.&ZeroWidthSpace;storage.&ZeroWidthSpace;index_queries_cache_config.&ZeroWidthSpace;memcached.&ZeroWidthSpace;expiration | string | `"1h"` | How long keys stay in the memcache |
-| config.&ZeroWidthSpace;storage.&ZeroWidthSpace;index_queries_cache_config.&ZeroWidthSpace;memcached_client.&ZeroWidthSpace;timeout | string | `"1s"` | Maximum time to wait before giving up on memcached requests. |
+| config.&ZeroWidthSpace;storage | object | `{"engine":"blocks"}` | See https://github.com/cortexproject/cortex/blob/master/docs/configuration/config-file-reference.md#storage_config |
 | config.&ZeroWidthSpace;store_gateway | object | `{"sharding_enabled":false}` | https://cortexmetrics.io/docs/configuration/configuration-file/#store_gateway_config |
 | distributor.&ZeroWidthSpace;affinity.&ZeroWidthSpace;podAntiAffinity.&ZeroWidthSpace;preferredDuringSchedulingIgnoredDuringExecution[0].&ZeroWidthSpace;podAffinityTerm.&ZeroWidthSpace;labelSelector.&ZeroWidthSpace;matchExpressions[0].&ZeroWidthSpace;key | string | `"app.kubernetes.io/component"` |  |
 | distributor.&ZeroWidthSpace;affinity.&ZeroWidthSpace;podAntiAffinity.&ZeroWidthSpace;preferredDuringSchedulingIgnoredDuringExecution[0].&ZeroWidthSpace;podAffinityTerm.&ZeroWidthSpace;labelSelector.&ZeroWidthSpace;matchExpressions[0].&ZeroWidthSpace;operator | string | `"In"` |  |
@@ -386,7 +382,6 @@ Kubernetes: `^1.19.0-0`
 | ingress.&ZeroWidthSpace;ingressClass.&ZeroWidthSpace;enabled | bool | `false` |  |
 | ingress.&ZeroWidthSpace;ingressClass.&ZeroWidthSpace;name | string | `"nginx"` |  |
 | ingress.&ZeroWidthSpace;tls | list | `[]` |  |
-| memcached | object | `{"architecture":"high-availability","enabled":false,"extraEnvVars":[{"name":"MEMCACHED_CACHE_SIZE","value":"1024"},{"name":"MEMCACHED_MAX_CONNECTIONS","value":"1024"},{"name":"MEMCACHED_THREADS","value":"4"}],"metrics":{"enabled":true,"serviceMonitor":{"enabled":false}},"replicaCount":2,"resources":{}}` | chunk caching for legacy chunk storage engine |
 | memcached-blocks-index.&ZeroWidthSpace;architecture | string | `"high-availability"` |  |
 | memcached-blocks-index.&ZeroWidthSpace;extraEnvVars[0] | object | `{"name":"MEMCACHED_CACHE_SIZE","value":"1024"}` | MEMCACHED_CACHE_SIZE is the amount of memory allocated to memcached for object storage |
 | memcached-blocks-index.&ZeroWidthSpace;extraEnvVars[1] | object | `{"name":"MEMCACHED_MAX_CONNECTIONS","value":"1024"}` | MEMCACHED_MAX_CONNECTIONS is the maximum number of simultaneous connections to the memcached service |
@@ -420,17 +415,6 @@ Kubernetes: `^1.19.0-0`
 | memcached-frontend.&ZeroWidthSpace;metrics.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;enabled | bool | `false` |  |
 | memcached-frontend.&ZeroWidthSpace;replicaCount | int | `2` |  |
 | memcached-frontend.&ZeroWidthSpace;resources | object | `{}` |  |
-| memcached-index-read | object | `{"architecture":"high-availability","enabled":false,"extraEnvVars":[{"name":"MEMCACHED_CACHE_SIZE","value":"1024"},{"name":"MEMCACHED_MAX_CONNECTIONS","value":"1024"},{"name":"MEMCACHED_THREADS","value":"4"}],"metrics":{"enabled":true,"serviceMonitor":{"enabled":false}},"replicaCount":2,"resources":{}}` | index read caching for legacy chunk storage engine |
-| memcached-index-read.&ZeroWidthSpace;extraEnvVars[0] | object | `{"name":"MEMCACHED_CACHE_SIZE","value":"1024"}` | MEMCACHED_CACHE_SIZE is the amount of memory allocated to memcached for object storage |
-| memcached-index-read.&ZeroWidthSpace;extraEnvVars[1] | object | `{"name":"MEMCACHED_MAX_CONNECTIONS","value":"1024"}` | MEMCACHED_MAX_CONNECTIONS is the maximum number of simultaneous connections to the memcached service |
-| memcached-index-read.&ZeroWidthSpace;extraEnvVars[2] | object | `{"name":"MEMCACHED_THREADS","value":"4"}` | MEMCACHED_THREADS is the number of threads to use when processing incoming requests. By default, memcached is configured to use 4 concurrent threads. The threading improves the performance of storing and retrieving data in the cache, using a locking system to prevent different threads overwriting or updating the same values. |
-| memcached-index-write | object | `{"architecture":"high-availability","enabled":false,"extraEnvVars":[{"name":"MEMCACHED_CACHE_SIZE","value":"1024"},{"name":"MEMCACHED_MAX_CONNECTIONS","value":"1024"},{"name":"MEMCACHED_THREADS","value":"4"}],"metrics":{"enabled":true,"serviceMonitor":{"enabled":false}},"replicaCount":2,"resources":{}}` | index write caching for legacy chunk storage engine |
-| memcached-index-write.&ZeroWidthSpace;extraEnvVars[0] | object | `{"name":"MEMCACHED_CACHE_SIZE","value":"1024"}` | MEMCACHED_CACHE_SIZE is the amount of memory allocated to memcached for object storage |
-| memcached-index-write.&ZeroWidthSpace;extraEnvVars[1] | object | `{"name":"MEMCACHED_MAX_CONNECTIONS","value":"1024"}` | MEMCACHED_MAX_CONNECTIONS is the maximum number of simultaneous connections to the memcached service |
-| memcached-index-write.&ZeroWidthSpace;extraEnvVars[2] | object | `{"name":"MEMCACHED_THREADS","value":"4"}` | MEMCACHED_THREADS is the number of threads to use when processing incoming requests. By default, memcached is configured to use 4 concurrent threads. The threading improves the performance of storing and retrieving data in the cache, using a locking system to prevent different threads overwriting or updating the same values. |
-| memcached.&ZeroWidthSpace;extraEnvVars[0] | object | `{"name":"MEMCACHED_CACHE_SIZE","value":"1024"}` | MEMCACHED_CACHE_SIZE is the amount of memory allocated to memcached for object storage |
-| memcached.&ZeroWidthSpace;extraEnvVars[1] | object | `{"name":"MEMCACHED_MAX_CONNECTIONS","value":"1024"}` | MEMCACHED_MAX_CONNECTIONS is the maximum number of simultaneous connections to the memcached service |
-| memcached.&ZeroWidthSpace;extraEnvVars[2] | object | `{"name":"MEMCACHED_THREADS","value":"4"}` | MEMCACHED_THREADS is the number of threads to use when processing incoming requests. By default, memcached is configured to use 4 concurrent threads. The threading improves the performance of storing and retrieving data in the cache, using a locking system to prevent different threads overwriting or updating the same values. |
 | nginx.&ZeroWidthSpace;affinity | object | `{}` |  |
 | nginx.&ZeroWidthSpace;annotations | object | `{}` |  |
 | nginx.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;behavior | object | `{}` | Ref: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#support-for-configurable-scaling-behavior |
