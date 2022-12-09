@@ -3,12 +3,19 @@
 ## master / unreleased
 
 * [FEATURE] add purger components to cortex #407
+* [CHANGE] With the release of memcached v6 bitnami renamed `extraEnv` to  `extraEnvVars`. Use `extraEnvVars` if you want to alter MEMCACHED_CACHE_SIZE, MEMCACHED_MAX_CONNECTIONS, etc... #303
+* [CHANGE] Caching for block storage can now be individually enabled. For example use `memcached-blocks.enabled` to enable caching for blocks. #417
+* [CHANGE] Drop cortex chunk support. #417
+* [CHANGE] Drop cortex configdb support. #417
+* [CHANGE] Removed legacy ruler and alertmanager storage configuration. Please use `ruler_storage` and `alertmanager_storage`. #417
+* [CHANGE] Dropped `storage.index_queries_cache_config`. #417
 * [ENHANCEMENT] Add verboseLogging option to nginx config #402
 * [ENHANCEMENT] Start using autoscaling/v2 for HorizontalPodAutoscaler in v1.23+ #414
 * [ENHANCEMENT] Add pod topology spread constrant option to Ingester/Alertmanager statefulset #403
 * [ENHANCEMENT] Add HPA to store gateways #406
 * [DEPENDENCY] Update quay.io/cortexproject/cortex Docker tag to v1.13.1 #401
 * [DEPENDENCY] Update Helm release memcached to v6 #303
+* [DEPENDENCY] Update Cortex to v1.14 #417
 
 # 1.7.0 / 2022-09-23
 
