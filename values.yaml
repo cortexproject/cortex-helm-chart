@@ -1517,6 +1517,7 @@ compactor:
   env: []
 
 memcached-frontend:
+  # -- Enables support for caching queries in the frontend
   enabled: false
   architecture: "high-availability"
   replicaCount: 2
@@ -1539,6 +1540,8 @@ memcached-frontend:
       enabled: false
 
 memcached-blocks-index:
+  # -- Enables support for block index caching
+  enabled: false
   architecture: "high-availability"
   replicaCount: 2
   resources: {}
@@ -1560,6 +1563,8 @@ memcached-blocks-index:
       enabled: false
 
 memcached-blocks:
+  # -- Enables support for block caching
+  enabled: false
   architecture: "high-availability"
   replicaCount: 2
   resources: {}
@@ -1581,7 +1586,8 @@ memcached-blocks:
       enabled: false
 
 memcached-blocks-metadata:
-  # enabled/disabled via the tags.blocks-storage-memcached boolean
+  # -- Enables support for block metadata caching
+  enabled: false
   architecture: "high-availability"
   replicaCount: 2
   resources: {}

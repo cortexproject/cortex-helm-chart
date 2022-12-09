@@ -85,11 +85,15 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 Create configuration parameters for memcached configuration
 */}}
 {{- define "cortex.memcached" -}}
-{{- if eq .Values.config.storage.engine "blocks" }}
+{{- if index .Values "memcached-blocks-index" "enabled" }}
 - "-blocks-storage.bucket-store.index-cache.backend=memcached"
 - "-blocks-storage.bucket-store.index-cache.memcached.addresses=dns+{{ .Release.Name }}-memcached-blocks-index.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:11211"
+{{- end -}}
+{{- if index .Values "memcached-blocks" "enabled" }}
 - "-blocks-storage.bucket-store.chunks-cache.backend=memcached"
 - "-blocks-storage.bucket-store.chunks-cache.memcached.addresses=dns+{{ .Release.Name }}-memcached-blocks.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:11211"
+{{- end -}}
+{{- if index .Values "memcached-blocks-metadata" "enabled" }}
 - "-blocks-storage.bucket-store.metadata-cache.backend=memcached"
 - "-blocks-storage.bucket-store.metadata-cache.memcached.addresses=dns+{{ .Release.Name }}-memcached-blocks-metadata.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:11211"
 {{- end -}}
