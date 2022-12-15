@@ -15,6 +15,7 @@
 * [ENHANCEMENT] Add HPA to store gateways #406
 * [DEPENDENCY] Update quay.io/cortexproject/cortex Docker tag to v1.13.1 #401
 * [DEPENDENCY] Update Helm release memcached to v6 #303
+* [DEPENDENCY] Update Helm release memcached to v6.3.2 #418
 * [DEPENDENCY] Update Cortex to v1.14 #417
 
 # 1.7.0 / 2022-09-23
