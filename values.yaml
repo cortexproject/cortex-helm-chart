@@ -12,10 +12,6 @@ image:
 # -- Kubernetes cluster DNS domain
 clusterDomain: cluster.local
 
-tags:
-  # -- Set to true to enable block storage memcached caching
-  blocks-storage-memcached: false
-
 ingress:
   enabled: false
   ingressClass:
@@ -83,13 +79,6 @@ config:
   # -- See https://github.com/cortexproject/cortex/blob/master/docs/configuration/config-file-reference.md#storage_config
   storage:
     engine: blocks
-    index_queries_cache_config:
-      memcached:
-        # -- How long keys stay in the memcache
-        expiration: 1h
-      memcached_client:
-        # -- Maximum time to wait before giving up on memcached requests.
-        timeout: 1s
   blocks_storage:
     tsdb:
       dir: /data/tsdb
@@ -137,16 +126,12 @@ config:
     enable_alertmanager_discovery: false
     # -- Enable the experimental ruler config api.
     enable_api: true
-    # -- Method to use for backend rule storage (configdb, azure, gcs, s3, swift, local) refer to https://cortexmetrics.io/docs/configuration/configuration-file/#ruler_config
-    storage: {}
   runtime_config:
     file: /etc/cortex-runtime-config/runtime_config.yaml
   alertmanager:
     # -- Enable the experimental alertmanager config api.
     enable_api: false
     external_url: '/api/prom/alertmanager'
-    # -- Type of backend to use to store alertmanager configs. Supported values are: "configdb", "gcs", "s3", "local". refer to: https://cortexmetrics.io/docs/configuration/configuration-file/#alertmanager_config
-    storage: {}
   frontend:
     log_queries_longer_than: 10s
 
@@ -512,8 +497,7 @@ ingester:
   lifecycle:
     # -- The /shutdown preStop hook is recommended as part of the ingester
     # scaledown process, but can be removed to optimize rolling restarts in
-    # instances that will never be scaled down or when using chunks storage
-    # with WAL disabled.
+    # instances that will never be scaled down.
     # https://cortexmetrics.io/docs/guides/ingesters-scaling-up-and-down/#scaling-down
     preStop:
       httpGet:
@@ -1160,166 +1144,6 @@ purger:
       path: /ready
       port: http-metrics
 
-
-table_manager:
-  replicas: 1
-
-  service:
-    annotations: {}
-    labels: {}
-
-  serviceAccount:
-    # -- "" disables the individual serviceAccount and uses the global serviceAccount for that component
-    name: ""
-
-  serviceMonitor:
-    enabled: false
-    additionalLabels: {}
-    relabelings: []
-    metricRelabelings: []
-    # -- Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint
-    extraEndpointSpec: {}
-
-  resources: {}
-
-  # -- Additional Cortex container arguments, e.g. log.level (debug, info, warn, error)
-  extraArgs: {}
-
-  # -- Pod Labels
-  podLabels: {}
-
-  # -- Pod Annotations
-  podAnnotations:
-    prometheus.io/scrape: 'true'
-    prometheus.io/port: '8080'
-
-  nodeSelector: {}
-  topologySpreadConstraints: []
-  affinity: {}
-  annotations: {}
-  persistentVolume:
-    subPath:
-
-  startupProbe:
-    httpGet:
-      path: /ready
-      port: http-metrics
-    failureThreshold: 10
-  livenessProbe:
-    httpGet:
-      path: /ready
-      port: http-metrics
-  readinessProbe:
-    httpGet:
-      path: /ready
-      port: http-metrics
-
-  securityContext: {}
-
-  containerSecurityContext:
-    enabled: true
-    readOnlyRootFilesystem: true
-
-  strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxSurge: 0
-      maxUnavailable: 1
-
-  terminationGracePeriodSeconds: 180
-
-  tolerations: []
-
-  podDisruptionBudget:
-    maxUnavailable: 1
-
-  initContainers: []
-  extraContainers: []
-  extraVolumes: []
-  extraVolumeMounts: []
-  extraPorts: []
-  env: []
-
-configs:
-  enabled: false
-  replicas: 1
-
-  service:
-    annotations: {}
-    labels: {}
-
-  serviceAccount:
-    # -- "" disables the individual serviceAccount and uses the global serviceAccount for that component
-    name: ""
-
-  serviceMonitor:
-    enabled: false
-    additionalLabels: {}
-    relabelings: []
-    metricRelabelings: []
-    # -- Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint
-    extraEndpointSpec: {}
-
-  resources: {}
-
-  # -- Additional Cortex container arguments, e.g. log.level (debug, info, warn, error)
-  extraArgs: {}
-
-  # -- Pod Labels
-  podLabels: {}
-
-  # -- Pod Annotations
-  podAnnotations:
-    prometheus.io/scrape: 'true'
-    prometheus.io/port: '8080'
-
-  nodeSelector: {}
-  topologySpreadConstraints: []
-  affinity: {}
-  annotations: {}
-  persistentVolume:
-    subPath:
-
-  startupProbe:
-    httpGet:
-      path: /ready
-      port: http-metrics
-    failureThreshold: 10
-  livenessProbe:
-    httpGet:
-      path: /ready
-      port: http-metrics
-  readinessProbe:
-    httpGet:
-      path: /ready
-      port: http-metrics
-
-  securityContext: {}
-
-  containerSecurityContext:
-    enabled: true
-    readOnlyRootFilesystem: true
-
-  strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxSurge: 0
-      maxUnavailable: 1
-
-  terminationGracePeriodSeconds: 180
-
-  tolerations: []
-
-  podDisruptionBudget:
-    maxUnavailable: 1
-
-  initContainers: []
-  extraContainers: []
-  extraVolumes: []
-  extraVolumeMounts: []
-  extraPorts: []
-  env: []
-
 nginx:
   enabled: true
   replicas: 2
@@ -1692,76 +1516,8 @@ compactor:
   extraPorts: []
   env: []
 
-# -- chunk caching for legacy chunk storage engine
-memcached:
-  enabled: false
-  architecture: "high-availability"
-  replicaCount: 2
-  resources: {}
-  extraEnvVars:
-    # -- MEMCACHED_CACHE_SIZE is the amount of memory allocated to memcached for object storage
-    - name: MEMCACHED_CACHE_SIZE
-      value: "1024"
-    # -- MEMCACHED_MAX_CONNECTIONS is the maximum number of simultaneous connections to the memcached service
-    - name: MEMCACHED_MAX_CONNECTIONS
-      value: "1024"
-    # -- MEMCACHED_THREADS is the number of threads to use when processing incoming requests.
-    # By default, memcached is configured to use 4 concurrent threads. The threading improves the performance of
-    # storing and retrieving data in the cache, using a locking system to prevent different threads overwriting or updating the same values.
-    - name: MEMCACHED_THREADS
-      value: "4"
-  metrics:
-    enabled: true
-    serviceMonitor:
-      enabled: false
-
-# -- index read caching for legacy chunk storage engine
-memcached-index-read:
-  enabled: false
-  architecture: "high-availability"
-  replicaCount: 2
-  resources: {}
-  extraEnvVars:
-    # -- MEMCACHED_CACHE_SIZE is the amount of memory allocated to memcached for object storage
-    - name: MEMCACHED_CACHE_SIZE
-      value: "1024"
-    # -- MEMCACHED_MAX_CONNECTIONS is the maximum number of simultaneous connections to the memcached service
-    - name: MEMCACHED_MAX_CONNECTIONS
-      value: "1024"
-    # -- MEMCACHED_THREADS is the number of threads to use when processing incoming requests.
-    # By default, memcached is configured to use 4 concurrent threads. The threading improves the performance of
-    # storing and retrieving data in the cache, using a locking system to prevent different threads overwriting or updating the same values.
-    - name: MEMCACHED_THREADS
-      value: "4"
-  metrics:
-    enabled: true
-    serviceMonitor:
-      enabled: false
-
-# -- index write caching for legacy chunk storage engine
-memcached-index-write:
-  enabled: false
-  architecture: "high-availability"
-  replicaCount: 2
-  resources: {}
-  extraEnvVars:
-    # -- MEMCACHED_CACHE_SIZE is the amount of memory allocated to memcached for object storage
-    - name: MEMCACHED_CACHE_SIZE
-      value: "1024"
-    # -- MEMCACHED_MAX_CONNECTIONS is the maximum number of simultaneous connections to the memcached service
-    - name: MEMCACHED_MAX_CONNECTIONS
-      value: "1024"
-    # -- MEMCACHED_THREADS is the number of threads to use when processing incoming requests.
-    # By default, memcached is configured to use 4 concurrent threads. The threading improves the performance of
-    # storing and retrieving data in the cache, using a locking system to prevent different threads overwriting or updating the same values.
-    - name: MEMCACHED_THREADS
-      value: "4"
-  metrics:
-    enabled: true
-    serviceMonitor:
-      enabled: false
-
 memcached-frontend:
+  # -- Enables support for caching queries in the frontend
   enabled: false
   architecture: "high-availability"
   replicaCount: 2
@@ -1784,6 +1540,8 @@ memcached-frontend:
       enabled: false
 
 memcached-blocks-index:
+  # -- Enables support for block index caching
+  enabled: false
   architecture: "high-availability"
   replicaCount: 2
   resources: {}
@@ -1805,6 +1563,8 @@ memcached-blocks-index:
       enabled: false
 
 memcached-blocks:
+  # -- Enables support for block caching
+  enabled: false
   architecture: "high-availability"
   replicaCount: 2
   resources: {}
@@ -1826,7 +1586,8 @@ memcached-blocks:
       enabled: false
 
 memcached-blocks-metadata:
-  # enabled/disabled via the tags.blocks-storage-memcached boolean
+  # -- Enables support for block metadata caching
+  enabled: false
   architecture: "high-availability"
   replicaCount: 2
   resources: {}
@@ -1846,12 +1607,3 @@ memcached-blocks-metadata:
     enabled: true
     serviceMonitor:
       enabled: false
-
-configsdb_postgresql:
-  enabled: false
-  uri:
-  auth:
-    password:
-    existing_secret:
-      name:
-      key:

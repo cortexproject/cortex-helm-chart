@@ -146,33 +146,6 @@ store_gateway:
     - name: tmp-test
       mountPath: /tmp-test
 
-tags:
-  blocks-storage-memcached: true
-memcached:
-  enabled: true
-  architecture: standalone
-  replicaCount: 1
-  resources:
-    # https://github.com/helm/helm/issues/9136
-    requests:
-      cpu: 0
-      memory: 0
-memcached-index-read:
-  enabled: true
-  architecture: standalone
-  replicaCount: 1
-  resources:
-    requests:
-      cpu: 0
-      memory: 0
-memcached-index-write:
-  enabled: true
-  architecture: standalone
-  replicaCount: 1
-  resources:
-    requests:
-      cpu: 0
-      memory: 0
 memcached-frontend:
   enabled: true
   architecture: standalone
@@ -182,6 +155,7 @@ memcached-frontend:
       cpu: 0
       memory: 0
 memcached-blocks:
+  enabled: true
   architecture: standalone
   replicaCount: 1
   resources:
@@ -189,6 +163,7 @@ memcached-blocks:
       cpu: 0
       memory: 0
 memcached-blocks-index:
+  enabled: true
   architecture: standalone
   replicaCount: 1
   resources:
@@ -196,6 +171,7 @@ memcached-blocks-index:
       cpu: 0
       memory: 0
 memcached-blocks-metadata:
+  enabled: true
   architecture: standalone
   replicaCount: 1
   resources:
