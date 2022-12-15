@@ -2,8 +2,48 @@ apiVersion: v1
 entries:
   cortex:
   - apiVersion: v2
+    appVersion: v1.14.0
+    created: "2022-12-15T23:25:57.687161006+01:00"
+    dependencies:
+    - alias: memcached-frontend
+      condition: memcached-frontend.enabled
+      name: memcached
+      repository: https://charts.bitnami.com/bitnami
+      version: 6.3.2
+    - alias: memcached-blocks-index
+      name: memcached
+      repository: https://charts.bitnami.com/bitnami
+      version: 6.3.2
+    - alias: memcached-blocks
+      name: memcached
+      repository: https://charts.bitnami.com/bitnami
+      version: 6.3.2
+    - alias: memcached-blocks-metadata
+      name: memcached
+      repository: https://charts.bitnami.com/bitnami
+      version: 6.3.2
+    description: Horizontally scalable, highly available, multi-tenant, long term
+      Prometheus.
+    digest: f2d054751936c8d2d32948cbc6ac462334bc8a8ca08ebc1c14a668745b07aaad
+    home: https://cortexmetrics.io/
+    icon: https://avatars2.githubusercontent.com/u/43045022?s=200&v=4
+    kubeVersion: ^1.19.0-0
+    maintainers:
+    - email: thayward@infoblox.com
+      name: Tom Hayward
+      url: https://github.com/kd7lxl
+    - email: Niclas.Schad@mail.schwarz
+      name: Niclas Schad
+      url: https://github.com/nschad
+    name: cortex
+    sources:
+    - https://github.com/cortexproject/cortex-helm-chart
+    urls:
+    - https://cortexproject.github.io/cortex-helm-chart/cortex-2.0.0.tgz
+    version: 2.0.0
+  - apiVersion: v2
     appVersion: v1.13.0
-    created: "2022-09-21T09:01:02.785161751+02:00"
+    created: "2022-12-15T23:25:57.678227723+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -64,7 +104,7 @@ entries:
     version: 1.7.0
   - apiVersion: v2
     appVersion: v1.11.1
-    created: "2022-09-21T09:01:02.777942579+02:00"
+    created: "2022-12-15T23:25:57.671337277+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -125,7 +165,7 @@ entries:
     version: 1.6.0
   - apiVersion: v2
     appVersion: v1.11.1
-    created: "2022-09-21T09:01:02.771165224+02:00"
+    created: "2022-12-15T23:25:57.664356241+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -186,7 +226,7 @@ entries:
     version: 1.5.1
   - apiVersion: v2
     appVersion: v1.11.1
-    created: "2022-09-21T09:01:02.764866495+02:00"
+    created: "2022-12-15T23:25:57.65680097+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -247,7 +287,7 @@ entries:
     version: 1.5.0
   - apiVersion: v2
     appVersion: v1.11.1
-    created: "2022-09-21T09:01:02.757882762+02:00"
+    created: "2022-12-15T23:25:57.649534926+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -308,7 +348,7 @@ entries:
     version: 1.4.0
   - apiVersion: v2
     appVersion: v1.11.0
-    created: "2022-09-21T09:01:02.752005221+02:00"
+    created: "2022-12-15T23:25:57.642974938+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -369,7 +409,7 @@ entries:
     version: 1.3.0
   - apiVersion: v2
     appVersion: v1.11.0
-    created: "2022-09-21T09:01:02.745314206+02:00"
+    created: "2022-12-15T23:25:57.638536146+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -430,7 +470,7 @@ entries:
     version: 1.2.0
   - apiVersion: v2
     appVersion: v1.10.0
-    created: "2022-09-21T09:01:02.73865976+02:00"
+    created: "2022-12-15T23:25:57.632011198+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -491,7 +531,7 @@ entries:
     version: 1.1.0
   - apiVersion: v2
     appVersion: v1.10.0
-    created: "2022-09-21T09:01:02.732349901+02:00"
+    created: "2022-12-15T23:25:57.625162322+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -552,7 +592,7 @@ entries:
     version: 1.0.1
   - apiVersion: v2
     appVersion: v1.10.0
-    created: "2022-09-21T09:01:02.727244516+02:00"
+    created: "2022-12-15T23:25:57.618812972+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -613,7 +653,7 @@ entries:
     version: 1.0.0
   - apiVersion: v2
     appVersion: v1.10.0
-    created: "2022-09-21T09:01:02.722544817+02:00"
+    created: "2022-12-15T23:25:57.612431773+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -674,7 +714,7 @@ entries:
     version: 0.7.0
   - apiVersion: v2
     appVersion: v1.9.0
-    created: "2022-09-21T09:01:02.716374167+02:00"
+    created: "2022-12-15T23:25:57.606958337+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -731,7 +771,7 @@ entries:
     version: 0.6.0
   - apiVersion: v2
     appVersion: v1.9.0
-    created: "2022-09-21T09:01:02.712089987+02:00"
+    created: "2022-12-15T23:25:57.602823744+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -788,7 +828,7 @@ entries:
     version: 0.5.0
   - apiVersion: v2
     appVersion: v1.7.0
-    created: "2022-09-21T09:01:02.708961807+02:00"
+    created: "2022-12-15T23:25:57.599769003+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -844,7 +884,7 @@ entries:
     version: 0.4.1
   - apiVersion: v2
     appVersion: v1.7.0
-    created: "2022-09-21T09:01:02.705794098+02:00"
+    created: "2022-12-15T23:25:57.596864591+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -900,7 +940,7 @@ entries:
     version: 0.4.0
   - apiVersion: v2
     appVersion: v1.6.0
-    created: "2022-09-21T09:01:02.701619895+02:00"
+    created: "2022-12-15T23:25:57.594423077+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -956,7 +996,7 @@ entries:
     version: 0.3.0
   - apiVersion: v2
     appVersion: v1.4.0
-    created: "2022-09-21T09:01:02.697694692+02:00"
+    created: "2022-12-15T23:25:57.590340804+01:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -987,4 +1027,4 @@ entries:
     urls:
     - https://cortexproject.github.io/cortex-helm-chart/cortex-0.2.0.tgz
     version: 0.2.0
-generated: "2022-09-21T09:01:02.686569085+02:00"
+generated: "2022-12-15T23:25:57.580304687+01:00"
