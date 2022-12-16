@@ -2,6 +2,8 @@
 
 ## master / unreleased
 
+# 2.0.0 / 2022-12-15
+
 * [FEATURE] add purger components to cortex #407
 * [CHANGE] With the release of memcached v6 bitnami renamed `extraEnv` to  `extraEnvVars`. Use `extraEnvVars` if you want to alter MEMCACHED_CACHE_SIZE, MEMCACHED_MAX_CONNECTIONS, etc... #303
 * [CHANGE] Caching for block storage can now be individually enabled. For example use `memcached-blocks.enabled` to enable caching for blocks. #417
