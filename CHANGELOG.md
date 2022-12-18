@@ -2,6 +2,8 @@
 
 ## master / unreleased
 
+* [DEPENDENCY] Update quay.io/cortexproject/cortex Docker tag to v1.14.1 #422
+
 # 2.0.0 / 2022-12-15
 
 * [FEATURE] add purger components to cortex #407
