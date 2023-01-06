@@ -3,6 +3,7 @@
 ## master / unreleased
 
 * [DEPENDENCY] Update quay.io/cortexproject/cortex Docker tag to v1.14.1 #422
+* [DEPENDENCY] Update Helm release memcached to v6.3.3 #424
 * [BUGFIX] Fix memcache dependency condition #425
 
 # 2.0.0 / 2022-12-15
