@@ -25,11 +25,14 @@ dependencies:
     alias: memcached-blocks-index
     version: 6.3.2
     repository: https://charts.bitnami.com/bitnami
+    condition: memcached-blocks-index.enabled
   - name: memcached
     alias: memcached-blocks
     version: 6.3.2
     repository: https://charts.bitnami.com/bitnami
+    condition: memcached-blocks.enabled
   - name: memcached
     alias: memcached-blocks-metadata
     version: 6.3.2
     repository: https://charts.bitnami.com/bitnami
+    condition: memcached-blocks-metadata.enabled
