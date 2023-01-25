@@ -1,4 +1,5 @@
 {{- if .Values.ruler.enabled -}}
+{{- include "cortex.rulerValidation" $ -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -10,7 +11,9 @@ metadata:
   annotations:
     {{- toYaml .Values.ruler.annotations | nindent 4 }}
 spec:
+  {{- if not .Values.ruler.autoscaling.enabled }}
   replicas: {{ .Values.ruler.replicas }}
+  {{- end }}
   selector:
     matchLabels:
       {{- include "cortex.rulerSelectorLabels" . | nindent 6 }}

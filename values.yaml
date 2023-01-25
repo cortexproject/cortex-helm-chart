@@ -621,6 +621,12 @@ ruler:
     # -- Ref: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#support-for-configurable-scaling-behavior
     behavior: {}
 
+  validation:
+    # -- Checks that the ruler is compatible with horizontal scaling,
+    # as documented in https://cortexmetrics.io/docs/guides/ruler-sharding/.
+    # You may need to disable this if your config is compatible, but not understood by the validator.
+    enabled: true
+
   startupProbe:
     httpGet:
       path: /ready
