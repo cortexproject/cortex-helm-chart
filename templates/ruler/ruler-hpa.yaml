@@ -1,0 +1,39 @@
+{{- if and .Values.ruler.enabled .Values.ruler.autoscaling.enabled }}
+{{- with .Values.ruler.autoscaling -}}
+apiVersion: {{ include "cortex.hpaVersion" $ }}
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ include "cortex.rulerFullname" $ }}
+  namespace: {{ $.Release.Namespace }}
+  labels:
+    {{- include "cortex.rulerLabels" $ | nindent 4 }}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ include "cortex.rulerFullname" $ }}
+  minReplicas: {{ .minReplicas }}
+  maxReplicas: {{ .maxReplicas }}
+  metrics:
+  {{- with .targetMemoryUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: {{ . }}
+  {{- end }}
+  {{- with .targetCPUUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: {{ . }}
+  {{- end }}
+  {{- with .behavior }}
+  behavior:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+{{- end }}
+{{- end }}

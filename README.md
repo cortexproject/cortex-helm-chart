@@ -701,6 +701,12 @@ Kubernetes: `^1.19.0-0`
 | query_scheduler.&ZeroWidthSpace;topologySpreadConstraints | list | `[]` |  |
 | ruler.&ZeroWidthSpace;affinity | object | `{}` |  |
 | ruler.&ZeroWidthSpace;annotations | object | `{}` |  |
+| ruler.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;behavior | object | `{}` | Ref: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#support-for-configurable-scaling-behavior |
+| ruler.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;enabled | bool | `false` | Creates a HorizontalPodAutoscaler for the ruler. |
+| ruler.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;maxReplicas | int | `30` |  |
+| ruler.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;minReplicas | int | `2` |  |
+| ruler.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;targetCPUUtilizationPercentage | int | `80` |  |
+| ruler.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;targetMemoryUtilizationPercentage | int | `80` |  |
 | ruler.&ZeroWidthSpace;containerSecurityContext.&ZeroWidthSpace;enabled | bool | `true` |  |
 | ruler.&ZeroWidthSpace;containerSecurityContext.&ZeroWidthSpace;readOnlyRootFilesystem | bool | `true` |  |
 | ruler.&ZeroWidthSpace;directories | object | `{}` | allow configuring rules via configmap. ref: https://cortexproject.github.io/cortex-helm-chart/guides/configure_rules_via_configmap.html |
@@ -758,6 +764,7 @@ Kubernetes: `^1.19.0-0`
 | ruler.&ZeroWidthSpace;terminationGracePeriodSeconds | int | `180` |  |
 | ruler.&ZeroWidthSpace;tolerations | list | `[]` |  |
 | ruler.&ZeroWidthSpace;topologySpreadConstraints | list | `[]` |  |
+| ruler.&ZeroWidthSpace;validation.&ZeroWidthSpace;enabled | bool | `true` | Checks that the ruler is compatible with horizontal scaling, as documented in https://cortexmetrics.io/docs/guides/ruler-sharding/. You may need to disable this if your config is compatible, but not understood by the validator. |
 | runtimeconfigmap.&ZeroWidthSpace;annotations | object | `{}` |  |
 | runtimeconfigmap.&ZeroWidthSpace;create | bool | `true` | If true, a configmap for the `runtime_config` will be created. If false, the configmap _must_ exist already on the cluster or pods will fail to create. |
 | runtimeconfigmap.&ZeroWidthSpace;runtime_config | object | `{}` | https://cortexmetrics.io/docs/configuration/arguments/#runtime-configuration-file |

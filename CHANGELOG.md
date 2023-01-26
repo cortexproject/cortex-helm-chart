@@ -2,6 +2,8 @@
 
 ## master / unreleased
 
+* [FEATURE] add autoscaler for the ruler #430
+
 # 2.0.1 / 2023-01-06
 
 * [DEPENDENCY] Update quay.io/cortexproject/cortex Docker tag to v1.14.1 #422
