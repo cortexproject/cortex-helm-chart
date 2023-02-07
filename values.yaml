@@ -1623,3 +1623,8 @@ memcached-blocks-metadata:
     enabled: true
     serviceMonitor:
       enabled: false
+
+memberlist:
+  service:
+    annotations: {}
+    labels: {}

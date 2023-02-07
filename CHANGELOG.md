@@ -3,6 +3,7 @@
 ## master / unreleased
 
 * [FEATURE] add autoscaler for the ruler #430
+* [ENHANCEMENT] Add annotations and labels to memberlist service #433
 
 # 2.0.1 / 2023-01-06
 
