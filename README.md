@@ -379,6 +379,8 @@ Kubernetes: `^1.19.0-0`
 | ingress.&ZeroWidthSpace;ingressClass.&ZeroWidthSpace;enabled | bool | `false` |  |
 | ingress.&ZeroWidthSpace;ingressClass.&ZeroWidthSpace;name | string | `"nginx"` |  |
 | ingress.&ZeroWidthSpace;tls | list | `[]` |  |
+| memberlist.&ZeroWidthSpace;service.&ZeroWidthSpace;annotations | object | `{}` |  |
+| memberlist.&ZeroWidthSpace;service.&ZeroWidthSpace;labels | object | `{}` |  |
 | memcached-blocks-index.&ZeroWidthSpace;architecture | string | `"high-availability"` |  |
 | memcached-blocks-index.&ZeroWidthSpace;enabled | bool | `false` | Enables support for block index caching |
 | memcached-blocks-index.&ZeroWidthSpace;extraEnvVars[0] | object | `{"name":"MEMCACHED_CACHE_SIZE","value":"1024"}` | MEMCACHED_CACHE_SIZE is the amount of memory allocated to memcached for object storage |
