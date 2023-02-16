@@ -17,10 +17,10 @@ spec:
   clusterIP: None
   publishNotReadyAddresses: true
   ports:
-    - port: {{ .Values.config.server.http_listen_port }}
+    - port: {{ .Values.config.server.grpc_listen_port }}
       protocol: TCP
-      name: http-metrics
-      targetPort: http-metrics
+      name: grpc
+      targetPort: grpc
   selector:
     {{- include "cortex.alertmanagerSelectorLabels" . | nindent 4 }}
 {{- end -}}
