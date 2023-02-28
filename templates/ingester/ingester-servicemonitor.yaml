@@ -20,6 +20,12 @@ spec:
   namespaceSelector:
     matchNames:
       - {{ .Release.Namespace | quote }}
+  {{- if .Values.ingester.serviceMonitor.targetLabels }}
+  targetLabels:
+  {{- range .Values.ingester.serviceMonitor.targetLabels }}
+    - {{ . }}
+  {{- end }}
+  {{- end }}
   endpoints:
   - port: http-metrics
     {{- if .Values.ingester.serviceMonitor.interval }}
