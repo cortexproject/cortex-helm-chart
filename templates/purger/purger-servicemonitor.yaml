@@ -20,6 +20,12 @@ spec:
   namespaceSelector:
     matchNames:
       - {{ .Release.Namespace | quote }}
+  {{- if .Values.purger.serviceMonitor.targetLabels }}
+  targetLabels:
+  {{- range .Values.purger.serviceMonitor.targetLabels }}
+    - {{ . }}
+  {{- end }}
+  {{- end }}
   endpoints:
   - port: http-metrics
     {{- if .Values.purger.serviceMonitor.interval }}
