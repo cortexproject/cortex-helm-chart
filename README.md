@@ -2,7 +2,7 @@
 
 # cortex
 
-![Version: 2.0.1](https://img.shields.io/badge/Version-2.0.1-informational?style=flat-square) ![AppVersion: v1.14.1](https://img.shields.io/badge/AppVersion-v1.14.1-informational?style=flat-square)
+![Version: 2.0.2](https://img.shields.io/badge/Version-2.0.2-informational?style=flat-square) ![AppVersion: v1.14.1](https://img.shields.io/badge/AppVersion-v1.14.1-informational?style=flat-square)
 
 Horizontally scalable, highly available, multi-tenant, long term Prometheus.
 
@@ -760,6 +760,7 @@ Kubernetes: `^1.19.0-0`
 | ruler.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;failureThreshold | int | `10` |  |
 | ruler.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
 | ruler.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
+| ruler.&ZeroWidthSpace;statefulSet.&ZeroWidthSpace;enabled | bool | `false` | If true, use a statefulset instead of a deployment for pod management. This is useful for using a persistent volume for storing rules between restarts. |
 | ruler.&ZeroWidthSpace;strategy.&ZeroWidthSpace;rollingUpdate.&ZeroWidthSpace;maxSurge | int | `0` |  |
 | ruler.&ZeroWidthSpace;strategy.&ZeroWidthSpace;rollingUpdate.&ZeroWidthSpace;maxUnavailable | int | `1` |  |
 | ruler.&ZeroWidthSpace;strategy.&ZeroWidthSpace;type | string | `"RollingUpdate"` |  |
