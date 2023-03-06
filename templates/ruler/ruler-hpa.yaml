@@ -1,17 +1,17 @@
-{{- if and .Values.nginx.enabled .Values.nginx.autoscaling.enabled }}
-{{- with .Values.nginx.autoscaling -}}
+{{- if and .Values.ruler.enabled .Values.ruler.autoscaling.enabled }}
+{{- with .Values.ruler.autoscaling -}}
 apiVersion: {{ include "cortex.hpaVersion" $ }}
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ include "cortex.nginxFullname" $ }}
+  name: {{ include "cortex.rulerFullname" $ }}
   namespace: {{ $.Release.Namespace }}
   labels:
-    {{- include "cortex.nginxLabels" $ | nindent 4 }}
+    {{- include "cortex.rulerLabels" $ | nindent 4 }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ include "cortex.nginxFullname" $ }}
+    name: {{ include "cortex.rulerFullname" $ }}
   minReplicas: {{ .minReplicas }}
   maxReplicas: {{ .maxReplicas }}
   metrics:

@@ -73,6 +73,10 @@ spec:
       {{- end }}
       nodeSelector:
         {{- toYaml .Values.ingester.nodeSelector | nindent 8 }}
+      {{- if .Values.ingester.topologySpreadConstraints }}
+      topologySpreadConstraints:
+      {{- toYaml .Values.ingester.topologySpreadConstraints | nindent 8}}
+      {{- end }}
       affinity:
         {{- toYaml .Values.ingester.affinity | nindent 8 }}
       tolerations:

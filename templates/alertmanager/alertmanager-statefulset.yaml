@@ -71,6 +71,10 @@ spec:
       {{- end }}
       nodeSelector:
         {{- toYaml .Values.alertmanager.nodeSelector | nindent 8 }}
+      {{- if .Values.alertmanager.topologySpreadConstraints }}
+      topologySpreadConstraints:
+      {{- toYaml .Values.alertmanager.topologySpreadConstraints | nindent 8}}
+      {{- end }}
       affinity:
         {{- toYaml .Values.alertmanager.affinity | nindent 8 }}
       tolerations:
@@ -148,9 +152,6 @@ spec:
           args:
             - "-target=alertmanager"
             - "-config.file=/etc/cortex/cortex.yaml"
-            {{- if .Values.configs.enabled }}
-            - "-alertmanager.configs.url=http://{{ template "cortex.fullname" . }}-configs.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.config.server.http_listen_port }}"
-            {{- end }}
             {{- range $key, $value := .Values.alertmanager.extraArgs }}
             - "-{{ $key }}={{ $value }}"
             {{- end }}

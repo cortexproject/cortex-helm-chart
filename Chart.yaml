@@ -1,6 +1,6 @@
 apiVersion: v2
-version: 1.6.7
-appVersion: v1.11.1
+version: 2.0.1
+appVersion: v1.14.1
 description: 'Horizontally scalable, highly available, multi-tenant, long term Prometheus.'
 home: https://cortexmetrics.io/
 icon: https://avatars2.githubusercontent.com/u/43045022?s=200&v=4
@@ -17,40 +17,22 @@ sources:
   - https://github.com/cortexproject/cortex-helm-chart
 dependencies:
   - name: memcached
-    alias: memcached
-    version: 5.15.14
-    repository: https://charts.bitnami.com/bitnami
-    condition: memcached.enabled
-  - name: memcached
-    alias: memcached-index-read
-    version: 5.15.14
-    repository: https://charts.bitnami.com/bitnami
-    condition: memcached-index-read.enabled
-  - name: memcached
-    alias: memcached-index-write
-    version: 5.15.14
-    repository: https://charts.bitnami.com/bitnami
-    condition: memcached-index-write.enabled
-  - name: memcached
     alias: memcached-frontend
-    version: 5.15.14
+    version: 6.3.3
     repository: https://charts.bitnami.com/bitnami
     condition: memcached-frontend.enabled
   - name: memcached
     alias: memcached-blocks-index
-    version: 5.15.14
+    version: 6.3.3
     repository: https://charts.bitnami.com/bitnami
-    tags:
-      - blocks-storage-memcached
+    condition: memcached-blocks-index.enabled
   - name: memcached
     alias: memcached-blocks
-    version: 5.15.14
+    version: 6.3.3
     repository: https://charts.bitnami.com/bitnami
-    tags:
-      - blocks-storage-memcached
+    condition: memcached-blocks.enabled
   - name: memcached
     alias: memcached-blocks-metadata
-    version: 5.15.14
+    version: 6.3.3
     repository: https://charts.bitnami.com/bitnami
-    tags:
-      - blocks-storage-memcached
+    condition: memcached-blocks-metadata.enabled

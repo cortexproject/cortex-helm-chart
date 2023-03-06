@@ -2,9 +2,41 @@
 
 ## master / unreleased
 
+* [FEATURE] add autoscaler for the ruler #430
+* [ENHANCEMENT] Add annotations and labels to memberlist service #433
+
+# 2.0.1 / 2023-01-06
+
+* [DEPENDENCY] Update quay.io/cortexproject/cortex Docker tag to v1.14.1 #422
+* [DEPENDENCY] Update Helm release memcached to v6.3.3 #424
+* [BUGFIX] Fix memcache dependency condition #425
+
+# 2.0.0 / 2022-12-15
+
+* [FEATURE] add purger components to cortex #407
+* [CHANGE] With the release of memcached v6 bitnami renamed `extraEnv` to  `extraEnvVars`. Use `extraEnvVars` if you want to alter MEMCACHED_CACHE_SIZE, MEMCACHED_MAX_CONNECTIONS, etc... #303
+* [CHANGE] Caching for block storage can now be individually enabled. For example use `memcached-blocks.enabled` to enable caching for blocks. #417
+* [CHANGE] Drop cortex chunk support. #417
+* [CHANGE] Drop cortex configdb support. #417
+* [CHANGE] Removed legacy ruler and alertmanager storage configuration. Please use `ruler_storage` and `alertmanager_storage`. #417
+* [CHANGE] Dropped `storage.index_queries_cache_config`. #417
+* [ENHANCEMENT] Add verboseLogging option to nginx config #402
+* [ENHANCEMENT] Start using autoscaling/v2 for HorizontalPodAutoscaler in v1.23+ #414
+* [ENHANCEMENT] Add pod topology spread constrant option to Ingester/Alertmanager statefulset #403
+* [ENHANCEMENT] Add HPA to store gateways #406
+* [DEPENDENCY] Update quay.io/cortexproject/cortex Docker tag to v1.13.1 #401
+* [DEPENDENCY] Update Helm release memcached to v6 #303
+* [DEPENDENCY] Update Helm release memcached to v6.3.2 #418
+* [DEPENDENCY] Update Cortex to v1.14 #417
+
+# 1.7.0 / 2022-09-23
+
 * [BUGFIX] Fix nginx extraContainers to indent correctly #373
 * [DEPENDENCY] Update dependency nginx to v1.23 #375
 * [DEPENDENCY] Update dependency kiwigrid/k8s-sidecar to v1.19.2 #370
+* [DEPENDENCY] Update quay.io/cortexproject/cortex Docker tag to v1.13.0 #381
+* [DEPENDENCY] Update kiwigrid/k8s-sidecar Docker tag to v1.19.4 #387
+* [DEPENDENCY] Update kiwigrid/k8s-sidecar Docker tag to v1.19.5 #392
 
 ## 1.6.0 / 2022-06-10
 
