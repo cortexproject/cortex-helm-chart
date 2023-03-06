@@ -576,7 +576,8 @@ ingester:
 ruler:
   enabled: true
   replicas: 1
-
+  statefulSet: 
+    enabled: false
   service:
     annotations: {}
     labels: {}
