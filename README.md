@@ -133,6 +133,7 @@ Kubernetes: `^1.19.0-0`
 | alertmanager.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;metricRelabelings | list | `[]` |  |
 | alertmanager.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;podTargetLabels | list | `[]` |  |
 | alertmanager.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;relabelings | list | `[]` |  |
+| alertmanager.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;targetLabels | list | `[]` |  |
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;containerSecurityContext.&ZeroWidthSpace;enabled | bool | `true` |  |
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;containerSecurityContext.&ZeroWidthSpace;readOnlyRootFilesystem | bool | `true` |  |
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;defaultFolderName | string | `""` | The default folder name, it will create a subfolder under the `folder` and put rules in there instead |
@@ -206,6 +207,7 @@ Kubernetes: `^1.19.0-0`
 | compactor.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;metricRelabelings | list | `[]` |  |
 | compactor.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;podTargetLabels | list | `[]` |  |
 | compactor.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;relabelings | list | `[]` |  |
+| compactor.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;targetLabels | list | `[]` |  |
 | compactor.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;failureThreshold | int | `60` |  |
 | compactor.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
 | compactor.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
@@ -302,6 +304,7 @@ Kubernetes: `^1.19.0-0`
 | distributor.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;metricRelabelings | list | `[]` |  |
 | distributor.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;podTargetLabels | list | `[]` |  |
 | distributor.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;relabelings | list | `[]` |  |
+| distributor.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;targetLabels | list | `[]` |  |
 | distributor.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;failureThreshold | int | `10` |  |
 | distributor.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
 | distributor.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
@@ -366,6 +369,7 @@ Kubernetes: `^1.19.0-0`
 | ingester.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;metricRelabelings | list | `[]` |  |
 | ingester.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;podTargetLabels | list | `[]` |  |
 | ingester.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;relabelings | list | `[]` |  |
+| ingester.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;targetLabels | list | `[]` |  |
 | ingester.&ZeroWidthSpace;startupProbe | object | `{}` | Startup/liveness probes for ingesters are not recommended.  Ref: https://cortexmetrics.io/docs/guides/running-cortex-on-kubernetes/#take-extra-care-with-ingesters |
 | ingester.&ZeroWidthSpace;statefulSet.&ZeroWidthSpace;enabled | bool | `false` | If true, use a statefulset instead of a deployment for pod management. This is useful when using WAL |
 | ingester.&ZeroWidthSpace;statefulSet.&ZeroWidthSpace;podManagementPolicy | string | `"OrderedReady"` | ref: https://cortexmetrics.io/docs/guides/ingesters-scaling-up-and-down/#scaling-down and https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#pod-management-policies for scaledown details |
@@ -512,6 +516,7 @@ Kubernetes: `^1.19.0-0`
 | overrides_exporter.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;metricRelabelings | list | `[]` |  |
 | overrides_exporter.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;podTargetLabels | list | `[]` |  |
 | overrides_exporter.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;relabelings | list | `[]` |  |
+| overrides_exporter.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;targetLabels | list | `[]` |  |
 | overrides_exporter.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;failureThreshold | int | `10` |  |
 | overrides_exporter.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
 | overrides_exporter.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
@@ -555,6 +560,7 @@ Kubernetes: `^1.19.0-0`
 | purger.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;metricRelabelings | list | `[]` |  |
 | purger.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;podTargetLabels | list | `[]` |  |
 | purger.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;relabelings | list | `[]` |  |
+| purger.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;targetLabels | list | `[]` |  |
 | purger.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;failureThreshold | int | `60` |  |
 | purger.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
 | purger.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
@@ -608,6 +614,7 @@ Kubernetes: `^1.19.0-0`
 | querier.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;metricRelabelings | list | `[]` |  |
 | querier.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;podTargetLabels | list | `[]` |  |
 | querier.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;relabelings | list | `[]` |  |
+| querier.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;targetLabels | list | `[]` |  |
 | querier.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;failureThreshold | int | `10` |  |
 | querier.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
 | querier.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
@@ -655,6 +662,7 @@ Kubernetes: `^1.19.0-0`
 | query_frontend.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;metricRelabelings | list | `[]` |  |
 | query_frontend.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;podTargetLabels | list | `[]` |  |
 | query_frontend.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;relabelings | list | `[]` |  |
+| query_frontend.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;targetLabels | list | `[]` |  |
 | query_frontend.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;failureThreshold | int | `10` |  |
 | query_frontend.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
 | query_frontend.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
@@ -701,6 +709,7 @@ Kubernetes: `^1.19.0-0`
 | query_scheduler.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;metricRelabelings | list | `[]` |  |
 | query_scheduler.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;podTargetLabels | list | `[]` |  |
 | query_scheduler.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;relabelings | list | `[]` |  |
+| query_scheduler.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;targetLabels | list | `[]` |  |
 | query_scheduler.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;failureThreshold | int | `10` |  |
 | query_scheduler.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
 | query_scheduler.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
@@ -749,6 +758,7 @@ Kubernetes: `^1.19.0-0`
 | ruler.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;metricRelabelings | list | `[]` |  |
 | ruler.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;podTargetLabels | list | `[]` |  |
 | ruler.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;relabelings | list | `[]` |  |
+| ruler.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;targetLabels | list | `[]` |  |
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;containerSecurityContext.&ZeroWidthSpace;enabled | bool | `true` |  |
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;containerSecurityContext.&ZeroWidthSpace;readOnlyRootFilesystem | bool | `true` |  |
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;defaultFolderName | string | `""` | The default folder name, it will create a subfolder under the `folder` and put rules in there instead |
@@ -833,6 +843,7 @@ Kubernetes: `^1.19.0-0`
 | store_gateway.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;metricRelabelings | list | `[]` |  |
 | store_gateway.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;podTargetLabels | list | `[]` |  |
 | store_gateway.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;relabelings | list | `[]` |  |
+| store_gateway.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;targetLabels | list | `[]` |  |
 | store_gateway.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;failureThreshold | int | `60` |  |
 | store_gateway.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
 | store_gateway.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
