@@ -20,6 +20,12 @@ spec:
   namespaceSelector:
     matchNames:
       - {{ .Release.Namespace | quote }}
+  {{- if .Values.purger.serviceMonitor.podTargetLabels }}
+  podTargetLabels:
+  {{- range .Values.purger.serviceMonitor.podTargetLabels }}
+    - {{ . }}
+  {{- end }}
+  {{- end }}
   endpoints:
   - port: http-metrics
     {{- if .Values.distributor.serviceMonitor.interval }}
