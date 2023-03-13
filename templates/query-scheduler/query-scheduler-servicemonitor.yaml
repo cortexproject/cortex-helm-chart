@@ -20,9 +20,9 @@ spec:
   namespaceSelector:
     matchNames:
       - {{ .Release.Namespace | quote }}
-  {{- if .Values.query_scheduler.serviceMonitor.targetLabels }}
-  targetLabels:
-  {{- range .Values.query_scheduler.serviceMonitor.targetLabels }}
+  {{- if .Values.query_scheduler.serviceMonitor.podTargetLabels }}
+  podTargetLabels:
+  {{- range .Values.query_scheduler.serviceMonitor.podTargetLabels }}
     - {{ . }}
   {{- end }}
   {{- end }}
