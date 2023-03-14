@@ -167,6 +167,7 @@ alertmanager:
     metricRelabelings: []
     # -- Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint
     extraEndpointSpec: {}
+    podTargetLabels: []
 
   resources: {}
 
@@ -330,6 +331,7 @@ distributor:
     metricRelabelings: []
     # -- Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint
     extraEndpointSpec: {}
+    podTargetLabels: []
 
   resources: {}
 
@@ -440,6 +442,7 @@ ingester:
     metricRelabelings: []
     # -- Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint
     extraEndpointSpec: {}
+    podTargetLabels: []
 
   resources: {}
 
@@ -592,6 +595,7 @@ ruler:
     metricRelabelings: []
     # -- Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint
     extraEndpointSpec: {}
+    podTargetLabels: []
 
   resources: {}
 
@@ -728,6 +732,7 @@ querier:
     metricRelabelings: []
     # -- Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint
     extraEndpointSpec: {}
+    podTargetLabels: []
 
   resources: {}
 
@@ -832,6 +837,7 @@ query_frontend:
     metricRelabelings: []
     # -- Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint
     extraEndpointSpec: {}
+    podTargetLabels: []
 
   resources: {}
 
@@ -922,6 +928,7 @@ query_scheduler:
     metricRelabelings: []
     # -- Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint
     extraEndpointSpec: {}
+    podTargetLabels: []
 
   resources: {}
 
@@ -1010,6 +1017,7 @@ overrides_exporter:
     metricRelabelings: []
     # -- Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint
     extraEndpointSpec: {}
+    podTargetLabels: []
 
   resources: {}
 
@@ -1095,6 +1103,7 @@ purger:
     relabelings: []
     metricRelabelings: []
     extraEndpointSpec: {}
+    podTargetLabels: []
 
   resources: {}
 
@@ -1306,6 +1315,7 @@ store_gateway:
     metricRelabelings: []
     # -- Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint
     extraEndpointSpec: {}
+    podTargetLabels: []
 
   resources: {}
 
@@ -1433,6 +1443,7 @@ compactor:
     metricRelabelings: []
     # -- Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint
     extraEndpointSpec: {}
+    podTargetLabels: []
 
   resources: {}
 
