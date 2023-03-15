@@ -178,10 +178,10 @@ spec:
             - name: grpc
               containerPort: {{ .Values.config.server.grpc_listen_port }}
               protocol: TCP
-            - containerPort: 9094
+            - containerPort: {{ (.Values.config.alertmanager.cluster.listen_address | default "0.0.0.0:9094" | split ":")._1 }}
               name: gossip-clu-tcp
               protocol: TCP
-            - containerPort: 9094
+            - containerPort: {{ (.Values.config.alertmanager.cluster.listen_address | default "0.0.0.0:9094" | split ":")._1 }}
               name: gossip-clu-udp
               protocol: UDP
           startupProbe:
