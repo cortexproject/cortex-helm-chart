@@ -18,21 +18,21 @@ sources:
 dependencies:
   - name: memcached
     alias: memcached-frontend
-    version: 6.3.3
+    version: 6.3.12
     repository: https://charts.bitnami.com/bitnami
     condition: memcached-frontend.enabled
   - name: memcached
     alias: memcached-blocks-index
-    version: 6.3.3
+    version: 6.3.12
     repository: https://charts.bitnami.com/bitnami
     condition: memcached-blocks-index.enabled
   - name: memcached
     alias: memcached-blocks
-    version: 6.3.3
+    version: 6.3.12
     repository: https://charts.bitnami.com/bitnami
     condition: memcached-blocks.enabled
   - name: memcached
     alias: memcached-blocks-metadata
-    version: 6.3.3
+    version: 6.3.12
     repository: https://charts.bitnami.com/bitnami
     condition: memcached-blocks-metadata.enabled
