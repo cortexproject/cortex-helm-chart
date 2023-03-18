@@ -2,10 +2,12 @@
 
 ## master / unreleased
 
-* [DEPENDENCY] Update Helm release memcached to v6.3.12 #441
+## 2.1.0 / 2023-03-17
+
 * [FEATURE] add autoscaler for the ruler #430
 * [ENHANCEMENT] Add annotations and labels to memberlist service #433
 * [ENHANCEMENT] Add podTargetLabels to all Prometheus servicemonitor CRs #439
+* [DEPENDENCY] Update Helm release memcached to v6.3.12 #441
 
 # 2.0.1 / 2023-01-06
 
