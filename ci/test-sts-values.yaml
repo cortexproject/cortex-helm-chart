@@ -131,7 +131,7 @@ alertmanager:
 ruler:
   replicas: 1
   enabled: true
-  statefulSet: 
+  statefulSet:
     enabled: true
   extraVolumes:
     - name: tmp-test
