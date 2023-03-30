@@ -576,7 +576,7 @@ ingester:
 ruler:
   enabled: true
   replicas: 1
-  statefulSet: 
+  statefulSet:
     # -- If true, use a statefulset instead of a deployment for pod management.
     # This is useful for using a persistent volume for storing rules between restarts.
     enabled: false
