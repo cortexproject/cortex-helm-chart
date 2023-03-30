@@ -1,6 +1,6 @@
 {{- if and .Values.querier.enabled .Values.querier.autoscaling.enabled -}}
 {{- with .Values.querier.autoscaling -}}
-apiVersion: autoscaling/v2beta2
+apiVersion: {{ include "cortex.hpaVersion" $ }}
 kind: HorizontalPodAutoscaler
 metadata:
   name: {{ include "cortex.querierFullname" $ }}

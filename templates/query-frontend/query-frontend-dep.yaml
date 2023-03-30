@@ -54,6 +54,9 @@ spec:
           {{- if .Values.query_scheduler.enabled }}
             - "-frontend.scheduler-address={{ template "cortex.querySchedulerFullname" . }}-headless.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.config.server.grpc_listen_port }}"
           {{- end }}
+          {{- if .Values.purger.enabled }}
+            - "-purger.enable"
+          {{- end }}
           {{- range $key, $value := .Values.query_frontend.extraArgs }}
             - "-{{ $key }}={{ $value }}"
           {{- end }}

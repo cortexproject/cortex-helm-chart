@@ -1,0 +1,42 @@
+{{- if .Values.purger.serviceMonitor.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "cortex.purgerFullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "cortex.purgerLabels" . | nindent 4 }}
+    {{- if .Values.purger.serviceMonitor.additionalLabels }}
+{{ toYaml .Values.purger.serviceMonitor.additionalLabels | indent 4 }}
+    {{- end }}
+  {{- if .Values.purger.serviceMonitor.annotations }}
+  annotations:
+{{ toYaml .Values.purger.serviceMonitor.annotations | indent 4 }}
+  {{- end }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "cortex.purgerSelectorLabels" . | nindent 6 }}
+  namespaceSelector:
+    matchNames:
+      - {{ .Release.Namespace | quote }}
+  endpoints:
+  - port: http-metrics
+    {{- if .Values.purger.serviceMonitor.interval }}
+    interval: {{ .Values.purger.serviceMonitor.interval }}
+    {{- end }}
+    {{- if .Values.purger.serviceMonitor.scrapeTimeout }}
+    scrapeTimeout: {{ .Values.purger.serviceMonitor.scrapeTimeout }}
+    {{- end }}
+    {{- if .Values.purger.serviceMonitor.relabelings }}
+    relabelings:
+    {{- toYaml .Values.purger.serviceMonitor.relabelings | nindent 4 }}
+    {{- end }}
+    {{- if .Values.purger.serviceMonitor.metricRelabelings }}
+    metricRelabelings:
+    {{- toYaml .Values.purger.serviceMonitor.metricRelabelings | nindent 4 }}
+    {{- end }}
+    {{- with .Values.purger.serviceMonitor.extraEndpointSpec }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+{{- end }}
