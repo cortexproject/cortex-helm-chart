@@ -723,6 +723,7 @@ Kubernetes: `^1.19.0-0`
 | ruler.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
 | ruler.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
 | ruler.&ZeroWidthSpace;nodeSelector | object | `{}` |  |
+| ruler.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;subPath | string | `nil` |  |
 | ruler.&ZeroWidthSpace;podAnnotations | object | `{"prometheus.io/port":"8080","prometheus.io/scrape":"true"}` | Pod Annotations |
 | ruler.&ZeroWidthSpace;podDisruptionBudget.&ZeroWidthSpace;maxUnavailable | int | `1` |  |
 | ruler.&ZeroWidthSpace;podLabels | object | `{}` | Pod Labels |
