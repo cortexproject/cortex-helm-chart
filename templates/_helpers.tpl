@@ -112,7 +112,7 @@ Create configuration for frontend memcached configuration
 Determine the policy api version
 */}}
 {{- define "cortex.pdbVersion" -}}
-{{- if or (.Capabilities.APIVersions.Has "policy/v1/PodDisruptionBudget") (semverCompare ">=1.21" .Capabilities.KubeVersion.Version) -}}
+{{- if or (.Capabilities.APIVersions.Has "policy/v1/PodDisruptionBudget") (semverCompare ">=1.21-0" .Capabilities.KubeVersion.Version) -}}
 policy/v1
 {{- else -}}
 policy/v1beta1
@@ -153,7 +153,7 @@ Get volume of config secret of configMap
 Get cortex hpa version by k8s version
 */}}
 {{- define "cortex.hpaVersion" -}}
-{{- if or (.Capabilities.APIVersions.Has "autoscaling/v2/HorizontalPodAutoscaler") (semverCompare ">=1.23" .Capabilities.KubeVersion.Version) -}}
+{{- if or (.Capabilities.APIVersions.Has "autoscaling/v2/HorizontalPodAutoscaler") (semverCompare ">=1.23-0" .Capabilities.KubeVersion.Version) -}}
 autoscaling/v2
 {{- else -}}
 autoscaling/v2beta2
