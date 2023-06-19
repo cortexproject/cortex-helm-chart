@@ -2,6 +2,7 @@
 
 ## master / unreleased
 
+* [ENHANCEMENT] Add option to autoscale on multiple metrics and custom metrics metrics
 * [DEPENDENCY] Update quay.io/cortexproject/cortex Docker tag to v1.15.0 #453
 * [DEPENDENCY] Update quay.io/cortexproject/cortex Docker tag to v1.15.1 #456
 * [BUGFIX] Correctly interpret .Capabilities.KubeVersion when it looks like a prerelease #457
