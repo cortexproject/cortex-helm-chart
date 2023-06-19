@@ -376,7 +376,7 @@ distributor:
     # In order to use this option , define a list of of specific following either:
     # - https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-multiple-metrics-and-custom-metrics
     # - https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-metrics-not-related-to-kubernetes-objects
-    # 
+    #
     # For example:
     #
     # - type: External
@@ -518,7 +518,7 @@ ingester:
     # In order to use this option , define a list of of specific following either:
     # - https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-multiple-metrics-and-custom-metrics
     # - https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-metrics-not-related-to-kubernetes-objects
-    # 
+    #
     # For example:
     #
     # - type: External
@@ -664,7 +664,7 @@ ruler:
     # In order to use this option , define a list of of specific following either:
     # - https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-multiple-metrics-and-custom-metrics
     # - https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-metrics-not-related-to-kubernetes-objects
-    # 
+    #
     # For example:
     #
     # - type: External
@@ -831,7 +831,7 @@ querier:
     # In order to use this option , define a list of of specific following either:
     # - https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-multiple-metrics-and-custom-metrics
     # - https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-metrics-not-related-to-kubernetes-objects
-    # 
+    #
     # For example:
     #
     # - type: External
@@ -1369,7 +1369,7 @@ nginx:
     # In order to use this option , define a list of of specific following either:
     # - https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-multiple-metrics-and-custom-metrics
     # - https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-metrics-not-related-to-kubernetes-objects
-    # 
+    #
     # For example:
     #
     # - type: External
@@ -1448,7 +1448,7 @@ store_gateway:
     # In order to use this option , define a list of of specific following either:
     # - https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-multiple-metrics-and-custom-metrics
     # - https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-metrics-not-related-to-kubernetes-objects
-    # 
+    #
     # For example:
     #
     # - type: External
