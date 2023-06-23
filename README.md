@@ -86,10 +86,10 @@ Kubernetes: `^1.19.0-0`
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://charts.bitnami.com/bitnami | memcached-frontend(memcached) | 6.3.12 |
-| https://charts.bitnami.com/bitnami | memcached-blocks-index(memcached) | 6.3.12 |
-| https://charts.bitnami.com/bitnami | memcached-blocks(memcached) | 6.3.12 |
-| https://charts.bitnami.com/bitnami | memcached-blocks-metadata(memcached) | 6.3.12 |
+| https://charts.bitnami.com/bitnami | memcached-frontend(memcached) | 6.5.3 |
+| https://charts.bitnami.com/bitnami | memcached-blocks-index(memcached) | 6.5.3 |
+| https://charts.bitnami.com/bitnami | memcached-blocks(memcached) | 6.5.3 |
+| https://charts.bitnami.com/bitnami | memcached-blocks-metadata(memcached) | 6.5.3 |
 
 ## Values
 
