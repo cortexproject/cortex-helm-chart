@@ -1214,7 +1214,7 @@ nginx:
     verboseLogging: true
   image:
     repository: nginx
-    tag: 1.23
+    tag: 1.25
     pullPolicy: IfNotPresent
 
   service:
