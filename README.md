@@ -2,7 +2,7 @@
 
 # cortex
 
-![Version: 2.1.0](https://img.shields.io/badge/Version-2.1.0-informational?style=flat-square) ![AppVersion: v1.15.1](https://img.shields.io/badge/AppVersion-v1.15.1-informational?style=flat-square)
+![Version: 2.1.0](https://img.shields.io/badge/Version-2.1.0-informational?style=flat-square) ![AppVersion: v1.15.2](https://img.shields.io/badge/AppVersion-v1.15.2-informational?style=flat-square)
 
 Horizontally scalable, highly available, multi-tenant, long term Prometheus.
 
