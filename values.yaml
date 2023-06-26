@@ -376,21 +376,6 @@ distributor:
     # In order to use this option , define a list of of specific following either:
     # - https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-multiple-metrics-and-custom-metrics
     # - https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-metrics-not-related-to-kubernetes-objects
-    #
-    # For example: <br>
-    #
-    # <code>
-    # - type: External <br>
-    # &nbsp; external: <br>
-    # &nbsp; &nbsp; metric:<br/>
-    # &nbsp; &nbsp; &nbsp; name: queue_messages_ready <br>
-    # &nbsp; &nbsp; &nbsp; selector:<br/>
-    # &nbsp; &nbsp; &nbsp; &nbsp; matchLabels:<br/>
-    # &nbsp; &nbsp; &nbsp; &nbsp; queue: "worker_tasks"<br/>
-    # &nbsp; &nbsp; target:<br/>
-    # &nbsp; &nbsp; &nbsp; type: AverageValue<br/>
-    # &nbsp; &nbsp; &nbsp; averageValue: 30<br/>
-    # </code>
     extraMetrics: []
 
   persistentVolume:
@@ -520,21 +505,6 @@ ingester:
     # In order to use this option , define a list of of specific following either:
     # - https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-multiple-metrics-and-custom-metrics
     # - https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-metrics-not-related-to-kubernetes-objects
-    #
-    # For example: <br>
-    #
-    # <code>
-    # - type: External <br>
-    # &nbsp; external: <br>
-    # &nbsp; &nbsp; metric:<br/>
-    # &nbsp; &nbsp; &nbsp; name: queue_messages_ready <br>
-    # &nbsp; &nbsp; &nbsp; selector:<br/>
-    # &nbsp; &nbsp; &nbsp; &nbsp; matchLabels:<br/>
-    # &nbsp; &nbsp; &nbsp; &nbsp; queue: "worker_tasks"<br/>
-    # &nbsp; &nbsp; target:<br/>
-    # &nbsp; &nbsp; &nbsp; type: AverageValue<br/>
-    # &nbsp; &nbsp; &nbsp; averageValue: 30<br/>
-    # </code>
     extraMetrics: []
 
   lifecycle:
@@ -668,21 +638,6 @@ ruler:
     # In order to use this option , define a list of of specific following either:
     # - https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-multiple-metrics-and-custom-metrics
     # - https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-metrics-not-related-to-kubernetes-objects
-    #
-    # For example: <br>
-    #
-    # <code>
-    # - type: External <br>
-    # &nbsp; external: <br>
-    # &nbsp; &nbsp; metric:<br/>
-    # &nbsp; &nbsp; &nbsp; name: queue_messages_ready <br>
-    # &nbsp; &nbsp; &nbsp; selector:<br/>
-    # &nbsp; &nbsp; &nbsp; &nbsp; matchLabels:<br/>
-    # &nbsp; &nbsp; &nbsp; &nbsp; queue: "worker_tasks"<br/>
-    # &nbsp; &nbsp; target:<br/>
-    # &nbsp; &nbsp; &nbsp; type: AverageValue<br/>
-    # &nbsp; &nbsp; &nbsp; averageValue: 30<br/>
-    # </code>
     extraMetrics: []
 
   validation:
@@ -837,21 +792,6 @@ querier:
     # In order to use this option , define a list of of specific following either:
     # - https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-multiple-metrics-and-custom-metrics
     # - https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-metrics-not-related-to-kubernetes-objects
-    #
-    # For example: <br>
-    #
-    # <code>
-    # - type: External <br>
-    # &nbsp; external: <br>
-    # &nbsp; &nbsp; metric:<br/>
-    # &nbsp; &nbsp; &nbsp; name: queue_messages_ready <br>
-    # &nbsp; &nbsp; &nbsp; selector:<br/>
-    # &nbsp; &nbsp; &nbsp; &nbsp; matchLabels:<br/>
-    # &nbsp; &nbsp; &nbsp; &nbsp; queue: "worker_tasks"<br/>
-    # &nbsp; &nbsp; target:<br/>
-    # &nbsp; &nbsp; &nbsp; type: AverageValue<br/>
-    # &nbsp; &nbsp; &nbsp; averageValue: 30<br/>
-    # </code>
     extraMetrics: []
 
   persistentVolume:
@@ -1377,21 +1317,6 @@ nginx:
     # In order to use this option , define a list of of specific following either:
     # - https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-multiple-metrics-and-custom-metrics
     # - https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-metrics-not-related-to-kubernetes-objects
-    #
-    # For example: <br>
-    #
-    # <code>
-    # - type: External <br>
-    # &nbsp; external: <br>
-    # &nbsp; &nbsp; metric:<br/>
-    # &nbsp; &nbsp; &nbsp; name: queue_messages_ready <br>
-    # &nbsp; &nbsp; &nbsp; selector:<br/>
-    # &nbsp; &nbsp; &nbsp; &nbsp; matchLabels:<br/>
-    # &nbsp; &nbsp; &nbsp; &nbsp; queue: "worker_tasks"<br/>
-    # &nbsp; &nbsp; target:<br/>
-    # &nbsp; &nbsp; &nbsp; type: AverageValue<br/>
-    # &nbsp; &nbsp; &nbsp; averageValue: 30<br/>
-    # </code>
     extraMetrics: []
 
 store_gateway:
@@ -1458,21 +1383,6 @@ store_gateway:
     # In order to use this option , define a list of of specific following either:
     # - https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-multiple-metrics-and-custom-metrics
     # - https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-metrics-not-related-to-kubernetes-objects
-    #
-    # For example: <br>
-    #
-    # <code>
-    # - type: External <br>
-    # &nbsp; external: <br>
-    # &nbsp; &nbsp; metric:<br/>
-    # &nbsp; &nbsp; &nbsp; name: queue_messages_ready <br>
-    # &nbsp; &nbsp; &nbsp; selector:<br/>
-    # &nbsp; &nbsp; &nbsp; &nbsp; matchLabels:<br/>
-    # &nbsp; &nbsp; &nbsp; &nbsp; queue: "worker_tasks"<br/>
-    # &nbsp; &nbsp; target:<br/>
-    # &nbsp; &nbsp; &nbsp; type: AverageValue<br/>
-    # &nbsp; &nbsp; &nbsp; averageValue: 30<br/>
-    # </code>
     extraMetrics: []
 
   persistentVolume:
