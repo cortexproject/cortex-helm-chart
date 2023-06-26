@@ -377,19 +377,21 @@ distributor:
     # - https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-multiple-metrics-and-custom-metrics
     # - https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-metrics-not-related-to-kubernetes-objects
     #
-    # For example:
-    #
-    # - type: External
-    #   external:
-    #     metric:
-    #       name: queue_messages_ready
-    #       selector:
-    #         matchLabels:
-    #           queue: "worker_tasks"
-    #     target:
-    #       type: AverageValue
-    #       averageValue: 30
-    customMetrics: []
+    # For example: <br>
+    # 
+    # <code>
+    # - type: External <br>
+    # &nbsp; external: <br>
+    # &nbsp; &nbsp; metric:<br/>
+    # &nbsp; &nbsp; &nbsp; name: queue_messages_ready <br>
+    # &nbsp; &nbsp; &nbsp; selector:<br/>
+    # &nbsp; &nbsp; &nbsp; &nbsp; matchLabels:<br/>
+    # &nbsp; &nbsp; &nbsp; &nbsp; queue: "worker_tasks"<br/>
+    # &nbsp; &nbsp; target:<br/>
+    # &nbsp; &nbsp; &nbsp; type: AverageValue<br/>
+    # &nbsp; &nbsp; &nbsp; averageValue: 30<br/>
+    # </code>
+    extraMetrics: []
 
   persistentVolume:
     subPath:
@@ -519,19 +521,21 @@ ingester:
     # - https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-multiple-metrics-and-custom-metrics
     # - https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-metrics-not-related-to-kubernetes-objects
     #
-    # For example:
-    #
-    # - type: External
-    #   external:
-    #     metric:
-    #       name: queue_messages_ready
-    #       selector:
-    #         matchLabels:
-    #           queue: "worker_tasks"
-    #     target:
-    #       type: AverageValue
-    #       averageValue: 30
-    customMetrics: []
+    # For example: <br>
+    # 
+    # <code>
+    # - type: External <br>
+    # &nbsp; external: <br>
+    # &nbsp; &nbsp; metric:<br/>
+    # &nbsp; &nbsp; &nbsp; name: queue_messages_ready <br>
+    # &nbsp; &nbsp; &nbsp; selector:<br/>
+    # &nbsp; &nbsp; &nbsp; &nbsp; matchLabels:<br/>
+    # &nbsp; &nbsp; &nbsp; &nbsp; queue: "worker_tasks"<br/>
+    # &nbsp; &nbsp; target:<br/>
+    # &nbsp; &nbsp; &nbsp; type: AverageValue<br/>
+    # &nbsp; &nbsp; &nbsp; averageValue: 30<br/>
+    # </code>
+    extraMetrics: []
 
   lifecycle:
     # -- The /shutdown preStop hook is recommended as part of the ingester
@@ -665,19 +669,21 @@ ruler:
     # - https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-multiple-metrics-and-custom-metrics
     # - https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-metrics-not-related-to-kubernetes-objects
     #
-    # For example:
-    #
-    # - type: External
-    #   external:
-    #     metric:
-    #       name: queue_messages_ready
-    #       selector:
-    #         matchLabels:
-    #           queue: "worker_tasks"
-    #     target:
-    #       type: AverageValue
-    #       averageValue: 30
-    customMetrics: []
+    # For example: <br>
+    # 
+    # <code>
+    # - type: External <br>
+    # &nbsp; external: <br>
+    # &nbsp; &nbsp; metric:<br/>
+    # &nbsp; &nbsp; &nbsp; name: queue_messages_ready <br>
+    # &nbsp; &nbsp; &nbsp; selector:<br/>
+    # &nbsp; &nbsp; &nbsp; &nbsp; matchLabels:<br/>
+    # &nbsp; &nbsp; &nbsp; &nbsp; queue: "worker_tasks"<br/>
+    # &nbsp; &nbsp; target:<br/>
+    # &nbsp; &nbsp; &nbsp; type: AverageValue<br/>
+    # &nbsp; &nbsp; &nbsp; averageValue: 30<br/>
+    # </code>
+    extraMetrics: []
 
   validation:
     # -- Checks that the ruler is compatible with horizontal scaling,
@@ -832,19 +838,21 @@ querier:
     # - https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-multiple-metrics-and-custom-metrics
     # - https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-metrics-not-related-to-kubernetes-objects
     #
-    # For example:
-    #
-    # - type: External
-    #   external:
-    #     metric:
-    #       name: queue_messages_ready
-    #       selector:
-    #         matchLabels:
-    #           queue: "worker_tasks"
-    #     target:
-    #       type: AverageValue
-    #       averageValue: 30
-    customMetrics: []
+    # For example: <br>
+    # 
+    # <code>
+    # - type: External <br>
+    # &nbsp; external: <br>
+    # &nbsp; &nbsp; metric:<br/>
+    # &nbsp; &nbsp; &nbsp; name: queue_messages_ready <br>
+    # &nbsp; &nbsp; &nbsp; selector:<br/>
+    # &nbsp; &nbsp; &nbsp; &nbsp; matchLabels:<br/>
+    # &nbsp; &nbsp; &nbsp; &nbsp; queue: "worker_tasks"<br/>
+    # &nbsp; &nbsp; target:<br/>
+    # &nbsp; &nbsp; &nbsp; type: AverageValue<br/>
+    # &nbsp; &nbsp; &nbsp; averageValue: 30<br/>
+    # </code>
+    extraMetrics: []
 
   persistentVolume:
     subPath:
@@ -1370,19 +1378,21 @@ nginx:
     # - https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-multiple-metrics-and-custom-metrics
     # - https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-metrics-not-related-to-kubernetes-objects
     #
-    # For example:
-    #
-    # - type: External
-    #   external:
-    #     metric:
-    #       name: queue_messages_ready
-    #       selector:
-    #         matchLabels:
-    #           queue: "worker_tasks"
-    #     target:
-    #       type: AverageValue
-    #       averageValue: 30
-    customMetrics: []
+    # For example: <br>
+    # 
+    # <code>
+    # - type: External <br>
+    # &nbsp; external: <br>
+    # &nbsp; &nbsp; metric:<br/>
+    # &nbsp; &nbsp; &nbsp; name: queue_messages_ready <br>
+    # &nbsp; &nbsp; &nbsp; selector:<br/>
+    # &nbsp; &nbsp; &nbsp; &nbsp; matchLabels:<br/>
+    # &nbsp; &nbsp; &nbsp; &nbsp; queue: "worker_tasks"<br/>
+    # &nbsp; &nbsp; target:<br/>
+    # &nbsp; &nbsp; &nbsp; type: AverageValue<br/>
+    # &nbsp; &nbsp; &nbsp; averageValue: 30<br/>
+    # </code>
+    extraMetrics: []
 
 store_gateway:
   enabled: true
@@ -1449,19 +1459,21 @@ store_gateway:
     # - https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-multiple-metrics-and-custom-metrics
     # - https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-metrics-not-related-to-kubernetes-objects
     #
-    # For example:
-    #
-    # - type: External
-    #   external:
-    #     metric:
-    #       name: queue_messages_ready
-    #       selector:
-    #         matchLabels:
-    #           queue: "worker_tasks"
-    #     target:
-    #       type: AverageValue
-    #       averageValue: 30
-    customMetrics: []
+    # For example: <br>
+    # 
+    # <code>
+    # - type: External <br>
+    # &nbsp; external: <br>
+    # &nbsp; &nbsp; metric:<br/>
+    # &nbsp; &nbsp; &nbsp; name: queue_messages_ready <br>
+    # &nbsp; &nbsp; &nbsp; selector:<br/>
+    # &nbsp; &nbsp; &nbsp; &nbsp; matchLabels:<br/>
+    # &nbsp; &nbsp; &nbsp; &nbsp; queue: "worker_tasks"<br/>
+    # &nbsp; &nbsp; target:<br/>
+    # &nbsp; &nbsp; &nbsp; type: AverageValue<br/>
+    # &nbsp; &nbsp; &nbsp; averageValue: 30<br/>
+    # </code>
+    extraMetrics: []
 
   persistentVolume:
     # -- If true Store-gateway will create/use a Persistent Volume Claim

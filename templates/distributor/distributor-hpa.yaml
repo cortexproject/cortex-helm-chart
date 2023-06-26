@@ -31,7 +31,7 @@ spec:
           type: Utilization
           averageUtilization: {{ . }}
   {{- end }}
-  {{- with .customMetrics }}
+  {{- with .extraMetrics }}
     {{- toYaml . | nindent 4 }}
   {{- end }}
   {{- with .behavior }}
