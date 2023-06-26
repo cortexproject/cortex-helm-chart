@@ -266,7 +266,7 @@ Kubernetes: `^1.19.0-0`
 | distributor.&ZeroWidthSpace;annotations | object | `{}` |  |
 | distributor.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;behavior | object | `{}` | Ref: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#support-for-configurable-scaling-behavior |
 | distributor.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;enabled | bool | `false` | Creates a HorizontalPodAutoscaler for the distributor pods. |
-| distributor.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;extraMetrics | list | `[]` | Optional custom and external metrics for the distributor pods to scale on In order to use this option , define a list of of specific following either: - https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-multiple-metrics-and-custom-metrics - https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-metrics-not-related-to-kubernetes-objects |
+| distributor.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;extraMetrics | list | `[]` | Optional custom and external metrics for the distributor pods to scale on In order to use this option , define a list of of specific following https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-multiple-metrics-and-custom-metrics and https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-metrics-not-related-to-kubernetes-objects |
 | distributor.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;maxReplicas | int | `30` |  |
 | distributor.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;minReplicas | int | `2` |  |
 | distributor.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;targetCPUUtilizationPercentage | int | `80` |  |
@@ -328,7 +328,7 @@ Kubernetes: `^1.19.0-0`
 | ingester.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;behavior.&ZeroWidthSpace;scaleDown.&ZeroWidthSpace;stabilizationWindowSeconds | int | `3600` | uses metrics from the past 1h to make scaleDown decisions |
 | ingester.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;behavior.&ZeroWidthSpace;scaleUp.&ZeroWidthSpace;policies | list | `[{"periodSeconds":1800,"type":"Pods","value":1}]` | This default scaleup policy allows adding 1 pod every 30 minutes. Ref: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#support-for-configurable-scaling-behavior |
 | ingester.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;enabled | bool | `false` |  |
-| ingester.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;extraMetrics | list | `[]` | Optional custom and external metrics for the ingester pods to scale on In order to use this option , define a list of of specific following either: - https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-multiple-metrics-and-custom-metrics - https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-metrics-not-related-to-kubernetes-objects |
+| ingester.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;extraMetrics | list | `[]` | Optional custom and external metrics for the ingester pods to scale on In order to use this option , define a list of of specific following https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-multiple-metrics-and-custom-metrics and https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-metrics-not-related-to-kubernetes-objects |
 | ingester.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;maxReplicas | int | `30` |  |
 | ingester.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;minReplicas | int | `3` |  |
 | ingester.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;targetMemoryUtilizationPercentage | int | `80` |  |
@@ -427,7 +427,7 @@ Kubernetes: `^1.19.0-0`
 | nginx.&ZeroWidthSpace;annotations | object | `{}` |  |
 | nginx.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;behavior | object | `{}` | Ref: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#support-for-configurable-scaling-behavior |
 | nginx.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;enabled | bool | `false` | Creates a HorizontalPodAutoscaler for the nginx pods. |
-| nginx.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;extraMetrics | list | `[]` | Optional custom and external metrics for the nginx pods to scale on In order to use this option , define a list of of specific following either: - https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-multiple-metrics-and-custom-metrics - https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-metrics-not-related-to-kubernetes-objects |
+| nginx.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;extraMetrics | list | `[]` | Optional custom and external metrics for the nginx pods to scale on In order to use this option , define a list of of specific following https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-multiple-metrics-and-custom-metrics and https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-metrics-not-related-to-kubernetes-objects |
 | nginx.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;maxReplicas | int | `30` |  |
 | nginx.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;minReplicas | int | `2` |  |
 | nginx.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;targetCPUUtilizationPercentage | int | `80` |  |
@@ -575,7 +575,7 @@ Kubernetes: `^1.19.0-0`
 | querier.&ZeroWidthSpace;annotations | object | `{}` |  |
 | querier.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;behavior | object | `{}` | Ref: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#support-for-configurable-scaling-behavior |
 | querier.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;enabled | bool | `false` | Creates a HorizontalPodAutoscaler for the querier pods. |
-| querier.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;extraMetrics | list | `[]` | Optional custom and external metrics for the querier pods to scale on In order to use this option , define a list of of specific following either: - https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-multiple-metrics-and-custom-metrics - https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-metrics-not-related-to-kubernetes-objects |
+| querier.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;extraMetrics | list | `[]` | Optional custom and external metrics for the querier pods to scale on In order to use this option , define a list of of specific following https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-multiple-metrics-and-custom-metrics and https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-metrics-not-related-to-kubernetes-objects |
 | querier.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;maxReplicas | int | `30` |  |
 | querier.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;minReplicas | int | `2` |  |
 | querier.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;targetCPUUtilizationPercentage | int | `80` |  |
@@ -718,7 +718,7 @@ Kubernetes: `^1.19.0-0`
 | ruler.&ZeroWidthSpace;annotations | object | `{}` |  |
 | ruler.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;behavior | object | `{}` | Ref: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#support-for-configurable-scaling-behavior |
 | ruler.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;enabled | bool | `false` | Creates a HorizontalPodAutoscaler for the ruler. |
-| ruler.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;extraMetrics | list | `[]` | Optional custom and external metrics for the ruler pods to scale on In order to use this option , define a list of of specific following either: - https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-multiple-metrics-and-custom-metrics - https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-metrics-not-related-to-kubernetes-objects |
+| ruler.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;extraMetrics | list | `[]` | Optional custom and external metrics for the ruler pods to scale on In order to use this option , define a list of of specific following https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-multiple-metrics-and-custom-metrics and https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-metrics-not-related-to-kubernetes-objects |
 | ruler.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;maxReplicas | int | `30` |  |
 | ruler.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;minReplicas | int | `2` |  |
 | ruler.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;targetCPUUtilizationPercentage | int | `80` |  |
@@ -797,7 +797,7 @@ Kubernetes: `^1.19.0-0`
 | store_gateway.&ZeroWidthSpace;annotations | object | `{}` |  |
 | store_gateway.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;behavior | object | `{}` | Ref: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#support-for-configurable-scaling-behavior |
 | store_gateway.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;enabled | bool | `false` |  |
-| store_gateway.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;extraMetrics | list | `[]` | Optional custom and external metrics for the store gateway pods to scale on In order to use this option , define a list of of specific following either: - https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-multiple-metrics-and-custom-metrics - https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-metrics-not-related-to-kubernetes-objects |
+| store_gateway.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;extraMetrics | list | `[]` | Optional custom and external metrics for the store gateway pods to scale on In order to use this option , define a list of of specific following https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-multiple-metrics-and-custom-metrics and https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-metrics-not-related-to-kubernetes-objects |
 | store_gateway.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;maxReplicas | int | `30` |  |
 | store_gateway.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;minReplicas | int | `3` |  |
 | store_gateway.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;targetMemoryUtilizationPercentage | int | `80` |  |
