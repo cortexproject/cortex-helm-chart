@@ -378,7 +378,7 @@ distributor:
     # - https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-metrics-not-related-to-kubernetes-objects
     #
     # For example: <br>
-    # 
+    #
     # <code>
     # - type: External <br>
     # &nbsp; external: <br>
@@ -522,7 +522,7 @@ ingester:
     # - https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-metrics-not-related-to-kubernetes-objects
     #
     # For example: <br>
-    # 
+    #
     # <code>
     # - type: External <br>
     # &nbsp; external: <br>
@@ -670,7 +670,7 @@ ruler:
     # - https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-metrics-not-related-to-kubernetes-objects
     #
     # For example: <br>
-    # 
+    #
     # <code>
     # - type: External <br>
     # &nbsp; external: <br>
@@ -839,7 +839,7 @@ querier:
     # - https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-metrics-not-related-to-kubernetes-objects
     #
     # For example: <br>
-    # 
+    #
     # <code>
     # - type: External <br>
     # &nbsp; external: <br>
@@ -1379,7 +1379,7 @@ nginx:
     # - https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-metrics-not-related-to-kubernetes-objects
     #
     # For example: <br>
-    # 
+    #
     # <code>
     # - type: External <br>
     # &nbsp; external: <br>
@@ -1460,7 +1460,7 @@ store_gateway:
     # - https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-metrics-not-related-to-kubernetes-objects
     #
     # For example: <br>
-    # 
+    #
     # <code>
     # - type: External <br>
     # &nbsp; external: <br>
