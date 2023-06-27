@@ -21,6 +21,9 @@ spec:
         target:
           type: Utilization
           averageUtilization: {{ .targetMemoryUtilizationPercentage }}
+  {{- with .extraMetrics }}
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
   {{- with .behavior }}
   behavior:
     {{- toYaml . | nindent 4 }}
