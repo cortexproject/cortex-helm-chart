@@ -19,8 +19,16 @@ spec:
   ports:
     - port: {{ .Values.config.server.grpc_listen_port }}
       protocol: TCP
-      name: grpc
-      targetPort: grpc
+      name: http-metrics
+      targetPort: http-metrics
+    - port: 9094
+      protocol: UDP
+      name: alert-clu-udp
+      targetPort: alert-clu-udp
+    - port: 9094
+      protocol: TCP
+      name: alert-clu-tcp
+      targetPort: alert-clu-tcp
   selector:
     {{- include "cortex.alertmanagerSelectorLabels" . | nindent 4 }}
 {{- end -}}

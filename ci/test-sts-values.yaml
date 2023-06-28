@@ -119,7 +119,7 @@ runtimeconfigmap:
   annotations:
     foo: bar
 alertmanager:
-  replicas: 1
+  replicas: 3
   statefulSet:
     enabled: true
   extraVolumes:
