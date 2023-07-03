@@ -156,9 +156,12 @@ spec:
             - "-config.file=/etc/cortex/cortex.yaml"
             {{- if gt (int .Values.alertmanager.replicas) 1}}
             {{- $fullName := include "cortex.alertmanagerFullname" . }}
+            {{- $peers := list }}
             {{- range $i := until (int .Values.alertmanager.replicas) }}
-            - "-alertmanager.cluster.peers={{ $fullName }}-{{ $i }}.{{ $fullName }}-headless.{{ $.Release.Namespace }}.svc.cluster.local:{{ $svcClusterPort }}"
+	      {{- $peer := printf "%s-%d.%s-headless.%s.svc.cluster.local:%s" $fullName $i $.Release.Namespace $.Release.Namespace $svcClusterPort }}
+              {{- $peers = append $peers $peer }}
             {{- end }}
+            - "-alertmanager.cluster.peers={{ join "," $peers }}"
             {{- end }}
             {{- range $key, $value := .Values.alertmanager.extraArgs }}
             - "-{{ $key }}={{ $value }}"
