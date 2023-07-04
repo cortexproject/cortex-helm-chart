@@ -154,11 +154,11 @@ spec:
           args:
             - "-target=alertmanager"
             - "-config.file=/etc/cortex/cortex.yaml"
-            {{- if gt (int .Values.alertmanager.replicas) 1}}
+            {{- if and (gt (int .Values.alertmanager.replicas) 1) (ne .Values.config.alertmanager.cluster.listen_address "") }}
             {{- $fullName := include "cortex.alertmanagerFullname" . }}
             {{- $peers := list }}
             {{- range $i := until (int .Values.alertmanager.replicas) }}
-	      {{- $peer := printf "%s-%d.%s-headless.%s.svc.cluster.local:%s" $fullName $i $.Release.Namespace $.Release.Namespace $svcClusterPort }}
+	      {{- $peer := printf "%s-%d.%s-headless.%s.svc.cluster.local:%s" $fullName $i $fullName $.Release.Namespace $svcClusterPort }}
               {{- $peers = append $peers $peer }}
             {{- end }}
             - "-alertmanager.cluster.peers={{ join "," $peers }}"
