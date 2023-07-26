@@ -1,5 +1,4 @@
 {{- if .Values.alertmanager.enabled -}}
-{{- if .Values.alertmanager.statefulSet.enabled -}}
 apiVersion: v1
 kind: Service
 metadata:
@@ -31,5 +30,4 @@ spec:
       targetPort: alert-clu-tcp
   selector:
     {{- include "cortex.alertmanagerSelectorLabels" . | nindent 4 }}
-{{- end -}}
 {{- end -}}
