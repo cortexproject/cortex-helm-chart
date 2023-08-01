@@ -162,6 +162,8 @@ Kubernetes: `^1.19.0-0`
 | alertmanager.&ZeroWidthSpace;terminationGracePeriodSeconds | int | `60` |  |
 | alertmanager.&ZeroWidthSpace;tolerations | list | `[]` | Tolerations for pod assignment ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/ |
 | alertmanager.&ZeroWidthSpace;topologySpreadConstraints | list | `[]` |  |
+| auth_gateway.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;enabled | bool | `false` |  |
+| auth_gateway.&ZeroWidthSpace;enabled | bool | `false` |  |
 | clusterDomain | string | `"cluster.local"` | Kubernetes cluster DNS domain |
 | compactor.&ZeroWidthSpace;affinity.&ZeroWidthSpace;podAntiAffinity.&ZeroWidthSpace;preferredDuringSchedulingIgnoredDuringExecution[0].&ZeroWidthSpace;podAffinityTerm.&ZeroWidthSpace;labelSelector.&ZeroWidthSpace;matchExpressions[0].&ZeroWidthSpace;key | string | `"app.kubernetes.io/component"` |  |
 | compactor.&ZeroWidthSpace;affinity.&ZeroWidthSpace;podAntiAffinity.&ZeroWidthSpace;preferredDuringSchedulingIgnoredDuringExecution[0].&ZeroWidthSpace;podAffinityTerm.&ZeroWidthSpace;labelSelector.&ZeroWidthSpace;matchExpressions[0].&ZeroWidthSpace;operator | string | `"In"` |  |
