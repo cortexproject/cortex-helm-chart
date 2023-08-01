@@ -1,0 +1,104 @@
+{{- if .Values.auth_gateway.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "cortex.authGatewayFullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "cortex.authGatewayLabels" . | nindent 4 }}
+  annotations:
+    {{- toYaml .Values.auth_gateway.annotations | nindent 4 }}
+spec:
+  {{- if not .Values.auth_gateway.autoscaling.enabled }}
+  replicas: {{ .Values.auth_gateway.replicas }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "cortex.authGatewaySelectorLabels" . | nindent 6 }}
+  strategy:
+    {{- toYaml .Values.auth_gateway.strategy | nindent 4 }}
+  template:
+    metadata:
+      labels:
+        {{- include "cortex.authGatewayLabels" . | nindent 8 }}
+        {{- with .Values.auth_gateway.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/auth-gateway/auth-gateway-config.yaml") . | sha256sum }}
+        {{- with .Values.auth_gateway.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      serviceAccountName: {{ .Values.auth_gateway.serviceAccount.name | default (include "cortex.serviceAccountName" . ) }}
+      {{- if .Values.auth_gateway.priorityClassName }}
+      priorityClassName: {{ .Values.auth_gateway.priorityClassName }}
+      {{- end }}
+      {{- if .Values.auth_gateway.securityContext.enabled }}
+      securityContext: {{- omit .Values.auth_gateway.securityContext "enabled" | toYaml | nindent 8 }}
+      {{- end }}
+      initContainers:
+        {{- toYaml .Values.auth_gateway.initContainers | nindent 8 }}
+      {{- if .Values.image.pullSecrets }}
+      imagePullSecrets:
+      {{- range .Values.image.pullSecrets }}
+        - name: {{ . }}
+      {{- end }}
+      {{- end }}
+      containers:
+        - name: auth-gateway
+          image: "{{ .Values.auth_gateway.image.repository }}:{{ .Values.auth_gateway.image.tag }}"
+          imagePullPolicy: {{ .Values.auth_gateway.image.pullPolicy }}
+          {{- if .Values.auth_gateway.extraArgs }}
+          args:
+          {{- range $key, $value := .Values.auth_gateway.extraArgs }}
+            - "-{{ $key }}={{ $value }}"
+          {{- end }}
+          {{- end }}
+          volumeMounts:
+            {{- if .Values.auth_gateway.extraVolumeMounts }}
+            {{- toYaml .Values.auth_gateway.extraVolumeMounts | nindent 12}}
+            {{- end }}
+            - name: config
+              mountPath: /etc/auth-gateway
+          ports:
+            - name: http-metrics
+              containerPort: {{ .Values.auth_gateway.http_listen_port }}
+              protocol: TCP
+          startupProbe:
+            {{- toYaml .Values.auth_gateway.startupProbe | nindent 12 }}
+          livenessProbe:
+            {{- toYaml .Values.auth_gateway.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.auth_gateway.readinessProbe | nindent 12 }}
+          resources:
+            {{- toYaml .Values.auth_gateway.resources | nindent 12 }}
+          {{- if .Values.auth_gateway.containerSecurityContext.enabled }}
+          securityContext: {{- omit .Values.auth_gateway.containerSecurityContext "enabled" | toYaml | nindent 12 }}
+          {{- end }}
+          {{- if .Values.auth_gateway.env }}
+          env:
+            {{- toYaml .Values.auth_gateway.env | nindent 12 }}
+          {{- end }}
+        {{- if .Values.auth_gateway.extraContainers }}
+        {{- toYaml .Values.auth_gateway.extraContainers | nindent 8}}
+        {{- end }}
+      nodeSelector:
+        {{- toYaml .Values.auth_gateway.nodeSelector | nindent 8 }}
+      {{- if .Values.auth_gateway.topologySpreadConstraints }}
+      topologySpreadConstraints:
+      {{- toYaml .Values.auth_gateway.topologySpreadConstraints | nindent 8}}
+      {{- end }}
+      affinity:
+        {{- toYaml .Values.auth_gateway.affinity | nindent 8 }}
+      tolerations:
+        {{- toYaml .Values.auth_gateway.tolerations | nindent 8 }}
+      terminationGracePeriodSeconds: {{ .Values.auth_gateway.terminationGracePeriodSeconds }}
+      volumes:
+        - name: config
+          configMap:
+            name: {{ template "cortex.fullname" . }}-auth-gateway
+        {{- if .Values.auth_gateway.extraVolumes }}
+        {{- toYaml .Values.auth_gateway.extraVolumes | nindent 8}}
+        {{- end }}
+{{- end }}

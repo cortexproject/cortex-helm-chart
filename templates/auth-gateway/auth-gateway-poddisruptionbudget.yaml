@@ -1,0 +1,14 @@
+{{- if and (.Values.auth_gateway.enabled) (gt (int .Values.auth_gateway.replicas) 1) (.Values.auth_gateway.podDisruptionBudget) }}
+apiVersion: {{ include "cortex.pdbVersion" . }}
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "cortex.authGatewayFullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "cortex.authGatewayLabels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "cortex.authGatewaySelectorLabels" . | nindent 6 }}
+  {{- toYaml .Values.auth_gateway.podDisruptionBudget | nindent 2 }}
+{{- end }}

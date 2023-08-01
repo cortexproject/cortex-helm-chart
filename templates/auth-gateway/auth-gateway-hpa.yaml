@@ -1,0 +1,42 @@
+{{- if and .Values.auth_gateway.enabled .Values.auth_gateway.autoscaling.enabled }}
+{{- with .Values.auth_gateway.autoscaling -}}
+apiVersion: {{ include "cortex.hpaVersion" $ }}
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ include "cortex.authGatewayFullname" $ }}
+  namespace: {{ $.Release.Namespace }}
+  labels:
+    {{- include "cortex.authGatewayLabels" $ | nindent 4 }}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ include "cortex.authGatewayFullname" $ }}
+  minReplicas: {{ .minReplicas }}
+  maxReplicas: {{ .maxReplicas }}
+  metrics:
+  {{- with .targetMemoryUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: {{ . }}
+  {{- end }}
+  {{- with .targetCPUUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: {{ . }}
+  {{- end }}
+  {{- with .extraMetrics }}
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .behavior }}
+  behavior:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+{{- end }}
+{{- end }}
