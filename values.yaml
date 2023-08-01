@@ -1183,6 +1183,8 @@ purger:
 
 auth_gateway:
   enabled: false
+  autoscaling:
+    enabled: false
 
 nginx:
   enabled: true
