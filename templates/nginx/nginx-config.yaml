@@ -131,6 +131,14 @@ data:
           proxy_pass      http://{{ template "cortex.fullname" . }}-ruler.{{ $rootDomain }}$request_uri;
         }
 
+        {{- if .Values.ruler.list_all_rule_groups_api }}
+
+        location ~ /ruler/rule_groups {
+          proxy_pass      http://{{ template "cortex.fullname" . }}-ruler.{{ $rootDomain }}$request_uri;
+        }
+
+        {{- end }}
+
         location ~ /api/prom/rules {
           proxy_pass      http://{{ template "cortex.fullname" . }}-ruler.{{ $rootDomain }}$request_uri;
         }

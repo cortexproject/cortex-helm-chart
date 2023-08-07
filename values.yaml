@@ -722,6 +722,8 @@ ruler:
       enabled: true
       readOnlyRootFilesystem: true
 
+  list_all_rule_groups_api: false
+
 querier:
   enabled: true
   replicas: 2
