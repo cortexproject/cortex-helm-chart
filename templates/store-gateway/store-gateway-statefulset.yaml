@@ -10,7 +10,9 @@ metadata:
   annotations:
     {{- toYaml .Values.store_gateway.annotations | nindent 4 }}
 spec:
+  {{- if not .Values.store_gateway.autoscaling.enabled }}
   replicas: {{ .Values.store_gateway.replicas }}
+  {{- end }}
   selector:
     matchLabels:
       {{- include "cortex.storeGatewaySelectorLabels" . | nindent 6 }}
