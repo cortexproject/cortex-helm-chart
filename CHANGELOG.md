@@ -3,6 +3,7 @@
 ## master / unreleased
 
 * [ENHANCEMENT] Add option to autoscale on multiple metrics and custom metrics metrics #467
+* [ENHANCEMENT] Add control on store-gateway statefulset when autoscale (HPA) enabled or disabled #472
 * [DEPENDENCY] Update quay.io/cortexproject/cortex Docker tag to v1.15.0 #453
 * [DEPENDENCY] Update quay.io/cortexproject/cortex Docker tag to v1.15.1 #456
 * [DEPENDENCY] Update quay.io/cortexproject/cortex Docker tag to v1.15.2 #459
