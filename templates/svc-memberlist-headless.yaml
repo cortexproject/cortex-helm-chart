@@ -16,6 +16,7 @@ spec:
   ports:
     - port: {{ .Values.config.memberlist.bind_port }}
       protocol: TCP
+      appProtocol: tcp
       name: gossip
       targetPort: gossip
   selector:
