@@ -2,7 +2,7 @@
 
 ## master / unreleased
 
-* [ENHANCEMENT] Add `appProtocol` field to templates/svc-memberlist-headless.yaml to fix issues wirth Istio
+* [ENHANCEMENT] Add `appProtocol` field to templates/svc-memberlist-headless.yaml to fix issues wirth Istio #485
 * [ENHANCEMENT] Add option to autoscale on multiple metrics and custom metrics metrics #467
 * [ENHANCEMENT] Add control on store-gateway statefulset when autoscale (HPA) enabled or disabled #472
 * [DEPENDENCY] Update quay.io/cortexproject/cortex Docker tag to v1.15.0 #453
