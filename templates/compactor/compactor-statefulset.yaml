@@ -1,4 +1,3 @@
-{{- if eq .Values.config.storage.engine "blocks" -}}
 {{- if .Values.compactor.enabled -}}
 apiVersion: apps/v1
 kind: StatefulSet
@@ -141,5 +140,4 @@ spec:
           env:
             {{- toYaml .Values.compactor.env | nindent 12 }}
           {{- end }}
-{{- end -}}
 {{- end -}}
