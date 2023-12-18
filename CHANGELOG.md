@@ -10,7 +10,7 @@
 * [DEPENDENCY] Update quay.io/cortexproject/cortex Docker tag to v1.15.2 #459
 * [DEPENDENCY] Update quay.io/cortexproject/cortex Docker tag to v1.15.3 #471
 * [BUGFIX] Correctly interpret .Capabilities.KubeVersion when it looks like a prerelease #457
-* [BUGFIX] Fix podTargetLabels in all Prometheus ServiceMonitor CRD's #
+* [BUGFIX] Fix podTargetLabels in all Prometheus ServiceMonitor CRDs #487
 
 ## 2.1.0 / 2023-03-17
 
