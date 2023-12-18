@@ -12,6 +12,7 @@
 * [DEPENDENCY] Update quay.io/cortexproject/cortex Docker tag to v1.15.3 #471
 * [BUGFIX] Correctly interpret .Capabilities.KubeVersion when it looks like a prerelease #457
 * [BUGFIX] Removed non-existent `purger.enable` flags in some components #488
+* [BUGFIX] Fix podTargetLabels in all Prometheus ServiceMonitor CRDs #487
 
 ## 2.1.0 / 2023-03-17
 
