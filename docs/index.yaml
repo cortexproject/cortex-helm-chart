@@ -3,7 +3,7 @@ entries:
   cortex:
   - apiVersion: v2
     appVersion: v1.16.0
-    created: "2024-01-16T14:21:10.40063+07:00"
+    created: "2024-01-16T14:35:02.037142+07:00"
     dependencies:
     - alias: memcached-frontend
       condition: memcached-frontend.enabled
@@ -42,11 +42,11 @@ entries:
     sources:
     - https://github.com/cortexproject/cortex-helm-chart
     urls:
-    - cortex-2.2.0.tgz
+    - https://cortexproject.github.io/cortex-helm-chart/cortex-2.2.0.tgz
     version: 2.2.0
   - apiVersion: v2
     appVersion: v1.14.1
-    created: "2024-01-16T14:21:10.390792+07:00"
+    created: "2024-01-16T14:35:02.027174+07:00"
     dependencies:
     - alias: memcached-frontend
       condition: memcached-frontend.enabled
@@ -85,11 +85,11 @@ entries:
     sources:
     - https://github.com/cortexproject/cortex-helm-chart
     urls:
-    - cortex-2.1.0.tgz
+    - https://cortexproject.github.io/cortex-helm-chart/cortex-2.1.0.tgz
     version: 2.1.0
   - apiVersion: v2
     appVersion: v1.14.1
-    created: "2024-01-16T14:21:10.381143+07:00"
+    created: "2024-01-16T14:35:02.017394+07:00"
     dependencies:
     - alias: memcached-frontend
       condition: memcached-frontend.enabled
@@ -128,11 +128,11 @@ entries:
     sources:
     - https://github.com/cortexproject/cortex-helm-chart
     urls:
-    - cortex-2.0.1.tgz
+    - https://cortexproject.github.io/cortex-helm-chart/cortex-2.0.1.tgz
     version: 2.0.1
   - apiVersion: v2
     appVersion: v1.14.0
-    created: "2024-01-16T14:21:10.370639+07:00"
+    created: "2024-01-16T14:35:02.008289+07:00"
     dependencies:
     - alias: memcached-frontend
       condition: memcached-frontend.enabled
@@ -168,11 +168,11 @@ entries:
     sources:
     - https://github.com/cortexproject/cortex-helm-chart
     urls:
-    - cortex-2.0.0.tgz
+    - https://cortexproject.github.io/cortex-helm-chart/cortex-2.0.0.tgz
     version: 2.0.0
   - apiVersion: v2
     appVersion: v1.13.0
-    created: "2024-01-16T14:21:10.360341+07:00"
+    created: "2024-01-16T14:35:01.998448+07:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -229,11 +229,11 @@ entries:
     sources:
     - https://github.com/cortexproject/cortex-helm-chart
     urls:
-    - cortex-1.7.0.tgz
+    - https://cortexproject.github.io/cortex-helm-chart/cortex-1.7.0.tgz
     version: 1.7.0
   - apiVersion: v2
     appVersion: v1.11.1
-    created: "2024-01-16T14:21:10.349986+07:00"
+    created: "2024-01-16T14:35:01.988532+07:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -290,11 +290,11 @@ entries:
     sources:
     - https://github.com/cortexproject/cortex-helm-chart
     urls:
-    - cortex-1.6.0.tgz
+    - https://cortexproject.github.io/cortex-helm-chart/cortex-1.6.0.tgz
     version: 1.6.0
   - apiVersion: v2
     appVersion: v1.11.1
-    created: "2024-01-16T14:21:10.340199+07:00"
+    created: "2024-01-16T14:35:01.979357+07:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -351,11 +351,11 @@ entries:
     sources:
     - https://github.com/cortexproject/cortex-helm-chart
     urls:
-    - cortex-1.5.1.tgz
+    - https://cortexproject.github.io/cortex-helm-chart/cortex-1.5.1.tgz
     version: 1.5.1
   - apiVersion: v2
     appVersion: v1.11.1
-    created: "2024-01-16T14:21:10.330038+07:00"
+    created: "2024-01-16T14:35:01.969635+07:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -412,11 +412,11 @@ entries:
     sources:
     - https://github.com/cortexproject/cortex-helm-chart
     urls:
-    - cortex-1.5.0.tgz
+    - https://cortexproject.github.io/cortex-helm-chart/cortex-1.5.0.tgz
     version: 1.5.0
   - apiVersion: v2
     appVersion: v1.11.1
-    created: "2024-01-16T14:21:10.319843+07:00"
+    created: "2024-01-16T14:35:01.960096+07:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -473,11 +473,11 @@ entries:
     sources:
     - https://github.com/cortexproject/cortex-helm-chart
     urls:
-    - cortex-1.4.0.tgz
+    - https://cortexproject.github.io/cortex-helm-chart/cortex-1.4.0.tgz
     version: 1.4.0
   - apiVersion: v2
     appVersion: v1.11.0
-    created: "2024-01-16T14:21:10.310867+07:00"
+    created: "2024-01-16T14:35:01.951699+07:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -534,11 +534,11 @@ entries:
     sources:
     - https://github.com/cortexproject/cortex-helm-chart
     urls:
-    - cortex-1.3.0.tgz
+    - https://cortexproject.github.io/cortex-helm-chart/cortex-1.3.0.tgz
     version: 1.3.0
   - apiVersion: v2
     appVersion: v1.11.0
-    created: "2024-01-16T14:21:10.300671+07:00"
+    created: "2024-01-16T14:35:01.941881+07:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -595,11 +595,11 @@ entries:
     sources:
     - https://github.com/cortexproject/cortex-helm-chart
     urls:
-    - cortex-1.2.0.tgz
+    - https://cortexproject.github.io/cortex-helm-chart/cortex-1.2.0.tgz
     version: 1.2.0
   - apiVersion: v2
     appVersion: v1.10.0
-    created: "2024-01-16T14:21:10.291793+07:00"
+    created: "2024-01-16T14:35:01.932465+07:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -656,11 +656,11 @@ entries:
     sources:
     - https://github.com/cortexproject/cortex-helm-chart
     urls:
-    - cortex-1.1.0.tgz
+    - https://cortexproject.github.io/cortex-helm-chart/cortex-1.1.0.tgz
     version: 1.1.0
   - apiVersion: v2
     appVersion: v1.10.0
-    created: "2024-01-16T14:21:10.281825+07:00"
+    created: "2024-01-16T14:35:01.923733+07:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -717,11 +717,11 @@ entries:
     sources:
     - https://github.com/cortexproject/cortex-helm-chart
     urls:
-    - cortex-1.0.1.tgz
+    - https://cortexproject.github.io/cortex-helm-chart/cortex-1.0.1.tgz
     version: 1.0.1
   - apiVersion: v2
     appVersion: v1.10.0
-    created: "2024-01-16T14:21:10.271699+07:00"
+    created: "2024-01-16T14:35:01.914731+07:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -778,11 +778,11 @@ entries:
     sources:
     - https://github.com/cortexproject/cortex-helm-chart
     urls:
-    - cortex-1.0.0.tgz
+    - https://cortexproject.github.io/cortex-helm-chart/cortex-1.0.0.tgz
     version: 1.0.0
   - apiVersion: v2
     appVersion: v1.10.0
-    created: "2024-01-16T14:21:10.261244+07:00"
+    created: "2024-01-16T14:35:01.905251+07:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -839,11 +839,11 @@ entries:
     sources:
     - https://github.com/cortexproject/cortex-helm-chart
     urls:
-    - cortex-0.7.0.tgz
+    - https://cortexproject.github.io/cortex-helm-chart/cortex-0.7.0.tgz
     version: 0.7.0
   - apiVersion: v2
     appVersion: v1.9.0
-    created: "2024-01-16T14:21:10.250739+07:00"
+    created: "2024-01-16T14:35:01.895099+07:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -896,11 +896,11 @@ entries:
     sources:
     - https://github.com/cortexproject/cortex-helm-chart
     urls:
-    - cortex-0.6.0.tgz
+    - https://cortexproject.github.io/cortex-helm-chart/cortex-0.6.0.tgz
     version: 0.6.0
   - apiVersion: v2
     appVersion: v1.9.0
-    created: "2024-01-16T14:21:10.240324+07:00"
+    created: "2024-01-16T14:35:01.885597+07:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -953,11 +953,11 @@ entries:
     sources:
     - https://github.com/cortexproject/cortex-helm-chart
     urls:
-    - cortex-0.5.0.tgz
+    - https://cortexproject.github.io/cortex-helm-chart/cortex-0.5.0.tgz
     version: 0.5.0
   - apiVersion: v2
     appVersion: v1.7.0
-    created: "2024-01-16T14:21:10.231958+07:00"
+    created: "2024-01-16T14:35:01.878123+07:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -1009,11 +1009,11 @@ entries:
     sources:
     - https://github.com/cortexproject/cortex-helm-chart
     urls:
-    - cortex-0.4.1.tgz
+    - https://cortexproject.github.io/cortex-helm-chart/cortex-0.4.1.tgz
     version: 0.4.1
   - apiVersion: v2
     appVersion: v1.7.0
-    created: "2024-01-16T14:21:10.224999+07:00"
+    created: "2024-01-16T14:35:01.871266+07:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -1065,11 +1065,11 @@ entries:
     sources:
     - https://github.com/cortexproject/cortex-helm-chart
     urls:
-    - cortex-0.4.0.tgz
+    - https://cortexproject.github.io/cortex-helm-chart/cortex-0.4.0.tgz
     version: 0.4.0
   - apiVersion: v2
     appVersion: v1.6.0
-    created: "2024-01-16T14:21:10.217757+07:00"
+    created: "2024-01-16T14:35:01.864908+07:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -1121,11 +1121,11 @@ entries:
     sources:
     - https://github.com/cortexproject/cortex-helm-chart
     urls:
-    - cortex-0.3.0.tgz
+    - https://cortexproject.github.io/cortex-helm-chart/cortex-0.3.0.tgz
     version: 0.3.0
   - apiVersion: v2
     appVersion: v1.4.0
-    created: "2024-01-16T14:21:10.211204+07:00"
+    created: "2024-01-16T14:35:01.858958+07:00"
     dependencies:
     - alias: memcached
       condition: memcached.enabled
@@ -1154,6 +1154,6 @@ entries:
     sources:
     - https://github.com/cortexproject/cortex-helm-chart
     urls:
-    - cortex-0.2.0.tgz
+    - https://cortexproject.github.io/cortex-helm-chart/cortex-0.2.0.tgz
     version: 0.2.0
-generated: "2024-01-16T14:21:10.186049+07:00"
+generated: "2024-01-16T14:35:01.829071+07:00"
