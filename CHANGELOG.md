@@ -2,6 +2,8 @@
 
 ## master / unreleased
 
+## 2.2.0 / 2024-01-16
+
 * [CHANGE] Removed `config.storage.engine` and any reference of it #488
 * [ENHANCEMENT] Add `appProtocol` field to templates/svc-memberlist-headless.yaml to fix issues wirth Istio #485
 * [ENHANCEMENT] Add option to autoscale on multiple metrics and custom metrics metrics #467
