@@ -126,6 +126,10 @@ config:
   runtime_config:
     file: /etc/cortex-runtime-config/runtime_config.yaml
   alertmanager:
+    # -- Enable alertmanager gossip cluster
+    # -- Disable alertmanager gossip cluster by setting empty listen_address to empty string
+    cluster:
+      listen_address: '0.0.0.0:9094'
     # -- Enable the experimental alertmanager config api.
     enable_api: false
     external_url: '/api/prom/alertmanager'
