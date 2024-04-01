@@ -1,4 +1,4 @@
-{{- if and (eq .Values.config.storage.engine "blocks") (.Values.store_gateway.enabled) -}}
+{{- if .Values.store_gateway.enabled -}}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -10,7 +10,9 @@ metadata:
   annotations:
     {{- toYaml .Values.store_gateway.annotations | nindent 4 }}
 spec:
+  {{- if not .Values.store_gateway.autoscaling.enabled }}
   replicas: {{ .Values.store_gateway.replicas }}
+  {{- end }}
   selector:
     matchLabels:
       {{- include "cortex.storeGatewaySelectorLabels" . | nindent 6 }}

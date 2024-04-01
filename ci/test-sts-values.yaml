@@ -12,9 +12,6 @@ config:
         kvstore:
           store: "memberlist"
 
-  # See https://github.com/cortexproject/cortex/blob/master/docs/configuration/config-file-reference.md#storage_config
-  storage:
-    engine: blocks
   blocks_storage:
     backend: "filesystem"
     tsdb:

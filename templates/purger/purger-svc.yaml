@@ -1,4 +1,3 @@
-{{- if eq .Values.config.storage.engine "blocks" -}}
 {{- if .Values.purger.enabled -}}
 apiVersion: v1
 kind: Service
@@ -21,5 +20,4 @@ spec:
       targetPort: http-metrics
   selector:
     {{- include "cortex.purgerSelectorLabels" . | nindent 4 }}
-{{- end -}}
 {{- end -}}

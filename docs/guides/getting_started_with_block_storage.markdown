@@ -29,8 +29,6 @@ config:
       bucket_name: # your bucket name
       region: us-east-1
       endpoint: s3.us-east-1.amazonaws.com
-  storage:
-    engine: blocks
   blocks_storage:
     backend: s3
     s3:

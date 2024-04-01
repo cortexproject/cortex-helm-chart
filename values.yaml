@@ -76,9 +76,6 @@ config:
     grpc_client_config:
       max_recv_msg_size: 10485760
       max_send_msg_size: 10485760
-  # -- See https://github.com/cortexproject/cortex/blob/master/docs/configuration/config-file-reference.md#storage_config
-  storage:
-    engine: blocks
   blocks_storage:
     tsdb:
       dir: /data/tsdb
@@ -109,7 +106,7 @@ config:
     # form a ring and addresses are picked from the ring).
     # @default -- automatic
     store_gateway_addresses: |-
-      {{ if and (eq .Values.config.storage.engine "blocks") (not .Values.config.store_gateway.sharding_enabled) -}}
+      {{ if not .Values.config.store_gateway.sharding_enabled -}}
       dns+{{ include "cortex.storeGatewayFullname" $ }}-headless:9095
       {{- end }}
   query_range:
