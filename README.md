@@ -216,6 +216,7 @@ Kubernetes: `^1.19.0-0`
 | compactor.&ZeroWidthSpace;terminationGracePeriodSeconds | int | `240` |  |
 | compactor.&ZeroWidthSpace;tolerations | list | `[]` |  |
 | compactor.&ZeroWidthSpace;topologySpreadConstraints | list | `[]` |  |
+| config.&ZeroWidthSpace;alertmanager.&ZeroWidthSpace;cluster | object | `{"listen_address":"0.0.0.0:9094"}` | Disable alertmanager gossip cluster by setting empty listen_address to empty string |
 | config.&ZeroWidthSpace;alertmanager.&ZeroWidthSpace;enable_api | bool | `false` | Enable the experimental alertmanager config api. |
 | config.&ZeroWidthSpace;alertmanager.&ZeroWidthSpace;external_url | string | `"/api/prom/alertmanager"` |  |
 | config.&ZeroWidthSpace;api.&ZeroWidthSpace;prometheus_http_prefix | string | `"/prometheus"` |  |
