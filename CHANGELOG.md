@@ -2,7 +2,7 @@
 
 ## master / unreleased
 
-* [CHANGE] change alertmanager-svc-headless from http to grpc port #435
+* [CHANGE] change alertmanager-svc-headless from HTTP to gRPC port #494
 
 ## 2.2.0 / 2024-01-16
 
