@@ -2,7 +2,8 @@
 
 ## master / unreleased
 
-* [CHANGE] change alertmanager-svc-headless from HTTP to gRPC port #494
+* [CHANGE] Replace `http-metrics` port with `grpc` port #494 
+* [CHANGE] Expose 9094 TCP and UDP for gossip cluster #494
 
 ## 2.2.0 / 2024-01-16
 
