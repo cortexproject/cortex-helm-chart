@@ -2,6 +2,8 @@
 
 ## master / unreleased
 
+## 2.2.1 / 2024-04-12
+
 * [ENHANCEMENT] Alertmanager: Add `grpc` port #494 
 * [ENHANCEMENT] Alertmanager: Expose 9094 TCP and UDP for gossip cluster #494
   * If the AlertManager headless service existed prior to applying the change, it will have only one port set, which is a known issue. See [kubernetes/kubernetes#39188](https://github.com/kubernetes/kubernetes/issues/39188). Re-creating the headless service can resolve this issue 
