@@ -2,6 +2,9 @@
 
 ## master / unreleased
 
+* [DEPENDENCY] Update quay.io/cortexproject/cortex Docker tag to v1.17.0
+* [DEPENDENCY] Update quay.io/cortexproject/cortex Docker tag to v1.17.1
+
 ## 2.3.0 / 2024-04-12
 
 * [ENHANCEMENT] Alertmanager: Add `grpc` port #494 
