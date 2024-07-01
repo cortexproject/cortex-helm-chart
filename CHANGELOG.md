@@ -2,6 +2,7 @@
 
 ## master / unreleased
 
+* [CHANGE] Removed the default `livenessProbe` for store-gateway and compactor. You can still use a `livenessProbe` but we advise against it #502
 * [DEPENDENCY] Update quay.io/cortexproject/cortex Docker tag to v1.17.1 #501
 
 ## 2.3.0 / 2024-04-12
