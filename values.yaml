@@ -1410,11 +1410,7 @@ store_gateway:
       path: /ready
       port: http-metrics
       scheme: HTTP
-  livenessProbe:
-    httpGet:
-      path: /ready
-      port: http-metrics
-      scheme: HTTP
+  livenessProbe: {}
   readinessProbe:
     httpGet:
       path: /ready
@@ -1530,11 +1526,7 @@ compactor:
       path: /ready
       port: http-metrics
       scheme: HTTP
-  livenessProbe:
-    httpGet:
-      path: /ready
-      port: http-metrics
-      scheme: HTTP
+  livenessProbe: {}
   readinessProbe:
     httpGet:
       path: /ready

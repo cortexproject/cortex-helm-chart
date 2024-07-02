@@ -179,9 +179,7 @@ Kubernetes: `^1.19.0-0`
 | compactor.&ZeroWidthSpace;extraVolumeMounts | list | `[]` |  |
 | compactor.&ZeroWidthSpace;extraVolumes | list | `[]` |  |
 | compactor.&ZeroWidthSpace;initContainers | list | `[]` |  |
-| compactor.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
-| compactor.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
-| compactor.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;scheme | string | `"HTTP"` |  |
+| compactor.&ZeroWidthSpace;livenessProbe | object | `{}` |  |
 | compactor.&ZeroWidthSpace;nodeSelector | object | `{}` |  |
 | compactor.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;accessModes | list | `["ReadWriteOnce"]` | compactor data Persistent Volume access modes Must match those of existing PV or dynamic provisioner Ref: http://kubernetes.io/docs/user-guide/persistent-volumes/ |
 | compactor.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;annotations | object | `{}` | compactor data Persistent Volume Claim annotations |
@@ -811,9 +809,7 @@ Kubernetes: `^1.19.0-0`
 | store_gateway.&ZeroWidthSpace;extraVolumeMounts | list | `[]` |  |
 | store_gateway.&ZeroWidthSpace;extraVolumes | list | `[]` |  |
 | store_gateway.&ZeroWidthSpace;initContainers | list | `[]` |  |
-| store_gateway.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
-| store_gateway.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
-| store_gateway.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;scheme | string | `"HTTP"` |  |
+| store_gateway.&ZeroWidthSpace;livenessProbe | object | `{}` |  |
 | store_gateway.&ZeroWidthSpace;nodeSelector | object | `{}` |  |
 | store_gateway.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;accessModes | list | `["ReadWriteOnce"]` | Store-gateway data Persistent Volume access modes Must match those of existing PV or dynamic provisioner Ref: http://kubernetes.io/docs/user-guide/persistent-volumes/ |
 | store_gateway.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;annotations | object | `{}` | Store-gateway data Persistent Volume Claim annotations |
