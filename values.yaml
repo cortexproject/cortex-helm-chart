@@ -1196,6 +1196,8 @@ nginx:
     mainSnippet: ""
     # -- arbitrary snippet to inject in the server { } section of the nginx config
     serverSnippet: ""
+    # -- protocol for the communication with the upstream
+    upstream_protocol: http
     setHeaders: {}
     # -- Optional list of [auth tenants](https://cortexmetrics.io/docs/guides/auth/) to set in the nginx config
     auth_orgs: []

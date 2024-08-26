@@ -439,6 +439,7 @@ Kubernetes: `^1.19.0-0`
 | nginx.&ZeroWidthSpace;config.&ZeroWidthSpace;mainSnippet | string | `""` | arbitrary snippet to inject in the top section of the nginx config |
 | nginx.&ZeroWidthSpace;config.&ZeroWidthSpace;serverSnippet | string | `""` | arbitrary snippet to inject in the server { } section of the nginx config |
 | nginx.&ZeroWidthSpace;config.&ZeroWidthSpace;setHeaders | object | `{}` |  |
+| nginx.&ZeroWidthSpace;config.&ZeroWidthSpace;upstream_protocol | string | `"http"` | protocol for the communication with the upstream |
 | nginx.&ZeroWidthSpace;config.&ZeroWidthSpace;verboseLogging | bool | `true` | Enables all access logs from nginx, otherwise ignores 2XX and 3XX status codes |
 | nginx.&ZeroWidthSpace;containerSecurityContext.&ZeroWidthSpace;enabled | bool | `true` |  |
 | nginx.&ZeroWidthSpace;containerSecurityContext.&ZeroWidthSpace;readOnlyRootFilesystem | bool | `false` |  |
