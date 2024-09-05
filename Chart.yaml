@@ -9,7 +9,7 @@ maintainers:
   - email: thayward@infoblox.com
     name: Tom Hayward
     url: https://github.com/kd7lxl
-  - email: Niclas.Schad@mail.schwarz
+  - email: niclas.schad@stackit.cloud
     name: Niclas Schad
     url: https://github.com/nschad
 name: cortex

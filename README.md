@@ -13,7 +13,7 @@ Horizontally scalable, highly available, multi-tenant, long term Prometheus.
 | Name | Email | Url |
 | ---- | ------ | --- |
 | Tom Hayward | <thayward@infoblox.com> | <https://github.com/kd7lxl> |
-| Niclas Schad | <Niclas.Schad@mail.schwarz> | <https://github.com/nschad> |
+| Niclas Schad | <niclas.schad@stackit.cloud> | <https://github.com/nschad> |
 
 ## Documentation
 
