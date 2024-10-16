@@ -2,8 +2,9 @@
 
 ## master / unreleased
 
-* [BUGFIX] fix: upstream_protocol reference in auth_orgs #509
 * [ENHANCEMENT] Add `nginx.config.upstream_protocol` field to configure the upstream protocol in the nginx configuration #506
+* [BUGFIX] fix: upstream_protocol reference in auth_orgs #509
+* [DEPENDENCY] Update quay.io/cortexproject/cortex Docker tag to v1.18.1 #510
 
 ## 2.4.0 / 2024-07-18
 
