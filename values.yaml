@@ -111,7 +111,7 @@ config:
       {{- end }}
   query_range:
     split_queries_by_interval: 24h
-    align_queries_with_step: true
+    align_queries_with_step: false
     cache_results: true
     results_cache:
       cache:
