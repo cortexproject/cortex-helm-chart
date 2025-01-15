@@ -21,6 +21,12 @@ spec:
   podManagementPolicy: {{ .Values.store_gateway.podManagementPolicy | quote }}
   serviceName: {{ template "cortex.fullname" . }}-store-gateway-headless
   {{- if .Values.store_gateway.persistentVolume.enabled }}
+  {{- if semverCompare ">=1.23-0" .Capabilities.KubeVersion.Version }}
+  {{- with .Values.store_gateway.persistentVolume.retentionPolicy }}
+  persistentVolumeClaimRetentionPolicy:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- end }}
   volumeClaimTemplates:
     - metadata:
         name: storage

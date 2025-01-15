@@ -113,6 +113,7 @@ Kubernetes: `^1.19.0-0`
 | alertmanager.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;accessModes | list | `["ReadWriteOnce"]` | Alertmanager data Persistent Volume access modes Must match those of existing PV or dynamic provisioner Ref: http://kubernetes.io/docs/user-guide/persistent-volumes/ |
 | alertmanager.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;annotations | object | `{}` | Alertmanager data Persistent Volume Claim annotations |
 | alertmanager.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;enabled | bool | `true` | If true and alertmanager.statefulSet.enabled is true, Alertmanager will create/use a Persistent Volume Claim If false, use emptyDir |
+| alertmanager.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;retentionPolicy | object | `{}` | StatefulSetAutoDeletePVC feature https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#persistentvolumeclaim-retention |
 | alertmanager.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;size | string | `"2Gi"` | Alertmanager data Persistent Volume size |
 | alertmanager.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;storageClass | string | `nil` | Alertmanager data Persistent Volume Storage Class If defined, storageClassName: <storageClass> If set to "-", storageClassName: "", which disables dynamic provisioning If undefined (the default) or set to null, no storageClassName spec is set, choosing the default provisioner. |
 | alertmanager.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;subPath | string | `""` | Subdirectory of Alertmanager data Persistent Volume to mount Useful if the volume's root directory is not empty |
@@ -184,6 +185,7 @@ Kubernetes: `^1.19.0-0`
 | compactor.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;accessModes | list | `["ReadWriteOnce"]` | compactor data Persistent Volume access modes Must match those of existing PV or dynamic provisioner Ref: http://kubernetes.io/docs/user-guide/persistent-volumes/ |
 | compactor.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;annotations | object | `{}` | compactor data Persistent Volume Claim annotations |
 | compactor.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;enabled | bool | `true` | If true compactor will create/use a Persistent Volume Claim If false, use emptyDir |
+| compactor.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;retentionPolicy | object | `{}` | StatefulSetAutoDeletePVC feature https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#persistentvolumeclaim-retention |
 | compactor.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;size | string | `"2Gi"` |  |
 | compactor.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;storageClass | string | `nil` | compactor data Persistent Volume Storage Class If defined, storageClassName: <storageClass> If set to "-", storageClassName: "", which disables dynamic provisioning If undefined (the default) or set to null, no storageClassName spec is set, choosing the default provisioner. |
 | compactor.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;subPath | string | `""` | Subdirectory of compactor data Persistent Volume to mount Useful if the volume's root directory is not empty |
@@ -346,6 +348,7 @@ Kubernetes: `^1.19.0-0`
 | ingester.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;accessModes | list | `["ReadWriteOnce"]` | Ingester data Persistent Volume access modes Must match those of existing PV or dynamic provisioner Ref: http://kubernetes.io/docs/user-guide/persistent-volumes/ |
 | ingester.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;annotations | object | `{}` | Ingester data Persistent Volume Claim annotations |
 | ingester.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;enabled | bool | `true` | If true and ingester.statefulSet.enabled is true, Ingester will create/use a Persistent Volume Claim If false, use emptyDir |
+| ingester.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;retentionPolicy | object | `{}` | StatefulSetAutoDeletePVC feature https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#persistentvolumeclaim-retention |
 | ingester.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;size | string | `"2Gi"` | Ingester data Persistent Volume size |
 | ingester.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;storageClass | string | `nil` | Ingester data Persistent Volume Storage Class If defined, storageClassName: <storageClass> If set to "-", storageClassName: "", which disables dynamic provisioning If undefined (the default) or set to null, no storageClassName spec is set, choosing the default provisioner. |
 | ingester.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;subPath | string | `""` | Subdirectory of Ingester data Persistent Volume to mount Useful if the volume's root directory is not empty |
@@ -815,6 +818,7 @@ Kubernetes: `^1.19.0-0`
 | store_gateway.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;accessModes | list | `["ReadWriteOnce"]` | Store-gateway data Persistent Volume access modes Must match those of existing PV or dynamic provisioner Ref: http://kubernetes.io/docs/user-guide/persistent-volumes/ |
 | store_gateway.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;annotations | object | `{}` | Store-gateway data Persistent Volume Claim annotations |
 | store_gateway.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;enabled | bool | `true` | If true Store-gateway will create/use a Persistent Volume Claim If false, use emptyDir |
+| store_gateway.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;retentionPolicy | object | `{}` | StatefulSetAutoDeletePVC feature https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#persistentvolumeclaim-retention |
 | store_gateway.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;size | string | `"2Gi"` | Store-gateway data Persistent Volume size |
 | store_gateway.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;storageClass | string | `nil` | Store-gateway data Persistent Volume Storage Class If defined, storageClassName: <storageClass> If set to "-", storageClassName: "", which disables dynamic provisioning If undefined (the default) or set to null, no storageClassName spec is set, choosing the default provisioner. |
 | store_gateway.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;subPath | string | `""` | Subdirectory of Store-gateway data Persistent Volume to mount Useful if the volume's root directory is not empty |

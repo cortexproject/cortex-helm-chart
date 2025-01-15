@@ -217,6 +217,12 @@ alertmanager:
     # set, choosing the default provisioner.
     storageClass: null
 
+    # -- StatefulSetAutoDeletePVC feature
+    # https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#persistentvolumeclaim-retention
+    retentionPolicy: {}
+    # whenDeleted: Retain
+    # whenScaled: Retain
+
   startupProbe:
     httpGet:
       path: /ready
@@ -542,6 +548,12 @@ ingester:
     # If undefined (the default) or set to null, no storageClassName spec is
     # set, choosing the default provisioner.
     storageClass: null
+
+    # -- StatefulSetAutoDeletePVC feature
+    # https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#persistentvolumeclaim-retention
+    retentionPolicy: {}
+    # whenDeleted: Retain
+    # whenScaled: Retain
 
   # -- Startup/liveness probes for ingesters are not recommended.
   #  Ref: https://cortexmetrics.io/docs/guides/running-cortex-on-kubernetes/#take-extra-care-with-ingesters
@@ -1404,6 +1416,12 @@ store_gateway:
     # set, choosing the default provisioner.
     storageClass: null
 
+    # -- StatefulSetAutoDeletePVC feature
+    # https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#persistentvolumeclaim-retention
+    retentionPolicy: {}
+    # whenDeleted: Retain
+    # whenScaled: Retain
+
   startupProbe:
     failureThreshold: 60
     initialDelaySeconds: 120
@@ -1519,6 +1537,12 @@ compactor:
     # If undefined (the default) or set to null, no storageClassName spec is
     # set, choosing the default provisioner.
     storageClass: null
+
+    # -- StatefulSetAutoDeletePVC feature
+    # https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#persistentvolumeclaim-retention
+    retentionPolicy: {}
+    # whenDeleted: Retain
+    # whenScaled: Retain
 
   startupProbe:
     failureThreshold: 60
