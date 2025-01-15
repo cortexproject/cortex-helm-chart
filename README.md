@@ -242,7 +242,7 @@ Kubernetes: `^1.19.0-0`
 | config.&ZeroWidthSpace;memberlist.&ZeroWidthSpace;join_members | list | `["{{ include \"cortex.fullname\" $ }}-memberlist"]` | the service name of the memberlist if using memberlist discovery |
 | config.&ZeroWidthSpace;querier.&ZeroWidthSpace;active_query_tracker_dir | string | `"/data/active-query-tracker"` |  |
 | config.&ZeroWidthSpace;querier.&ZeroWidthSpace;store_gateway_addresses | string | automatic | Comma separated list of store-gateway addresses in DNS Service Discovery format. This option should is set automatically when using the blocks storage and the store-gateway sharding is disabled (when enabled, the store-gateway instances form a ring and addresses are picked from the ring). |
-| config.&ZeroWidthSpace;query_range.&ZeroWidthSpace;align_queries_with_step | bool | `true` |  |
+| config.&ZeroWidthSpace;query_range.&ZeroWidthSpace;align_queries_with_step | bool | `false` |  |
 | config.&ZeroWidthSpace;query_range.&ZeroWidthSpace;cache_results | bool | `true` |  |
 | config.&ZeroWidthSpace;query_range.&ZeroWidthSpace;results_cache.&ZeroWidthSpace;cache.&ZeroWidthSpace;memcached.&ZeroWidthSpace;expiration | string | `"1h"` |  |
 | config.&ZeroWidthSpace;query_range.&ZeroWidthSpace;results_cache.&ZeroWidthSpace;cache.&ZeroWidthSpace;memcached_client.&ZeroWidthSpace;timeout | string | `"1s"` |  |
