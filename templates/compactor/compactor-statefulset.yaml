@@ -18,6 +18,12 @@ spec:
     {{- toYaml .Values.compactor.strategy | nindent 4 }}
   serviceName: {{ template "cortex.fullname" . }}-compactor
   {{- if .Values.compactor.persistentVolume.enabled }}
+  {{- if semverCompare ">=1.23-0" .Capabilities.KubeVersion.Version }}
+  {{- with .Values.compactor.persistentVolume.retentionPolicy }}
+  persistentVolumeClaimRetentionPolicy:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- end }}
   volumeClaimTemplates:
     - metadata:
         name: storage

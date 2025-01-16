@@ -21,6 +21,12 @@ spec:
   podManagementPolicy: "{{ .Values.ingester.statefulSet.podManagementPolicy }}"
   serviceName: {{ template "cortex.fullname" . }}-ingester-headless
   {{- if .Values.ingester.persistentVolume.enabled }}
+  {{- if semverCompare ">=1.23-0" .Capabilities.KubeVersion.Version }}
+  {{- with .Values.ingester.persistentVolume.retentionPolicy }}
+  persistentVolumeClaimRetentionPolicy:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- end }}
   volumeClaimTemplates:
     - metadata:
         name: storage
