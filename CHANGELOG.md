@@ -2,6 +2,8 @@
 
 ## master / unreleased
 
+## 2.5.0 / 2025-01-17
+
 * [CHANGE] Updated default `align_queries_with_step` to **false** to match documentation #513
 * [ENHANCEMENT] Add `nginx.config.upstream_protocol` field to configure the upstream protocol in the nginx configuration #506
 * [ENHANCEMENT] Add ability to set `persistentVolumeClaimRetentionPolicy` on alertmanager, ingester, compactor, and store-gateway StatefulSets #517
