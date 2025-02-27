@@ -2,6 +2,8 @@
 
 ## master / unreleased
 
+* [DEPENDENCY] Update quay.io/cortexproject/cortex Docker tag to v1.19.0 #521
+
 ## 2.5.0 / 2025-01-17
 
 * [CHANGE] Updated default `align_queries_with_step` to **false** to match documentation #513
