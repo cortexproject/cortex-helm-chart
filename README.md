@@ -2,7 +2,7 @@
 
 # cortex
 
-![Version: 2.5.0](https://img.shields.io/badge/Version-2.5.0-informational?style=flat-square) ![AppVersion: v1.18.1](https://img.shields.io/badge/AppVersion-v1.18.1-informational?style=flat-square)
+![Version: 2.5.0](https://img.shields.io/badge/Version-2.5.0-informational?style=flat-square) ![AppVersion: v1.19.0](https://img.shields.io/badge/AppVersion-v1.19.0-informational?style=flat-square)
 
 Horizontally scalable, highly available, multi-tenant, long term Prometheus.
 
@@ -852,4 +852,3 @@ Kubernetes: `^1.19.0-0`
 | store_gateway.&ZeroWidthSpace;topologySpreadConstraints | list | `[]` |  |
 | useConfigMap | bool | `false` |  |
 | useExternalConfig | bool | `false` |  |
-
