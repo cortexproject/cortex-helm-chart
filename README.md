@@ -852,3 +852,4 @@ Kubernetes: `^1.19.0-0`
 | store_gateway.&ZeroWidthSpace;topologySpreadConstraints | list | `[]` |  |
 | useConfigMap | bool | `false` |  |
 | useExternalConfig | bool | `false` |  |
+
