@@ -1239,6 +1239,10 @@ nginx:
     dnsTTL: "15s"
     # -- Enables all access logs from nginx, otherwise ignores 2XX and 3XX status codes
     verboseLogging: true
+
+    ## -- Optional: Override the URL for push endpoints (/api/prom/push and /api/v1/push)
+    ## If not specified, the default URL will be used, corresponding to the distributor service URL
+    override_push_endpoint: ""
   image:
     repository: nginx
     tag: 1.23
