@@ -87,25 +87,16 @@ data:
         location = /all_user_stats {
           proxy_pass      {{ .Values.nginx.config.upstream_protocol }}://{{ template "cortex.fullname" . }}-distributor.{{ $rootDomain }}$request_uri;
         }
-        {{ if .Values.nginx.config.override_push_endpoint }}
+        {{- $push_endpoint := .Values.nginx.config.override_push_endpoint | default (printf "%s://%s-distributor.%s" .Values.nginx.config.upstream_protocol (include "cortex.fullname" .) $rootDomain) }}
+        # Push API endpoints
         location = /api/prom/push {
-          proxy_pass      {{ .Values.nginx.config.upstream_protocol }}://{{ .Values.nginx.config.override_push_endpoint }}$request_uri;
+          proxy_pass      {{ $push_endpoint }}$request_uri;
         }
 
         ## New Remote write API. Ref: https://cortexmetrics.io/docs/api/#remote-write
         location = /api/v1/push {
-          proxy_pass      {{ .Values.nginx.config.upstream_protocol }}://{{ .Values.nginx.config.override_push_endpoint }}$request_uri;
+          proxy_pass      {{ $push_endpoint }}$request_uri;
         }
-        {{- else }}
-        location = /api/prom/push {
-          proxy_pass      {{ .Values.nginx.config.upstream_protocol }}://{{ template "cortex.fullname" . }}-distributor.{{ $rootDomain }}$request_uri;
-        }
-
-        ## New Remote write API. Ref: https://cortexmetrics.io/docs/api/#remote-write
-        location = /api/v1/push {
-          proxy_pass      {{ .Values.nginx.config.upstream_protocol }}://{{ template "cortex.fullname" . }}-distributor.{{ $rootDomain }}$request_uri;
-        }
-        {{- end }}
         {{- end }}
 
         {{- if .Values.alertmanager.enabled }}
