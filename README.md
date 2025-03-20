@@ -440,6 +440,7 @@ Kubernetes: `^1.19.0-0`
 | nginx.&ZeroWidthSpace;config.&ZeroWidthSpace;dnsTTL | string | `"15s"` | Including the valid parameter to the `resolver` directive to re-resolve names every `dnsTTL` seconds/minutes |
 | nginx.&ZeroWidthSpace;config.&ZeroWidthSpace;httpSnippet | string | `""` | arbitrary snippet to inject in the http { } section of the nginx config |
 | nginx.&ZeroWidthSpace;config.&ZeroWidthSpace;mainSnippet | string | `""` | arbitrary snippet to inject in the top section of the nginx config |
+| nginx.&ZeroWidthSpace;config.&ZeroWidthSpace;override_push_endpoint | string | `""` |  |
 | nginx.&ZeroWidthSpace;config.&ZeroWidthSpace;serverSnippet | string | `""` | arbitrary snippet to inject in the server { } section of the nginx config |
 | nginx.&ZeroWidthSpace;config.&ZeroWidthSpace;setHeaders | object | `{}` |  |
 | nginx.&ZeroWidthSpace;config.&ZeroWidthSpace;upstream_protocol | string | `"http"` | protocol for the communication with the upstream |
