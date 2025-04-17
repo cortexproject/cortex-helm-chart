@@ -2,6 +2,7 @@
 
 ## master / unreleased
 
+* [DEPENDENCY] Update Helm release memcached to v6.14.0 #528
 * [DEPENDENCY] Update quay.io/cortexproject/cortex Docker tag to v1.19.0 #521
 * [ENHANCEMENT] Add `nginx.config.override_push_endpoint` field to override push endpoint in the nginx configuration #522
 
