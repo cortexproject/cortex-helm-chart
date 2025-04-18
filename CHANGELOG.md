@@ -2,6 +2,7 @@
 
 ## master / unreleased
 
+* [DEPENDENCY] Update dependency nginx to v1.27 #532
 * [DEPENDENCY] Update quay.io/cortexproject/cortex Docker tag to v1.19.0 #521
 * [ENHANCEMENT] Add `nginx.config.override_push_endpoint` field to override push endpoint in the nginx configuration #522
 
