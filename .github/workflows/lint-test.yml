@@ -21,7 +21,7 @@ jobs:
       # yamllint (https://github.com/adrienverge/yamllint) which require Python
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
+          python-version: '3.13'
           check-latest: true
 
       - name: Set up chart-testing
