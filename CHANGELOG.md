@@ -2,6 +2,8 @@
 
 ## master / unreleased
 
+## 2.6.0 / 2025-05-06
+
 * [DEPENDENCY] Update Helm release memcached to v6.14.0 #528
 * [DEPENDENCY] Update dependency nginx to v1.27 #532
 * [DEPENDENCY] Update quay.io/cortexproject/cortex Docker tag to v1.19.0 #521
