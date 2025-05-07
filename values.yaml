@@ -284,7 +284,7 @@ alertmanager:
     enabled: false
     image:
       repository: kiwigrid/k8s-sidecar
-      tag: 1.19.5
+      tag: 1.30.3
       sha: ""
     imagePullPolicy: IfNotPresent
     resources: {}
@@ -700,7 +700,7 @@ ruler:
     enabled: false
     image:
       repository: kiwigrid/k8s-sidecar
-      tag: 1.19.5
+      tag: 1.30.3
       sha: ""
     imagePullPolicy: IfNotPresent
     resources: {}
