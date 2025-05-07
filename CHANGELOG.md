@@ -2,7 +2,7 @@
 
 ## master / unreleased
 
-## 2.6.0 / 2025-05-06
+## 2.6.0 / 2025-05-07
 
 * [DEPENDENCY] Update Helm release memcached to v6.14.0 #528
 * [DEPENDENCY] Update dependency nginx to v1.27 #532
