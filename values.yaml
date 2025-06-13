@@ -1,3 +1,4 @@
+image:
   repository: quay.io/cortexproject/cortex
   # -- Allows you to override the cortex version in this chart. Use at your own risk.
   tag: ""
