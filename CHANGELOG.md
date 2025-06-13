@@ -2,6 +2,8 @@
 
 ## master / unreleased
 
+* [CHANGE] Remove startup probes from compactors from default values. It's not recommended in general
+
 ## 2.6.0 / 2025-05-07
 
 * [DEPENDENCY] Update Helm release memcached to v6.14.0 #528
