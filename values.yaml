@@ -54,7 +54,7 @@ config:
       observe_period: 10s
       # -- Duration to sleep for before exiting, to ensure metrics are scraped.
       final_sleep: 30s
-      num_tokens: 512
+      num_tokens: 128
       ring:
         # -- Ingester replication factor per default is 3
         replication_factor: 3
