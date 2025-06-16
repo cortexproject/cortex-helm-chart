@@ -2,7 +2,7 @@
 
 ## master / unreleased
 
-* [CHANGE] Set default `ingester.num-tokens` to 128 to match Cortex default values #544
+* [CHANGE] Use default value for num_tokens in ingester configuration #544
 
 ## 2.6.0 / 2025-05-07
 
