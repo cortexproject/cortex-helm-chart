@@ -2,7 +2,8 @@
 
 ## master / unreleased
 
-* [CHANGE] Remove startup probes from compactors from default values. It's not recommended in general
+* [CHANGE] Remove startup probes from compactors from default values. It's not recommended in general #542
+* [CHANGE] Use default value for num_tokens in ingester configuration #544
 
 ## 2.6.0 / 2025-05-07
 
