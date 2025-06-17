@@ -206,12 +206,7 @@ Kubernetes: `^1.19.0-0`
 | compactor.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;metricRelabelings | list | `[]` |  |
 | compactor.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;podTargetLabels | list | `[]` |  |
 | compactor.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;relabelings | list | `[]` |  |
-| compactor.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;failureThreshold | int | `60` |  |
-| compactor.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
-| compactor.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
-| compactor.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;scheme | string | `"HTTP"` |  |
-| compactor.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;initialDelaySeconds | int | `120` |  |
-| compactor.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;periodSeconds | int | `30` |  |
+| compactor.&ZeroWidthSpace;startupProbe | object | `{}` |  |
 | compactor.&ZeroWidthSpace;strategy.&ZeroWidthSpace;type | string | `"RollingUpdate"` |  |
 | compactor.&ZeroWidthSpace;terminationGracePeriodSeconds | int | `240` |  |
 | compactor.&ZeroWidthSpace;tolerations | list | `[]` |  |

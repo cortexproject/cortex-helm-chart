@@ -1547,14 +1547,7 @@ compactor:
     # whenDeleted: Retain
     # whenScaled: Retain
 
-  startupProbe:
-    failureThreshold: 60
-    initialDelaySeconds: 120
-    periodSeconds: 30
-    httpGet:
-      path: /ready
-      port: http-metrics
-      scheme: HTTP
+  startupProbe: {}
   livenessProbe: {}
   readinessProbe:
     httpGet:
