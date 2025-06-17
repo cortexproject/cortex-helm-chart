@@ -230,7 +230,6 @@ Kubernetes: `^1.19.0-0`
 | config.&ZeroWidthSpace;frontend.&ZeroWidthSpace;log_queries_longer_than | string | `"10s"` |  |
 | config.&ZeroWidthSpace;ingester.&ZeroWidthSpace;lifecycler.&ZeroWidthSpace;final_sleep | string | `"30s"` | Duration to sleep for before exiting, to ensure metrics are scraped. |
 | config.&ZeroWidthSpace;ingester.&ZeroWidthSpace;lifecycler.&ZeroWidthSpace;join_after | string | `"10s"` | We don't want to join immediately, but wait a bit to see other ingesters and their tokens first. It can take a while to have the full picture when using gossip |
-| config.&ZeroWidthSpace;ingester.&ZeroWidthSpace;lifecycler.&ZeroWidthSpace;num_tokens | int | `512` |  |
 | config.&ZeroWidthSpace;ingester.&ZeroWidthSpace;lifecycler.&ZeroWidthSpace;observe_period | string | `"10s"` | To avoid generating same tokens by multiple ingesters, they can "observe" the ring for a while, after putting their own tokens into it. This is only useful when using gossip, since multiple ingesters joining at the same time can have conflicting tokens if they don't see each other yet. |
 | config.&ZeroWidthSpace;ingester.&ZeroWidthSpace;lifecycler.&ZeroWidthSpace;ring.&ZeroWidthSpace;kvstore.&ZeroWidthSpace;store | string | `"memberlist"` |  |
 | config.&ZeroWidthSpace;ingester.&ZeroWidthSpace;lifecycler.&ZeroWidthSpace;ring.&ZeroWidthSpace;replication_factor | int | `3` | Ingester replication factor per default is 3 |

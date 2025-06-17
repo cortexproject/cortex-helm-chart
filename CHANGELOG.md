@@ -2,6 +2,8 @@
 
 ## master / unreleased
 
+* [CHANGE] Use default value for num_tokens in ingester configuration #544
+
 ## 2.6.0 / 2025-05-07
 
 * [DEPENDENCY] Update Helm release memcached to v6.14.0 #528
