@@ -416,7 +416,7 @@ distributor:
   tolerations: []
 
   podDisruptionBudget:
-    maxUnavailable: 1
+    maxUnavailable: 30%
 
   initContainers: []
   extraContainers: []
@@ -683,7 +683,7 @@ ruler:
   tolerations: []
 
   podDisruptionBudget:
-    maxUnavailable: 1
+    maxUnavailable: 30%
 
   initContainers: []
   extraContainers: []
@@ -832,7 +832,7 @@ querier:
   tolerations: []
 
   podDisruptionBudget:
-    maxUnavailable: 1
+    maxUnavailable: 30%
 
   initContainers: []
   extraContainers: []
@@ -925,7 +925,7 @@ query_frontend:
   tolerations: []
 
   podDisruptionBudget:
-    maxUnavailable: 1
+    maxUnavailable: 30%
 
   initContainers: []
   extraContainers: []
@@ -1305,7 +1305,7 @@ nginx:
   tolerations: []
 
   podDisruptionBudget:
-    maxUnavailable: 1
+    maxUnavailable: 30%
 
   initContainers: []
   extraContainers: []
@@ -1567,7 +1567,7 @@ compactor:
   tolerations: []
 
   podDisruptionBudget:
-    maxUnavailable: 1
+    maxUnavailable: 30%
 
   initContainers: []
   extraContainers: []
