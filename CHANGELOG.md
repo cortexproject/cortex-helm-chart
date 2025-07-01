@@ -2,6 +2,7 @@
 
 ## master / unreleased
 
+* [CHANGE] Change default config: distributors, rulers, queriers, query-frontend, nginx and compactors can be disrupted until 30%
 * [CHANGE] Remove startup probes from compactors from default values. It's not recommended in general #542
 * [CHANGE] Use default value for num_tokens in ingester configuration #544
 
