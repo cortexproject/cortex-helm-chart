@@ -2,10 +2,12 @@
 
 ## master / unreleased
 
+* [CHANGE] Memcacheds are now enabled by default
 * [CHANGE] Change default config: distributors, rulers, queriers, query-frontend, nginx and compactors can be disrupted until 30%
 * [CHANGE] Remove startup probes from compactors from default values. It's not recommended in general #542
 * [CHANGE] Use default value for num_tokens in ingester configuration #544
 * [DEPENDENCY] Update kiwigrid/k8s-sidecar docker tag to v1.30.5 #531
+* [BUGFIX] fix discovering memcached instances
 
 ## 2.6.0 / 2025-05-07
 
