@@ -1,0 +1,14 @@
+{{- if and (gt (int .Values.overrides_exporter.replicas) 1) (.Values.overrides_exporter.podDisruptionBudget) (.Values.overrides_exporter.enabled) }}
+apiVersion: {{ include "cortex.pdbVersion" . }}
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "cortex.overridesExporterFullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "cortex.overridesExporterLabels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "cortex.overridesExporterSelectorLabels" . | nindent 6 }}
+  {{- toYaml .Values.overrides_exporter.podDisruptionBudget | nindent 2 }}
+{{- end }}

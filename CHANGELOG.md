@@ -8,7 +8,7 @@
 * [CHANGE] Use default value for num_tokens in ingester configuration #544
 * [DEPENDENCY] Update kiwigrid/k8s-sidecar docker tag to v1.30.5 #531
 * [BUGFIX] Fix discovering memcached instances #551
-* [BUGFIX] Fix default affinity overrides-exporter #557
+* [ENHANCEMENT] Run overrides-exporter with high availability #557
 
 ## 2.6.0 / 2025-05-07
 

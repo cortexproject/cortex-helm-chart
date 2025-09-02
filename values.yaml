@@ -1029,6 +1029,7 @@ query_scheduler:
 overrides_exporter:
   # -- https://cortexmetrics.io/docs/guides/overrides-exporter/
   enabled: false
+  replicas: 1
 
   service:
     annotations: {}
@@ -1101,6 +1102,9 @@ overrides_exporter:
   terminationGracePeriodSeconds: 180
 
   tolerations: []
+
+  podDisruptionBudget:
+    maxUnavailable: 30%
 
   initContainers: []
   extraContainers: []

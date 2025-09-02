@@ -503,9 +503,11 @@ Kubernetes: `^1.19.0-0`
 | overrides_exporter.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
 | overrides_exporter.&ZeroWidthSpace;nodeSelector | object | `{}` |  |
 | overrides_exporter.&ZeroWidthSpace;podAnnotations | object | `{"prometheus.io/port":"http-metrics","prometheus.io/scrape":"true"}` | Pod Annotations |
+| overrides_exporter.&ZeroWidthSpace;podDisruptionBudget.&ZeroWidthSpace;maxUnavailable | string | `"30%"` |  |
 | overrides_exporter.&ZeroWidthSpace;podLabels | object | `{}` | Pod Labels |
 | overrides_exporter.&ZeroWidthSpace;readinessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
 | overrides_exporter.&ZeroWidthSpace;readinessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
+| overrides_exporter.&ZeroWidthSpace;replicas | int | `1` |  |
 | overrides_exporter.&ZeroWidthSpace;resources | object | `{}` |  |
 | overrides_exporter.&ZeroWidthSpace;securityContext | object | `{}` |  |
 | overrides_exporter.&ZeroWidthSpace;service.&ZeroWidthSpace;annotations | object | `{}` |  |
