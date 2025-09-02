@@ -7,7 +7,7 @@
 * [CHANGE] Remove startup probes from compactors from default values. It's not recommended in general #542
 * [CHANGE] Use default value for num_tokens in ingester configuration #544
 * [BUGFIX] Fix discovering memcached instances #551
-* [BUGFIX] Fix restarting query-schedulers when config changes
+* [BUGFIX] Fix restarting query-schedulers when config changes #559
 * [ENHANCEMENT] Run overrides-exporter with high availability #557
 * [DEPENDENCY] Update kiwigrid/k8s-sidecar docker tag to v1.30.5 #531
 
