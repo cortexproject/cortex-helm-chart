@@ -9,7 +9,7 @@ metadata:
   annotations:
     {{- toYaml .Values.overrides_exporter.annotations | nindent 4 }}
 spec:
-  replicas: 1
+  replicas: {{ .Values.overrides_exporter.replicas }}
   selector:
     matchLabels:
       {{- include "cortex.overridesExporterSelectorLabels" . | nindent 6 }}
