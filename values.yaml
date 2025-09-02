@@ -1068,7 +1068,7 @@ overrides_exporter:
                 - key: app.kubernetes.io/component
                   operator: In
                   values:
-                    - query-scheduler
+                    - overrides-exporter
             topologyKey: 'kubernetes.io/hostname'
 
   annotations: {}
