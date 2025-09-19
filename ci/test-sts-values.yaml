@@ -135,6 +135,7 @@ ruler:
     - name: tmp-test
       mountPath: /tmp-test
 store_gateway:
+  startupProbe: null
   replicas: 1
   extraVolumes:
     - name: tmp-test
