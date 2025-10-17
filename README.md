@@ -84,13 +84,6 @@ Source code can be found [here](https://cortexmetrics.io/)
 
 Kubernetes: `^1.19.0-0`
 
-| Repository | Name | Version |
-|------------|------|---------|
-| https://charts.bitnami.com/bitnami | memcached-frontend(memcached) | 6.14.0 |
-| https://charts.bitnami.com/bitnami | memcached-blocks-index(memcached) | 6.14.0 |
-| https://charts.bitnami.com/bitnami | memcached-blocks(memcached) | 6.14.0 |
-| https://charts.bitnami.com/bitnami | memcached-blocks-metadata(memcached) | 6.14.0 |
-
 ## Values
 
 | Key | Type | Default | Description |

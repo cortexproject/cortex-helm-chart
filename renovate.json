@@ -47,16 +47,6 @@
             ],
             "depNameTemplate": "kiwigrid/k8s-sidecar",
             "datasourceTemplate": "docker"
-        },
-        {
-            "description": "Update memcached image in README.md",
-            "fileMatch": ["^README\\.md$"],
-            "matchStrings": [
-                "\\|[^|]*\\|[^|]*\\(memcached\\)[^|]*\\|\\s+(?<currentValue>.*?)\\s+\\|\\s+"
-            ],
-            "depNameTemplate": "memcached",
-            "registryUrlTemplate": "https://charts.bitnami.com/bitnami",
-            "datasourceTemplate": "helm"
         }
     ]
 }
