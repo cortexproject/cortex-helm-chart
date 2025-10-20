@@ -375,62 +375,6 @@ Kubernetes: `^1.19.0-0`
 | ingress.&ZeroWidthSpace;tls | list | `[]` |  |
 | memberlist.&ZeroWidthSpace;service.&ZeroWidthSpace;annotations | object | `{}` |  |
 | memberlist.&ZeroWidthSpace;service.&ZeroWidthSpace;labels | object | `{}` |  |
-| memcached-blocks-index.&ZeroWidthSpace;architecture | string | `"high-availability"` |  |
-| memcached-blocks-index.&ZeroWidthSpace;args | list | `["-m 1024"]` | Command line argument supplied to memcached |
-| memcached-blocks-index.&ZeroWidthSpace;args[0] | string | `"-m 1024"` | The amount of memory allocated to memcached for object storage |
-| memcached-blocks-index.&ZeroWidthSpace;disableValidation | bool | `false` | Bypass validation of the memcached configuration in case a custom image is in use |
-| memcached-blocks-index.&ZeroWidthSpace;enabled | bool | `true` | Enables support for block index caching |
-| memcached-blocks-index.&ZeroWidthSpace;image.&ZeroWidthSpace;repository | string | `"memcached"` |  |
-| memcached-blocks-index.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"1.6.39"` |  |
-| memcached-blocks-index.&ZeroWidthSpace;metrics.&ZeroWidthSpace;enabled | bool | `true` |  |
-| memcached-blocks-index.&ZeroWidthSpace;metrics.&ZeroWidthSpace;image.&ZeroWidthSpace;repository | string | `"prom/memcached-exporter"` |  |
-| memcached-blocks-index.&ZeroWidthSpace;metrics.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"v0.15.4"` |  |
-| memcached-blocks-index.&ZeroWidthSpace;metrics.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;enabled | bool | `false` |  |
-| memcached-blocks-index.&ZeroWidthSpace;replicaCount | int | `2` |  |
-| memcached-blocks-index.&ZeroWidthSpace;resources | object | `{}` |  |
-| memcached-blocks-index.&ZeroWidthSpace;service.&ZeroWidthSpace;clusterIP | string | `"None"` |  |
-| memcached-blocks-metadata.&ZeroWidthSpace;architecture | string | `"high-availability"` |  |
-| memcached-blocks-metadata.&ZeroWidthSpace;args | list | `["-m 1024"]` | Command line argument supplied to memcached |
-| memcached-blocks-metadata.&ZeroWidthSpace;args[0] | string | `"-m 1024"` | The amount of memory allocated to memcached for object storage |
-| memcached-blocks-metadata.&ZeroWidthSpace;disableValidation | bool | `false` | Bypass validation of the memcached configuration in case a custom image is in use |
-| memcached-blocks-metadata.&ZeroWidthSpace;enabled | bool | `true` | Enables support for block metadata caching |
-| memcached-blocks-metadata.&ZeroWidthSpace;image.&ZeroWidthSpace;repository | string | `"memcached"` |  |
-| memcached-blocks-metadata.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"1.6.39"` |  |
-| memcached-blocks-metadata.&ZeroWidthSpace;metrics.&ZeroWidthSpace;enabled | bool | `true` |  |
-| memcached-blocks-metadata.&ZeroWidthSpace;metrics.&ZeroWidthSpace;image.&ZeroWidthSpace;repository | string | `"prom/memcached-exporter"` |  |
-| memcached-blocks-metadata.&ZeroWidthSpace;metrics.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"v0.15.4"` |  |
-| memcached-blocks-metadata.&ZeroWidthSpace;metrics.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;enabled | bool | `false` |  |
-| memcached-blocks-metadata.&ZeroWidthSpace;replicaCount | int | `2` |  |
-| memcached-blocks-metadata.&ZeroWidthSpace;resources | object | `{}` |  |
-| memcached-blocks-metadata.&ZeroWidthSpace;service.&ZeroWidthSpace;clusterIP | string | `"None"` |  |
-| memcached-blocks.&ZeroWidthSpace;architecture | string | `"high-availability"` |  |
-| memcached-blocks.&ZeroWidthSpace;args | list | `["-m 1024"]` | Command line argument supplied to memcached |
-| memcached-blocks.&ZeroWidthSpace;args[0] | string | `"-m 1024"` | The amount of memory allocated to memcached for object storage |
-| memcached-blocks.&ZeroWidthSpace;disableValidation | bool | `false` | Bypass validation of the memcached configuration in case a custom image is in use |
-| memcached-blocks.&ZeroWidthSpace;enabled | bool | `true` | Enables support for block caching |
-| memcached-blocks.&ZeroWidthSpace;image.&ZeroWidthSpace;repository | string | `"memcached"` |  |
-| memcached-blocks.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"1.6.39"` |  |
-| memcached-blocks.&ZeroWidthSpace;metrics.&ZeroWidthSpace;enabled | bool | `true` |  |
-| memcached-blocks.&ZeroWidthSpace;metrics.&ZeroWidthSpace;image.&ZeroWidthSpace;repository | string | `"prom/memcached-exporter"` |  |
-| memcached-blocks.&ZeroWidthSpace;metrics.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"v0.15.4"` |  |
-| memcached-blocks.&ZeroWidthSpace;metrics.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;enabled | bool | `false` |  |
-| memcached-blocks.&ZeroWidthSpace;replicaCount | int | `2` |  |
-| memcached-blocks.&ZeroWidthSpace;resources | object | `{}` |  |
-| memcached-blocks.&ZeroWidthSpace;service.&ZeroWidthSpace;clusterIP | string | `"None"` |  |
-| memcached-frontend.&ZeroWidthSpace;architecture | string | `"high-availability"` |  |
-| memcached-frontend.&ZeroWidthSpace;args | list | `["-m 1024"]` | Command line argument supplied to memcached |
-| memcached-frontend.&ZeroWidthSpace;args[0] | string | `"-m 1024"` | The amount of memory allocated to memcached for object storage |
-| memcached-frontend.&ZeroWidthSpace;disableValidation | bool | `false` | Bypass validation of the memcached configuration in case a custom image is in use |
-| memcached-frontend.&ZeroWidthSpace;enabled | bool | `true` | Enables support for caching queries in the frontend |
-| memcached-frontend.&ZeroWidthSpace;image.&ZeroWidthSpace;repository | string | `"memcached"` |  |
-| memcached-frontend.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"1.6.39"` |  |
-| memcached-frontend.&ZeroWidthSpace;metrics.&ZeroWidthSpace;enabled | bool | `true` |  |
-| memcached-frontend.&ZeroWidthSpace;metrics.&ZeroWidthSpace;image.&ZeroWidthSpace;repository | string | `"prom/memcached-exporter"` |  |
-| memcached-frontend.&ZeroWidthSpace;metrics.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"v0.15.4"` |  |
-| memcached-frontend.&ZeroWidthSpace;metrics.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;enabled | bool | `false` |  |
-| memcached-frontend.&ZeroWidthSpace;replicaCount | int | `2` |  |
-| memcached-frontend.&ZeroWidthSpace;resources | object | `{}` |  |
-| memcached-frontend.&ZeroWidthSpace;service.&ZeroWidthSpace;clusterIP | string | `"None"` |  |
 | nginx.&ZeroWidthSpace;affinity | object | `{}` |  |
 | nginx.&ZeroWidthSpace;annotations | object | `{}` |  |
 | nginx.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;behavior | object | `{}` | Ref: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#support-for-configurable-scaling-behavior |
