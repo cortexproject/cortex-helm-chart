@@ -2,8 +2,10 @@
 
 ## master / unreleased
 
+* [BREAKING] Drop in-built support for bitnami's memcached #567
+  * memcached dependency and subchart has been removed
+  * Chart users have to take care of the deployment of memcached now (if they require it)
 * [CHANGE] Replace bitnami images with community images. Config via .extraEnvVars must be migrated to .args. See memcached docs for standard args. #571
-* [BREAKING] Remove bitnami references #567
 * [CHANGE] Memcacheds are now enabled by default #551
 * [CHANGE] Change default config: distributors, rulers, queriers, query-frontend, nginx and compactors can be disrupted until 30%
 * [CHANGE] Remove startup probes from compactors from default values. It's not recommended in general #542
