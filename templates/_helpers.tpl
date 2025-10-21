@@ -82,6 +82,33 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
+Create configuration parameters for memcached configuration
+*/}}
+{{- define "cortex.memcached" -}}
+{{- if index .Values "memcached-blocks-index" "serviceName" }}
+- "-blocks-storage.bucket-store.index-cache.backend=memcached"
+- "-blocks-storage.bucket-store.index-cache.memcached.addresses=dns+{{ .memcached-blocks-index.serviceName }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ memcached-blocks-index.containerPort }}"
+{{- end -}}
+{{- if index .Values "memcached-blocks" "serviceName" }}
+- "-blocks-storage.bucket-store.chunks-cache.backend=memcached"
+- "-blocks-storage.bucket-store.chunks-cache.memcached.addresses=dns+{{ .memcached-blocks.serviceName }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ memcached-blocks.containerPort }}"
+{{- end -}}
+{{- if index .Values "memcached-blocks-metadata" "serviceName" }}
+- "-blocks-storage.bucket-store.metadata-cache.backend=memcached"
+- "-blocks-storage.bucket-store.metadata-cache.memcached.addresses=dns+{{ .memcached-blocks-metadata.serviceName }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ memcached-blocks-metadata.containerPort }}"
+{{- end -}}
+{{- end -}}
+
+{{/*
+Create configuration for frontend memcached configuration
+*/}}
+{{- define "cortex.frontend-memcached" -}}
+{{- if index .Values "memcached-frontend" "serviceName" }}
+- "-frontend.memcached.addresses=dns+{{ .memcached-frontend.serviceName }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ memcached-frontend.containerPort }}"
+{{- end -}}
+{{- end -}}
+
+{{/*
 Determine the policy api version
 */}}
 {{- define "cortex.pdbVersion" -}}

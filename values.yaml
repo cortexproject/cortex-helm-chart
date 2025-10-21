@@ -1584,3 +1584,21 @@ memberlist:
   service:
     annotations: {}
     labels: {}
+
+# -- Memcached properties
+# External installations of memcached can be referenced here
+memcached-frontend: {}
+  # serviceName: cortex-memcached-frontend
+  # containerPort: 11211
+
+memcached-blocks-index: {}
+  # serviceName: cortex-memcached-blocks-index
+  # containerPort: 11211
+
+memcached-blocks: {}
+  # serviceName: cortex-memcached-blocks
+  # containerPort: 11211
+
+memcached-blocks-metadata: {}
+  # serviceName: cortex-memcached-blocks-metadata
+  # containerPort: 11211

@@ -375,6 +375,10 @@ Kubernetes: `^1.19.0-0`
 | ingress.&ZeroWidthSpace;tls | list | `[]` |  |
 | memberlist.&ZeroWidthSpace;service.&ZeroWidthSpace;annotations | object | `{}` |  |
 | memberlist.&ZeroWidthSpace;service.&ZeroWidthSpace;labels | object | `{}` |  |
+| memcached-blocks | object | `{}` |  |
+| memcached-blocks-index | object | `{}` |  |
+| memcached-blocks-metadata | object | `{}` |  |
+| memcached-frontend | object | `{}` | Memcached properties External installations of memcached can be referenced here |
 | nginx.&ZeroWidthSpace;affinity | object | `{}` |  |
 | nginx.&ZeroWidthSpace;annotations | object | `{}` |  |
 | nginx.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;behavior | object | `{}` | Ref: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#support-for-configurable-scaling-behavior |

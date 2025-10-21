@@ -110,6 +110,7 @@ spec:
           args:
             - "-target=ingester"
             - "-config.file=/etc/cortex/cortex.yaml"
+            {{- include "cortex.memcached" . | nindent 12}}
             {{- range $key, $value := .Values.ingester.extraArgs }}
             - "-{{ $key }}={{ $value }}"
             {{- end }}
