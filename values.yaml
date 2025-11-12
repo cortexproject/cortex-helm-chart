@@ -1600,8 +1600,14 @@ memcached-frontend:
     # storing and retrieving data in the cache, using a locking system to prevent different threads overwriting or updating the same values.
     - name: MEMCACHED_THREADS
       value: "4"
+  image:
+    repository: memcached
+    tag: "1.6.39"
   metrics:
     enabled: true
+    image:
+      repository: prom/memcached-exporter
+      tag: "v0.15.4"
     serviceMonitor:
       enabled: false
 
@@ -1625,8 +1631,14 @@ memcached-blocks-index:
     # storing and retrieving data in the cache, using a locking system to prevent different threads overwriting or updating the same values.
     - name: MEMCACHED_THREADS
       value: "4"
+  image:
+    repository: memcached
+    tag: "1.6.39"
   metrics:
     enabled: true
+    image:
+      repository: prom/memcached-exporter
+      tag: "v0.15.4"
     serviceMonitor:
       enabled: false
 
@@ -1650,8 +1662,14 @@ memcached-blocks:
     # storing and retrieving data in the cache, using a locking system to prevent different threads overwriting or updating the same values.
     - name: MEMCACHED_THREADS
       value: "4"
+  image:
+    repository: memcached
+    tag: "1.6.39"
   metrics:
     enabled: true
+    image:
+      repository: prom/memcached-exporter
+      tag: "v0.15.4"
     serviceMonitor:
       enabled: false
 
@@ -1675,8 +1693,14 @@ memcached-blocks-metadata:
     # storing and retrieving data in the cache, using a locking system to prevent different threads overwriting or updating the same values.
     - name: MEMCACHED_THREADS
       value: "4"
+  image:
+    repository: memcached
+    tag: "1.6.39"
   metrics:
     enabled: true
+    image:
+      repository: prom/memcached-exporter
+      tag: "v0.15.4"
     serviceMonitor:
       enabled: false
 

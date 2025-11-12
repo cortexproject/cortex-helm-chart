@@ -9,6 +9,7 @@
 * [BUGFIX] Fix discovering memcached instances #551
 * [BUGFIX] Fix restarting query-schedulers when config changes #559
 * [ENHANCEMENT] Run overrides-exporter with high availability #557
+* [DEPENDENCY] Replace bitnami images with community images #571
 * [DEPENDENCY] Update kiwigrid/k8s-sidecar docker tag to v1.30.5 #531
 
 ## 2.6.0 / 2025-05-07
