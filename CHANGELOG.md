@@ -2,6 +2,7 @@
 
 ## master / unreleased
 
+* [CHANGE] Replace bitnami images with community images #571
 * [CHANGE] Memcacheds are now enabled by default #551
 * [CHANGE] Change default config: distributors, rulers, queriers, query-frontend, nginx and compactors can be disrupted until 30%
 * [CHANGE] Remove startup probes from compactors from default values. It's not recommended in general #542
@@ -9,7 +10,6 @@
 * [BUGFIX] Fix discovering memcached instances #551
 * [BUGFIX] Fix restarting query-schedulers when config changes #559
 * [ENHANCEMENT] Run overrides-exporter with high availability #557
-* [DEPENDENCY] Replace bitnami images with community images #571
 * [DEPENDENCY] Update kiwigrid/k8s-sidecar docker tag to v1.30.5 #531
 
 ## 2.6.0 / 2025-05-07

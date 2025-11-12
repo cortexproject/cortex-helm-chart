@@ -1,3 +1,8 @@
+{{- include "cortex.validateMemcached" (index .Values "memcached-frontend") }}
+{{- include "cortex.validateMemcached" (index .Values "memcached-blocks-index") }}
+{{- include "cortex.validateMemcached" (index .Values "memcached-blocks") }}
+{{- include "cortex.validateMemcached" (index .Values "memcached-blocks-metadata") }}
+
 Verify the application is working by running these commands:
   kubectl --namespace {{ .Release.Namespace }} port-forward service/{{ include "cortex.querierFullname" . }} {{ .Values.config.server.http_listen_port }}
   curl http://127.0.0.1:{{ .Values.config.server.http_listen_port }}/services
