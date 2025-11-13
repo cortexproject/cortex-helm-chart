@@ -11,6 +11,7 @@
 * [BUGFIX] Fix restarting query-schedulers when config changes #559
 * [ENHANCEMENT] Run overrides-exporter with high availability #557
 * [DEPENDENCY] Update dependency nginx to v1.29 #540
+* [DEPENDENCY] Update kiwigrid/k8s-sidecar docker tag to v1.30.11 #547
 * [DEPENDENCY] Update kiwigrid/k8s-sidecar docker tag to v1.30.5 #531
 * [DEPENDENCY] Update quay.io/cortexproject/cortex Docker tag to v1.20.0 #566
 
