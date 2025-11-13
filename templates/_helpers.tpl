@@ -159,3 +159,19 @@ autoscaling/v2
 autoscaling/v2beta2
 {{- end -}}
 {{- end -}}
+
+{{/*
+bitnami/memcached was configured with env vars while memcached official image requires args
+This helper validates that if memcached image is set to official image, args are used instead of env vars
+*/}}
+{{- define "cortex.validateMemcached" -}}
+{{- if .enabled -}}
+{{- if not .disableValidation -}}
+{{- if and .image (eq .image.repository "memcached") -}}
+{{- if .extraEnvVars -}}
+{{- fail "memcached must be configured with .args not .extraEnvVars" -}}
+{{- end -}}
+{{- end -}}
+{{- end -}}
+{{- end -}}
+{{- end -}}

@@ -1588,20 +1588,20 @@ memcached-frontend:
   architecture: "high-availability"
   replicaCount: 2
   resources: {}
-  extraEnvVars:
-    # -- MEMCACHED_CACHE_SIZE is the amount of memory allocated to memcached for object storage
-    - name: MEMCACHED_CACHE_SIZE
-      value: "1024"
-    # -- MEMCACHED_MAX_CONNECTIONS is the maximum number of simultaneous connections to the memcached service
-    - name: MEMCACHED_MAX_CONNECTIONS
-      value: "1024"
-    # -- MEMCACHED_THREADS is the number of threads to use when processing incoming requests.
-    # By default, memcached is configured to use 4 concurrent threads. The threading improves the performance of
-    # storing and retrieving data in the cache, using a locking system to prevent different threads overwriting or updating the same values.
-    - name: MEMCACHED_THREADS
-      value: "4"
+  # -- Bypass validation of the memcached configuration in case a custom image is in use
+  disableValidation: false
+  # -- Command line argument supplied to memcached
+  args:
+    # -- The amount of memory allocated to memcached for object storage
+    - -m 1024
+  image:
+    repository: memcached
+    tag: "1.6.39"
   metrics:
     enabled: true
+    image:
+      repository: prom/memcached-exporter
+      tag: "v0.15.4"
     serviceMonitor:
       enabled: false
 
@@ -1613,20 +1613,20 @@ memcached-blocks-index:
   architecture: "high-availability"
   replicaCount: 2
   resources: {}
-  extraEnvVars:
-    # -- MEMCACHED_CACHE_SIZE is the amount of memory allocated to memcached for object storage
-    - name: MEMCACHED_CACHE_SIZE
-      value: "1024"
-    # -- MEMCACHED_MAX_CONNECTIONS is the maximum number of simultaneous connections to the memcached service
-    - name: MEMCACHED_MAX_CONNECTIONS
-      value: "1024"
-    # -- MEMCACHED_THREADS is the number of threads to use when processing incoming requests.
-    # By default, memcached is configured to use 4 concurrent threads. The threading improves the performance of
-    # storing and retrieving data in the cache, using a locking system to prevent different threads overwriting or updating the same values.
-    - name: MEMCACHED_THREADS
-      value: "4"
+  # -- Bypass validation of the memcached configuration in case a custom image is in use
+  disableValidation: false
+  # -- Command line argument supplied to memcached
+  args:
+    # -- The amount of memory allocated to memcached for object storage
+    - -m 1024
+  image:
+    repository: memcached
+    tag: "1.6.39"
   metrics:
     enabled: true
+    image:
+      repository: prom/memcached-exporter
+      tag: "v0.15.4"
     serviceMonitor:
       enabled: false
 
@@ -1638,20 +1638,20 @@ memcached-blocks:
   architecture: "high-availability"
   replicaCount: 2
   resources: {}
-  extraEnvVars:
-    # -- MEMCACHED_CACHE_SIZE is the amount of memory allocated to memcached for object storage
-    - name: MEMCACHED_CACHE_SIZE
-      value: "1024"
-    # -- MEMCACHED_MAX_CONNECTIONS is the maximum number of simultaneous connections to the memcached service
-    - name: MEMCACHED_MAX_CONNECTIONS
-      value: "1024"
-    # -- MEMCACHED_THREADS is the number of threads to use when processing incoming requests.
-    # By default, memcached is configured to use 4 concurrent threads. The threading improves the performance of
-    # storing and retrieving data in the cache, using a locking system to prevent different threads overwriting or updating the same values.
-    - name: MEMCACHED_THREADS
-      value: "4"
+  # -- Bypass validation of the memcached configuration in case a custom image is in use
+  disableValidation: false
+  # -- Command line argument supplied to memcached
+  args:
+    # -- The amount of memory allocated to memcached for object storage
+    - -m 1024
+  image:
+    repository: memcached
+    tag: "1.6.39"
   metrics:
     enabled: true
+    image:
+      repository: prom/memcached-exporter
+      tag: "v0.15.4"
     serviceMonitor:
       enabled: false
 
@@ -1663,20 +1663,20 @@ memcached-blocks-metadata:
   architecture: "high-availability"
   replicaCount: 2
   resources: {}
-  extraEnvVars:
-    # -- MEMCACHED_CACHE_SIZE is the amount of memory allocated to memcached for object storage
-    - name: MEMCACHED_CACHE_SIZE
-      value: "1024"
-    # -- MEMCACHED_MAX_CONNECTIONS is the maximum number of simultaneous connections to the memcached service
-    - name: MEMCACHED_MAX_CONNECTIONS
-      value: "1024"
-    # -- MEMCACHED_THREADS is the number of threads to use when processing incoming requests.
-    # By default, memcached is configured to use 4 concurrent threads. The threading improves the performance of
-    # storing and retrieving data in the cache, using a locking system to prevent different threads overwriting or updating the same values.
-    - name: MEMCACHED_THREADS
-      value: "4"
+  # -- Bypass validation of the memcached configuration in case a custom image is in use
+  disableValidation: false
+  # -- Command line argument supplied to memcached
+  args:
+    # -- The amount of memory allocated to memcached for object storage
+    - -m 1024
+  image:
+    repository: memcached
+    tag: "1.6.39"
   metrics:
     enabled: true
+    image:
+      repository: prom/memcached-exporter
+      tag: "v0.15.4"
     serviceMonitor:
       enabled: false
 
