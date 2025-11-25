@@ -11,6 +11,7 @@
 * [BUGFIX] Fix restarting query-schedulers when config changes #559
 * [ENHANCEMENT] Run overrides-exporter with high availability #557
 * [ENHANCEMENT] Persist subchart #572
+* [ENHANCEMENT] Expose query frontend GRPC port on service for ruler #574
 * [DEPENDENCY] Update dependency nginx to v1.29 #540
 * [DEPENDENCY] Update kiwigrid/k8s-sidecar docker tag to v1.30.11 #547
 * [DEPENDENCY] Update kiwigrid/k8s-sidecar docker tag to v1.30.5 #531
