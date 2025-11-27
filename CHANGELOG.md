@@ -2,6 +2,8 @@
 
 ## master / unreleased
 
+## 3.0.0 / 2025-11-27
+
 * [CHANGE] Replace bitnami images with community images. Config via .extraEnvVars must be migrated to .args. See memcached docs for standard args. #571
 * [CHANGE] Memcacheds are now enabled by default #551
 * [CHANGE] Change default config: distributors, rulers, queriers, query-frontend, nginx and compactors can be disrupted until 30%
