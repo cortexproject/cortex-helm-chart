@@ -1,0 +1,63 @@
+name: Release Chart
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'New version (e.g. 1.2.3). If omitted, bumps based on changelog.'
+        required: false
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configure Git
+        run: |
+          git config user.name "$GITHUB_ACTOR"
+          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+
+      - name: Install Helm
+        uses: azure/setup-helm@v4
+        with:
+          version: v3.12.1
+
+      - name: Bump Version
+        run: make bump-version VERSION="${{ inputs.version }}"
+
+      - name: Get New Version
+        id: version
+        run: |
+          new_version=$(grep '^version:' Chart.yaml | awk '{print $2}')
+          echo "new_version=$new_version" >> $GITHUB_OUTPUT
+
+      - name: Update README
+        run: make README.md
+
+      - name: Package Chart
+        run: |
+          helm dependency build
+          helm package . -d docs
+          helm repo index ./docs/ --url https://cortexproject.github.io/cortex-helm-chart
+
+      - name: Create Pull Request
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git checkout -b release-${{ steps.version.outputs.new_version }}
+          git add Chart.yaml README.md CHANGELOG.md docs/
+          git commit -s -m "Release ${{ steps.version.outputs.new_version }}"
+          git push origin release-${{ steps.version.outputs.new_version }}
+          gh pr create --title "Release ${{ steps.version.outputs.new_version }}" \
+            --body "Automated release PR for version ${{ steps.version.outputs.new_version }}" \
+            --base ${{ github.ref_name }} \
+            --head release-${{ steps.version.outputs.new_version }}
