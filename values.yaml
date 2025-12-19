@@ -1681,7 +1681,7 @@ memcached-frontend:
     - -m 1024
   image:
     repository: memcached
-    tag: "1.6.39"
+    tag: "1.6.40"
   metrics:
     enabled: true
     image:
@@ -1706,7 +1706,7 @@ memcached-blocks-index:
     - -m 1024
   image:
     repository: memcached
-    tag: "1.6.39"
+    tag: "1.6.40"
   metrics:
     enabled: true
     image:
@@ -1731,7 +1731,7 @@ memcached-blocks:
     - -m 1024
   image:
     repository: memcached
-    tag: "1.6.39"
+    tag: "1.6.40"
   metrics:
     enabled: true
     image:
@@ -1756,7 +1756,7 @@ memcached-blocks-metadata:
     - -m 1024
   image:
     repository: memcached
-    tag: "1.6.39"
+    tag: "1.6.40"
   metrics:
     enabled: true
     image:
