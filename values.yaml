@@ -479,6 +479,7 @@ ingester:
                   operator: In
                   values:
                     - ingester
+                    - querier
             topologyKey: 'kubernetes.io/hostname'
 
   annotations: {}
@@ -780,6 +781,7 @@ querier:
                 - key: app.kubernetes.io/component
                   operator: In
                   values:
+                    - ingester
                     - querier
             topologyKey: 'kubernetes.io/hostname'
 
