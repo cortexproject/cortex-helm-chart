@@ -21,7 +21,7 @@ jobs:
       # yamllint (https://github.com/adrienverge/yamllint) which require Python
       - uses: actions/setup-python@v6
         with:
-          python-version: '3.13'
+          python-version: '3.14'
           check-latest: true
 
       - name: Set up chart-testing
@@ -36,7 +36,7 @@ jobs:
           git diff --exit-code -- README.md
 
       - name: Create kind cluster
-        uses: helm/kind-action@v1.13.0
+        uses: helm/kind-action@v1.14.0
 
       - name: Run chart-testing (install)
         run: |

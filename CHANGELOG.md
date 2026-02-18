@@ -2,6 +2,8 @@
 
 ## master / unreleased
 
+* [FEATURE] Add a parquet converter. #579
+* [ENHANCEMENT] Avoid scheduling queriers and ingesters on the same node #583
 * [DEPENDENCY] Update quay.io/cortexproject/cortex Docker tag to v1.20.1 #577
 
 ## 3.0.0 / 2025-11-27
