@@ -488,6 +488,7 @@ Kubernetes: `^1.19.0-0`
 | nginx.&ZeroWidthSpace;securityContext | object | `{}` |  |
 | nginx.&ZeroWidthSpace;service.&ZeroWidthSpace;annotations | object | `{}` |  |
 | nginx.&ZeroWidthSpace;service.&ZeroWidthSpace;labels | object | `{}` |  |
+| nginx.&ZeroWidthSpace;service.&ZeroWidthSpace;port | string | `""` | Replaces default port value from nginx.http_listen_port when set |
 | nginx.&ZeroWidthSpace;service.&ZeroWidthSpace;type | string | `"ClusterIP"` |  |
 | nginx.&ZeroWidthSpace;serviceAccount.&ZeroWidthSpace;name | string | `""` | "" disables the individual serviceAccount and uses the global serviceAccount for that component |
 | nginx.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;failureThreshold | int | `10` |  |
