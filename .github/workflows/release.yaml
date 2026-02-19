@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
@@ -57,7 +57,7 @@ jobs:
           git checkout -b release-${{ steps.version.outputs.new_version }}
           git add Chart.yaml README.md CHANGELOG.md docs/
           git commit -s -m "Release ${{ steps.version.outputs.new_version }}"
-          git push origin release-${{ steps.version.outputs.new_version }}
+          git push --force origin release-${{ steps.version.outputs.new_version }}
           gh pr create --title "Release ${{ steps.version.outputs.new_version }}" \
             --body "Automated release PR for version ${{ steps.version.outputs.new_version }}" \
             --base ${{ github.ref_name }} \
