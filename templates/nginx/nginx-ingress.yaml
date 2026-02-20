@@ -34,7 +34,7 @@ spec:
               service:
                 name: {{ include "cortex.nginxFullname" $ }}
                 port:
-                  number: {{ $.Values.nginx.http_listen_port }}
+                  number: {{ $.Values.nginx.service.port | default $.Values.nginx.http_listen_port }}
         {{- end }}
   {{- end }}
 {{- end }}

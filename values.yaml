@@ -1342,6 +1342,8 @@ nginx:
     type: ClusterIP
     annotations: {}
     labels: {}
+    # -- Replaces default port value from nginx.http_listen_port when set
+    port: ""
 
   serviceAccount:
     # -- "" disables the individual serviceAccount and uses the global serviceAccount for that component
