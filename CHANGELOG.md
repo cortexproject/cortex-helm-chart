@@ -2,6 +2,8 @@
 
 ## master / unreleased
 
+## 3.1.0 / 2026-02-20
+
 * [FEATURE] Add a parquet converter. #579
 * [ENHANCEMENT] Avoid scheduling queriers and ingesters on the same node #583
 * [ENHANCEMENT] Allow for the nginx service port and container port to be different #589
