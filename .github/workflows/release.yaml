@@ -72,3 +72,4 @@ jobs:
               --body "Automated release PR for version ${{ steps.version.outputs.new_version }}" \
               --base ${{ github.ref_name }} \
               --head release-${{ steps.version.outputs.new_version }}
+          fi
