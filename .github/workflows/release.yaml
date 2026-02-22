@@ -50,7 +50,7 @@ jobs:
           helm package . -d docs
           helm repo index ./docs/ --url https://cortexproject.github.io/cortex-helm-chart
 
-      - name: Create Pull Request
+      - name: Create or Update Pull Request
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -58,7 +58,17 @@ jobs:
           git add Chart.yaml README.md CHANGELOG.md docs/
           git commit -s -m "Release ${{ steps.version.outputs.new_version }}"
           git push --force origin release-${{ steps.version.outputs.new_version }}
-          gh pr create --title "Release ${{ steps.version.outputs.new_version }}" \
-            --body "Automated release PR for version ${{ steps.version.outputs.new_version }}" \
-            --base ${{ github.ref_name }} \
-            --head release-${{ steps.version.outputs.new_version }}
+
+          # Check if a PR already exists for this head branch
+          existing_pr=$(gh pr list --head release-${{ steps.version.outputs.new_version }} --json number --jq '.[0].number')
+          if [ -n "$existing_pr" ]; then
+            echo "PR #$existing_pr already exists — updating title/body"
+            gh pr edit "$existing_pr" \
+              --title "Release ${{ steps.version.outputs.new_version }}" \
+              --body "Automated release PR for version ${{ steps.version.outputs.new_version }}"
+          else
+            gh pr create \
+              --title "Release ${{ steps.version.outputs.new_version }}" \
+              --body "Automated release PR for version ${{ steps.version.outputs.new_version }}" \
+              --base ${{ github.ref_name }} \
+              --head release-${{ steps.version.outputs.new_version }}
