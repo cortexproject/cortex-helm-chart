@@ -2,6 +2,8 @@
 
 ## master / unreleased
 
+* [DEPENDENCY] update prom/memcached-exporter docker tag to v0.15.5 #581
+
 ## 3.1.0 / 2026-02-24
 
 * [FEATURE] Add a parquet converter. #579
