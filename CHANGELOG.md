@@ -2,9 +2,11 @@
 
 ## master / unreleased
 
+* [ENHANCEMENT] enable readiness probe on kiwigrid/k8s-sidecar #597
 * [DEPENDENCY] update kiwigrid/k8s-sidecar docker tag to v2.5.0 #568
 * [DEPENDENCY] update memcached docker tag to v1.6.40 #580
 * [DEPENDENCY] update prom/memcached-exporter docker tag to v0.15.5 #581
+* [BUGFIX] override kiwigrid/k8s-sidecar health port to avoid conflict #597
 
 ## 3.1.0 / 2026-02-24
 

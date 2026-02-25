@@ -90,6 +90,22 @@ spec:
             - name: FOLDER_ANNOTATION
               value: "{{ .Values.ruler.sidecar.folderAnnotation }}"
             {{- end }}
+          {{- with .Values.ruler.sidecar.healthPort }}
+            - name: HEALTH_PORT
+              value: "{{ . }}"
+          ports:
+            - name: sidecar-health
+              containerPort: {{ . }}
+              protocol: TCP
+          {{- end }}
+          {{- with .Values.ruler.sidecar.startupProbe }}
+          startupProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.ruler.sidecar.readinessProbe }}
+          readinessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           resources:
             {{- toYaml .Values.ruler.sidecar.resources | nindent 12 }}
           {{- if .Values.ruler.containerSecurityContext.enabled }}

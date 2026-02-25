@@ -317,6 +317,18 @@ alertmanager:
     containerSecurityContext:
       enabled: true
       readOnlyRootFilesystem: true
+    # -- The port the kiwigrid/k8s-sidecar listens on for health checks. The image default matches the cortex default listen port (8080), so it must be overridden here.
+    healthPort: 8081
+    startupProbe:
+      httpGet:
+        path: /healthz
+        port: sidecar-health
+      periodSeconds: 5
+    readinessProbe:
+      httpGet:
+        path: /healthz
+        port: sidecar-health
+      periodSeconds: 5
 
 distributor:
   enabled: true
@@ -734,6 +746,18 @@ ruler:
     containerSecurityContext:
       enabled: true
       readOnlyRootFilesystem: true
+    # -- The port the kiwigrid/k8s-sidecar listens on for health checks. The image default matches the cortex default listen port (8080), so it must be overridden here.
+    healthPort: 8081
+    startupProbe:
+      httpGet:
+        path: /healthz
+        port: sidecar-health
+      periodSeconds: 5
+    readinessProbe:
+      httpGet:
+        path: /healthz
+        port: sidecar-health
+      periodSeconds: 5
 
 querier:
   enabled: true
