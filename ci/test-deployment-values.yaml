@@ -134,6 +134,8 @@ alertmanager:
   extraVolumeMounts:
     - name: tmp-test
       mountPath: /tmp-test
+  sidecar:
+    enabled: true
 ruler:
   replicas: 1
   enabled: true
@@ -143,6 +145,8 @@ ruler:
   extraVolumeMounts:
     - name: tmp-test
       mountPath: /tmp-test
+  sidecar:
+    enabled: true
 store_gateway:
   startupProbe: null
   replicas: 1
