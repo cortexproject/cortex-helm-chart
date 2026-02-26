@@ -2,6 +2,8 @@
 
 ## master / unreleased
 
+## 3.2.0 / 2026-02-26
+
 * [ENHANCEMENT] enable readiness probe on kiwigrid/k8s-sidecar #597
 * [DEPENDENCY] update kiwigrid/k8s-sidecar docker tag to v2.5.0 #568
 * [DEPENDENCY] update memcached docker tag to v1.6.40 #580
