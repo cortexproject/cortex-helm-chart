@@ -20,6 +20,7 @@ jobs:
         uses: actions/checkout@v6
         with:
           fetch-depth: 0
+          token: ${{ secrets.CORTEX_HELM_CHART_CI_TOKEN }}
 
       - name: Configure Git
         run: |
@@ -52,7 +53,7 @@ jobs:
 
       - name: Create or Update Pull Request
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.CORTEX_HELM_CHART_CI_TOKEN }}
         run: |
           git checkout -b release-${{ steps.version.outputs.new_version }}
           git add Chart.yaml README.md CHANGELOG.md docs/
