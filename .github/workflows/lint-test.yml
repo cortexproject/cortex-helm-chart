@@ -4,7 +4,42 @@ on:
   pull_request:
 
 jobs:
+  update-readme:
+    # Only runs on PRs from the same repo (not forks), where the CI token can push.
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    outputs:
+      updated: ${{ steps.commit.outputs.updated }}
+    steps:
+      - name: Checkout PR branch
+        uses: actions/checkout@v6
+        with:
+          token: ${{ secrets.CORTEX_HELM_CHART_CI_TOKEN }}
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+
+      - name: Regenerate README.md
+        run: make README.md
+
+      - name: Commit and push if changed
+        id: commit
+        run: |
+          if git diff --quiet -- README.md; then
+            echo "updated=false" >> "$GITHUB_OUTPUT"
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add README.md
+            git commit -m "Auto-update README.md"
+            git push
+            echo "updated=true" >> "$GITHUB_OUTPUT"
+          fi
+
   lint-test:
+    needs: update-readme
+    # Run unless update-readme pushed a new commit (which will re-trigger CI).
+    # Also runs when update-readme is skipped (fork PRs) or fails unexpectedly.
+    if: "!cancelled() && needs.update-readme.outputs.updated != 'true'"
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -30,7 +65,7 @@ jobs:
       - name: Run chart-testing (lint)
         run: ct lint --config ct.yaml
 
-      - name: Updated README.md
+      - name: Check README.md is up to date
         run: |
           make README.md
           git diff --exit-code -- README.md
