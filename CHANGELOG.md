@@ -2,7 +2,7 @@
 
 ## master / unreleased
 
-* [BUGFIX] Add `apiVersion` and `kind` fields to `volumeClaimTemplates` in StatefulSets to prevent ArgoCD sync flapping #<PR_NUMBER>
+* [BUGFIX] Add `apiVersion` and `kind` fields to `volumeClaimTemplates` in StatefulSets to prevent ArgoCD sync flapping #608
 
 ## 3.2.0 / 2026-02-26
 
