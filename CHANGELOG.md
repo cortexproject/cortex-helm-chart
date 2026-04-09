@@ -2,6 +2,8 @@
 
 ## master / unreleased
 
+* [BUGFIX] Purger: use correct podAnnotations reference instead of query_frontend's #613
+
 ## 3.2.0 / 2026-02-26
 
 * [ENHANCEMENT] enable readiness probe on kiwigrid/k8s-sidecar #597
