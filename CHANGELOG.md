@@ -2,6 +2,8 @@
 
 ## master / unreleased
 
+* [DEPENDENCY] update memcached docker tag to v1.6.41 #603
+
 ## 3.2.0 / 2026-02-26
 
 * [ENHANCEMENT] enable readiness probe on kiwigrid/k8s-sidecar #597
