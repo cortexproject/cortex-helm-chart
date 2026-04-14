@@ -1714,7 +1714,7 @@ memcached-frontend:
     enabled: true
     image:
       repository: prom/memcached-exporter
-      tag: "v0.15.5"
+      tag: "v0.16.0"
     serviceMonitor:
       enabled: false
 
@@ -1739,7 +1739,7 @@ memcached-blocks-index:
     enabled: true
     image:
       repository: prom/memcached-exporter
-      tag: "v0.15.5"
+      tag: "v0.16.0"
     serviceMonitor:
       enabled: false
 
@@ -1764,7 +1764,7 @@ memcached-blocks:
     enabled: true
     image:
       repository: prom/memcached-exporter
-      tag: "v0.15.5"
+      tag: "v0.16.0"
     serviceMonitor:
       enabled: false
 
@@ -1789,7 +1789,7 @@ memcached-blocks-metadata:
     enabled: true
     image:
       repository: prom/memcached-exporter
-      tag: "v0.15.5"
+      tag: "v0.16.0"
     serviceMonitor:
       enabled: false
 
