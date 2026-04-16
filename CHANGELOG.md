@@ -8,6 +8,7 @@
 * [CHANGE] Use default value for num_tokens in ingester configuration #544
 * [BUGFIX] Fix discovering memcached instances #551
 * [BUGFIX] Fix restarting query-schedulers when config changes #559
+* [BUGFIX] Don't configure alertmanager in ruler if alertmanager is disabled
 * [ENHANCEMENT] Run overrides-exporter with high availability #557
 * [DEPENDENCY] Update kiwigrid/k8s-sidecar docker tag to v1.30.5 #531
 
