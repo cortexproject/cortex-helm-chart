@@ -283,7 +283,7 @@ alertmanager:
     enabled: false
     image:
       repository: kiwigrid/k8s-sidecar
-      tag: 1.30.5
+      tag: 2.6.0
       sha: ""
     imagePullPolicy: IfNotPresent
     resources: {}
@@ -317,6 +317,18 @@ alertmanager:
     containerSecurityContext:
       enabled: true
       readOnlyRootFilesystem: true
+    # -- The port the kiwigrid/k8s-sidecar listens on for health checks. The image default matches the cortex default listen port (8080), so it must be overridden here.
+    healthPort: 8081
+    startupProbe:
+      httpGet:
+        path: /healthz
+        port: sidecar-health
+      periodSeconds: 5
+    readinessProbe:
+      httpGet:
+        path: /healthz
+        port: sidecar-health
+      periodSeconds: 5
 
 distributor:
   enabled: true
@@ -479,6 +491,7 @@ ingester:
                   operator: In
                   values:
                     - ingester
+                    - querier
             topologyKey: 'kubernetes.io/hostname'
 
   annotations: {}
@@ -699,7 +712,7 @@ ruler:
     enabled: false
     image:
       repository: kiwigrid/k8s-sidecar
-      tag: 1.30.5
+      tag: 2.6.0
       sha: ""
     imagePullPolicy: IfNotPresent
     resources: {}
@@ -733,6 +746,18 @@ ruler:
     containerSecurityContext:
       enabled: true
       readOnlyRootFilesystem: true
+    # -- The port the kiwigrid/k8s-sidecar listens on for health checks. The image default matches the cortex default listen port (8080), so it must be overridden here.
+    healthPort: 8081
+    startupProbe:
+      httpGet:
+        path: /healthz
+        port: sidecar-health
+      periodSeconds: 5
+    readinessProbe:
+      httpGet:
+        path: /healthz
+        port: sidecar-health
+      periodSeconds: 5
 
 querier:
   enabled: true
@@ -780,6 +805,7 @@ querier:
                 - key: app.kubernetes.io/component
                   operator: In
                   values:
+                    - ingester
                     - querier
             topologyKey: 'kubernetes.io/hostname'
 
@@ -1114,6 +1140,91 @@ overrides_exporter:
   env: []
   lifecycle: {}
 
+parquet_converter:
+  # -- https://cortexmetrics.io/docs/guides/parquet-mode/
+  enabled: false
+  replicas: 1
+
+  service:
+    annotations: {}
+    labels: {}
+
+  serviceMonitor:
+    enabled: false
+    additionalLabels: {}
+    relabelings: []
+    metricRelabelings: []
+    # -- Additional endpoint configuration https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#endpoint
+    extraEndpointSpec: {}
+    podTargetLabels: []
+
+  resources: {}
+
+  # -- Additional Cortex container arguments, e.g. log.level (debug, info, warn, error)
+  extraArgs: {}
+
+  # -- Pod Labels
+  podLabels: {}
+
+  # -- Pod Annotations
+  podAnnotations:
+    prometheus.io/scrape: 'true'
+    prometheus.io/port: 'http-metrics'
+
+  nodeSelector: {}
+  topologySpreadConstraints: []
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 100
+          podAffinityTerm:
+            labelSelector:
+              matchExpressions:
+                - key: app.kubernetes.io/component
+                  operator: In
+                  values:
+                    - parquet-converter
+            topologyKey: 'kubernetes.io/hostname'
+
+  annotations: {}
+
+  startupProbe:
+    httpGet:
+      path: /ready
+      port: http-metrics
+    failureThreshold: 10
+  livenessProbe:
+    httpGet:
+      path: /ready
+      port: http-metrics
+  readinessProbe:
+    httpGet:
+      path: /ready
+      port: http-metrics
+
+  securityContext: {}
+  containerSecurityContext:
+    enabled: true
+    readOnlyRootFilesystem: true
+
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 1
+
+  terminationGracePeriodSeconds: 180
+
+  tolerations: []
+
+  initContainers: []
+  extraContainers: []
+  extraVolumes: []
+  extraVolumeMounts: []
+  extraPorts: []
+  env: []
+  lifecycle: {}
+
 purger:
   enabled: false
   replicas: 1
@@ -1248,13 +1359,15 @@ nginx:
     override_push_endpoint: ""
   image:
     repository: nginx
-    tag: 1.27
+    tag: 1.29
     pullPolicy: IfNotPresent
 
   service:
     type: ClusterIP
     annotations: {}
     labels: {}
+    # -- Replaces default port value from nginx.http_listen_port when set
+    port: ""
 
   serviceAccount:
     # -- "" disables the individual serviceAccount and uses the global serviceAccount for that component
@@ -1588,20 +1701,20 @@ memcached-frontend:
   architecture: "high-availability"
   replicaCount: 2
   resources: {}
-  extraEnvVars:
-    # -- MEMCACHED_CACHE_SIZE is the amount of memory allocated to memcached for object storage
-    - name: MEMCACHED_CACHE_SIZE
-      value: "1024"
-    # -- MEMCACHED_MAX_CONNECTIONS is the maximum number of simultaneous connections to the memcached service
-    - name: MEMCACHED_MAX_CONNECTIONS
-      value: "1024"
-    # -- MEMCACHED_THREADS is the number of threads to use when processing incoming requests.
-    # By default, memcached is configured to use 4 concurrent threads. The threading improves the performance of
-    # storing and retrieving data in the cache, using a locking system to prevent different threads overwriting or updating the same values.
-    - name: MEMCACHED_THREADS
-      value: "4"
+  # -- Bypass validation of the memcached configuration in case a custom image is in use
+  disableValidation: false
+  # -- Command line argument supplied to memcached
+  args:
+    # -- The amount of memory allocated to memcached for object storage
+    - -m 1024
+  image:
+    repository: memcached
+    tag: "1.6.41"
   metrics:
     enabled: true
+    image:
+      repository: prom/memcached-exporter
+      tag: "v0.16.0"
     serviceMonitor:
       enabled: false
 
@@ -1613,20 +1726,20 @@ memcached-blocks-index:
   architecture: "high-availability"
   replicaCount: 2
   resources: {}
-  extraEnvVars:
-    # -- MEMCACHED_CACHE_SIZE is the amount of memory allocated to memcached for object storage
-    - name: MEMCACHED_CACHE_SIZE
-      value: "1024"
-    # -- MEMCACHED_MAX_CONNECTIONS is the maximum number of simultaneous connections to the memcached service
-    - name: MEMCACHED_MAX_CONNECTIONS
-      value: "1024"
-    # -- MEMCACHED_THREADS is the number of threads to use when processing incoming requests.
-    # By default, memcached is configured to use 4 concurrent threads. The threading improves the performance of
-    # storing and retrieving data in the cache, using a locking system to prevent different threads overwriting or updating the same values.
-    - name: MEMCACHED_THREADS
-      value: "4"
+  # -- Bypass validation of the memcached configuration in case a custom image is in use
+  disableValidation: false
+  # -- Command line argument supplied to memcached
+  args:
+    # -- The amount of memory allocated to memcached for object storage
+    - -m 1024
+  image:
+    repository: memcached
+    tag: "1.6.41"
   metrics:
     enabled: true
+    image:
+      repository: prom/memcached-exporter
+      tag: "v0.16.0"
     serviceMonitor:
       enabled: false
 
@@ -1638,20 +1751,20 @@ memcached-blocks:
   architecture: "high-availability"
   replicaCount: 2
   resources: {}
-  extraEnvVars:
-    # -- MEMCACHED_CACHE_SIZE is the amount of memory allocated to memcached for object storage
-    - name: MEMCACHED_CACHE_SIZE
-      value: "1024"
-    # -- MEMCACHED_MAX_CONNECTIONS is the maximum number of simultaneous connections to the memcached service
-    - name: MEMCACHED_MAX_CONNECTIONS
-      value: "1024"
-    # -- MEMCACHED_THREADS is the number of threads to use when processing incoming requests.
-    # By default, memcached is configured to use 4 concurrent threads. The threading improves the performance of
-    # storing and retrieving data in the cache, using a locking system to prevent different threads overwriting or updating the same values.
-    - name: MEMCACHED_THREADS
-      value: "4"
+  # -- Bypass validation of the memcached configuration in case a custom image is in use
+  disableValidation: false
+  # -- Command line argument supplied to memcached
+  args:
+    # -- The amount of memory allocated to memcached for object storage
+    - -m 1024
+  image:
+    repository: memcached
+    tag: "1.6.41"
   metrics:
     enabled: true
+    image:
+      repository: prom/memcached-exporter
+      tag: "v0.16.0"
     serviceMonitor:
       enabled: false
 
@@ -1663,20 +1776,20 @@ memcached-blocks-metadata:
   architecture: "high-availability"
   replicaCount: 2
   resources: {}
-  extraEnvVars:
-    # -- MEMCACHED_CACHE_SIZE is the amount of memory allocated to memcached for object storage
-    - name: MEMCACHED_CACHE_SIZE
-      value: "1024"
-    # -- MEMCACHED_MAX_CONNECTIONS is the maximum number of simultaneous connections to the memcached service
-    - name: MEMCACHED_MAX_CONNECTIONS
-      value: "1024"
-    # -- MEMCACHED_THREADS is the number of threads to use when processing incoming requests.
-    # By default, memcached is configured to use 4 concurrent threads. The threading improves the performance of
-    # storing and retrieving data in the cache, using a locking system to prevent different threads overwriting or updating the same values.
-    - name: MEMCACHED_THREADS
-      value: "4"
+  # -- Bypass validation of the memcached configuration in case a custom image is in use
+  disableValidation: false
+  # -- Command line argument supplied to memcached
+  args:
+    # -- The amount of memory allocated to memcached for object storage
+    - -m 1024
+  image:
+    repository: memcached
+    tag: "1.6.41"
   metrics:
     enabled: true
+    image:
+      repository: prom/memcached-exporter
+      tag: "v0.16.0"
     serviceMonitor:
       enabled: false
 

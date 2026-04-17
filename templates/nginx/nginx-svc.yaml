@@ -14,7 +14,7 @@ metadata:
 spec:
   type: {{ .Values.nginx.service.type }}
   ports:
-    - port: {{ .Values.nginx.http_listen_port }}
+    - port: {{ .Values.nginx.service.port | default .Values.nginx.http_listen_port }}
       protocol: TCP
       name: http-metrics
       targetPort: http-metrics

@@ -2,6 +2,29 @@
 
 ## master / unreleased
 
+* [DEPENDENCY] update memcached docker tag to v1.6.41 #603
+* [DEPENDENCY] update prom/memcached-exporter docker tag to v0.16.0 #612
+* [DEPENDENCY] update kiwigrid/k8s-sidecar docker tag to v2.6.0 #610
+
+## 3.2.0 / 2026-02-26
+
+* [ENHANCEMENT] enable readiness probe on kiwigrid/k8s-sidecar #597
+* [DEPENDENCY] update kiwigrid/k8s-sidecar docker tag to v2.5.0 #568
+* [DEPENDENCY] update memcached docker tag to v1.6.40 #580
+* [DEPENDENCY] update prom/memcached-exporter docker tag to v0.15.5 #581
+* [BUGFIX] override kiwigrid/k8s-sidecar health port to avoid conflict #597
+
+## 3.1.0 / 2026-02-24
+
+* [FEATURE] Add a parquet converter. #579
+* [ENHANCEMENT] Avoid scheduling queriers and ingesters on the same node #583
+* [ENHANCEMENT] Allow for the nginx service port and container port to be different #589
+* [DEPENDENCY] Update quay.io/cortexproject/cortex Docker tag to v1.20.1 #577
+* [BUGFIX] Ruler is using the wrongly generated Alertmanager URL #593
+
+## 3.0.0 / 2025-11-27
+
+* [CHANGE] Replace bitnami images with community images. Config via .extraEnvVars must be migrated to .args. See memcached docs for standard args. #571
 * [CHANGE] Memcacheds are now enabled by default #551
 * [CHANGE] Change default config: distributors, rulers, queriers, query-frontend, nginx and compactors can be disrupted until 30%
 * [CHANGE] Remove startup probes from compactors from default values. It's not recommended in general #542
@@ -10,7 +33,12 @@
 * [BUGFIX] Fix restarting query-schedulers when config changes #559
 * [BUGFIX] Don't configure alertmanager in ruler if alertmanager is disabled
 * [ENHANCEMENT] Run overrides-exporter with high availability #557
+* [ENHANCEMENT] Persist subchart #572
+* [ENHANCEMENT] Expose query frontend GRPC port on service for ruler #574
+* [DEPENDENCY] Update dependency nginx to v1.29 #540
+* [DEPENDENCY] Update kiwigrid/k8s-sidecar docker tag to v1.30.11 #547
 * [DEPENDENCY] Update kiwigrid/k8s-sidecar docker tag to v1.30.5 #531
+* [DEPENDENCY] Update quay.io/cortexproject/cortex Docker tag to v1.20.0 #566
 
 ## 2.6.0 / 2025-05-07
 

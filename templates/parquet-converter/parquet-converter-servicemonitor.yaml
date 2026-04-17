@@ -1,0 +1,48 @@
+{{- if and .Values.parquet_converter.enabled .Values.parquet_converter.serviceMonitor.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "cortex.parquetConverterFullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "cortex.parquetConverterLabels" . | nindent 4 }}
+    {{- if .Values.parquet_converter.serviceMonitor.additionalLabels }}
+{{ toYaml .Values.parquet_converter.serviceMonitor.additionalLabels | indent 4 }}
+    {{- end }}
+  {{- if .Values.parquet_converter.serviceMonitor.annotations }}
+  annotations:
+{{ toYaml .Values.parquet_converter.serviceMonitor.annotations | indent 4 }}
+  {{- end }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "cortex.parquetConverterSelectorLabels" . | nindent 6 }}
+  namespaceSelector:
+    matchNames:
+      - {{ .Release.Namespace | quote }}
+  {{- if .Values.parquet_converter.serviceMonitor.podTargetLabels }}
+  podTargetLabels:
+  {{- range .Values.parquet_converter.serviceMonitor.podTargetLabels }}
+    - {{ . }}
+  {{- end }}
+  {{- end }}
+  endpoints:
+    - port: http-metrics
+    {{- if .Values.parquet_converter.serviceMonitor.interval }}
+      interval: {{ .Values.parquet_converter.serviceMonitor.interval }}
+    {{- end }}
+    {{- if .Values.parquet_converter.serviceMonitor.scrapeTimeout }}
+      scrapeTimeout: {{ .Values.parquet_converter.serviceMonitor.scrapeTimeout }}
+    {{- end }}
+    {{- if .Values.parquet_converter.serviceMonitor.relabelings }}
+      relabelings:
+    {{- toYaml .Values.parquet_converter.serviceMonitor.relabelings | nindent 4 }}
+    {{- end }}
+    {{- if .Values.parquet_converter.serviceMonitor.metricRelabelings }}
+      metricRelabelings:
+    {{- toYaml .Values.parquet_converter.serviceMonitor.metricRelabelings | nindent 4 }}
+    {{- end }}
+    {{- with .Values.parquet_converter.serviceMonitor.extraEndpointSpec }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+{{- end }}

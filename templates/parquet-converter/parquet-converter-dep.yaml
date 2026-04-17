@@ -1,0 +1,113 @@
+{{- if .Values.parquet_converter.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "cortex.parquetConverterFullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "cortex.parquetConverterLabels" . | nindent 4 }}
+  annotations:
+    {{- toYaml .Values.parquet_converter.annotations | nindent 4 }}
+spec:
+  replicas: {{ .Values.parquet_converter.replicas }}
+  selector:
+    matchLabels:
+      {{- include "cortex.parquetConverterSelectorLabels" . | nindent 6 }}
+  strategy:
+    {{- toYaml .Values.parquet_converter.strategy | nindent 4 }}
+  template:
+    metadata:
+      labels:
+        {{- include "cortex.parquetConverterLabels" . | nindent 8 }}
+        {{- with .Values.parquet_converter.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      annotations:
+      {{- if .Values.useExternalConfig }}
+        checksum/config: {{ .Values.externalConfigVersion }}
+      {{- else }}
+        checksum/config: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+      {{- end }}
+      {{- with .Values.parquet_converter.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    spec:
+      serviceAccountName: {{ template "cortex.serviceAccountName" . }}
+      {{- if .Values.parquet_converter.priorityClassName }}
+      priorityClassName: {{ .Values.parquet_converter.priorityClassName }}
+      {{- end }}
+      {{- if .Values.parquet_converter.securityContext.enabled }}
+      securityContext: {{- omit .Values.parquet_converter.securityContext "enabled" | toYaml | nindent 8 }}
+      {{- end }}
+      initContainers:
+        {{- toYaml .Values.parquet_converter.initContainers | nindent 8 }}
+      {{- if .Values.image.pullSecrets }}
+      imagePullSecrets:
+      {{- range .Values.image.pullSecrets }}
+        - name: {{ . }}
+      {{- end }}
+      {{- end }}
+      containers:
+        - name: parquet-converter
+          image: "{{ .Values.image.repository }}:{{ default .Chart.AppVersion .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args:
+            - "-target=parquet-converter"
+            - "-config.file=/etc/cortex/cortex.yaml"
+          {{- range $key, $value := .Values.parquet_converter.extraArgs }}
+            - "-{{ $key }}={{ $value }}"
+          {{- end }}
+          volumeMounts:
+            {{- if .Values.parquet_converter.extraVolumeMounts }}
+            {{- toYaml .Values.parquet_converter.extraVolumeMounts | nindent 12 }}
+            {{- end }}
+            - name: config
+              mountPath: /etc/cortex
+            - name: runtime-config
+              mountPath: /etc/cortex-runtime-config
+          ports:
+            - name: http-metrics
+              containerPort: {{ .Values.config.server.http_listen_port }}
+              protocol: TCP
+          startupProbe:
+            {{- toYaml .Values.parquet_converter.startupProbe | nindent 12 }}
+          livenessProbe:
+            {{- toYaml .Values.parquet_converter.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.parquet_converter.readinessProbe | nindent 12 }}
+          resources:
+            {{- toYaml .Values.parquet_converter.resources | nindent 12 }}
+          {{- if .Values.parquet_converter.containerSecurityContext.enabled }}
+          securityContext: {{- omit .Values.parquet_converter.containerSecurityContext "enabled" | toYaml | nindent 12 }}
+          {{- end }}
+          {{- if .Values.parquet_converter.env }}
+          env:
+            {{- toYaml .Values.parquet_converter.env | nindent 12 }}
+          {{- end }}
+          {{- with .Values.parquet_converter.lifecycle }}
+          lifecycle:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+        {{- if .Values.parquet_converter.extraContainers }}
+        {{- toYaml .Values.parquet_converter.extraContainers | nindent 8 }}
+        {{- end }}
+      nodeSelector:
+        {{- toYaml .Values.parquet_converter.nodeSelector | nindent 8 }}
+      {{- if .Values.parquet_converter.topologySpreadConstraints }}
+      topologySpreadConstraints:
+      {{- toYaml .Values.parquet_converter.topologySpreadConstraints | nindent 8}}
+      {{- end }}
+      affinity:
+        {{- toYaml .Values.parquet_converter.affinity | nindent 8 }}
+      tolerations:
+        {{- toYaml .Values.parquet_converter.tolerations | nindent 8 }}
+      terminationGracePeriodSeconds: {{ .Values.parquet_converter.terminationGracePeriodSeconds }}
+      volumes:
+        {{- include "cortex.configVolume" . | nindent 8 }}
+        - name: runtime-config
+          configMap:
+            name: {{ template "cortex.fullname" . }}-runtime-config
+        {{- if .Values.parquet_converter.extraVolumes }}
+        {{- toYaml .Values.parquet_converter.extraVolumes | nindent 8 }}
+        {{- end }}
+{{- end }}
