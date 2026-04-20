@@ -144,7 +144,7 @@ Kubernetes: `^1.19.0-0`
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;healthPort | int | `8081` | The port the kiwigrid/k8s-sidecar listens on for health checks. The image default matches the cortex default listen port (8080), so it must be overridden here. |
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;repository | string | `"kiwigrid/k8s-sidecar"` |  |
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;sha | string | `""` |  |
-| alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"2.5.0"` |  |
+| alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"2.6.0"` |  |
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;imagePullPolicy | string | `"IfNotPresent"` |  |
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;label | string | `"cortex_alertmanager"` | Label that should be used for filtering |
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;labelValue | string | `""` | The value for the label you want to filter your resources on. Don't set a value to filter by any value |
@@ -396,10 +396,10 @@ Kubernetes: `^1.19.0-0`
 | memcached-blocks-index.&ZeroWidthSpace;disableValidation | bool | `false` | Bypass validation of the memcached configuration in case a custom image is in use |
 | memcached-blocks-index.&ZeroWidthSpace;enabled | bool | `true` | Enables support for block index caching |
 | memcached-blocks-index.&ZeroWidthSpace;image.&ZeroWidthSpace;repository | string | `"memcached"` |  |
-| memcached-blocks-index.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"1.6.40"` |  |
+| memcached-blocks-index.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"1.6.41"` |  |
 | memcached-blocks-index.&ZeroWidthSpace;metrics.&ZeroWidthSpace;enabled | bool | `true` |  |
 | memcached-blocks-index.&ZeroWidthSpace;metrics.&ZeroWidthSpace;image.&ZeroWidthSpace;repository | string | `"prom/memcached-exporter"` |  |
-| memcached-blocks-index.&ZeroWidthSpace;metrics.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"v0.15.5"` |  |
+| memcached-blocks-index.&ZeroWidthSpace;metrics.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"v0.16.0"` |  |
 | memcached-blocks-index.&ZeroWidthSpace;metrics.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;enabled | bool | `false` |  |
 | memcached-blocks-index.&ZeroWidthSpace;replicaCount | int | `2` |  |
 | memcached-blocks-index.&ZeroWidthSpace;resources | object | `{}` |  |
@@ -410,10 +410,10 @@ Kubernetes: `^1.19.0-0`
 | memcached-blocks-metadata.&ZeroWidthSpace;disableValidation | bool | `false` | Bypass validation of the memcached configuration in case a custom image is in use |
 | memcached-blocks-metadata.&ZeroWidthSpace;enabled | bool | `true` | Enables support for block metadata caching |
 | memcached-blocks-metadata.&ZeroWidthSpace;image.&ZeroWidthSpace;repository | string | `"memcached"` |  |
-| memcached-blocks-metadata.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"1.6.40"` |  |
+| memcached-blocks-metadata.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"1.6.41"` |  |
 | memcached-blocks-metadata.&ZeroWidthSpace;metrics.&ZeroWidthSpace;enabled | bool | `true` |  |
 | memcached-blocks-metadata.&ZeroWidthSpace;metrics.&ZeroWidthSpace;image.&ZeroWidthSpace;repository | string | `"prom/memcached-exporter"` |  |
-| memcached-blocks-metadata.&ZeroWidthSpace;metrics.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"v0.15.5"` |  |
+| memcached-blocks-metadata.&ZeroWidthSpace;metrics.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"v0.16.0"` |  |
 | memcached-blocks-metadata.&ZeroWidthSpace;metrics.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;enabled | bool | `false` |  |
 | memcached-blocks-metadata.&ZeroWidthSpace;replicaCount | int | `2` |  |
 | memcached-blocks-metadata.&ZeroWidthSpace;resources | object | `{}` |  |
@@ -424,10 +424,10 @@ Kubernetes: `^1.19.0-0`
 | memcached-blocks.&ZeroWidthSpace;disableValidation | bool | `false` | Bypass validation of the memcached configuration in case a custom image is in use |
 | memcached-blocks.&ZeroWidthSpace;enabled | bool | `true` | Enables support for block caching |
 | memcached-blocks.&ZeroWidthSpace;image.&ZeroWidthSpace;repository | string | `"memcached"` |  |
-| memcached-blocks.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"1.6.40"` |  |
+| memcached-blocks.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"1.6.41"` |  |
 | memcached-blocks.&ZeroWidthSpace;metrics.&ZeroWidthSpace;enabled | bool | `true` |  |
 | memcached-blocks.&ZeroWidthSpace;metrics.&ZeroWidthSpace;image.&ZeroWidthSpace;repository | string | `"prom/memcached-exporter"` |  |
-| memcached-blocks.&ZeroWidthSpace;metrics.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"v0.15.5"` |  |
+| memcached-blocks.&ZeroWidthSpace;metrics.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"v0.16.0"` |  |
 | memcached-blocks.&ZeroWidthSpace;metrics.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;enabled | bool | `false` |  |
 | memcached-blocks.&ZeroWidthSpace;replicaCount | int | `2` |  |
 | memcached-blocks.&ZeroWidthSpace;resources | object | `{}` |  |
@@ -438,10 +438,10 @@ Kubernetes: `^1.19.0-0`
 | memcached-frontend.&ZeroWidthSpace;disableValidation | bool | `false` | Bypass validation of the memcached configuration in case a custom image is in use |
 | memcached-frontend.&ZeroWidthSpace;enabled | bool | `true` | Enables support for caching queries in the frontend |
 | memcached-frontend.&ZeroWidthSpace;image.&ZeroWidthSpace;repository | string | `"memcached"` |  |
-| memcached-frontend.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"1.6.40"` |  |
+| memcached-frontend.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"1.6.41"` |  |
 | memcached-frontend.&ZeroWidthSpace;metrics.&ZeroWidthSpace;enabled | bool | `true` |  |
 | memcached-frontend.&ZeroWidthSpace;metrics.&ZeroWidthSpace;image.&ZeroWidthSpace;repository | string | `"prom/memcached-exporter"` |  |
-| memcached-frontend.&ZeroWidthSpace;metrics.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"v0.15.5"` |  |
+| memcached-frontend.&ZeroWidthSpace;metrics.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"v0.16.0"` |  |
 | memcached-frontend.&ZeroWidthSpace;metrics.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;enabled | bool | `false` |  |
 | memcached-frontend.&ZeroWidthSpace;replicaCount | int | `2` |  |
 | memcached-frontend.&ZeroWidthSpace;resources | object | `{}` |  |
@@ -837,7 +837,7 @@ Kubernetes: `^1.19.0-0`
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;healthPort | int | `8081` | The port the kiwigrid/k8s-sidecar listens on for health checks. The image default matches the cortex default listen port (8080), so it must be overridden here. |
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;repository | string | `"kiwigrid/k8s-sidecar"` |  |
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;sha | string | `""` |  |
-| ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"2.5.0"` |  |
+| ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"2.6.0"` |  |
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;imagePullPolicy | string | `"IfNotPresent"` |  |
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;label | string | `"cortex_rules"` | label that the configmaps with rules are marked with |
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;labelValue | string | `""` | The value for the label you want to filter your resources on. Don't set a value to filter by any value |

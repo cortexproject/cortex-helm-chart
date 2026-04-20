@@ -2,6 +2,10 @@
 
 ## master / unreleased
 
+* [DEPENDENCY] update memcached docker tag to v1.6.41 #603
+* [DEPENDENCY] update prom/memcached-exporter docker tag to v0.16.0 #612
+* [DEPENDENCY] update kiwigrid/k8s-sidecar docker tag to v2.6.0 #610
+
 ## 3.2.0 / 2026-02-26
 
 * [ENHANCEMENT] enable readiness probe on kiwigrid/k8s-sidecar #597
@@ -27,6 +31,7 @@
 * [CHANGE] Use default value for num_tokens in ingester configuration #544
 * [BUGFIX] Fix discovering memcached instances #551
 * [BUGFIX] Fix restarting query-schedulers when config changes #559
+* [BUGFIX] Don't configure alertmanager in ruler if alertmanager is disabled #618
 * [ENHANCEMENT] Run overrides-exporter with high availability #557
 * [ENHANCEMENT] Persist subchart #572
 * [ENHANCEMENT] Expose query frontend GRPC port on service for ruler #574

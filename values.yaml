@@ -283,7 +283,7 @@ alertmanager:
     enabled: false
     image:
       repository: kiwigrid/k8s-sidecar
-      tag: 2.5.0
+      tag: 2.6.0
       sha: ""
     imagePullPolicy: IfNotPresent
     resources: {}
@@ -712,7 +712,7 @@ ruler:
     enabled: false
     image:
       repository: kiwigrid/k8s-sidecar
-      tag: 2.5.0
+      tag: 2.6.0
       sha: ""
     imagePullPolicy: IfNotPresent
     resources: {}
@@ -1709,12 +1709,12 @@ memcached-frontend:
     - -m 1024
   image:
     repository: memcached
-    tag: "1.6.40"
+    tag: "1.6.41"
   metrics:
     enabled: true
     image:
       repository: prom/memcached-exporter
-      tag: "v0.15.5"
+      tag: "v0.16.0"
     serviceMonitor:
       enabled: false
 
@@ -1734,12 +1734,12 @@ memcached-blocks-index:
     - -m 1024
   image:
     repository: memcached
-    tag: "1.6.40"
+    tag: "1.6.41"
   metrics:
     enabled: true
     image:
       repository: prom/memcached-exporter
-      tag: "v0.15.5"
+      tag: "v0.16.0"
     serviceMonitor:
       enabled: false
 
@@ -1759,12 +1759,12 @@ memcached-blocks:
     - -m 1024
   image:
     repository: memcached
-    tag: "1.6.40"
+    tag: "1.6.41"
   metrics:
     enabled: true
     image:
       repository: prom/memcached-exporter
-      tag: "v0.15.5"
+      tag: "v0.16.0"
     serviceMonitor:
       enabled: false
 
@@ -1784,12 +1784,12 @@ memcached-blocks-metadata:
     - -m 1024
   image:
     repository: memcached
-    tag: "1.6.40"
+    tag: "1.6.41"
   metrics:
     enabled: true
     image:
       repository: prom/memcached-exporter
-      tag: "v0.15.5"
+      tag: "v0.16.0"
     serviceMonitor:
       enabled: false
 
