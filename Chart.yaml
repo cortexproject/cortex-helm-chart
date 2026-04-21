@@ -36,3 +36,8 @@ dependencies:
     version: 6.14.0
     repository: https://charts.bitnami.com/bitnami
     condition: memcached-blocks-metadata.enabled
+  - name: memcached
+    alias: memcached-parquet-labels
+    version: 6.14.0
+    repository: https://charts.bitnami.com/bitnami
+    condition: memcached-parquet-labels.enabled
