@@ -2,6 +2,8 @@
 
 ## master / unreleased
 
+* [FEATURE] Add a parquet labels cache. #621
+
 ## 3.2.1 / 2026-04-20
 
 * [BUGFIX] Don't configure alertmanager in ruler if alertmanager is disabled #618
