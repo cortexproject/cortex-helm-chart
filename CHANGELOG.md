@@ -3,6 +3,7 @@
 ## master / unreleased
 
 * [FEATURE] Add a parquet labels cache. #621
+* [DEPENDENCY] update quay.io/cortexproject/cortex docker tag to v1.21.0 #622
 * [DEPENDENCY] update kiwigrid/k8s-sidecar docker tag to v2.7.1 #623
 
 ## 3.2.1 / 2026-04-20
