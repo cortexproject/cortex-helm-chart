@@ -1793,6 +1793,31 @@ memcached-blocks-metadata:
     serviceMonitor:
       enabled: false
 
+memcached-parquet-labels:
+  # -- Enables support for parquet labels caching
+  enabled: false
+  service:
+    clusterIP: None
+  architecture: "high-availability"
+  replicaCount: 2
+  resources: {}
+  # -- Bypass validation of the memcached configuration in case a custom image is in use
+  disableValidation: false
+  # -- Command line argument supplied to memcached
+  args:
+    # -- The amount of memory allocated to memcached for object storage
+    - -m 1024
+  image:
+    repository: memcached
+    tag: "1.6.41"
+  metrics:
+    enabled: true
+    image:
+      repository: prom/memcached-exporter
+      tag: "v0.16.0"
+    serviceMonitor:
+      enabled: false
+
 memberlist:
   service:
     annotations: {}

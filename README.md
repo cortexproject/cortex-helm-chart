@@ -90,6 +90,7 @@ Kubernetes: `^1.19.0-0`
 | https://charts.bitnami.com/bitnami | memcached-blocks-index(memcached) | 6.14.0 |
 | https://charts.bitnami.com/bitnami | memcached-blocks(memcached) | 6.14.0 |
 | https://charts.bitnami.com/bitnami | memcached-blocks-metadata(memcached) | 6.14.0 |
+| https://charts.bitnami.com/bitnami | memcached-parquet-labels(memcached) | 6.14.0 |
 
 ## Values
 
@@ -446,6 +447,20 @@ Kubernetes: `^1.19.0-0`
 | memcached-frontend.&ZeroWidthSpace;replicaCount | int | `2` |  |
 | memcached-frontend.&ZeroWidthSpace;resources | object | `{}` |  |
 | memcached-frontend.&ZeroWidthSpace;service.&ZeroWidthSpace;clusterIP | string | `"None"` |  |
+| memcached-parquet-labels.&ZeroWidthSpace;architecture | string | `"high-availability"` |  |
+| memcached-parquet-labels.&ZeroWidthSpace;args | list | `["-m 1024"]` | Command line argument supplied to memcached |
+| memcached-parquet-labels.&ZeroWidthSpace;args[0] | string | `"-m 1024"` | The amount of memory allocated to memcached for object storage |
+| memcached-parquet-labels.&ZeroWidthSpace;disableValidation | bool | `false` | Bypass validation of the memcached configuration in case a custom image is in use |
+| memcached-parquet-labels.&ZeroWidthSpace;enabled | bool | `false` | Enables support for parquet labels caching |
+| memcached-parquet-labels.&ZeroWidthSpace;image.&ZeroWidthSpace;repository | string | `"memcached"` |  |
+| memcached-parquet-labels.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"1.6.41"` |  |
+| memcached-parquet-labels.&ZeroWidthSpace;metrics.&ZeroWidthSpace;enabled | bool | `true` |  |
+| memcached-parquet-labels.&ZeroWidthSpace;metrics.&ZeroWidthSpace;image.&ZeroWidthSpace;repository | string | `"prom/memcached-exporter"` |  |
+| memcached-parquet-labels.&ZeroWidthSpace;metrics.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"v0.16.0"` |  |
+| memcached-parquet-labels.&ZeroWidthSpace;metrics.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;enabled | bool | `false` |  |
+| memcached-parquet-labels.&ZeroWidthSpace;replicaCount | int | `2` |  |
+| memcached-parquet-labels.&ZeroWidthSpace;resources | object | `{}` |  |
+| memcached-parquet-labels.&ZeroWidthSpace;service.&ZeroWidthSpace;clusterIP | string | `"None"` |  |
 | nginx.&ZeroWidthSpace;affinity | object | `{}` |  |
 | nginx.&ZeroWidthSpace;annotations | object | `{}` |  |
 | nginx.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;behavior | object | `{}` | Ref: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#support-for-configurable-scaling-behavior |
