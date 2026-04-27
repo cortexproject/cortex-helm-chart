@@ -2,6 +2,8 @@
 
 ## master / unreleased
 
+## 3.3.1 / 2026-04-27
+
 ## 3.3.0 / 2026-04-27
 
 * [FEATURE] Add a parquet labels cache. #621
