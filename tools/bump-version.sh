@@ -19,6 +19,9 @@ else
     elif echo "$unreleased_changes" | grep -q "\[ENHANCEMENT\]"; then
         echo "Found [ENHANCEMENT], applying minor bump."
         bump="minor"
+    elif echo "$unreleased_changes" | grep -q "\[FEATURE\]"; then
+        echo "Found [FEATURE], applying minor bump."
+        bump="minor"
     else
         echo "Defaulting to patch bump ([BUGFIX], [DEPENDENCY], or other)."
         bump="patch"
