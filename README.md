@@ -2,7 +2,7 @@
 
 # cortex
 
-![Version: 3.2.0](https://img.shields.io/badge/Version-3.2.0-informational?style=flat-square) ![AppVersion: v1.20.1](https://img.shields.io/badge/AppVersion-v1.20.1-informational?style=flat-square)
+![Version: 3.3.0](https://img.shields.io/badge/Version-3.3.0-informational?style=flat-square) ![AppVersion: v1.21.0](https://img.shields.io/badge/AppVersion-v1.21.0-informational?style=flat-square)
 
 Horizontally scalable, highly available, multi-tenant, long term Prometheus.
 
@@ -90,6 +90,7 @@ Kubernetes: `^1.19.0-0`
 | https://charts.bitnami.com/bitnami | memcached-blocks-index(memcached) | 6.14.0 |
 | https://charts.bitnami.com/bitnami | memcached-blocks(memcached) | 6.14.0 |
 | https://charts.bitnami.com/bitnami | memcached-blocks-metadata(memcached) | 6.14.0 |
+| https://charts.bitnami.com/bitnami | memcached-parquet-labels(memcached) | 6.14.0 |
 
 ## Values
 
@@ -144,7 +145,7 @@ Kubernetes: `^1.19.0-0`
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;healthPort | int | `8081` | The port the kiwigrid/k8s-sidecar listens on for health checks. The image default matches the cortex default listen port (8080), so it must be overridden here. |
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;repository | string | `"kiwigrid/k8s-sidecar"` |  |
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;sha | string | `""` |  |
-| alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"2.6.0"` |  |
+| alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"2.7.1"` |  |
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;imagePullPolicy | string | `"IfNotPresent"` |  |
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;label | string | `"cortex_alertmanager"` | Label that should be used for filtering |
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;labelValue | string | `""` | The value for the label you want to filter your resources on. Don't set a value to filter by any value |
@@ -446,6 +447,20 @@ Kubernetes: `^1.19.0-0`
 | memcached-frontend.&ZeroWidthSpace;replicaCount | int | `2` |  |
 | memcached-frontend.&ZeroWidthSpace;resources | object | `{}` |  |
 | memcached-frontend.&ZeroWidthSpace;service.&ZeroWidthSpace;clusterIP | string | `"None"` |  |
+| memcached-parquet-labels.&ZeroWidthSpace;architecture | string | `"high-availability"` |  |
+| memcached-parquet-labels.&ZeroWidthSpace;args | list | `["-m 1024"]` | Command line argument supplied to memcached |
+| memcached-parquet-labels.&ZeroWidthSpace;args[0] | string | `"-m 1024"` | The amount of memory allocated to memcached for object storage |
+| memcached-parquet-labels.&ZeroWidthSpace;disableValidation | bool | `false` | Bypass validation of the memcached configuration in case a custom image is in use |
+| memcached-parquet-labels.&ZeroWidthSpace;enabled | bool | `false` | Enables support for parquet labels caching |
+| memcached-parquet-labels.&ZeroWidthSpace;image.&ZeroWidthSpace;repository | string | `"memcached"` |  |
+| memcached-parquet-labels.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"1.6.41"` |  |
+| memcached-parquet-labels.&ZeroWidthSpace;metrics.&ZeroWidthSpace;enabled | bool | `true` |  |
+| memcached-parquet-labels.&ZeroWidthSpace;metrics.&ZeroWidthSpace;image.&ZeroWidthSpace;repository | string | `"prom/memcached-exporter"` |  |
+| memcached-parquet-labels.&ZeroWidthSpace;metrics.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"v0.16.0"` |  |
+| memcached-parquet-labels.&ZeroWidthSpace;metrics.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;enabled | bool | `false` |  |
+| memcached-parquet-labels.&ZeroWidthSpace;replicaCount | int | `2` |  |
+| memcached-parquet-labels.&ZeroWidthSpace;resources | object | `{}` |  |
+| memcached-parquet-labels.&ZeroWidthSpace;service.&ZeroWidthSpace;clusterIP | string | `"None"` |  |
 | nginx.&ZeroWidthSpace;affinity | object | `{}` |  |
 | nginx.&ZeroWidthSpace;annotations | object | `{}` |  |
 | nginx.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;behavior | object | `{}` | Ref: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#support-for-configurable-scaling-behavior |
@@ -837,7 +852,7 @@ Kubernetes: `^1.19.0-0`
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;healthPort | int | `8081` | The port the kiwigrid/k8s-sidecar listens on for health checks. The image default matches the cortex default listen port (8080), so it must be overridden here. |
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;repository | string | `"kiwigrid/k8s-sidecar"` |  |
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;sha | string | `""` |  |
-| ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"2.6.0"` |  |
+| ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"2.7.1"` |  |
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;imagePullPolicy | string | `"IfNotPresent"` |  |
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;label | string | `"cortex_rules"` | label that the configmaps with rules are marked with |
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;labelValue | string | `""` | The value for the label you want to filter your resources on. Don't set a value to filter by any value |

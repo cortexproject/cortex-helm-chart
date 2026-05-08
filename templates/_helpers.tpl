@@ -97,6 +97,10 @@ Create configuration parameters for memcached configuration
 - "-blocks-storage.bucket-store.metadata-cache.backend=memcached"
 - "-blocks-storage.bucket-store.metadata-cache.memcached.addresses=dns+{{ .Release.Name }}-memcached-blocks-metadata.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:11211"
 {{- end -}}
+{{- if index .Values "memcached-parquet-labels" "enabled" }}
+- "-blocks-storage.bucket-store.parquet-labels-cache.backend=memcached"
+- "-blocks-storage.bucket-store.parquet-labels-cache.memcached.addresses=dns+{{ .Release.Name }}-memcached-parquet-labels.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:11211"
+{{- end -}}
 {{- end -}}
 
 {{/*
