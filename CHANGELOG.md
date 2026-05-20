@@ -2,6 +2,8 @@
 
 ## master / unreleased
 
+* [FEATURE] Support zone awareness on Ingester. #632
+
 ## 3.3.0 / 2026-04-27
 
 * [FEATURE] Add a parquet labels cache. #621

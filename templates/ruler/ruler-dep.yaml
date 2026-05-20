@@ -129,6 +129,9 @@ spec:
               {{- end }}
             {{- end }}
             {{- include "cortex.memcached" . | nindent 12}}
+          {{- if .Values.ingester.zoneAwareness.enabled }}
+            - -ingester.zone-awareness-enabled={{ not .Values.ingester.zoneAwareness.migration.enabled }}
+          {{- end }}
           {{- range $key, $value := .Values.ruler.extraArgs }}
             - "-{{ $key }}={{ $value }}"
           {{- end }}

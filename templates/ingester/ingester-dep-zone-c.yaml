@@ -1,59 +1,35 @@
-{{- if and .Values.ingester.statefulSet.enabled .Values.ingester.enabled (or (not .Values.ingester.zoneAwareness.enabled) .Values.ingester.zoneAwareness.migration.enabled) -}}
+{{- if and (not .Values.ingester.statefulSet.enabled) .Values.ingester.enabled .Values.ingester.zoneAwareness.enabled -}}
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
-  name: {{ include "cortex.ingesterFullname" . }}
+  name: {{ include "cortex.ingesterFullname" . }}-zone-c
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "cortex.ingesterLabels" . | nindent 4 }}
     app.kubernetes.io/part-of: memberlist
+    zone: c
   annotations:
-    {{- toYaml .Values.ingester.annotations | nindent 4 }}
+    {{- toYaml .Values.ingester.zoneAwareness.zoneC.annotations | default (toYaml .Values.ingester.annotations) | nindent 4 }}
 spec:
   {{- if not .Values.ingester.autoscaling.enabled }}
-  replicas: {{ .Values.ingester.replicas }}
+  replicas: {{ .Values.ingester.zoneAwareness.zoneC.replicas | default .Values.ingester.replicas }}
   {{- end }}
   selector:
     matchLabels:
       {{- include "cortex.ingesterSelectorLabels" . | nindent 6 }}
-  updateStrategy:
-    {{- toYaml .Values.ingester.statefulStrategy | nindent 4 }}          
-  podManagementPolicy: "{{ .Values.ingester.statefulSet.podManagementPolicy }}"
-  serviceName: {{ template "cortex.fullname" . }}-ingester-headless
-  {{- if .Values.ingester.persistentVolume.enabled }}
-  {{- if semverCompare ">=1.23-0" .Capabilities.KubeVersion.Version }}
-  {{- with .Values.ingester.persistentVolume.retentionPolicy }}
-  persistentVolumeClaimRetentionPolicy:
-    {{- toYaml . | nindent 4 }}
-  {{- end }}
-  {{- end }}
-  volumeClaimTemplates:
-    - metadata:
-        name: storage
-        {{- if .Values.ingester.persistentVolume.annotations }}
-        annotations:
-          {{ toYaml .Values.ingester.persistentVolume.annotations | nindent 10 }}
-        {{- end }}
-      spec:
-        {{- if .Values.ingester.persistentVolume.storageClass }}
-        {{- if (eq "-" .Values.ingester.persistentVolume.storageClass) }}
-        storageClassName: ""
-        {{- else }}
-        storageClassName: "{{ .Values.ingester.persistentVolume.storageClass }}"
-        {{- end }}
-        {{- end }}
-        accessModes:
-          {{ toYaml .Values.ingester.persistentVolume.accessModes | nindent 10 }}
-        resources:
-          requests:
-            storage: "{{ .Values.ingester.persistentVolume.size }}"
-  {{- end }}
+      zone: c
+  strategy:
+    {{- toYaml .Values.ingester.strategy | nindent 4 }}
   template:
     metadata:
       labels:
         {{- include "cortex.ingesterLabels" . | nindent 8 }}
         app.kubernetes.io/part-of: memberlist
+        zone: c
         {{- with .Values.ingester.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+        {{- with .Values.ingester.zoneAwareness.zoneC.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
       annotations:
@@ -61,8 +37,11 @@ spec:
         {{- with .Values.ingester.podAnnotations }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
+        {{- with .Values.ingester.zoneAwareness.zoneC.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
     spec:
-      serviceAccountName: {{ .Values.ingester.serviceAccount.name | default (include "cortex.serviceAccountName" . ) }}
+      serviceAccountName: {{ .Values.ingester.serviceAccount.name | default (include "cortex.serviceAccountName" .) }}
       {{- if .Values.ingester.priorityClassName }}
       priorityClassName: {{ .Values.ingester.priorityClassName }}
       {{- end }}
@@ -77,46 +56,21 @@ spec:
         - name: {{ . }}
       {{- end }}
       {{- end }}
-      nodeSelector:
-        {{- toYaml .Values.ingester.nodeSelector | nindent 8 }}
-      {{- if .Values.ingester.topologySpreadConstraints }}
-      topologySpreadConstraints:
-      {{- toYaml .Values.ingester.topologySpreadConstraints | nindent 8}}
-      {{- end }}
-      affinity:
-        {{- toYaml .Values.ingester.affinity | nindent 8 }}
-      tolerations:
-        {{- toYaml .Values.ingester.tolerations | nindent 8 }}
-      terminationGracePeriodSeconds: {{ .Values.ingester.terminationGracePeriodSeconds }}
-      volumes:
-        {{- include "cortex.configVolume" . | nindent 8 }}
-        - name: runtime-config
-          configMap:
-            name: {{ template "cortex.fullname" . }}-runtime-config
-        {{- if not .Values.ingester.persistentVolume.enabled }}
-        - name: storage
-          emptyDir: {}
-        {{- end }}
-        {{- if .Values.ingester.extraVolumes }}
-        {{- toYaml .Values.ingester.extraVolumes | nindent 8 }}
-        {{- end }}
       containers:
-        {{- if .Values.ingester.extraContainers }}
-        {{- toYaml .Values.ingester.extraContainers | nindent 8 }}
-        {{- end }}
         - name: ingester
           image: "{{ .Values.image.repository }}:{{ default .Chart.AppVersion .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args:
             - "-target=ingester"
             - "-config.file=/etc/cortex/cortex.yaml"
-            {{- include "cortex.memcached" . | nindent 12}}
+            - "-ingester.availability-zone=zone-c"
+            {{- include "cortex.memcached" . | nindent 12 }}
             {{- range $key, $value := .Values.ingester.extraArgs }}
             - "-{{ $key }}={{ $value }}"
             {{- end }}
           volumeMounts:
             {{- if .Values.ingester.extraVolumeMounts }}
-            {{- toYaml .Values.ingester.extraVolumeMounts | nindent 12}}
+            {{- toYaml .Values.ingester.extraVolumeMounts | nindent 12 }}
             {{- end }}
             - name: config
               mountPath: /etc/cortex
@@ -160,4 +114,41 @@ spec:
           lifecycle:
             {{- toYaml . | nindent 12 }}
           {{- end }}
+        {{- with .Values.ingester.extraContainers }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      nodeSelector:
+        {{- if .Values.ingester.zoneAwareness.zoneC.nodeSelector }}
+        {{- toYaml .Values.ingester.zoneAwareness.zoneC.nodeSelector | nindent 8 }}
+        {{- else }}
+        {{- toYaml .Values.ingester.nodeSelector | nindent 8 }}
+        {{- end }}
+      {{- if .Values.ingester.topologySpreadConstraints }}
+      topologySpreadConstraints:
+        {{- toYaml .Values.ingester.topologySpreadConstraints | nindent 8 }}
+      {{- end }}
+      affinity:
+        {{- if .Values.ingester.zoneAwareness.zoneC.extraAffinity }}
+        {{- toYaml .Values.ingester.zoneAwareness.zoneC.extraAffinity | nindent 8 }}
+        {{- else }}
+        {{- toYaml .Values.ingester.affinity | nindent 8 }}
+        {{- end }}
+      tolerations:
+        {{- if .Values.ingester.zoneAwareness.zoneC.tolerations }}
+        {{- toYaml .Values.ingester.zoneAwareness.zoneC.tolerations | nindent 8 }}
+        {{- else }}
+        {{- toYaml .Values.ingester.tolerations | nindent 8 }}
+        {{- end }}
+      terminationGracePeriodSeconds: {{ .Values.ingester.terminationGracePeriodSeconds }}
+      volumes:
+        {{- include "cortex.configVolume" . | nindent 8 }}
+        - name: runtime-config
+          configMap:
+            name: {{ template "cortex.fullname" . }}-runtime-config
+        - name: storage
+          emptyDir: {}
+        {{- if .Values.ingester.extraVolumes }}
+        {{- toYaml .Values.ingester.extraVolumes | nindent 8 }}
+        {{- end }}
 {{- end -}}
+
