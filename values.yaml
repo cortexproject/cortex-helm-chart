@@ -607,6 +607,36 @@ ingester:
   extraPorts: []
   env: []
 
+  zoneAwareness:
+    enabled: false
+    migration:
+      enabled: false
+    zoneA:
+      replicas: 1
+      nodeSelector: {}
+      extraAffinity: {}
+      tolerations: []
+      annotations: {}
+      podAnnotations: {}
+      podLabels: {}
+    zoneB:
+      replicas: 1
+      nodeSelector: {}
+      extraAffinity: {}
+      tolerations: []
+      annotations: {}
+      podAnnotations: {}
+      podLabels: {}
+    zoneC:
+      replicas: 1
+      nodeSelector: {}
+      extraAffinity: {}
+      tolerations: []
+      annotations: {}
+      podAnnotations: {}
+      podLabels: {}
+
+
 ruler:
   enabled: true
   replicas: 1

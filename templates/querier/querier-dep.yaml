@@ -59,6 +59,9 @@ spec:
             - "-querier.frontend-address={{ template "cortex.queryFrontendFullname" . }}-headless.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.config.server.grpc_listen_port }}"
           {{- end }}
           {{- include "cortex.memcached" . | nindent 12}}
+          {{- if .Values.ingester.zoneAwareness.enabled }}
+            - -ingester.zone-awareness-enabled={{ not .Values.ingester.zoneAwareness.migration.enabled }}
+          {{- end }}
           {{- range $key, $value := .Values.querier.extraArgs }}
             - "-{{ $key }}={{ $value }}"
           {{- end }}

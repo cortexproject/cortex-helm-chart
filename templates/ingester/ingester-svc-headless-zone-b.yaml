@@ -1,8 +1,8 @@
-{{- if and .Values.ingester.enabled (or (not .Values.ingester.zoneAwareness.enabled) .Values.ingester.zoneAwareness.migration.enabled) -}}
+{{- if and .Values.ingester.enabled .Values.ingester.zoneAwareness.enabled -}}
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "cortex.ingesterFullname" . }}-headless
+  name: {{ include "cortex.ingesterFullname" . }}-headless-zone-b
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "cortex.ingesterLabels" . | nindent 4 }}
@@ -22,3 +22,4 @@ spec:
   selector:
     {{- include "cortex.ingesterSelectorLabels" . | nindent 4 }}
 {{- end }}
+

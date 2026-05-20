@@ -1,4 +1,4 @@
-{{- if and (not .Values.ingester.statefulSet.enabled) .Values.ingester.enabled -}}
+{{- if and (not .Values.ingester.statefulSet.enabled) .Values.ingester.enabled (or (not .Values.ingester.zoneAwareness.enabled) .Values.ingester.zoneAwareness.migration.enabled) -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
