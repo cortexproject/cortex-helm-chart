@@ -2,6 +2,7 @@
 
 ## master / unreleased
 
+* [DEPENDENCY] update kiwigrid/k8s-sidecar docker tag to v2.7.3 #628
 * [DEPENDENCY] update nginx docker tag to v1.31 #629
 * [DEPENDENCY] update memcached docker tag to v1.6.42 #631
 
