@@ -1359,7 +1359,7 @@ nginx:
     override_push_endpoint: ""
   image:
     repository: nginx
-    tag: 1.29
+    tag: 1.31
     pullPolicy: IfNotPresent
 
   service:
