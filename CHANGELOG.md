@@ -2,7 +2,7 @@
 
 ## master / unreleased
 
-* [DEPENDENCY] update memcached docker tag to v1.6.42
+* [DEPENDENCY] update memcached docker tag to v1.6.42 #631
 
 ## 3.3.0 / 2026-04-27
 
