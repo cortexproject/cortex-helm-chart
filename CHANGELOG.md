@@ -2,6 +2,8 @@
 
 ## master / unreleased
 
+## 3.3.2 / 2026-06-05
+
 * [DEPENDENCY] update quay.io/cortexproject/cortex docker tag to v1.21.1 #635
 
 ## 3.3.1 / 2026-05-21
