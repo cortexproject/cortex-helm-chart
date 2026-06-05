@@ -2,7 +2,7 @@
 
 # cortex
 
-![Version: 3.3.0](https://img.shields.io/badge/Version-3.3.0-informational?style=flat-square) ![AppVersion: v1.21.0](https://img.shields.io/badge/AppVersion-v1.21.0-informational?style=flat-square)
+![Version: 3.3.1](https://img.shields.io/badge/Version-3.3.1-informational?style=flat-square) ![AppVersion: v1.21.1](https://img.shields.io/badge/AppVersion-v1.21.1-informational?style=flat-square)
 
 Horizontally scalable, highly available, multi-tenant, long term Prometheus.
 
@@ -145,7 +145,7 @@ Kubernetes: `^1.19.0-0`
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;healthPort | int | `8081` | The port the kiwigrid/k8s-sidecar listens on for health checks. The image default matches the cortex default listen port (8080), so it must be overridden here. |
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;repository | string | `"kiwigrid/k8s-sidecar"` |  |
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;sha | string | `""` |  |
-| alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"2.7.1"` |  |
+| alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"2.7.3"` |  |
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;imagePullPolicy | string | `"IfNotPresent"` |  |
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;label | string | `"cortex_alertmanager"` | Label that should be used for filtering |
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;labelValue | string | `""` | The value for the label you want to filter your resources on. Don't set a value to filter by any value |
@@ -397,7 +397,7 @@ Kubernetes: `^1.19.0-0`
 | memcached-blocks-index.&ZeroWidthSpace;disableValidation | bool | `false` | Bypass validation of the memcached configuration in case a custom image is in use |
 | memcached-blocks-index.&ZeroWidthSpace;enabled | bool | `true` | Enables support for block index caching |
 | memcached-blocks-index.&ZeroWidthSpace;image.&ZeroWidthSpace;repository | string | `"memcached"` |  |
-| memcached-blocks-index.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"1.6.41"` |  |
+| memcached-blocks-index.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"1.6.42"` |  |
 | memcached-blocks-index.&ZeroWidthSpace;metrics.&ZeroWidthSpace;enabled | bool | `true` |  |
 | memcached-blocks-index.&ZeroWidthSpace;metrics.&ZeroWidthSpace;image.&ZeroWidthSpace;repository | string | `"prom/memcached-exporter"` |  |
 | memcached-blocks-index.&ZeroWidthSpace;metrics.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"v0.16.0"` |  |
@@ -411,7 +411,7 @@ Kubernetes: `^1.19.0-0`
 | memcached-blocks-metadata.&ZeroWidthSpace;disableValidation | bool | `false` | Bypass validation of the memcached configuration in case a custom image is in use |
 | memcached-blocks-metadata.&ZeroWidthSpace;enabled | bool | `true` | Enables support for block metadata caching |
 | memcached-blocks-metadata.&ZeroWidthSpace;image.&ZeroWidthSpace;repository | string | `"memcached"` |  |
-| memcached-blocks-metadata.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"1.6.41"` |  |
+| memcached-blocks-metadata.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"1.6.42"` |  |
 | memcached-blocks-metadata.&ZeroWidthSpace;metrics.&ZeroWidthSpace;enabled | bool | `true` |  |
 | memcached-blocks-metadata.&ZeroWidthSpace;metrics.&ZeroWidthSpace;image.&ZeroWidthSpace;repository | string | `"prom/memcached-exporter"` |  |
 | memcached-blocks-metadata.&ZeroWidthSpace;metrics.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"v0.16.0"` |  |
@@ -425,7 +425,7 @@ Kubernetes: `^1.19.0-0`
 | memcached-blocks.&ZeroWidthSpace;disableValidation | bool | `false` | Bypass validation of the memcached configuration in case a custom image is in use |
 | memcached-blocks.&ZeroWidthSpace;enabled | bool | `true` | Enables support for block caching |
 | memcached-blocks.&ZeroWidthSpace;image.&ZeroWidthSpace;repository | string | `"memcached"` |  |
-| memcached-blocks.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"1.6.41"` |  |
+| memcached-blocks.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"1.6.42"` |  |
 | memcached-blocks.&ZeroWidthSpace;metrics.&ZeroWidthSpace;enabled | bool | `true` |  |
 | memcached-blocks.&ZeroWidthSpace;metrics.&ZeroWidthSpace;image.&ZeroWidthSpace;repository | string | `"prom/memcached-exporter"` |  |
 | memcached-blocks.&ZeroWidthSpace;metrics.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"v0.16.0"` |  |
@@ -439,7 +439,7 @@ Kubernetes: `^1.19.0-0`
 | memcached-frontend.&ZeroWidthSpace;disableValidation | bool | `false` | Bypass validation of the memcached configuration in case a custom image is in use |
 | memcached-frontend.&ZeroWidthSpace;enabled | bool | `true` | Enables support for caching queries in the frontend |
 | memcached-frontend.&ZeroWidthSpace;image.&ZeroWidthSpace;repository | string | `"memcached"` |  |
-| memcached-frontend.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"1.6.41"` |  |
+| memcached-frontend.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"1.6.42"` |  |
 | memcached-frontend.&ZeroWidthSpace;metrics.&ZeroWidthSpace;enabled | bool | `true` |  |
 | memcached-frontend.&ZeroWidthSpace;metrics.&ZeroWidthSpace;image.&ZeroWidthSpace;repository | string | `"prom/memcached-exporter"` |  |
 | memcached-frontend.&ZeroWidthSpace;metrics.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"v0.16.0"` |  |
@@ -453,7 +453,7 @@ Kubernetes: `^1.19.0-0`
 | memcached-parquet-labels.&ZeroWidthSpace;disableValidation | bool | `false` | Bypass validation of the memcached configuration in case a custom image is in use |
 | memcached-parquet-labels.&ZeroWidthSpace;enabled | bool | `false` | Enables support for parquet labels caching |
 | memcached-parquet-labels.&ZeroWidthSpace;image.&ZeroWidthSpace;repository | string | `"memcached"` |  |
-| memcached-parquet-labels.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"1.6.41"` |  |
+| memcached-parquet-labels.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"1.6.42"` |  |
 | memcached-parquet-labels.&ZeroWidthSpace;metrics.&ZeroWidthSpace;enabled | bool | `true` |  |
 | memcached-parquet-labels.&ZeroWidthSpace;metrics.&ZeroWidthSpace;image.&ZeroWidthSpace;repository | string | `"prom/memcached-exporter"` |  |
 | memcached-parquet-labels.&ZeroWidthSpace;metrics.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"v0.16.0"` |  |
@@ -494,7 +494,7 @@ Kubernetes: `^1.19.0-0`
 | nginx.&ZeroWidthSpace;http_listen_port | int | `80` |  |
 | nginx.&ZeroWidthSpace;image.&ZeroWidthSpace;pullPolicy | string | `"IfNotPresent"` |  |
 | nginx.&ZeroWidthSpace;image.&ZeroWidthSpace;repository | string | `"nginx"` |  |
-| nginx.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | float | `1.29` |  |
+| nginx.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | float | `1.31` |  |
 | nginx.&ZeroWidthSpace;initContainers | list | `[]` |  |
 | nginx.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/healthz"` |  |
 | nginx.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
@@ -852,7 +852,7 @@ Kubernetes: `^1.19.0-0`
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;healthPort | int | `8081` | The port the kiwigrid/k8s-sidecar listens on for health checks. The image default matches the cortex default listen port (8080), so it must be overridden here. |
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;repository | string | `"kiwigrid/k8s-sidecar"` |  |
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;sha | string | `""` |  |
-| ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"2.7.1"` |  |
+| ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"2.7.3"` |  |
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;imagePullPolicy | string | `"IfNotPresent"` |  |
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;label | string | `"cortex_rules"` | label that the configmaps with rules are marked with |
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;labelValue | string | `""` | The value for the label you want to filter your resources on. Don't set a value to filter by any value |
