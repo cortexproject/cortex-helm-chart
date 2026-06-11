@@ -33,7 +33,7 @@ jobs:
       - name: Install Helm
         uses: azure/setup-helm@v5
         with:
-          version: v3.12.1
+          version: v4.2.0
 
       - name: Bump Version
         run: make bump-version VERSION="${{ inputs.version }}"
