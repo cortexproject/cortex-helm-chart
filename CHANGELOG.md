@@ -2,6 +2,8 @@
 
 ## master / unreleased
 
+* [DEPENDENCY] update kiwigrid/k8s-sidecar docker tag to v2.7.4 #641
+
 ## 3.3.2 / 2026-06-05
 
 * [DEPENDENCY] update quay.io/cortexproject/cortex docker tag to v1.21.1 #635
