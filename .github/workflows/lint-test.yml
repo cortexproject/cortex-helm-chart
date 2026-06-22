@@ -12,7 +12,7 @@ jobs:
       updated: ${{ steps.commit.outputs.updated }}
     steps:
       - name: Checkout PR branch
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           token: ${{ secrets.CORTEX_HELM_CHART_CI_TOKEN }}
           ref: ${{ github.event.pull_request.head.ref }}
@@ -44,7 +44,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
