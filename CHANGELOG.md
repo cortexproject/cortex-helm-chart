@@ -2,6 +2,8 @@
 
 ## master / unreleased
 
+* [BUGFIX] Querier: avoid rendering empty `env:` key when no env vars are set
+
 ## 3.3.4 / 2026-06-23
 
 * [DEPENDENCY] update kiwigrid/k8s-sidecar docker tag to v2.8.0 #646
