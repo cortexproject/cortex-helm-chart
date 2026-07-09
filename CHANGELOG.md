@@ -5,6 +5,7 @@
 * [BUGFIX] Querier: avoid rendering empty `env:` key when no env vars are set
 * [BUGFIX] Ruler: fix sidecar securityContext using main container's condition instead of sidecar's
 * [DEPENDENCY] update kiwigrid/k8s-sidecar docker tag to v2.8.1 #648
+* [DEPENDENCY] update memcached Docker tag to v1.6.44 #651
 
 ## 3.3.4 / 2026-06-23
 
