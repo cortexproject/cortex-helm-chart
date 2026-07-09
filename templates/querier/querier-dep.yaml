@@ -88,10 +88,10 @@ spec:
           {{- if .Values.querier.containerSecurityContext.enabled }}
           securityContext: {{- omit .Values.querier.containerSecurityContext "enabled" | toYaml | nindent 12 }}
           {{- end }}
+          {{- if .Values.querier.env }}
           env:
-            {{- if .Values.querier.env }}
-              {{- toYaml .Values.querier.env | nindent 12 }}
-            {{- end }}
+            {{- toYaml .Values.querier.env | nindent 12 }}
+          {{- end }}
           {{- with .Values.querier.lifecycle }}
           lifecycle:
             {{- toYaml . | nindent 12 }}
