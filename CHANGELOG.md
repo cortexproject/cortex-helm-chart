@@ -2,6 +2,8 @@
 
 ## master / unreleased
 
+* [BUGFIX] Ruler: fix sidecar securityContext using main container's condition instead of sidecar's
+
 ## 3.3.4 / 2026-06-23
 
 * [DEPENDENCY] update kiwigrid/k8s-sidecar docker tag to v2.8.0 #646
