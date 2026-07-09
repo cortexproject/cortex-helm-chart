@@ -2,6 +2,8 @@
 
 ## master / unreleased
 
+## 3.3.5 / 2026-07-09
+
 * [BUGFIX] Querier: avoid rendering empty `env:` key when no env vars are set
 * [BUGFIX] Ruler: fix sidecar securityContext using main container's condition instead of sidecar's
 * [DEPENDENCY] update kiwigrid/k8s-sidecar docker tag to v2.8.1 #648
