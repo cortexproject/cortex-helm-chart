@@ -3,6 +3,7 @@
 ## master / unreleased
 
 * [BUGFIX] Querier: avoid rendering empty `env:` key when no env vars are set
+* [BUGFIX] Ruler: fix sidecar securityContext using main container's condition instead of sidecar's
 
 ## 3.3.4 / 2026-06-23
 

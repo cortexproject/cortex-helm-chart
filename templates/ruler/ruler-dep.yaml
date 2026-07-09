@@ -108,7 +108,7 @@ spec:
           {{- end }}
           resources:
             {{- toYaml .Values.ruler.sidecar.resources | nindent 12 }}
-          {{- if .Values.ruler.containerSecurityContext.enabled }}
+          {{- if .Values.ruler.sidecar.containerSecurityContext.enabled }}
           securityContext: {{- omit .Values.ruler.sidecar.containerSecurityContext "enabled" | toYaml | nindent 12 }}
           {{- end }}
           volumeMounts:
