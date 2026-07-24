@@ -3,6 +3,7 @@
 ## master / unreleased
 
 * [BUGFIX] Purger: use correct podAnnotations reference instead of query_frontend's #613
+* [DEPENDENCY] update memcached Docker tag to v1.6.45 #654
 
 ## 3.3.5 / 2026-07-09
 
