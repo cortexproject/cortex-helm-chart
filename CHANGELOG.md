@@ -2,6 +2,8 @@
 
 ## master / unreleased
 
+* [BUGFIX] Purger: use correct podAnnotations reference instead of query_frontend's #613
+
 ## 3.3.5 / 2026-07-09
 
 * [BUGFIX] Querier: avoid rendering empty `env:` key when no env vars are set
