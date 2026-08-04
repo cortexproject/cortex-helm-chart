@@ -2,6 +2,8 @@
 
 ## master / unreleased
 
+* [DEPENDENCY] update kiwigrid/k8s-sidecar docker tag to v2.10.1 #657
+
 ## 3.3.6 / 2026-07-24
 
 * [BUGFIX] Purger: use correct podAnnotations reference instead of query_frontend's #613
