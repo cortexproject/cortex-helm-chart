@@ -2,6 +2,8 @@
 
 ## master / unreleased
 
+## 3.3.7 / 2026-08-04
+
 * [DEPENDENCY] update kiwigrid/k8s-sidecar docker tag to v2.10.1 #657
 
 ## 3.3.6 / 2026-07-24
