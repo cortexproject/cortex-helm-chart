@@ -2,6 +2,8 @@
 
 ## master / unreleased
 
+* [DEPENDENCY] update prom/memcached-exporter docker tag to v0.17.0 #660
+
 ## 3.3.7 / 2026-08-04
 
 * [DEPENDENCY] update kiwigrid/k8s-sidecar docker tag to v2.10.1 #657
