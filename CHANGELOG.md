@@ -2,6 +2,8 @@
 
 ## master / unreleased
 
+## 3.3.8 / 2026-08-17
+
 * [DEPENDENCY] update prom/memcached-exporter docker tag to v0.17.0 #660
 
 ## 3.3.7 / 2026-08-04
