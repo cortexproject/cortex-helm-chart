@@ -946,3 +946,21 @@ Kubernetes: `^1.19.0-0`
 | useConfigMap | bool | `false` |  |
 | useExternalConfig | bool | `false` |  |
 
+## Security & Container Image Considerations
+
+### Default Memcached Image Status
+
+The default configuration of this Helm chart references `memcached:1.6.45`. While this is currently the latest official upstream release of Memcached, security scanners may flag known Common Vulnerabilities and Exposures (CVEs) present in the underlying base image packages.
+
+
+### Mitigation Options
+
+If your organizational policies or security requirements prohibit running images with known vulnerabilities, consider the following options:
+
+1. **Override Default Image in `values.yaml`**  
+   You can specify your own hardened or patched Memcached image, such as Docker Hardened Images [Memcached](https://hub.docker.com/hardened-images/catalog/dhi/memcached), using custom values during deployment:
+   ```yaml
+   memcached:
+     image:
+       repository: your-custom-registry/memcached
+       tag: your-secure-tag
