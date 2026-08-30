@@ -1,7 +1,7 @@
 {
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
     "extends": [
-        "config:base",
+        "config:recommended",
         ":gitSignOff",
         ":rebaseStalePrs"
     ],
@@ -10,50 +10,44 @@
         "kd7lxl"
     ],
     "labels": ["dependencies"],
-    "regexManagers": [{
+    "customManagers": [
+        {
+            "customType": "regex",
             "description": "Update cortex in Chart.yaml",
-            "fileMatch": ["^Chart\\.yaml$"],
-            "matchStrings": [
-                "appVersion: (?<currentValue>.*?)\\n"
-            ],
+            "managerFilePatterns": ["/^Chart\\.yaml$/"],
+            "matchStrings": ["appVersion: (?<currentValue>.*?)\\n"],
             "depNameTemplate": "quay.io/cortexproject/cortex",
             "datasourceTemplate": "docker"
         },
         {
+            "customType": "regex",
             "description": "Update cortex in README.md",
-            "fileMatch": ["^README\\.md$"],
-            "matchStrings": [
-                "\\bAppVersion:\\s+(?<currentValue>v\\d+\\.\\d+\\.\\d+(?:\\+\\d+)?)",
-                "\\bAppVersion-+(?<currentValue>v\\d+\\.\\d+\\.\\d+(?:\\+\\d+)?)"
-            ],
+            "managerFilePatterns": ["/^README\\.md$/"],
+            "matchStrings": ["\\bAppVersion:\\s+(?<currentValue>v\\d+\\.\\d+\\.\\d+(?:\\+\\d+)?)", "\\bAppVersion-+(?<currentValue>v\\d+\\.\\d+\\.\\d+(?:\\+\\d+)?)"],
             "depNameTemplate": "quay.io/cortexproject/cortex",
             "datasourceTemplate": "docker"
         },
         {
+            "customType": "regex",
             "description": "Update nginx image in README.md",
-            "fileMatch": ["^README\\.md$"],
-            "matchStrings": [
-                "\\|\\s+nginx.&ZeroWidthSpace;image.&ZeroWidthSpace;tag\\s+\\|\\s+float\\s+\\|\\s+\\`(?<currentValue>.*?)\\`\\s+\\|\\s+\\|\\s+"
-            ],
+            "managerFilePatterns": ["/^README\\.md$/"],
+            "matchStrings": ["\\|\\s+nginx.&ZeroWidthSpace;image.&ZeroWidthSpace;tag\\s+\\|\\s+float\\s+\\|\\s+\\`(?<currentValue>.*?)\\`\\s+\\|\\s+\\|\\s+"],
             "depNameTemplate": "nginx",
             "datasourceTemplate": "docker"
         },
         {
+            "customType": "regex",
             "description": "Update kiwigrid/k8s-sidecar image in README.md",
-            "fileMatch": ["^README\\.md$"],
-            "matchStrings": [
-                "\\|\\s+ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;tag\\s+\\|\\s+string\\s+\\|\\s+`\"(?<currentValue>.*?)\"`\\s+\\|\\s+\\|\\s+",
-                "\\|\\s+alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;tag\\s+\\|\\s+string\\s+\\|\\s+`\"(?<currentValue>.*?)\"`\\s+\\|\\s+\\|\\s+"
-            ],
+            "managerFilePatterns": ["/^README\\.md$/"],
+            "matchStrings": ["\\|\\s+ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;tag\\s+\\|\\s+string\\s+\\|\\s+`\"(?<currentValue>.*?)\"`\\s+\\|\\s+\\|\\s+", "\\|\\s+alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;tag\\s+\\|\\s+string\\s+\\|\\s+`\"(?<currentValue>.*?)\"`\\s+\\|\\s+\\|\\s+"],
             "depNameTemplate": "kiwigrid/k8s-sidecar",
             "datasourceTemplate": "docker"
         },
         {
+            "customType": "regex",
             "description": "Update memcached image in README.md",
-            "fileMatch": ["^README\\.md$"],
-            "matchStrings": [
-                "\\|[^|]*\\|[^|]*\\(memcached\\)[^|]*\\|\\s+(?<currentValue>.*?)\\s+\\|\\s+"
-            ],
+            "managerFilePatterns": ["/^README\\.md$/"],
+            "matchStrings": ["\\|[^|]*\\|[^|]*\\(memcached\\)[^|]*\\|\\s+(?<currentValue>.*?)\\s+\\|\\s+"],
             "depNameTemplate": "memcached",
             "registryUrlTemplate": "https://charts.bitnami.com/bitnami",
             "datasourceTemplate": "helm"
