@@ -54,6 +54,9 @@ spec:
           args:
             - "-target=distributor"
             - "-config.file=/etc/cortex/cortex.yaml"
+          {{- if and .Values.ingester.zoneAwareReplication.enabled (not .Values.ingester.zoneAwareReplication.migration) }}
+            - "-distributor.zone-awareness-enabled"
+          {{- end }}
           {{- range $key, $value := .Values.distributor.extraArgs }}
             - "-{{ $key }}={{ $value }}"
           {{- end }}
