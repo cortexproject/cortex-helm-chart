@@ -382,6 +382,9 @@ Kubernetes: `^1.19.0-0`
 | ingester.&ZeroWidthSpace;terminationGracePeriodSeconds | int | `240` |  |
 | ingester.&ZeroWidthSpace;tolerations | list | `[]` |  |
 | ingester.&ZeroWidthSpace;topologySpreadConstraints | list | `[]` |  |
+| ingester.&ZeroWidthSpace;zoneAwareness.&ZeroWidthSpace;enabled | bool | `false` | If true, ingesters are deployed as one StatefulSet (or Deployment) per entry in `zones`, each started with `-ingester.availability-zone=<zone name>`, and ingesters, distributors, queriers and rulers get `-distributor.zone-awareness-enabled`. Replicas of a series are spread across zones, so run at least as many zones as the replication factor to survive a zone outage, and the same number of replicas in every zone to keep the load balanced. |
+| ingester.&ZeroWidthSpace;zoneAwareness.&ZeroWidthSpace;migration.&ZeroWidthSpace;enabled | bool | `false` | If true, the zone-less ingester workload is kept alongside the zone workloads and `-distributor.zone-awareness-enabled` is set to false on every component. |
+| ingester.&ZeroWidthSpace;zoneAwareness.&ZeroWidthSpace;zones | list | `[{"name":"zone-a","nodeSelector":{},"replicas":1},{"name":"zone-b","nodeSelector":{},"replicas":1},{"name":"zone-c","nodeSelector":{},"replicas":1}]` | Zones to deploy ingesters into. `name` is required. `replicas`, `nodeSelector`, `affinity`, `tolerations` and `annotations` fall back to the top-level ingester values when unset; `podLabels` and `podAnnotations` are merged into them. |
 | ingress.&ZeroWidthSpace;annotations | object | `{}` |  |
 | ingress.&ZeroWidthSpace;enabled | bool | `false` |  |
 | ingress.&ZeroWidthSpace;hosts[0].&ZeroWidthSpace;host | string | `"chart-example.local"` |  |

@@ -2,6 +2,7 @@
 
 ## master / unreleased
 
+* [FEATURE] Support zone awareness on Ingester. #632
 * [DEPENDENCY] update kiwigrid/k8s-sidecar docker tag to v2.11.2 #663
 
 ## 3.3.8 / 2026-08-17

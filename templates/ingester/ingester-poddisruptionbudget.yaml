@@ -1,4 +1,4 @@
-{{- if and (gt (int .Values.ingester.replicas) 1) (.Values.ingester.podDisruptionBudget) (.Values.ingester.enabled) }}
+{{- if and (gt (int .Values.ingester.replicas) 1) (.Values.ingester.podDisruptionBudget) (.Values.ingester.enabled) (or (not .Values.ingester.zoneAwareness.enabled) .Values.ingester.zoneAwareness.migration.enabled) }}
 apiVersion: {{ include "cortex.pdbVersion" . }}
 kind: PodDisruptionBudget
 metadata:

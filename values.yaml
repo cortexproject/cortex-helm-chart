@@ -607,6 +607,31 @@ ingester:
   extraPorts: []
   env: []
 
+  zoneAwareness:
+    # -- If true, ingesters are deployed as one StatefulSet (or Deployment) per entry in `zones`,
+    # each started with `-ingester.availability-zone=<zone name>`, and ingesters, distributors,
+    # queriers and rulers get `-distributor.zone-awareness-enabled`. Replicas of a series are
+    # spread across zones, so run at least as many zones as the replication factor to survive a
+    # zone outage, and the same number of replicas in every zone to keep the load balanced.
+    enabled: false
+    migration:
+      # -- If true, the zone-less ingester workload is kept alongside the zone workloads and
+      # `-distributor.zone-awareness-enabled` is set to false on every component.
+      enabled: false
+    # -- Zones to deploy ingesters into. `name` is required. `replicas`, `nodeSelector`, `affinity`,
+    # `tolerations` and `annotations` fall back to the top-level ingester values when unset;
+    # `podLabels` and `podAnnotations` are merged into them.
+    zones:
+      - name: zone-a
+        replicas: 1
+        nodeSelector: {}
+      - name: zone-b
+        replicas: 1
+        nodeSelector: {}
+      - name: zone-c
+        replicas: 1
+        nodeSelector: {}
+
 ruler:
   enabled: true
   replicas: 1

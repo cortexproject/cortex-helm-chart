@@ -1,0 +1,23 @@
+{{- /* Per-zone PDBs are skipped during migration: the zone-less PDB still matches every ingester pod and overlapping PDBs block evictions. */ -}}
+{{- if and .Values.ingester.enabled .Values.ingester.podDisruptionBudget .Values.ingester.zoneAwareness.enabled (not .Values.ingester.zoneAwareness.migration.enabled) -}}
+{{- range $zone := .Values.ingester.zoneAwareness.zones }}
+{{- $replicas := ternary $zone.replicas $.Values.ingester.replicas (hasKey $zone "replicas") }}
+{{- if gt (int $replicas) 1 }}
+---
+apiVersion: {{ include "cortex.pdbVersion" $ }}
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "cortex.ingesterFullname" $ }}-{{ $zone.name }}
+  namespace: {{ $.Release.Namespace }}
+  labels:
+    {{- include "cortex.ingesterLabels" $ | nindent 4 }}
+    zone: {{ $zone.name }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "cortex.ingesterSelectorLabels" $ | nindent 6 }}
+      zone: {{ $zone.name }}
+  {{- toYaml $.Values.ingester.podDisruptionBudget | nindent 2 }}
+{{- end }}
+{{- end }}
+{{- end -}}
