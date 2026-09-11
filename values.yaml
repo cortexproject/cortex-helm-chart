@@ -449,6 +449,23 @@ ingester:
     # -- ref: https://cortexmetrics.io/docs/guides/ingesters-scaling-up-and-down/#scaling-down and https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#pod-management-policies for scaledown details
     podManagementPolicy: OrderedReady
 
+  zoneAwareReplication:
+    enabled: false
+    migration: false
+    zones: []
+    #  - name: eu02-1
+    #    nodeSelector:
+    #      topology.kubernetes.io/zone: eu02-1
+    #    labels: {}
+    #  - name: eu02-2
+    #    nodeSelector:
+    #      topology.kubernetes.io/zone: eu02-2
+    #    labels: {}
+    #  - name: eu02-3
+    #    nodeSelector:
+    #      topology.kubernetes.io/zone: eu02-3
+    #    labels: {}
+
   service:
     annotations: {}
     labels: {}
@@ -469,6 +486,8 @@ ingester:
 
   # -- Additional Cortex container arguments, e.g. log.level (debug, info, warn, error)
   extraArgs: {}
+
+  extraLabels: {}
 
   # -- Pod Labels
   podLabels: {}

@@ -1,23 +1,38 @@
 {{- if and .Values.ingester.statefulSet.enabled .Values.ingester.enabled -}}
+{{- $zoneMap := include "cortex.ingesterZoneAwareReplicationMap" $ | fromYaml }}
+{{- range $zoneName, $zone := $zoneMap }}
+{{- with $ }}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: {{ include "cortex.ingesterFullname" . }}
+  name: {{ include "cortex.ingesterFullname" . }}{{ $zone.stsSuffix }}
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "cortex.ingesterLabels" . | nindent 4 }}
     app.kubernetes.io/part-of: memberlist
+    {{- with $zone.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with $zone.annotations }}
   annotations:
-    {{- toYaml .Values.ingester.annotations | nindent 4 }}
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
   {{- if not .Values.ingester.autoscaling.enabled }}
-  replicas: {{ .Values.ingester.replicas }}
+  replicas: {{ $zone.replicas }}
   {{- end }}
   selector:
     matchLabels:
       {{- include "cortex.ingesterSelectorLabels" . | nindent 6 }}
+      {{- if .Values.ingester.zoneAwareReplication.enabled }}
+      zone: {{ $zoneName }}
+      {{- end }}
   updateStrategy:
+    {{- if ne $zoneName "default" }}
+    type: OnDelete
+    {{- else }}
     {{- toYaml .Values.ingester.statefulStrategy | nindent 4 }}          
+    {{- end }}
   podManagementPolicy: "{{ .Values.ingester.statefulSet.podManagementPolicy }}"
   serviceName: {{ template "cortex.fullname" . }}-ingester-headless
   {{- if .Values.ingester.persistentVolume.enabled }}
@@ -33,6 +48,10 @@ spec:
         {{- if .Values.ingester.persistentVolume.annotations }}
         annotations:
           {{ toYaml .Values.ingester.persistentVolume.annotations | nindent 10 }}
+        {{- end }}
+        {{- with $zone.podLabels }}
+        labels:
+          {{- toYaml . | nindent 10 }}
         {{- end }}
       spec:
         {{- if .Values.ingester.persistentVolume.storageClass }}
@@ -52,6 +71,9 @@ spec:
     metadata:
       labels:
         {{- include "cortex.ingesterLabels" . | nindent 8 }}
+        {{- if .Values.ingester.zoneAwareReplication.enabled }}
+        zone: {{ $zoneName }}
+        {{- end }}
         app.kubernetes.io/part-of: memberlist
         {{- with .Values.ingester.podLabels }}
         {{- toYaml . | nindent 8 }}
@@ -78,7 +100,7 @@ spec:
       {{- end }}
       {{- end }}
       nodeSelector:
-        {{- toYaml .Values.ingester.nodeSelector | nindent 8 }}
+        {{- toYaml $zone.nodeSelector | nindent 8 }}
       {{- if .Values.ingester.topologySpreadConstraints }}
       topologySpreadConstraints:
       {{- toYaml .Values.ingester.topologySpreadConstraints | nindent 8}}
@@ -110,6 +132,13 @@ spec:
           args:
             - "-target=ingester"
             - "-config.file=/etc/cortex/cortex.yaml"
+            {{- if .Values.ingester.zoneAwareReplication.enabled }}
+            - "-ingester.availability-zone={{ $zoneName }}"
+            {{- if .Values.ingester.zoneAwareReplication.migration }}
+            - "-blocks-storage.tsdb.flush-blocks-on-shutdown=true"
+            - "-ingester.unregister-on-shutdown=true"
+            {{- end }}
+            {{- end }}
             {{- include "cortex.memcached" . | nindent 12}}
             {{- range $key, $value := .Values.ingester.extraArgs }}
             - "-{{ $key }}={{ $value }}"
@@ -160,4 +189,7 @@ spec:
           lifecycle:
             {{- toYaml . | nindent 12 }}
           {{- end }}
+---
+{{- end -}}
+{{- end -}}
 {{- end -}}

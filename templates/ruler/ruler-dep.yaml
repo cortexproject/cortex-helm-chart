@@ -121,6 +121,9 @@ spec:
           args:
             - "-target=ruler"
             - "-config.file=/etc/cortex/cortex.yaml"
+            {{- if and .Values.ingester.zoneAwareReplication.enabled (not .Values.ingester.zoneAwareReplication.migration) }}
+            - "-distributor.zone-awareness-enabled"
+            {{- end }}
             {{- if and .Values.alertmanager.enabled (not .Values.config.ruler.alertmanager_url) }}
               {{- if .Values.config.ruler.enable_alertmanager_discovery }}
             - "-ruler.alertmanager-url=http://_http-metrics._tcp.{{ template "cortex.alertmanagerFullname" . }}-headless.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}/api/prom/alertmanager/"

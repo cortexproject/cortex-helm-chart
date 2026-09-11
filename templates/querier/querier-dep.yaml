@@ -52,6 +52,9 @@ spec:
           args:
             - "-target=querier"
             - "-config.file=/etc/cortex/cortex.yaml"
+          {{- if and .Values.ingester.zoneAwareReplication.enabled (not .Values.ingester.zoneAwareReplication.migration) }}
+            - "-distributor.zone-awareness-enabled"
+          {{- end }}
           {{- if .Values.query_scheduler.enabled }}
             - "-querier.scheduler-address={{ template "cortex.querySchedulerFullname" . }}-headless.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.config.server.grpc_listen_port }}"
           {{- end }}
