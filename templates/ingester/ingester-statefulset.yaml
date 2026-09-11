@@ -1,4 +1,4 @@
-{{- if and .Values.ingester.statefulSet.enabled .Values.ingester.enabled -}}
+{{- if and .Values.ingester.statefulSet.enabled .Values.ingester.enabled (or (not .Values.ingester.zoneAwareness.enabled) .Values.ingester.zoneAwareness.migration.enabled) -}}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -110,6 +110,9 @@ spec:
           args:
             - "-target=ingester"
             - "-config.file=/etc/cortex/cortex.yaml"
+            {{- if .Values.ingester.zoneAwareness.enabled }}
+            - "-distributor.zone-awareness-enabled={{ not .Values.ingester.zoneAwareness.migration.enabled }}"
+            {{- end }}
             {{- include "cortex.memcached" . | nindent 12}}
             {{- range $key, $value := .Values.ingester.extraArgs }}
             - "-{{ $key }}={{ $value }}"

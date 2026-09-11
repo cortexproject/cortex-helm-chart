@@ -1,0 +1,145 @@
+{{- if and .Values.ingester.enabled (not .Values.ingester.statefulSet.enabled) .Values.ingester.zoneAwareness.enabled -}}
+{{- range $zone := .Values.ingester.zoneAwareness.zones }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "cortex.ingesterFullname" $ }}-{{ $zone.name }}
+  namespace: {{ $.Release.Namespace }}
+  labels:
+    {{- include "cortex.ingesterLabels" $ | nindent 4 }}
+    app.kubernetes.io/part-of: memberlist
+    zone: {{ $zone.name }}
+  annotations:
+    {{- toYaml ($zone.annotations | default $.Values.ingester.annotations) | nindent 4 }}
+spec:
+  {{- if not $.Values.ingester.autoscaling.enabled }}
+  replicas: {{ if hasKey $zone "replicas" }}{{ $zone.replicas }}{{ else }}{{ $.Values.ingester.replicas }}{{ end }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "cortex.ingesterSelectorLabels" $ | nindent 6 }}
+      zone: {{ $zone.name }}
+  strategy:
+    {{- toYaml $.Values.ingester.strategy | nindent 4 }}
+  template:
+    metadata:
+      labels:
+        {{- include "cortex.ingesterLabels" $ | nindent 8 }}
+        app.kubernetes.io/part-of: memberlist
+        zone: {{ $zone.name }}
+        {{- with $.Values.ingester.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+        {{- with $zone.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      annotations:
+        checksum/config: {{ include "cortex.configChecksum" $ }}
+        {{- with $.Values.ingester.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+        {{- with $zone.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      serviceAccountName: {{ $.Values.ingester.serviceAccount.name | default (include "cortex.serviceAccountName" $) }}
+      {{- if $.Values.ingester.priorityClassName }}
+      priorityClassName: {{ $.Values.ingester.priorityClassName }}
+      {{- end }}
+      {{- if $.Values.ingester.securityContext.enabled }}
+      securityContext: {{- omit $.Values.ingester.securityContext "enabled" | toYaml | nindent 8 }}
+      {{- end }}
+      initContainers:
+        {{- toYaml $.Values.ingester.initContainers | nindent 8 }}
+      {{- if $.Values.image.pullSecrets }}
+      imagePullSecrets:
+      {{- range $.Values.image.pullSecrets }}
+        - name: {{ . }}
+      {{- end }}
+      {{- end }}
+      containers:
+        - name: ingester
+          image: "{{ $.Values.image.repository }}:{{ default $.Chart.AppVersion $.Values.image.tag }}"
+          imagePullPolicy: {{ $.Values.image.pullPolicy }}
+          args:
+            - "-target=ingester"
+            - "-config.file=/etc/cortex/cortex.yaml"
+            - "-ingester.availability-zone={{ $zone.name }}"
+            - "-distributor.zone-awareness-enabled={{ not $.Values.ingester.zoneAwareness.migration.enabled }}"
+            {{- include "cortex.memcached" $ | nindent 12 }}
+            {{- range $key, $value := $.Values.ingester.extraArgs }}
+            - "-{{ $key }}={{ $value }}"
+            {{- end }}
+          volumeMounts:
+            {{- if $.Values.ingester.extraVolumeMounts }}
+            {{- toYaml $.Values.ingester.extraVolumeMounts | nindent 12 }}
+            {{- end }}
+            - name: config
+              mountPath: /etc/cortex
+            - name: runtime-config
+              mountPath: /etc/cortex-runtime-config
+            - name: storage
+              mountPath: "/data"
+              {{- with $.Values.ingester.persistentVolume.subPath }}
+              subPath: {{ . }}
+              {{- end }}
+          ports:
+            - name: http-metrics
+              containerPort: {{ $.Values.config.server.http_listen_port }}
+              protocol: TCP
+            - name: grpc
+              containerPort: {{ $.Values.config.server.grpc_listen_port }}
+              protocol: TCP
+            - name: gossip
+              containerPort: {{ $.Values.config.memberlist.bind_port }}
+              protocol: TCP
+          {{- if $.Values.ingester.startupProbe }}
+          startupProbe:
+            {{- toYaml $.Values.ingester.startupProbe | nindent 12 }}
+          {{- end }}
+          {{- if $.Values.ingester.livenessProbe }}
+          livenessProbe:
+            {{- toYaml $.Values.ingester.livenessProbe | nindent 12 }}
+          {{- end }}
+          readinessProbe:
+            {{- toYaml $.Values.ingester.readinessProbe | nindent 12 }}
+          resources:
+            {{- toYaml $.Values.ingester.resources | nindent 12 }}
+          {{- if $.Values.ingester.containerSecurityContext.enabled }}
+          securityContext: {{- omit $.Values.ingester.containerSecurityContext "enabled" | toYaml | nindent 12 }}
+          {{- end }}
+          {{- if $.Values.ingester.env }}
+          env:
+            {{- toYaml $.Values.ingester.env | nindent 12 }}
+          {{- end }}
+          {{- with $.Values.ingester.lifecycle }}
+          lifecycle:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+        {{- with $.Values.ingester.extraContainers }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      nodeSelector:
+        {{- toYaml ($zone.nodeSelector | default $.Values.ingester.nodeSelector) | nindent 8 }}
+      {{- if $.Values.ingester.topologySpreadConstraints }}
+      topologySpreadConstraints:
+      {{- toYaml $.Values.ingester.topologySpreadConstraints | nindent 8 }}
+      {{- end }}
+      affinity:
+        {{- toYaml ($zone.affinity | default $.Values.ingester.affinity) | nindent 8 }}
+      tolerations:
+        {{- toYaml ($zone.tolerations | default $.Values.ingester.tolerations) | nindent 8 }}
+      terminationGracePeriodSeconds: {{ $.Values.ingester.terminationGracePeriodSeconds }}
+      volumes:
+        {{- include "cortex.configVolume" $ | nindent 8 }}
+        - name: runtime-config
+          configMap:
+            name: {{ template "cortex.fullname" $ }}-runtime-config
+        - name: storage
+          emptyDir: {}
+        {{- if $.Values.ingester.extraVolumes }}
+        {{- toYaml $.Values.ingester.extraVolumes | nindent 8 }}
+        {{- end }}
+{{- end }}
+{{- end -}}
