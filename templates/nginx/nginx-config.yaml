@@ -97,6 +97,11 @@ data:
         location = /api/v1/push {
           proxy_pass      {{ $push_endpoint }}$request_uri;
         }
+
+        ## OTLP metrics API
+        location = /api/v1/otlp/v1/metrics {
+          proxy_pass      {{ $push_endpoint }}$request_uri;
+        }
         {{- end }}
 
         {{- if .Values.alertmanager.enabled }}
@@ -161,6 +166,11 @@ data:
         location = /api/v1/push/{{ $org }} {
           proxy_set_header      X-Scope-OrgID {{ $org }};
           proxy_pass      {{ $.Values.nginx.config.upstream_protocol }}://{{ template "cortex.fullname" $ }}-distributor.{{ $rootDomain }}/api/v1/push;
+        }
+
+        location = /api/v1/otlp/v1/metrics/{{ $org }} {
+          proxy_set_header      X-Scope-OrgID {{ $org }};
+          proxy_pass      {{ $.Values.nginx.config.upstream_protocol }}://{{ template "cortex.fullname" $ }}-distributor.{{ $rootDomain }}/api/v1/otlp/v1/metrics;
         }
         {{- end }}
         {{- end }}
