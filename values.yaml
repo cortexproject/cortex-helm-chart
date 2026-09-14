@@ -451,20 +451,25 @@ ingester:
 
   zoneAwareReplication:
     enabled: false
-    migration: false
+    migration:
+      enabled: false
+      writePath: false
+      readPath: false
+
+    # maxUnavailable: 1
     zones: []
     #  - name: eu02-1
+    #    replicas: 0
     #    nodeSelector:
     #      topology.kubernetes.io/zone: eu02-1
-    #    labels: {}
     #  - name: eu02-2
+    #    replicas: 0
     #    nodeSelector:
     #      topology.kubernetes.io/zone: eu02-2
-    #    labels: {}
     #  - name: eu02-3
+    #    replicas: 0
     #    nodeSelector:
     #      topology.kubernetes.io/zone: eu02-3
-    #    labels: {}
 
   service:
     annotations: {}
@@ -1841,3 +1846,10 @@ memberlist:
   service:
     annotations: {}
     labels: {}
+
+rollout_operator:
+  enabled: false
+  webhooks:
+    enabled: false
+  crds:
+    enabled: false

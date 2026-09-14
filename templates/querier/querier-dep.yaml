@@ -52,7 +52,10 @@ spec:
           args:
             - "-target=querier"
             - "-config.file=/etc/cortex/cortex.yaml"
-          {{- if and .Values.ingester.zoneAwareReplication.enabled (not .Values.ingester.zoneAwareReplication.migration) }}
+          {{- /* enable zone-awareness if it's enabled and not in migration or in migration with readPath enabled */ -}}
+          {{- if and .Values.ingester.zoneAwareReplication.enabled
+                     (or (not .Values.ingester.zoneAwareReplication.migration.enabled)
+                         .Values.ingester.zoneAwareReplication.migration.readPath) }}
             - "-distributor.zone-awareness-enabled"
           {{- end }}
           {{- if .Values.query_scheduler.enabled }}

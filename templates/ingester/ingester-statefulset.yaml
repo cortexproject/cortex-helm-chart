@@ -1,5 +1,6 @@
 {{- if and .Values.ingester.statefulSet.enabled .Values.ingester.enabled -}}
 {{- $zoneMap := include "cortex.ingesterZoneAwareReplicationMap" $ | fromYaml }}
+{{- $nonDefaultZones := without (keys $zoneMap) "default" }}
 {{- range $zoneName, $zone := $zoneMap }}
 {{- with $ }}
 apiVersion: apps/v1
@@ -10,13 +11,18 @@ metadata:
   labels:
     {{- include "cortex.ingesterLabels" . | nindent 4 }}
     app.kubernetes.io/part-of: memberlist
-    {{- with $zone.labels }}
+    {{- if .Values.ingester.zoneAwareReplication.enabled }}
+    rollout-group: {{ include "cortex.ingesterFullname" . }}
+    {{- end }}
+  annotations:
+    {{- if .Values.ingester.zoneAwareReplication.enabled }}
+    {{- with .Values.ingester.zoneAwareReplication.maxUnavailable }}
+    rollout-max-unavailable: {{ quote . }}
+    {{- end }}
+    {{- end }}
+    {{- with .Values.ingester.annotations }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
-  {{- with $zone.annotations }}
-  annotations:
-    {{- toYaml . | nindent 4 }}
-  {{- end }}
 spec:
   {{- if not .Values.ingester.autoscaling.enabled }}
   replicas: {{ $zone.replicas }}
@@ -24,14 +30,12 @@ spec:
   selector:
     matchLabels:
       {{- include "cortex.ingesterSelectorLabels" . | nindent 6 }}
-      {{- if .Values.ingester.zoneAwareReplication.enabled }}
-      zone: {{ $zoneName }}
-      {{- end }}
   updateStrategy:
+    {{- /* rollout-operator requires strategy OnDelete */ -}}
     {{- if ne $zoneName "default" }}
     type: OnDelete
     {{- else }}
-    {{- toYaml .Values.ingester.statefulStrategy | nindent 4 }}          
+    {{- toYaml .Values.ingester.statefulStrategy | nindent 4 }}
     {{- end }}
   podManagementPolicy: "{{ .Values.ingester.statefulSet.podManagementPolicy }}"
   serviceName: {{ template "cortex.fullname" . }}-ingester-headless
@@ -48,10 +52,6 @@ spec:
         {{- if .Values.ingester.persistentVolume.annotations }}
         annotations:
           {{ toYaml .Values.ingester.persistentVolume.annotations | nindent 10 }}
-        {{- end }}
-        {{- with $zone.podLabels }}
-        labels:
-          {{- toYaml . | nindent 10 }}
         {{- end }}
       spec:
         {{- if .Values.ingester.persistentVolume.storageClass }}
@@ -72,7 +72,9 @@ spec:
       labels:
         {{- include "cortex.ingesterLabels" . | nindent 8 }}
         {{- if .Values.ingester.zoneAwareReplication.enabled }}
+        # required for rollout-operator
         zone: {{ $zoneName }}
+        name: {{ include "cortex.ingesterFullname" . }}{{ $zone.stsSuffix }}
         {{- end }}
         app.kubernetes.io/part-of: memberlist
         {{- with .Values.ingester.podLabels }}
@@ -134,7 +136,7 @@ spec:
             - "-config.file=/etc/cortex/cortex.yaml"
             {{- if .Values.ingester.zoneAwareReplication.enabled }}
             - "-ingester.availability-zone={{ $zoneName }}"
-            {{- if .Values.ingester.zoneAwareReplication.migration }}
+            {{- if .Values.ingester.zoneAwareReplication.migration.enabled }}
             - "-blocks-storage.tsdb.flush-blocks-on-shutdown=true"
             - "-ingester.unregister-on-shutdown=true"
             {{- end }}

@@ -26,11 +26,13 @@ app.kubernetes.io/component: ingester
 */}}
 {{- define "cortex.ingesterZoneAwareReplicationMap" -}}
 {{- $zoneMap := dict }}
+{{- if .Values.ingester.zoneAwareReplication.enabled }}
 {{- range $zone := .Values.ingester.zoneAwareReplication.zones }}
 {{- $_ := set $zone "stsSuffix" (printf "-%s" $zone.name) }}
 {{- $zoneMap := set $zoneMap $zone.name $zone }}
 {{- end }}
-{{- if or (not .Values.ingester.zoneAwareReplication.enabled) (and .Values.ingester.zoneAwareReplication.enabled .Values.ingester.zoneAwareReplication.migration) }}
+{{- end }}
+{{- if or (not .Values.ingester.zoneAwareReplication.enabled) (and .Values.ingester.zoneAwareReplication.enabled .Values.ingester.zoneAwareReplication.migration.enabled) }}
 {{- $defaultZone := dict "stsSuffix" "" "name" "default" "nodeSelector" .Values.ingester.nodeSelector "replicas" .Values.ingester.replicas }}
 {{- $zoneMap := set $zoneMap "default" $defaultZone }}
 {{- end }}

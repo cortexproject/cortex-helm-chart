@@ -14,5 +14,8 @@ dependencies:
 - name: memcached
   repository: https://charts.bitnami.com/bitnami
   version: 6.14.0
-digest: sha256:af0c109667e9402918877431f9e269c447c030d398c8e1ade6f7a0171a856c8f
-generated: "2026-04-21T11:51:34.160601+09:00"
+- name: rollout-operator
+  repository: https://grafana.github.io/helm-charts
+  version: 0.51.1
+digest: sha256:d0ad2a749ae02f92ad6864ce4afc174cf10d050dbb6ac5263fab2f53b29686ab
+generated: "2026-09-10T14:14:02.592218194+02:00"
