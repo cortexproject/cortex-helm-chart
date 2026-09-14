@@ -492,8 +492,6 @@ ingester:
   # -- Additional Cortex container arguments, e.g. log.level (debug, info, warn, error)
   extraArgs: {}
 
-  extraLabels: {}
-
   # -- Pod Labels
   podLabels: {}
 
