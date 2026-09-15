@@ -6,9 +6,24 @@ has_children: false
 has_toc: false
 ---
 
+# Migrate to zone-aware ingesters
+{: .no_toc }
+
+## Table of contents
+{: .no_toc .text-delta }
+
+1. TOC
+{:toc}
+
+## Overview
+
 This migration guide shows how to migrate to zone-aware ingesters without downtime or data loss.
 The general process is the following: New stateful sets are created, the write traffic is routed to them, the read traffic is routed to them, the old stateful set is disabled.
-The chart makes use of the [rollout-operator](https://github.com/grafana/rollout-operator) to coordinate rollouts of the stateful sets. This will automatically set the update strategy to `OnDelete`.
+During the migration, it is ensured that at most one ingester is unavailable at the time, and that an ingester's data is always written to persistent storage before it is shut down.
+
+The chart makes use of the [rollout-operator](https://github.com/grafana/rollout-operator) to coordinate rollouts of the stateful sets. This will automatically set the stateful set's update strategy to `OnDelete`.
+
+## Prerequisites
 
 Make sure to set the following settings before starting the migration:
 - Ingesters are deployed as a stateful set (deployment is currently not supported)
@@ -16,12 +31,34 @@ Make sure to set the following settings before starting the migration:
 - `podManagementPolicy` is "OrderedReady" (default), not "Parallel" (OrderedReady creates pods consecutively when scaling up or down)
 - `frontend_address` is set in the ruler config (make the ruler read from the queriers, not directly from the ingesters. Otherwise, recording and alerting rules may not be evaluated correctly during migration)
 
-Always continue the next step only when all pods are back to "ready".
+## Migration steps
+
+**Important**: Always continue the next step only when all pods are in the ready state.
 
 1. If you have shuffle-sharding enabled, turn it off for querier by setting `querier.extraArgs` to `-distributor.sharding-strategy=default`. This is required because otherwise, the new ingester instances will not be considered by the queriers. Warning: This may increase resource usage.
 
 1. Set `ingester.zoneAwareReplication.enabled=true`, `ingester.zoneAwareReplication.migration.enabled=true`, `ingester.zoneAwareReplication.zones` to the desired zones but with `replicas=0`. Set `rollout_operator.enabled=true`. Upgrade the chart.
-   The stateful sets will be scaled up instead of created directly with the desired replicas to ensure that the replicas are created consecutively.
+   ```yaml
+   ingester:
+     zoneAwareReplication:
+       enabled: true
+       migration:
+         enabled: true
+       zones:
+       - name: zone-a
+         replicas: 0
+         nodeSelector:
+           topology.kubernetes.io/zone: zone-a
+       - name: zone-b
+         replicas: 0
+         nodeSelector:
+           topology.kubernetes.io/zone: zone-b
+       - name: zone-c
+         replicas: 0
+         nodeSelector:
+           topology.kubernetes.io/zone: zone-c
+   ```
+   The stateful sets will be scaled up in the next steps and not created at once to ensure that at most one ingester is unavailable at a time.
 
 1. In `ingester.zoneAwareReplication.zones`, set `replicas` to the desired replicas for **the first** zone, the install the Helm chart. 
 
@@ -39,4 +76,7 @@ Always continue the next step only when all pods are back to "ready".
 
 1. If you have previously disabled shuffle-sharding, wait `-querier.shuffle-sharding-ingesters-lookback-period` before removing `querier.extraArgs`.
 
-If you want to benefit from faster rollouts, set `ingester.zoneAwareReplication.maxUnavailable` to the number of replicas per zone and set `podManagementPolicy` to "Parallel". This will require recreating the stateful sets (use `kubectl delete sts <...> --cascade=orphan` to keep the pods).
+## Faster rollouts
+
+With zone-awareness enabled, it is possible to roll all ingesters in a zone simultaneously.
+If you want to benefit from these faster rollouts, set `ingester.zoneAwareReplication.maxUnavailable` to the number of replicas per zone and set `ingester.statefulSet.podManagementPolicy` to "Parallel". This will require recreating the stateful sets. Use `kubectl delete sts <...> --cascade=orphan` to delete only the stateful set, not the pods.
