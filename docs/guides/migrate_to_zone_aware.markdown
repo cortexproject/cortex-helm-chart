@@ -21,12 +21,13 @@ Always continue the next step only when all pods are back to "ready".
 1. If you have shuffle-sharding enabled, turn it off for querier by setting `querier.extraArgs` to `-distributor.sharding-strategy=default`. This is required because otherwise, the new ingester instances will not be considered by the queriers. Warning: This may increase resource usage.
 
 1. Set `ingester.zoneAwareReplication.enabled=true`, `ingester.zoneAwareReplication.migration.enabled=true`, `ingester.zoneAwareReplication.zones` to the desired zones but with `replicas=0`. Set `rollout_operator.enabled=true`. Upgrade the chart.
+   The stateful sets will be scaled up instead of created directly with the desired replicas to ensure that the replicas are created consecutively.
 
-1. In `ingester.zoneAwareReplication.zones`, set `replicas` to the desired replicas for **the first** zone, the install the Helm chart. Scaling up instead of creating directly the desired replicas is required to ensure that the replicas are created consecutively.
+1. In `ingester.zoneAwareReplication.zones`, set `replicas` to the desired replicas for **the first** zone, the install the Helm chart. 
 
 1. Repeat the process for the other zones.
 
-1. Enable zone-awareness on the write path by setting `ingester.zoneAwareReplication.migration.writePath=true` and install the Helm chart. This makes the distributors ship data to the new ingesters while the queriers still use all ingesters. Wait for `querier.query_store_after` so that all data that would be fetched by the queriers is on the new ingesters.
+1. Enable zone-awareness on the write path by setting `ingester.zoneAwareReplication.migration.writePath=true` and install the Helm chart. This makes the distributors ship data to the new ingesters while the queriers still use all ingesters. Wait for `querier.query_store_after` so that the data that is still on the old ingesters can be queried from the object storage. If `query_store_after` is unset, wait at least `3 x bucket_store.sync_interval` (default 3x15m).
    This also disables the distributors from writing to the old ingesters.
 
 1. Enable zone-awareness on the read path by setting `ingester.zoneAwareReplication.migration.readPath=true` and install the Helm chart. This makes the queriers use the new ingesters.
