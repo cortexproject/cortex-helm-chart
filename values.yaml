@@ -458,18 +458,18 @@ ingester:
 
     # maxUnavailable: 1
     zones: []
-    #  - name: eu02-1
+    #  - name: zone-a
     #    replicas: 0
     #    nodeSelector:
-    #      topology.kubernetes.io/zone: eu02-1
-    #  - name: eu02-2
+    #      topology.kubernetes.io/zone: zone-a
+    #  - name: zone-b
     #    replicas: 0
     #    nodeSelector:
-    #      topology.kubernetes.io/zone: eu02-2
-    #  - name: eu02-3
+    #      topology.kubernetes.io/zone: zone-b
+    #  - name: zone-c
     #    replicas: 0
     #    nodeSelector:
-    #      topology.kubernetes.io/zone: eu02-3
+    #      topology.kubernetes.io/zone: zone-c
 
   service:
     annotations: {}

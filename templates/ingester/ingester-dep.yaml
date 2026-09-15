@@ -1,4 +1,7 @@
 {{- if and (not .Values.ingester.statefulSet.enabled) .Values.ingester.enabled -}}
+{{- if .Values.ingester.zoneAwareReplication.enabled }}
+{{- fail "Zone-aware replication is currently not supported with an ingester deployment. Use a stateful set instead." }}
+{{- end }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
