@@ -136,7 +136,8 @@ spec:
             - "-config.file=/etc/cortex/cortex.yaml"
             {{- if .Values.ingester.zoneAwareReplication.enabled }}
             - "-ingester.availability-zone={{ $zoneName }}"
-            {{- if .Values.ingester.zoneAwareReplication.migration.enabled }}
+            {{- if and .Values.ingester.zoneAwareReplication.migration.enabled
+                       (eq $zoneName "default") }}
             - "-blocks-storage.tsdb.flush-blocks-on-shutdown=true"
             - "-ingester.unregister-on-shutdown=true"
             {{- end }}
