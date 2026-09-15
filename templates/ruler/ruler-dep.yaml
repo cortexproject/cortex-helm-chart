@@ -127,7 +127,7 @@ spec:
                             .Values.ingester.zoneAwareReplication.migration.writePath) }}
             - "-distributor.zone-awareness-enabled"
             {{- if .Values.ingester.zoneAwareReplication.migration.enabled }}
-            - "-distributor.excluded-zones=zone-default"
+            - "-distributor.excluded-zones=default"
             {{- end }}
             {{- end }}
             {{- if and .Values.alertmanager.enabled (not .Values.config.ruler.alertmanager_url) }}
