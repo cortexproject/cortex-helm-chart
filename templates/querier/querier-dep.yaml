@@ -57,6 +57,9 @@ spec:
                      (or (not .Values.ingester.zoneAwareReplication.migration.enabled)
                          .Values.ingester.zoneAwareReplication.migration.readPath) }}
             - "-distributor.zone-awareness-enabled"
+          {{- if .Values.ingester.zoneAwareReplication.migration.enabled }}
+            - "-distributor.excluded-zones=default"
+          {{- end }}
           {{- end }}
           {{- if .Values.query_scheduler.enabled }}
             - "-querier.scheduler-address={{ template "cortex.querySchedulerFullname" . }}-headless.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.config.server.grpc_listen_port }}"

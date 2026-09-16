@@ -35,7 +35,9 @@ Make sure to set the following settings before starting the migration:
 
 **Important**: Always continue the next step only when all pods are in the ready state.
 
-1. If you have shuffle-sharding enabled, turn it off for querier by setting `querier.extraArgs` to `-distributor.sharding-strategy=default`. This is required because otherwise, the new ingester instances will not be considered by the queriers. Warning: This may increase resource usage.
+1. Before starting the migration, you should ensure that the querier uses all ingesters during the migration. This means that shuffle sharding should be disabled and sharding by all labels should be enabled.
+   It is sufficient to set these settings on the querier using `querier.extraArgs`. Set `distributor.sharding-strategy` to `default` and `distributor.shard-by-all-labels` to `"true"` there.
+   Warning: This may increase resource usage of the queriers.
 
 1. Set `ingester.zoneAwareReplication.enabled=true`, `ingester.zoneAwareReplication.migration.enabled=true`, `ingester.zoneAwareReplication.zones` to the desired zones but with `replicas=0`. Set `rollout_operator.enabled=true`. Upgrade the chart.
    ```yaml
@@ -74,7 +76,7 @@ Make sure to set the following settings before starting the migration:
 
 1. Remove all values below `ingester.zoneAwareReplication.migration`. This will delete the old stateful set.
 
-1. If you have previously disabled shuffle-sharding, wait `-querier.shuffle-sharding-ingesters-lookback-period` before removing `querier.extraArgs`.
+1. If you have set any querier arguments in the first step, wait `-querier.shuffle-sharding-ingesters-lookback-period` before removing `querier.extraArgs`.
 
 ## Faster rollouts
 
