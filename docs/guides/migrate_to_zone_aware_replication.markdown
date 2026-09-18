@@ -1,12 +1,12 @@
 ---
 layout: page
-title: Migrate to zone-aware ingesters
+title: Migrate to zone-aware replication
 parent: Guides
 has_children: false
 has_toc: false
 ---
 
-# Migrate to zone-aware ingesters
+# Migrate to zone-aware replication
 {: .no_toc }
 
 ## Table of contents
@@ -17,8 +17,10 @@ has_toc: false
 
 ## Overview
 
-This migration guide shows how to migrate to zone-aware ingesters without downtime or data loss.
-The general process is the following: New stateful sets are created, the write traffic is routed to them, the read traffic is routed to them, the old stateful set is disabled.
+This migration guide shows how to migrate to zone-aware replication without downtime or data loss.
+With zone-aware replication, each replica of incoming samples is distributed across ingesters in different zones. This means that loss of a full zone is possible without downtime.
+
+The general migration process is the following: New stateful sets are created, the write traffic is routed to them, the read traffic is routed to them, the old stateful set is disabled.
 During the migration, it is ensured that at most one ingester is unavailable at the time, and that an ingester's data is always written to persistent storage before it is shut down.
 
 The chart makes use of the [rollout-operator](https://github.com/grafana/rollout-operator) to coordinate rollouts of the stateful sets. This will automatically set the stateful set's update strategy to `OnDelete`.
@@ -30,6 +32,7 @@ Make sure to set the following settings before starting the migration:
 - Autoscaling is disabled (autoscaling is not supported for zone-aware ingesters)
 - `podManagementPolicy` is "OrderedReady" (default), not "Parallel" (OrderedReady creates pods consecutively when scaling up or down)
 - `frontend_address` is set in the ruler config (make the ruler read from the queriers, not directly from the ingesters. Otherwise, recording and alerting rules may not be evaluated correctly during migration)
+- The replication factor and the number of zones are at least 3 and the replication factor is not larger than the number of zones
 
 ## Migration steps
 
