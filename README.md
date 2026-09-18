@@ -91,6 +91,7 @@ Kubernetes: `^1.19.0-0`
 | https://charts.bitnami.com/bitnami | memcached-blocks(memcached) | 6.14.0 |
 | https://charts.bitnami.com/bitnami | memcached-blocks-metadata(memcached) | 6.14.0 |
 | https://charts.bitnami.com/bitnami | memcached-parquet-labels(memcached) | 6.14.0 |
+| https://grafana.github.io/helm-charts | rollout-operator | 0.51.1 |
 
 ## Values
 
@@ -382,6 +383,11 @@ Kubernetes: `^1.19.0-0`
 | ingester.&ZeroWidthSpace;terminationGracePeriodSeconds | int | `240` |  |
 | ingester.&ZeroWidthSpace;tolerations | list | `[]` |  |
 | ingester.&ZeroWidthSpace;topologySpreadConstraints | list | `[]` |  |
+| ingester.&ZeroWidthSpace;zoneAwareReplication.&ZeroWidthSpace;enabled | bool | `false` |  |
+| ingester.&ZeroWidthSpace;zoneAwareReplication.&ZeroWidthSpace;migration.&ZeroWidthSpace;enabled | bool | `false` |  |
+| ingester.&ZeroWidthSpace;zoneAwareReplication.&ZeroWidthSpace;migration.&ZeroWidthSpace;readPath | bool | `false` |  |
+| ingester.&ZeroWidthSpace;zoneAwareReplication.&ZeroWidthSpace;migration.&ZeroWidthSpace;writePath | bool | `false` |  |
+| ingester.&ZeroWidthSpace;zoneAwareReplication.&ZeroWidthSpace;zones | list | `[]` |  |
 | ingress.&ZeroWidthSpace;annotations | object | `{}` |  |
 | ingress.&ZeroWidthSpace;enabled | bool | `false` |  |
 | ingress.&ZeroWidthSpace;hosts[0].&ZeroWidthSpace;host | string | `"chart-example.local"` |  |
@@ -802,6 +808,9 @@ Kubernetes: `^1.19.0-0`
 | query_scheduler.&ZeroWidthSpace;terminationGracePeriodSeconds | int | `180` |  |
 | query_scheduler.&ZeroWidthSpace;tolerations | list | `[]` |  |
 | query_scheduler.&ZeroWidthSpace;topologySpreadConstraints | list | `[]` |  |
+| rollout_operator.&ZeroWidthSpace;crds.&ZeroWidthSpace;enabled | bool | `false` |  |
+| rollout_operator.&ZeroWidthSpace;enabled | bool | `false` |  |
+| rollout_operator.&ZeroWidthSpace;webhooks.&ZeroWidthSpace;enabled | bool | `false` |  |
 | ruler.&ZeroWidthSpace;affinity | object | `{}` |  |
 | ruler.&ZeroWidthSpace;annotations | object | `{}` |  |
 | ruler.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;behavior | object | `{}` | Ref: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#support-for-configurable-scaling-behavior |
