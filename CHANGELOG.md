@@ -2,6 +2,8 @@
 
 ## master / unreleased
 
+## 3.4.0 / 2026-09-21
+
 * [FEATURE] Add remote-write OTLP endpoint in nginx #667
 * [FEATURE] Add support for zone-aware replication ([Migration Instructions](https://cortexproject.github.io/cortex-helm-chart/guides/migrate_to_zone_aware_replication.html)) #668
 * [BUGFIX] CI: Add grafana helm repository #671
