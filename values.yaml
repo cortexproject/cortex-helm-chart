@@ -449,6 +449,28 @@ ingester:
     # -- ref: https://cortexmetrics.io/docs/guides/ingesters-scaling-up-and-down/#scaling-down and https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#pod-management-policies for scaledown details
     podManagementPolicy: OrderedReady
 
+  zoneAwareReplication:
+    enabled: false
+    migration:
+      enabled: false
+      writePath: false
+      readPath: false
+
+    # maxUnavailable: 1
+    zones: []
+    #  - name: zone-a
+    #    replicas: 0
+    #    nodeSelector:
+    #      topology.kubernetes.io/zone: zone-a
+    #  - name: zone-b
+    #    replicas: 0
+    #    nodeSelector:
+    #      topology.kubernetes.io/zone: zone-b
+    #  - name: zone-c
+    #    replicas: 0
+    #    nodeSelector:
+    #      topology.kubernetes.io/zone: zone-c
+
   service:
     annotations: {}
     labels: {}
@@ -1822,3 +1844,10 @@ memberlist:
   service:
     annotations: {}
     labels: {}
+
+rollout_operator:
+  enabled: false
+  webhooks:
+    enabled: false
+  crds:
+    enabled: false

@@ -121,6 +121,15 @@ spec:
           args:
             - "-target=ruler"
             - "-config.file=/etc/cortex/cortex.yaml"
+            {{- /* enable zone-awareness if it's enabled and not in migration or in migration with writePath enabled */ -}}
+            {{- if and .Values.ingester.zoneAwareReplication.enabled
+                       (or (not .Values.ingester.zoneAwareReplication.migration.enabled)
+                            .Values.ingester.zoneAwareReplication.migration.writePath) }}
+            - "-distributor.zone-awareness-enabled"
+            {{- if .Values.ingester.zoneAwareReplication.migration.enabled }}
+            - "-distributor.excluded-zones=default"
+            {{- end }}
+            {{- end }}
             {{- if and .Values.alertmanager.enabled (not .Values.config.ruler.alertmanager_url) }}
               {{- if .Values.config.ruler.enable_alertmanager_discovery }}
             - "-ruler.alertmanager-url=http://_http-metrics._tcp.{{ template "cortex.alertmanagerFullname" . }}-headless.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}/api/prom/alertmanager/"
