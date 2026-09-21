@@ -2,6 +2,8 @@
 
 ## master / unreleased
 
+## 3.4.1 / 2026-09-21
+
 ## 3.4.0 / 2026-09-21
 
 * [FEATURE] Add remote-write OTLP endpoint in nginx #667
