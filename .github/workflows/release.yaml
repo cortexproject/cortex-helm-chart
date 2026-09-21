@@ -50,6 +50,7 @@ jobs:
       - name: Package Chart
         run: |
           helm repo add bitnami https://charts.bitnami.com/bitnami
+          helm repo add grafana https://grafana.github.io/helm-charts
           helm dependency build
           helm package . -d docs
           helm repo index ./docs/ --url https://cortexproject.github.io/cortex-helm-chart
