@@ -91,7 +91,7 @@ Kubernetes: `^1.19.0-0`
 | https://charts.bitnami.com/bitnami | memcached-blocks(memcached) | 6.14.0 |
 | https://charts.bitnami.com/bitnami | memcached-blocks-metadata(memcached) | 6.14.0 |
 | https://charts.bitnami.com/bitnami | memcached-parquet-labels(memcached) | 6.14.0 |
-| https://grafana.github.io/helm-charts | rollout-operator | 0.51.1 |
+| https://grafana.github.io/helm-charts | rollout-operator | 0.52.0 |
 
 ## Values
 
