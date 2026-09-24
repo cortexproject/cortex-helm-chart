@@ -42,6 +42,6 @@ dependencies:
     repository: https://charts.bitnami.com/bitnami
     condition: memcached-parquet-labels.enabled
   - name: rollout-operator
-    version: 0.51.1
+    version: 0.52.0
     repository: https://grafana.github.io/helm-charts
     condition: rollout_operator.enabled
