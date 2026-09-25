@@ -2,6 +2,8 @@
 
 ## master / unreleased
 
+* [ENHANCEMENT] Update helm values and documentation for rollout operator #673
+
 ## 3.4.0 / 2026-09-21
 
 * [FEATURE] Add remote-write OTLP endpoint in nginx #667
