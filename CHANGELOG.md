@@ -3,6 +3,7 @@
 ## master / unreleased
 
 * [FEATURE] Add trafficDistribution attribute to services #674
+* [ENHANCEMENT] Update helm values and documentation for rollout operator #673
 
 ## 3.4.0 / 2026-09-21
 
