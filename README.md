@@ -129,7 +129,7 @@ Kubernetes: `^1.19.0-0`
 | alertmanager.&ZeroWidthSpace;securityContext | object | `{}` |  |
 | alertmanager.&ZeroWidthSpace;service.&ZeroWidthSpace;annotations | object | `{}` |  |
 | alertmanager.&ZeroWidthSpace;service.&ZeroWidthSpace;labels | object | `{}` |  |
-| alertmanager.&ZeroWidthSpace;service.&ZeroWidthSpace;trafficDistribution | string | `"PreferClose"` |  |
+| alertmanager.&ZeroWidthSpace;service.&ZeroWidthSpace;trafficDistribution | string | `""` |  |
 | alertmanager.&ZeroWidthSpace;serviceAccount.&ZeroWidthSpace;name | string | `""` | "" disables the individual serviceAccount and uses the global serviceAccount for that component |
 | alertmanager.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;additionalLabels | object | `{}` |  |
 | alertmanager.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;enabled | bool | `false` |  |
