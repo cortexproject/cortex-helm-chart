@@ -155,7 +155,7 @@ alertmanager:
   service:
     annotations: {}
     labels: {}
-    trafficDistribution: PreferClose
+    trafficDistribution: ""
 
   serviceAccount:
     # -- "" disables the individual serviceAccount and uses the global serviceAccount for that component
