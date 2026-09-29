@@ -20,4 +20,7 @@ spec:
       targetPort: http-metrics
   selector:
     {{- include "cortex.rulerSelectorLabels" . | nindent 4 }}
+  {{- with .Values.ruler.service.trafficDistribution }}
+  trafficDistribution: {{ . }}
+  {{- end }}
 {{- end }}

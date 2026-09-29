@@ -155,6 +155,7 @@ alertmanager:
   service:
     annotations: {}
     labels: {}
+    trafficDistribution: PreferClose
 
   serviceAccount:
     # -- "" disables the individual serviceAccount and uses the global serviceAccount for that component
@@ -337,6 +338,7 @@ distributor:
   service:
     annotations: {}
     labels: {}
+    trafficDistribution: ""
 
   serviceAccount:
     # -- "" disables the individual serviceAccount and uses the global serviceAccount for that component
@@ -636,6 +638,7 @@ ruler:
   service:
     annotations: {}
     labels: {}
+    trafficDistribution: ""
 
   serviceAccount:
     # -- "" disables the individual serviceAccount and uses the global serviceAccount for that component
@@ -897,6 +900,7 @@ query_frontend:
   service:
     annotations: {}
     labels: {}
+    trafficDistribution: ""
 
   serviceAccount:
     # -- "" disables the individual serviceAccount and uses the global serviceAccount for that component
