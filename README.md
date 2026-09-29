@@ -129,6 +129,7 @@ Kubernetes: `^1.19.0-0`
 | alertmanager.&ZeroWidthSpace;securityContext | object | `{}` |  |
 | alertmanager.&ZeroWidthSpace;service.&ZeroWidthSpace;annotations | object | `{}` |  |
 | alertmanager.&ZeroWidthSpace;service.&ZeroWidthSpace;labels | object | `{}` |  |
+| alertmanager.&ZeroWidthSpace;service.&ZeroWidthSpace;trafficDistribution | string | `""` |  |
 | alertmanager.&ZeroWidthSpace;serviceAccount.&ZeroWidthSpace;name | string | `""` | "" disables the individual serviceAccount and uses the global serviceAccount for that component |
 | alertmanager.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;additionalLabels | object | `{}` |  |
 | alertmanager.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;enabled | bool | `false` |  |
@@ -299,6 +300,7 @@ Kubernetes: `^1.19.0-0`
 | distributor.&ZeroWidthSpace;securityContext | object | `{}` |  |
 | distributor.&ZeroWidthSpace;service.&ZeroWidthSpace;annotations | object | `{}` |  |
 | distributor.&ZeroWidthSpace;service.&ZeroWidthSpace;labels | object | `{}` |  |
+| distributor.&ZeroWidthSpace;service.&ZeroWidthSpace;trafficDistribution | string | `""` |  |
 | distributor.&ZeroWidthSpace;serviceAccount.&ZeroWidthSpace;name | string | `""` | "" disables the individual serviceAccount and uses the global serviceAccount for that component |
 | distributor.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;additionalLabels | object | `{}` |  |
 | distributor.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;enabled | bool | `false` |  |
@@ -746,6 +748,7 @@ Kubernetes: `^1.19.0-0`
 | query_frontend.&ZeroWidthSpace;securityContext | object | `{}` |  |
 | query_frontend.&ZeroWidthSpace;service.&ZeroWidthSpace;annotations | object | `{}` |  |
 | query_frontend.&ZeroWidthSpace;service.&ZeroWidthSpace;labels | object | `{}` |  |
+| query_frontend.&ZeroWidthSpace;service.&ZeroWidthSpace;trafficDistribution | string | `""` |  |
 | query_frontend.&ZeroWidthSpace;serviceAccount.&ZeroWidthSpace;name | string | `""` | "" disables the individual serviceAccount and uses the global serviceAccount for that component |
 | query_frontend.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;additionalLabels | object | `{}` |  |
 | query_frontend.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;enabled | bool | `false` |  |
@@ -844,6 +847,7 @@ Kubernetes: `^1.19.0-0`
 | ruler.&ZeroWidthSpace;securityContext | object | `{}` |  |
 | ruler.&ZeroWidthSpace;service.&ZeroWidthSpace;annotations | object | `{}` |  |
 | ruler.&ZeroWidthSpace;service.&ZeroWidthSpace;labels | object | `{}` |  |
+| ruler.&ZeroWidthSpace;service.&ZeroWidthSpace;trafficDistribution | string | `""` |  |
 | ruler.&ZeroWidthSpace;serviceAccount.&ZeroWidthSpace;name | string | `""` | "" disables the individual serviceAccount and uses the global serviceAccount for that component |
 | ruler.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;additionalLabels | object | `{}` |  |
 | ruler.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;enabled | bool | `false` |  |

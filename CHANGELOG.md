@@ -2,6 +2,8 @@
 
 ## master / unreleased
 
+* [FEATURE] Add trafficDistribution attribute to services #674
+
 ## 3.4.0 / 2026-09-21
 
 * [FEATURE] Add remote-write OTLP endpoint in nginx #667
