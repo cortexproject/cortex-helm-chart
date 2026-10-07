@@ -91,7 +91,7 @@ Kubernetes: `^1.19.0-0`
 | https://charts.bitnami.com/bitnami | memcached-blocks(memcached) | 6.14.0 |
 | https://charts.bitnami.com/bitnami | memcached-blocks-metadata(memcached) | 6.14.0 |
 | https://charts.bitnami.com/bitnami | memcached-parquet-labels(memcached) | 6.14.0 |
-| https://grafana.github.io/helm-charts | rollout-operator | 0.51.1 |
+| https://grafana.github.io/helm-charts | rollout_operator(rollout-operator) | 0.51.1 |
 
 ## Values
 
@@ -811,8 +811,17 @@ Kubernetes: `^1.19.0-0`
 | query_scheduler.&ZeroWidthSpace;terminationGracePeriodSeconds | int | `180` |  |
 | query_scheduler.&ZeroWidthSpace;tolerations | list | `[]` |  |
 | query_scheduler.&ZeroWidthSpace;topologySpreadConstraints | list | `[]` |  |
-| rollout_operator.&ZeroWidthSpace;crds.&ZeroWidthSpace;enabled | bool | `false` |  |
 | rollout_operator.&ZeroWidthSpace;enabled | bool | `false` |  |
+| rollout_operator.&ZeroWidthSpace;podSecurityContext.&ZeroWidthSpace;fsGroup | int | `10001` |  |
+| rollout_operator.&ZeroWidthSpace;podSecurityContext.&ZeroWidthSpace;runAsGroup | int | `10001` |  |
+| rollout_operator.&ZeroWidthSpace;podSecurityContext.&ZeroWidthSpace;runAsNonRoot | bool | `true` |  |
+| rollout_operator.&ZeroWidthSpace;podSecurityContext.&ZeroWidthSpace;runAsUser | int | `10001` |  |
+| rollout_operator.&ZeroWidthSpace;podSecurityContext.&ZeroWidthSpace;seccompProfile.&ZeroWidthSpace;type | string | `"RuntimeDefault"` |  |
+| rollout_operator.&ZeroWidthSpace;securityContext.&ZeroWidthSpace;allowPrivilegeEscalation | bool | `false` |  |
+| rollout_operator.&ZeroWidthSpace;securityContext.&ZeroWidthSpace;capabilities.&ZeroWidthSpace;drop[0] | string | `"ALL"` |  |
+| rollout_operator.&ZeroWidthSpace;securityContext.&ZeroWidthSpace;readOnlyRootFilesystem | bool | `true` |  |
+| rollout_operator.&ZeroWidthSpace;securityContext.&ZeroWidthSpace;runAsNonRoot | bool | `true` |  |
+| rollout_operator.&ZeroWidthSpace;securityContext.&ZeroWidthSpace;seccompProfile.&ZeroWidthSpace;type | string | `"RuntimeDefault"` |  |
 | rollout_operator.&ZeroWidthSpace;webhooks.&ZeroWidthSpace;enabled | bool | `false` |  |
 | ruler.&ZeroWidthSpace;affinity | object | `{}` |  |
 | ruler.&ZeroWidthSpace;annotations | object | `{}` |  |

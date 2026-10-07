@@ -42,6 +42,8 @@ Make sure to set the following settings before starting the migration:
    It is sufficient to set these settings on the querier using `querier.extraArgs`. Set `distributor.sharding-strategy` to `default` and `distributor.shard-by-all-labels` to `"true"` there.
    Warning: This may increase resource usage of the queriers.
 
+   To get the rollout-operator running, you will have to install its CRDs. Due to Helm's CRD handling, you have to apply [these manifests](https://github.com/grafana/helm-charts/tree/main/charts/rollout-operator/charts/crds/crds) manually
+
 1. Set `ingester.zoneAwareReplication.enabled=true`, `ingester.zoneAwareReplication.migration.enabled=true`, `ingester.zoneAwareReplication.zones` to the desired zones but with `replicas=0`. Set `rollout_operator.enabled=true`. Upgrade the chart.
    ```yaml
    ingester:
