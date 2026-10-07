@@ -4,6 +4,7 @@
 
 * [FEATURE] Add trafficDistribution attribute to services #674
 * [ENHANCEMENT] Update helm values and documentation for rollout operator #673
+* [DEPENDENCY] Update Helm release rollout-operator to v0.52.0 #670
 
 ## 3.4.0 / 2026-09-21
 
