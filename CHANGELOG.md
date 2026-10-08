@@ -2,6 +2,8 @@
 
 ## master / unreleased
 
+## 3.5.1 / 2026-10-08
+
 ## 3.5.0 / 2026-10-08
 
 * [FEATURE] Add trafficDistribution attribute to services #674
