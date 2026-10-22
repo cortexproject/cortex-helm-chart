@@ -2,6 +2,8 @@
 
 ## master / unreleased
 
+* [FEATURE] Parquet converter: allow running it as a StatefulSet with a persistent volume per pod
+
 ## 3.5.0 / 2026-10-08
 
 * [FEATURE] Add trafficDistribution attribute to services #674

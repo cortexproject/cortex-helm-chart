@@ -1171,6 +1171,17 @@ parquet_converter:
   enabled: false
   replicas: 1
 
+  statefulSet:
+    # -- If true, use a statefulset instead of a deployment for pod management.
+    # Each pod then gets its own Persistent Volume Claim (see persistentVolume),
+    # which keeps the same volume across restarts and rollouts. This is useful
+    # with more than one replica, because the converter downloads each block
+    # into its data_dir and replicas must not share one.
+    enabled: false
+    # -- The converter ring does not need ordered starts, so pods start and stop in parallel.
+    # ref: https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#pod-management-policies
+    podManagementPolicy: Parallel
+
   service:
     annotations: {}
     labels: {}
@@ -1185,6 +1196,43 @@ parquet_converter:
     podTargetLabels: []
 
   resources: {}
+
+  persistentVolume:
+    # -- If true and parquet_converter.statefulSet.enabled is true,
+    # the parquet converter will create/use a Persistent Volume Claim
+    # If false, use emptyDir
+    enabled: true
+
+    # -- parquet-converter data Persistent Volume Claim annotations
+    annotations: {}
+
+    # -- parquet-converter data Persistent Volume access modes
+    # Must match those of existing PV or dynamic provisioner
+    # Ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
+    accessModes:
+      - ReadWriteOnce
+
+    # -- parquet-converter data Persistent Volume size.
+    # The converter downloads a whole block before it converts it, so this
+    # must hold the largest block of any tenant.
+    size: 2Gi
+
+    # -- Subdirectory of parquet-converter data Persistent Volume to mount
+    # Useful if the volume's root directory is not empty
+    subPath: ''
+
+    # -- parquet-converter data Persistent Volume Storage Class
+    # If defined, storageClassName: <storageClass>
+    # If set to "-", storageClassName: "", which disables dynamic provisioning
+    # If undefined (the default) or set to null, no storageClassName spec is
+    # set, choosing the default provisioner.
+    storageClass: null
+
+    # -- StatefulSetAutoDeletePVC feature
+    # https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#persistentvolumeclaim-retention
+    retentionPolicy: {}
+    # whenDeleted: Retain
+    # whenScaled: Retain
 
   # -- Additional Cortex container arguments, e.g. log.level (debug, info, warn, error)
   extraArgs: {}
@@ -1238,6 +1286,9 @@ parquet_converter:
     rollingUpdate:
       maxSurge: 0
       maxUnavailable: 1
+
+  statefulStrategy:
+    type: RollingUpdate
 
   terminationGracePeriodSeconds: 180
 
