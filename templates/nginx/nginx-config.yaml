@@ -25,6 +25,9 @@ data:
     http {
       default_type application/octet-stream;
       client_max_body_size {{.Values.nginx.config.client_max_body_size}};
+      {{- with .Values.nginx.config.client_body_buffer_size }}
+      client_body_buffer_size {{ . }};
+      {{- end }}
       log_format   main '$remote_addr - $remote_user [$time_local]  $status '
         '"$request" $body_bytes_sent "$http_referer" '
         '"$http_user_agent" "$http_x_forwarded_for" $http_x_scope_orgid';

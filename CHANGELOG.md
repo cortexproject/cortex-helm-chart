@@ -2,6 +2,8 @@
 
 ## master / unreleased
 
+* [ENHANCEMENT] Expose `nginx.config.client_body_buffer_size` to set the nginx `client_body_buffer_size` #350
+
 ## 3.5.0 / 2026-10-08
 
 * [FEATURE] Add trafficDistribution attribute to services #674
