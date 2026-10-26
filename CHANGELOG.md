@@ -3,6 +3,7 @@
 ## master / unreleased
 
 * [ENHANCEMENT] Expose `nginx.config.client_body_buffer_size` to set the nginx `client_body_buffer_size` #350
+* [DEPENDENCY] Update Helm release rollout-operator to v0.53.1 #683
 
 ## 3.5.0 / 2026-10-08
 
