@@ -596,6 +596,13 @@ Kubernetes: `^1.19.0-0`
 | parquet_converter.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
 | parquet_converter.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
 | parquet_converter.&ZeroWidthSpace;nodeSelector | object | `{}` |  |
+| parquet_converter.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;accessModes | list | `["ReadWriteOnce"]` | parquet-converter data Persistent Volume access modes Must match those of existing PV or dynamic provisioner Ref: http://kubernetes.io/docs/user-guide/persistent-volumes/ |
+| parquet_converter.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;annotations | object | `{}` | parquet-converter data Persistent Volume Claim annotations |
+| parquet_converter.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;enabled | bool | `true` | If true and parquet_converter.statefulSet.enabled is true, the parquet converter will create/use a Persistent Volume Claim If false, use emptyDir |
+| parquet_converter.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;retentionPolicy | object | `{}` | StatefulSetAutoDeletePVC feature https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#persistentvolumeclaim-retention |
+| parquet_converter.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;size | string | `"2Gi"` | parquet-converter data Persistent Volume size. The converter downloads a whole block before it converts it, so this must hold the largest block of any tenant. |
+| parquet_converter.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;storageClass | string | `nil` | parquet-converter data Persistent Volume Storage Class If defined, storageClassName: <storageClass> If set to "-", storageClassName: "", which disables dynamic provisioning If undefined (the default) or set to null, no storageClassName spec is set, choosing the default provisioner. |
+| parquet_converter.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;subPath | string | `""` | Subdirectory of parquet-converter data Persistent Volume to mount Useful if the volume's root directory is not empty |
 | parquet_converter.&ZeroWidthSpace;podAnnotations | object | `{"prometheus.io/port":"http-metrics","prometheus.io/scrape":"true"}` | Pod Annotations |
 | parquet_converter.&ZeroWidthSpace;podLabels | object | `{}` | Pod Labels |
 | parquet_converter.&ZeroWidthSpace;readinessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
@@ -614,6 +621,9 @@ Kubernetes: `^1.19.0-0`
 | parquet_converter.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;failureThreshold | int | `10` |  |
 | parquet_converter.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
 | parquet_converter.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
+| parquet_converter.&ZeroWidthSpace;statefulSet.&ZeroWidthSpace;enabled | bool | `false` | If true, use a statefulset instead of a deployment for pod management. Each pod then gets its own Persistent Volume Claim (see persistentVolume), which keeps the same volume across restarts and rollouts. This is useful with more than one replica, because the converter downloads each block into its data_dir and replicas must not share one. |
+| parquet_converter.&ZeroWidthSpace;statefulSet.&ZeroWidthSpace;podManagementPolicy | string | `"Parallel"` | The converter ring does not need ordered starts, so pods start and stop in parallel. ref: https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#pod-management-policies |
+| parquet_converter.&ZeroWidthSpace;statefulStrategy.&ZeroWidthSpace;type | string | `"RollingUpdate"` |  |
 | parquet_converter.&ZeroWidthSpace;strategy.&ZeroWidthSpace;rollingUpdate.&ZeroWidthSpace;maxSurge | int | `0` |  |
 | parquet_converter.&ZeroWidthSpace;strategy.&ZeroWidthSpace;rollingUpdate.&ZeroWidthSpace;maxUnavailable | int | `1` |  |
 | parquet_converter.&ZeroWidthSpace;strategy.&ZeroWidthSpace;type | string | `"RollingUpdate"` |  |

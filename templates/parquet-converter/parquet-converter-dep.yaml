@@ -1,4 +1,4 @@
-{{- if .Values.parquet_converter.enabled }}
+{{- if and (not .Values.parquet_converter.statefulSet.enabled) .Values.parquet_converter.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
