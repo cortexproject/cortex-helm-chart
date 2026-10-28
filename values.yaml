@@ -315,6 +315,8 @@ alertmanager:
     folderAnnotation: "k8s-sidecar-target-directory"
     # -- The resource type that the operator will filter for. Can be configmap, secret or both
     resource: "both"
+    # -- Comma separated list of ConfigMap and/or Secret names to watch. When empty, all resources matching the label are watched
+    resourceName: ""
     containerSecurityContext:
       enabled: true
       readOnlyRootFilesystem: true
@@ -768,6 +770,8 @@ ruler:
     folderAnnotation: "k8s-sidecar-target-directory"
     # -- The resource type that the operator will filter for. Can be configmap, secret or both
     resource: "both"
+    # -- Comma separated list of ConfigMap and/or Secret names to watch. When empty, all resources matching the label are watched
+    resourceName: ""
     containerSecurityContext:
       enabled: true
       readOnlyRootFilesystem: true
