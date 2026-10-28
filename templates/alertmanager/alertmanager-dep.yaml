@@ -72,6 +72,10 @@ spec:
             - name: RESOURCE
               value: {{ quote .Values.alertmanager.sidecar.resource }}
             {{- end }}
+            {{- with .Values.alertmanager.sidecar.resourceName }}
+            - name: RESOURCE_NAME
+              value: {{ quote . }}
+            {{- end }}
             {{- if .Values.alertmanager.sidecar.enableUniqueFilenames }}
             - name: UNIQUE_FILENAMES
               value: "{{ .Values.alertmanager.sidecar.enableUniqueFilenames }}"

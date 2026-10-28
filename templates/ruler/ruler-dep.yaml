@@ -74,6 +74,10 @@ spec:
             - name: RESOURCE
               value: {{ quote .Values.ruler.sidecar.resource }}
             {{- end }}
+            {{- with .Values.ruler.sidecar.resourceName }}
+            - name: RESOURCE_NAME
+              value: {{ quote . }}
+            {{- end }}
             {{- if .Values.ruler.sidecar.enableUniqueFilenames }}
             - name: UNIQUE_FILENAMES
               value: "{{ .Values.ruler.sidecar.enableUniqueFilenames }}"
