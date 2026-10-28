@@ -1,0 +1,37 @@
+{{- if and .Values.httpRoute.enabled .Values.nginx.enabled -}}
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: {{ include "cortex.nginxFullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "cortex.nginxLabels" . | nindent 4 }}
+    {{- with .Values.httpRoute.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with .Values.httpRoute.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- with .Values.httpRoute.parentRefs }}
+  parentRefs:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.httpRoute.hostnames }}
+  hostnames:
+    {{- tpl (toYaml .) $ | nindent 4 }}
+  {{- end }}
+  rules:
+    - backendRefs:
+        - name: {{ include "cortex.nginxFullname" . }}
+          port: {{ .Values.nginx.service.port | default .Values.nginx.http_listen_port }}
+      {{- with .Values.httpRoute.matches }}
+      matches:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.httpRoute.filters }}
+      filters:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- end }}
