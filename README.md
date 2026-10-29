@@ -155,6 +155,7 @@ Kubernetes: `^1.19.0-0`
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;readinessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"sidecar-health"` |  |
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;readinessProbe.&ZeroWidthSpace;periodSeconds | int | `5` |  |
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;resource | string | `"both"` | The resource type that the operator will filter for. Can be configmap, secret or both |
+| alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;resourceName | string | `""` | Comma separated list of ConfigMap and/or Secret names to watch. When empty, all resources matching the label are watched |
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;resources | object | `{}` |  |
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;searchNamespace | string | `""` | The Namespace(s) from which resources will be watched. For multiple namespaces, use a comma-separated string like "default,test". If not set or set to ALL, it will watch all Namespaces. |
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;skipTlsVerify | bool | `false` | Set to true to skip tls verification for kube api calls |
@@ -893,6 +894,7 @@ Kubernetes: `^1.19.0-0`
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;readinessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"sidecar-health"` |  |
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;readinessProbe.&ZeroWidthSpace;periodSeconds | int | `5` |  |
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;resource | string | `"both"` | The resource type that the operator will filter for. Can be configmap, secret or both |
+| ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;resourceName | string | `""` | Comma separated list of ConfigMap and/or Secret names to watch. When empty, all resources matching the label are watched |
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;resources | object | `{}` |  |
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;searchNamespace | string | `""` | The Namespace(s) from which resources will be watched. For multiple namespaces, use a comma-separated string like "default,test". If not set or set to ALL, it will watch all Namespaces. |
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;skipTlsVerify | bool | `false` | Set to true to skip tls verification for kube api calls |
