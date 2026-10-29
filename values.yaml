@@ -155,6 +155,7 @@ alertmanager:
   service:
     annotations: {}
     labels: {}
+    trafficDistribution: ""
 
   serviceAccount:
     # -- "" disables the individual serviceAccount and uses the global serviceAccount for that component
@@ -283,7 +284,7 @@ alertmanager:
     enabled: false
     image:
       repository: kiwigrid/k8s-sidecar
-      tag: 2.7.1
+      tag: 2.14.1
       sha: ""
     imagePullPolicy: IfNotPresent
     resources: {}
@@ -337,6 +338,7 @@ distributor:
   service:
     annotations: {}
     labels: {}
+    trafficDistribution: ""
 
   serviceAccount:
     # -- "" disables the individual serviceAccount and uses the global serviceAccount for that component
@@ -448,6 +450,28 @@ ingester:
     enabled: false
     # -- ref: https://cortexmetrics.io/docs/guides/ingesters-scaling-up-and-down/#scaling-down and https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#pod-management-policies for scaledown details
     podManagementPolicy: OrderedReady
+
+  zoneAwareReplication:
+    enabled: false
+    migration:
+      enabled: false
+      writePath: false
+      readPath: false
+
+    # maxUnavailable: 1
+    zones: []
+    #  - name: zone-a
+    #    replicas: 0
+    #    nodeSelector:
+    #      topology.kubernetes.io/zone: zone-a
+    #  - name: zone-b
+    #    replicas: 0
+    #    nodeSelector:
+    #      topology.kubernetes.io/zone: zone-b
+    #  - name: zone-c
+    #    replicas: 0
+    #    nodeSelector:
+    #      topology.kubernetes.io/zone: zone-c
 
   service:
     annotations: {}
@@ -614,6 +638,7 @@ ruler:
   service:
     annotations: {}
     labels: {}
+    trafficDistribution: ""
 
   serviceAccount:
     # -- "" disables the individual serviceAccount and uses the global serviceAccount for that component
@@ -712,7 +737,7 @@ ruler:
     enabled: false
     image:
       repository: kiwigrid/k8s-sidecar
-      tag: 2.7.1
+      tag: 2.14.1
       sha: ""
     imagePullPolicy: IfNotPresent
     resources: {}
@@ -875,6 +900,7 @@ query_frontend:
   service:
     annotations: {}
     labels: {}
+    trafficDistribution: ""
 
   serviceAccount:
     # -- "" disables the individual serviceAccount and uses the global serviceAccount for that component
@@ -1145,6 +1171,17 @@ parquet_converter:
   enabled: false
   replicas: 1
 
+  statefulSet:
+    # -- If true, use a statefulset instead of a deployment for pod management.
+    # Each pod then gets its own Persistent Volume Claim (see persistentVolume),
+    # which keeps the same volume across restarts and rollouts. This is useful
+    # with more than one replica, because the converter downloads each block
+    # into its data_dir and replicas must not share one.
+    enabled: false
+    # -- The converter ring does not need ordered starts, so pods start and stop in parallel.
+    # ref: https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#pod-management-policies
+    podManagementPolicy: Parallel
+
   service:
     annotations: {}
     labels: {}
@@ -1159,6 +1196,43 @@ parquet_converter:
     podTargetLabels: []
 
   resources: {}
+
+  persistentVolume:
+    # -- If true and parquet_converter.statefulSet.enabled is true,
+    # the parquet converter will create/use a Persistent Volume Claim
+    # If false, use emptyDir
+    enabled: true
+
+    # -- parquet-converter data Persistent Volume Claim annotations
+    annotations: {}
+
+    # -- parquet-converter data Persistent Volume access modes
+    # Must match those of existing PV or dynamic provisioner
+    # Ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
+    accessModes:
+      - ReadWriteOnce
+
+    # -- parquet-converter data Persistent Volume size.
+    # The converter downloads a whole block before it converts it, so this
+    # must hold the largest block of any tenant.
+    size: 2Gi
+
+    # -- Subdirectory of parquet-converter data Persistent Volume to mount
+    # Useful if the volume's root directory is not empty
+    subPath: ''
+
+    # -- parquet-converter data Persistent Volume Storage Class
+    # If defined, storageClassName: <storageClass>
+    # If set to "-", storageClassName: "", which disables dynamic provisioning
+    # If undefined (the default) or set to null, no storageClassName spec is
+    # set, choosing the default provisioner.
+    storageClass: null
+
+    # -- StatefulSetAutoDeletePVC feature
+    # https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#persistentvolumeclaim-retention
+    retentionPolicy: {}
+    # whenDeleted: Retain
+    # whenScaled: Retain
 
   # -- Additional Cortex container arguments, e.g. log.level (debug, info, warn, error)
   extraArgs: {}
@@ -1212,6 +1286,9 @@ parquet_converter:
     rollingUpdate:
       maxSurge: 0
       maxUnavailable: 1
+
+  statefulStrategy:
+    type: RollingUpdate
 
   terminationGracePeriodSeconds: 180
 
@@ -1316,6 +1393,9 @@ nginx:
     dnsResolver: kube-dns.kube-system.svc.cluster.local
     # -- ref: http://nginx.org/en/docs/http/ngx_http_core_module.html#client_max_body_size
     client_max_body_size: 1M
+    # -- ref: http://nginx.org/en/docs/http/ngx_http_core_module.html#client_body_buffer_size
+    # Requests with a body larger than this are buffered to a temporary file. If empty, the nginx default is used.
+    client_body_buffer_size: ""
     # -- arbitrary snippet to inject in the http { } section of the nginx config
     httpSnippet: ""
     # -- arbitrary snippet to inject in the top section of the nginx config
@@ -1359,7 +1439,7 @@ nginx:
     override_push_endpoint: ""
   image:
     repository: nginx
-    tag: 1.29
+    tag: 1.31
     pullPolicy: IfNotPresent
 
   service:
@@ -1709,12 +1789,12 @@ memcached-frontend:
     - -m 1024
   image:
     repository: memcached
-    tag: "1.6.41"
+    tag: "1.6.45"
   metrics:
     enabled: true
     image:
       repository: prom/memcached-exporter
-      tag: "v0.16.0"
+      tag: "v0.18.0"
     serviceMonitor:
       enabled: false
 
@@ -1734,12 +1814,12 @@ memcached-blocks-index:
     - -m 1024
   image:
     repository: memcached
-    tag: "1.6.41"
+    tag: "1.6.45"
   metrics:
     enabled: true
     image:
       repository: prom/memcached-exporter
-      tag: "v0.16.0"
+      tag: "v0.18.0"
     serviceMonitor:
       enabled: false
 
@@ -1759,12 +1839,12 @@ memcached-blocks:
     - -m 1024
   image:
     repository: memcached
-    tag: "1.6.41"
+    tag: "1.6.45"
   metrics:
     enabled: true
     image:
       repository: prom/memcached-exporter
-      tag: "v0.16.0"
+      tag: "v0.18.0"
     serviceMonitor:
       enabled: false
 
@@ -1784,12 +1864,12 @@ memcached-blocks-metadata:
     - -m 1024
   image:
     repository: memcached
-    tag: "1.6.41"
+    tag: "1.6.45"
   metrics:
     enabled: true
     image:
       repository: prom/memcached-exporter
-      tag: "v0.16.0"
+      tag: "v0.18.0"
     serviceMonitor:
       enabled: false
 
@@ -1809,12 +1889,12 @@ memcached-parquet-labels:
     - -m 1024
   image:
     repository: memcached
-    tag: "1.6.41"
+    tag: "1.6.45"
   metrics:
     enabled: true
     image:
       repository: prom/memcached-exporter
-      tag: "v0.16.0"
+      tag: "v0.18.0"
     serviceMonitor:
       enabled: false
 
@@ -1822,3 +1902,23 @@ memberlist:
   service:
     annotations: {}
     labels: {}
+
+rollout_operator:
+  enabled: false
+  webhooks:
+    enabled: false
+  podSecurityContext:
+    fsGroup: 10001
+    runAsGroup: 10001
+    runAsNonRoot: true
+    runAsUser: 10001
+    seccompProfile:
+      type: RuntimeDefault
+  securityContext:
+    readOnlyRootFilesystem: true
+    capabilities:
+      drop: [ALL]
+    allowPrivilegeEscalation: false
+    runAsNonRoot: true
+    seccompProfile:
+      type: RuntimeDefault

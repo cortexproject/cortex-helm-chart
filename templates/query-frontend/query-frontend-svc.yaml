@@ -24,4 +24,7 @@ spec:
       targetPort: grpc
   selector:
     {{- include "cortex.queryFrontendSelectorLabels" . | nindent 4 }}
+  {{- with .Values.query_frontend.service.trafficDistribution }}
+  trafficDistribution: {{ . }}
+  {{- end }}
 {{- end -}}

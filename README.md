@@ -2,7 +2,7 @@
 
 # cortex
 
-![Version: 3.3.0](https://img.shields.io/badge/Version-3.3.0-informational?style=flat-square) ![AppVersion: v1.21.0](https://img.shields.io/badge/AppVersion-v1.21.0-informational?style=flat-square)
+![Version: 3.5.0](https://img.shields.io/badge/Version-3.5.0-informational?style=flat-square) ![AppVersion: v1.21.1](https://img.shields.io/badge/AppVersion-v1.21.1-informational?style=flat-square)
 
 Horizontally scalable, highly available, multi-tenant, long term Prometheus.
 
@@ -91,6 +91,7 @@ Kubernetes: `^1.19.0-0`
 | https://charts.bitnami.com/bitnami | memcached-blocks(memcached) | 6.14.0 |
 | https://charts.bitnami.com/bitnami | memcached-blocks-metadata(memcached) | 6.14.0 |
 | https://charts.bitnami.com/bitnami | memcached-parquet-labels(memcached) | 6.14.0 |
+| https://grafana.github.io/helm-charts | rollout_operator(rollout-operator) | 0.53.1 |
 
 ## Values
 
@@ -128,6 +129,7 @@ Kubernetes: `^1.19.0-0`
 | alertmanager.&ZeroWidthSpace;securityContext | object | `{}` |  |
 | alertmanager.&ZeroWidthSpace;service.&ZeroWidthSpace;annotations | object | `{}` |  |
 | alertmanager.&ZeroWidthSpace;service.&ZeroWidthSpace;labels | object | `{}` |  |
+| alertmanager.&ZeroWidthSpace;service.&ZeroWidthSpace;trafficDistribution | string | `""` |  |
 | alertmanager.&ZeroWidthSpace;serviceAccount.&ZeroWidthSpace;name | string | `""` | "" disables the individual serviceAccount and uses the global serviceAccount for that component |
 | alertmanager.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;additionalLabels | object | `{}` |  |
 | alertmanager.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;enabled | bool | `false` |  |
@@ -145,7 +147,7 @@ Kubernetes: `^1.19.0-0`
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;healthPort | int | `8081` | The port the kiwigrid/k8s-sidecar listens on for health checks. The image default matches the cortex default listen port (8080), so it must be overridden here. |
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;repository | string | `"kiwigrid/k8s-sidecar"` |  |
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;sha | string | `""` |  |
-| alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"2.7.1"` |  |
+| alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"2.14.1"` |  |
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;imagePullPolicy | string | `"IfNotPresent"` |  |
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;label | string | `"cortex_alertmanager"` | Label that should be used for filtering |
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;labelValue | string | `""` | The value for the label you want to filter your resources on. Don't set a value to filter by any value |
@@ -298,6 +300,7 @@ Kubernetes: `^1.19.0-0`
 | distributor.&ZeroWidthSpace;securityContext | object | `{}` |  |
 | distributor.&ZeroWidthSpace;service.&ZeroWidthSpace;annotations | object | `{}` |  |
 | distributor.&ZeroWidthSpace;service.&ZeroWidthSpace;labels | object | `{}` |  |
+| distributor.&ZeroWidthSpace;service.&ZeroWidthSpace;trafficDistribution | string | `""` |  |
 | distributor.&ZeroWidthSpace;serviceAccount.&ZeroWidthSpace;name | string | `""` | "" disables the individual serviceAccount and uses the global serviceAccount for that component |
 | distributor.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;additionalLabels | object | `{}` |  |
 | distributor.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;enabled | bool | `false` |  |
@@ -382,6 +385,11 @@ Kubernetes: `^1.19.0-0`
 | ingester.&ZeroWidthSpace;terminationGracePeriodSeconds | int | `240` |  |
 | ingester.&ZeroWidthSpace;tolerations | list | `[]` |  |
 | ingester.&ZeroWidthSpace;topologySpreadConstraints | list | `[]` |  |
+| ingester.&ZeroWidthSpace;zoneAwareReplication.&ZeroWidthSpace;enabled | bool | `false` |  |
+| ingester.&ZeroWidthSpace;zoneAwareReplication.&ZeroWidthSpace;migration.&ZeroWidthSpace;enabled | bool | `false` |  |
+| ingester.&ZeroWidthSpace;zoneAwareReplication.&ZeroWidthSpace;migration.&ZeroWidthSpace;readPath | bool | `false` |  |
+| ingester.&ZeroWidthSpace;zoneAwareReplication.&ZeroWidthSpace;migration.&ZeroWidthSpace;writePath | bool | `false` |  |
+| ingester.&ZeroWidthSpace;zoneAwareReplication.&ZeroWidthSpace;zones | list | `[]` |  |
 | ingress.&ZeroWidthSpace;annotations | object | `{}` |  |
 | ingress.&ZeroWidthSpace;enabled | bool | `false` |  |
 | ingress.&ZeroWidthSpace;hosts[0].&ZeroWidthSpace;host | string | `"chart-example.local"` |  |
@@ -397,10 +405,10 @@ Kubernetes: `^1.19.0-0`
 | memcached-blocks-index.&ZeroWidthSpace;disableValidation | bool | `false` | Bypass validation of the memcached configuration in case a custom image is in use |
 | memcached-blocks-index.&ZeroWidthSpace;enabled | bool | `true` | Enables support for block index caching |
 | memcached-blocks-index.&ZeroWidthSpace;image.&ZeroWidthSpace;repository | string | `"memcached"` |  |
-| memcached-blocks-index.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"1.6.41"` |  |
+| memcached-blocks-index.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"1.6.45"` |  |
 | memcached-blocks-index.&ZeroWidthSpace;metrics.&ZeroWidthSpace;enabled | bool | `true` |  |
 | memcached-blocks-index.&ZeroWidthSpace;metrics.&ZeroWidthSpace;image.&ZeroWidthSpace;repository | string | `"prom/memcached-exporter"` |  |
-| memcached-blocks-index.&ZeroWidthSpace;metrics.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"v0.16.0"` |  |
+| memcached-blocks-index.&ZeroWidthSpace;metrics.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"v0.18.0"` |  |
 | memcached-blocks-index.&ZeroWidthSpace;metrics.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;enabled | bool | `false` |  |
 | memcached-blocks-index.&ZeroWidthSpace;replicaCount | int | `2` |  |
 | memcached-blocks-index.&ZeroWidthSpace;resources | object | `{}` |  |
@@ -411,10 +419,10 @@ Kubernetes: `^1.19.0-0`
 | memcached-blocks-metadata.&ZeroWidthSpace;disableValidation | bool | `false` | Bypass validation of the memcached configuration in case a custom image is in use |
 | memcached-blocks-metadata.&ZeroWidthSpace;enabled | bool | `true` | Enables support for block metadata caching |
 | memcached-blocks-metadata.&ZeroWidthSpace;image.&ZeroWidthSpace;repository | string | `"memcached"` |  |
-| memcached-blocks-metadata.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"1.6.41"` |  |
+| memcached-blocks-metadata.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"1.6.45"` |  |
 | memcached-blocks-metadata.&ZeroWidthSpace;metrics.&ZeroWidthSpace;enabled | bool | `true` |  |
 | memcached-blocks-metadata.&ZeroWidthSpace;metrics.&ZeroWidthSpace;image.&ZeroWidthSpace;repository | string | `"prom/memcached-exporter"` |  |
-| memcached-blocks-metadata.&ZeroWidthSpace;metrics.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"v0.16.0"` |  |
+| memcached-blocks-metadata.&ZeroWidthSpace;metrics.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"v0.18.0"` |  |
 | memcached-blocks-metadata.&ZeroWidthSpace;metrics.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;enabled | bool | `false` |  |
 | memcached-blocks-metadata.&ZeroWidthSpace;replicaCount | int | `2` |  |
 | memcached-blocks-metadata.&ZeroWidthSpace;resources | object | `{}` |  |
@@ -425,10 +433,10 @@ Kubernetes: `^1.19.0-0`
 | memcached-blocks.&ZeroWidthSpace;disableValidation | bool | `false` | Bypass validation of the memcached configuration in case a custom image is in use |
 | memcached-blocks.&ZeroWidthSpace;enabled | bool | `true` | Enables support for block caching |
 | memcached-blocks.&ZeroWidthSpace;image.&ZeroWidthSpace;repository | string | `"memcached"` |  |
-| memcached-blocks.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"1.6.41"` |  |
+| memcached-blocks.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"1.6.45"` |  |
 | memcached-blocks.&ZeroWidthSpace;metrics.&ZeroWidthSpace;enabled | bool | `true` |  |
 | memcached-blocks.&ZeroWidthSpace;metrics.&ZeroWidthSpace;image.&ZeroWidthSpace;repository | string | `"prom/memcached-exporter"` |  |
-| memcached-blocks.&ZeroWidthSpace;metrics.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"v0.16.0"` |  |
+| memcached-blocks.&ZeroWidthSpace;metrics.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"v0.18.0"` |  |
 | memcached-blocks.&ZeroWidthSpace;metrics.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;enabled | bool | `false` |  |
 | memcached-blocks.&ZeroWidthSpace;replicaCount | int | `2` |  |
 | memcached-blocks.&ZeroWidthSpace;resources | object | `{}` |  |
@@ -439,10 +447,10 @@ Kubernetes: `^1.19.0-0`
 | memcached-frontend.&ZeroWidthSpace;disableValidation | bool | `false` | Bypass validation of the memcached configuration in case a custom image is in use |
 | memcached-frontend.&ZeroWidthSpace;enabled | bool | `true` | Enables support for caching queries in the frontend |
 | memcached-frontend.&ZeroWidthSpace;image.&ZeroWidthSpace;repository | string | `"memcached"` |  |
-| memcached-frontend.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"1.6.41"` |  |
+| memcached-frontend.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"1.6.45"` |  |
 | memcached-frontend.&ZeroWidthSpace;metrics.&ZeroWidthSpace;enabled | bool | `true` |  |
 | memcached-frontend.&ZeroWidthSpace;metrics.&ZeroWidthSpace;image.&ZeroWidthSpace;repository | string | `"prom/memcached-exporter"` |  |
-| memcached-frontend.&ZeroWidthSpace;metrics.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"v0.16.0"` |  |
+| memcached-frontend.&ZeroWidthSpace;metrics.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"v0.18.0"` |  |
 | memcached-frontend.&ZeroWidthSpace;metrics.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;enabled | bool | `false` |  |
 | memcached-frontend.&ZeroWidthSpace;replicaCount | int | `2` |  |
 | memcached-frontend.&ZeroWidthSpace;resources | object | `{}` |  |
@@ -453,10 +461,10 @@ Kubernetes: `^1.19.0-0`
 | memcached-parquet-labels.&ZeroWidthSpace;disableValidation | bool | `false` | Bypass validation of the memcached configuration in case a custom image is in use |
 | memcached-parquet-labels.&ZeroWidthSpace;enabled | bool | `false` | Enables support for parquet labels caching |
 | memcached-parquet-labels.&ZeroWidthSpace;image.&ZeroWidthSpace;repository | string | `"memcached"` |  |
-| memcached-parquet-labels.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"1.6.41"` |  |
+| memcached-parquet-labels.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"1.6.45"` |  |
 | memcached-parquet-labels.&ZeroWidthSpace;metrics.&ZeroWidthSpace;enabled | bool | `true` |  |
 | memcached-parquet-labels.&ZeroWidthSpace;metrics.&ZeroWidthSpace;image.&ZeroWidthSpace;repository | string | `"prom/memcached-exporter"` |  |
-| memcached-parquet-labels.&ZeroWidthSpace;metrics.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"v0.16.0"` |  |
+| memcached-parquet-labels.&ZeroWidthSpace;metrics.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"v0.18.0"` |  |
 | memcached-parquet-labels.&ZeroWidthSpace;metrics.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;enabled | bool | `false` |  |
 | memcached-parquet-labels.&ZeroWidthSpace;replicaCount | int | `2` |  |
 | memcached-parquet-labels.&ZeroWidthSpace;resources | object | `{}` |  |
@@ -472,6 +480,7 @@ Kubernetes: `^1.19.0-0`
 | nginx.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;targetMemoryUtilizationPercentage | int | `0` |  |
 | nginx.&ZeroWidthSpace;config.&ZeroWidthSpace;auth_orgs | list | `[]` | Optional list of [auth tenants](https://cortexmetrics.io/docs/guides/auth/) to set in the nginx config |
 | nginx.&ZeroWidthSpace;config.&ZeroWidthSpace;basicAuthSecretName | string | `""` | Optional name of basic auth secret. In order to use this option, a secret with htpasswd formatted contents at the key ".htpasswd" must exist. For example:    apiVersion: v1   kind: Secret   metadata:     name: my-secret     namespace: <same as cortex installation>   stringData:     .htpasswd: |       user1:$apr1$/woC1jnP$KAh0SsVn5qeSMjTtn0E9Q0       user2:$apr1$QdR8fNLT$vbCEEzDj7LyqCMyNpSoBh/  Please note that the use of basic auth will not identify organizations the way X-Scope-OrgID does. Thus, the use of basic auth alone will not prevent one tenant from viewing the metrics of another. To ensure tenants are scoped appropriately, explicitly set the `X-Scope-OrgID` header in the nginx config. Example   setHeaders:     X-Scope-OrgID: $remote_user |
+| nginx.&ZeroWidthSpace;config.&ZeroWidthSpace;client_body_buffer_size | string | `""` | ref: http://nginx.org/en/docs/http/ngx_http_core_module.html#client_body_buffer_size Requests with a body larger than this are buffered to a temporary file. If empty, the nginx default is used. |
 | nginx.&ZeroWidthSpace;config.&ZeroWidthSpace;client_max_body_size | string | `"1M"` | ref: http://nginx.org/en/docs/http/ngx_http_core_module.html#client_max_body_size |
 | nginx.&ZeroWidthSpace;config.&ZeroWidthSpace;dnsResolver | string | `"kube-dns.kube-system.svc.cluster.local"` |  |
 | nginx.&ZeroWidthSpace;config.&ZeroWidthSpace;dnsTTL | string | `"15s"` | Including the valid parameter to the `resolver` directive to re-resolve names every `dnsTTL` seconds/minutes |
@@ -494,7 +503,7 @@ Kubernetes: `^1.19.0-0`
 | nginx.&ZeroWidthSpace;http_listen_port | int | `80` |  |
 | nginx.&ZeroWidthSpace;image.&ZeroWidthSpace;pullPolicy | string | `"IfNotPresent"` |  |
 | nginx.&ZeroWidthSpace;image.&ZeroWidthSpace;repository | string | `"nginx"` |  |
-| nginx.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | float | `1.29` |  |
+| nginx.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | float | `1.31` |  |
 | nginx.&ZeroWidthSpace;initContainers | list | `[]` |  |
 | nginx.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/healthz"` |  |
 | nginx.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
@@ -587,6 +596,13 @@ Kubernetes: `^1.19.0-0`
 | parquet_converter.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
 | parquet_converter.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
 | parquet_converter.&ZeroWidthSpace;nodeSelector | object | `{}` |  |
+| parquet_converter.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;accessModes | list | `["ReadWriteOnce"]` | parquet-converter data Persistent Volume access modes Must match those of existing PV or dynamic provisioner Ref: http://kubernetes.io/docs/user-guide/persistent-volumes/ |
+| parquet_converter.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;annotations | object | `{}` | parquet-converter data Persistent Volume Claim annotations |
+| parquet_converter.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;enabled | bool | `true` | If true and parquet_converter.statefulSet.enabled is true, the parquet converter will create/use a Persistent Volume Claim If false, use emptyDir |
+| parquet_converter.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;retentionPolicy | object | `{}` | StatefulSetAutoDeletePVC feature https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#persistentvolumeclaim-retention |
+| parquet_converter.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;size | string | `"2Gi"` | parquet-converter data Persistent Volume size. The converter downloads a whole block before it converts it, so this must hold the largest block of any tenant. |
+| parquet_converter.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;storageClass | string | `nil` | parquet-converter data Persistent Volume Storage Class If defined, storageClassName: <storageClass> If set to "-", storageClassName: "", which disables dynamic provisioning If undefined (the default) or set to null, no storageClassName spec is set, choosing the default provisioner. |
+| parquet_converter.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;subPath | string | `""` | Subdirectory of parquet-converter data Persistent Volume to mount Useful if the volume's root directory is not empty |
 | parquet_converter.&ZeroWidthSpace;podAnnotations | object | `{"prometheus.io/port":"http-metrics","prometheus.io/scrape":"true"}` | Pod Annotations |
 | parquet_converter.&ZeroWidthSpace;podLabels | object | `{}` | Pod Labels |
 | parquet_converter.&ZeroWidthSpace;readinessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
@@ -605,6 +621,9 @@ Kubernetes: `^1.19.0-0`
 | parquet_converter.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;failureThreshold | int | `10` |  |
 | parquet_converter.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
 | parquet_converter.&ZeroWidthSpace;startupProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
+| parquet_converter.&ZeroWidthSpace;statefulSet.&ZeroWidthSpace;enabled | bool | `false` | If true, use a statefulset instead of a deployment for pod management. Each pod then gets its own Persistent Volume Claim (see persistentVolume), which keeps the same volume across restarts and rollouts. This is useful with more than one replica, because the converter downloads each block into its data_dir and replicas must not share one. |
+| parquet_converter.&ZeroWidthSpace;statefulSet.&ZeroWidthSpace;podManagementPolicy | string | `"Parallel"` | The converter ring does not need ordered starts, so pods start and stop in parallel. ref: https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#pod-management-policies |
+| parquet_converter.&ZeroWidthSpace;statefulStrategy.&ZeroWidthSpace;type | string | `"RollingUpdate"` |  |
 | parquet_converter.&ZeroWidthSpace;strategy.&ZeroWidthSpace;rollingUpdate.&ZeroWidthSpace;maxSurge | int | `0` |  |
 | parquet_converter.&ZeroWidthSpace;strategy.&ZeroWidthSpace;rollingUpdate.&ZeroWidthSpace;maxUnavailable | int | `1` |  |
 | parquet_converter.&ZeroWidthSpace;strategy.&ZeroWidthSpace;type | string | `"RollingUpdate"` |  |
@@ -740,6 +759,7 @@ Kubernetes: `^1.19.0-0`
 | query_frontend.&ZeroWidthSpace;securityContext | object | `{}` |  |
 | query_frontend.&ZeroWidthSpace;service.&ZeroWidthSpace;annotations | object | `{}` |  |
 | query_frontend.&ZeroWidthSpace;service.&ZeroWidthSpace;labels | object | `{}` |  |
+| query_frontend.&ZeroWidthSpace;service.&ZeroWidthSpace;trafficDistribution | string | `""` |  |
 | query_frontend.&ZeroWidthSpace;serviceAccount.&ZeroWidthSpace;name | string | `""` | "" disables the individual serviceAccount and uses the global serviceAccount for that component |
 | query_frontend.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;additionalLabels | object | `{}` |  |
 | query_frontend.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;enabled | bool | `false` |  |
@@ -802,6 +822,18 @@ Kubernetes: `^1.19.0-0`
 | query_scheduler.&ZeroWidthSpace;terminationGracePeriodSeconds | int | `180` |  |
 | query_scheduler.&ZeroWidthSpace;tolerations | list | `[]` |  |
 | query_scheduler.&ZeroWidthSpace;topologySpreadConstraints | list | `[]` |  |
+| rollout_operator.&ZeroWidthSpace;enabled | bool | `false` |  |
+| rollout_operator.&ZeroWidthSpace;podSecurityContext.&ZeroWidthSpace;fsGroup | int | `10001` |  |
+| rollout_operator.&ZeroWidthSpace;podSecurityContext.&ZeroWidthSpace;runAsGroup | int | `10001` |  |
+| rollout_operator.&ZeroWidthSpace;podSecurityContext.&ZeroWidthSpace;runAsNonRoot | bool | `true` |  |
+| rollout_operator.&ZeroWidthSpace;podSecurityContext.&ZeroWidthSpace;runAsUser | int | `10001` |  |
+| rollout_operator.&ZeroWidthSpace;podSecurityContext.&ZeroWidthSpace;seccompProfile.&ZeroWidthSpace;type | string | `"RuntimeDefault"` |  |
+| rollout_operator.&ZeroWidthSpace;securityContext.&ZeroWidthSpace;allowPrivilegeEscalation | bool | `false` |  |
+| rollout_operator.&ZeroWidthSpace;securityContext.&ZeroWidthSpace;capabilities.&ZeroWidthSpace;drop[0] | string | `"ALL"` |  |
+| rollout_operator.&ZeroWidthSpace;securityContext.&ZeroWidthSpace;readOnlyRootFilesystem | bool | `true` |  |
+| rollout_operator.&ZeroWidthSpace;securityContext.&ZeroWidthSpace;runAsNonRoot | bool | `true` |  |
+| rollout_operator.&ZeroWidthSpace;securityContext.&ZeroWidthSpace;seccompProfile.&ZeroWidthSpace;type | string | `"RuntimeDefault"` |  |
+| rollout_operator.&ZeroWidthSpace;webhooks.&ZeroWidthSpace;enabled | bool | `false` |  |
 | ruler.&ZeroWidthSpace;affinity | object | `{}` |  |
 | ruler.&ZeroWidthSpace;annotations | object | `{}` |  |
 | ruler.&ZeroWidthSpace;autoscaling.&ZeroWidthSpace;behavior | object | `{}` | Ref: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#support-for-configurable-scaling-behavior |
@@ -835,6 +867,7 @@ Kubernetes: `^1.19.0-0`
 | ruler.&ZeroWidthSpace;securityContext | object | `{}` |  |
 | ruler.&ZeroWidthSpace;service.&ZeroWidthSpace;annotations | object | `{}` |  |
 | ruler.&ZeroWidthSpace;service.&ZeroWidthSpace;labels | object | `{}` |  |
+| ruler.&ZeroWidthSpace;service.&ZeroWidthSpace;trafficDistribution | string | `""` |  |
 | ruler.&ZeroWidthSpace;serviceAccount.&ZeroWidthSpace;name | string | `""` | "" disables the individual serviceAccount and uses the global serviceAccount for that component |
 | ruler.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;additionalLabels | object | `{}` |  |
 | ruler.&ZeroWidthSpace;serviceMonitor.&ZeroWidthSpace;enabled | bool | `false` |  |
@@ -852,7 +885,7 @@ Kubernetes: `^1.19.0-0`
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;healthPort | int | `8081` | The port the kiwigrid/k8s-sidecar listens on for health checks. The image default matches the cortex default listen port (8080), so it must be overridden here. |
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;repository | string | `"kiwigrid/k8s-sidecar"` |  |
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;sha | string | `""` |  |
-| ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"2.7.1"` |  |
+| ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"2.14.1"` |  |
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;imagePullPolicy | string | `"IfNotPresent"` |  |
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;label | string | `"cortex_rules"` | label that the configmaps with rules are marked with |
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;labelValue | string | `""` | The value for the label you want to filter your resources on. Don't set a value to filter by any value |
@@ -946,3 +979,20 @@ Kubernetes: `^1.19.0-0`
 | useConfigMap | bool | `false` |  |
 | useExternalConfig | bool | `false` |  |
 
+## Security & Container Image Considerations
+
+### Default Memcached Image Status
+
+The default configuration of this Helm chart references `memcached:1.6.45`. While this is currently the latest official upstream release of Memcached, security scanners may flag known Common Vulnerabilities and Exposures (CVEs) present in the underlying base image packages.
+
+### Mitigation Options
+
+If your organizational policies or security requirements prohibit running images with known vulnerabilities, consider the following options:
+
+1. **Override Default Image in `values.yaml`** 
+   You can specify your own hardened or patched Memcached image, such as Docker Hardened Images [Memcached](https://hub.docker.com/hardened-images/catalog/dhi/memcached), using custom values during deployment:
+   ```yaml
+   memcached:
+     image:
+       repository: your-custom-registry/memcached
+       tag: your-secure-tag

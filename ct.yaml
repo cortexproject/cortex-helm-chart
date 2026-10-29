@@ -6,4 +6,5 @@ charts:
 chart-repos:
   - base-charts=https://charts.helm.sh/stable
   - bitnami=https://charts.bitnami.com/bitnami
+  - grafana=https://grafana.github.io/helm-charts
 helm-extra-args: --timeout 600s

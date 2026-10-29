@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
           token: ${{ secrets.CORTEX_HELM_CHART_CI_TOKEN }}
@@ -33,7 +33,7 @@ jobs:
       - name: Install Helm
         uses: azure/setup-helm@v5
         with:
-          version: v3.12.1
+          version: v4.3.1
 
       - name: Bump Version
         run: make bump-version VERSION="${{ inputs.version }}"
@@ -50,6 +50,7 @@ jobs:
       - name: Package Chart
         run: |
           helm repo add bitnami https://charts.bitnami.com/bitnami
+          helm repo add grafana https://grafana.github.io/helm-charts
           helm dependency build
           helm package . -d docs
           helm repo index ./docs/ --url https://cortexproject.github.io/cortex-helm-chart

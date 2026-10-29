@@ -24,7 +24,7 @@ spec:
         {{- end }}
       annotations:
         checksum/config: {{ include "cortex.configChecksum" . }}
-      {{- with .Values.query_frontend.podAnnotations }}
+      {{- with .Values.purger.podAnnotations }}
         {{- toYaml . | nindent 8 }}
       {{- end }}
     spec:

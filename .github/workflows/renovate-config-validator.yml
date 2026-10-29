@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - renovate.json
+      - .github/workflows/renovate-config-validator.yml
 
 jobs:
   validate:
@@ -11,6 +12,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - name: Validate
-        uses: rinchsan/renovate-config-validator@v0.2.1
+        run: npx --yes --package renovate -- renovate-config-validator

@@ -2,6 +2,64 @@
 
 ## master / unreleased
 
+* [FEATURE] Parquet converter: allow running it as a StatefulSet with a persistent volume per pod #685
+* [ENHANCEMENT] Expose `nginx.config.client_body_buffer_size` to set the nginx `client_body_buffer_size` #350
+* [DEPENDENCY] Update Helm release rollout-operator to v0.53.1 #683
+* [DEPENDENCY] Update prom/memcached-exporter Docker tag to v0.18.0 #684
+
+## 3.5.0 / 2026-10-08
+
+* [FEATURE] Add trafficDistribution attribute to services #674
+* [ENHANCEMENT] Update helm values and documentation for rollout operator #673
+* [DEPENDENCY] Update Helm release rollout-operator to v0.52.0 #670
+* [DEPENDENCY] Update kiwigrid/k8s-sidecar docker tag to v2.13.3 #677
+* [DEPENDENCY] Update kiwigrid/k8s-sidecar docker tag to v2.14.1 #678
+
+## 3.4.0 / 2026-09-21
+
+* [FEATURE] Add remote-write OTLP endpoint in nginx #667
+* [FEATURE] Add support for zone-aware replication ([Migration Instructions](https://cortexproject.github.io/cortex-helm-chart/guides/migrate_to_zone_aware_replication.html)) #668
+* [BUGFIX] CI: Add grafana helm repository #671
+* [DEPENDENCY] update kiwigrid/k8s-sidecar docker tag to v2.11.2 #663
+
+## 3.3.8 / 2026-08-17
+
+* [DEPENDENCY] update prom/memcached-exporter docker tag to v0.17.0 #660
+
+## 3.3.7 / 2026-08-04
+
+* [DEPENDENCY] update kiwigrid/k8s-sidecar docker tag to v2.10.1 #657
+
+## 3.3.6 / 2026-07-24
+
+* [BUGFIX] Purger: use correct podAnnotations reference instead of query_frontend's #613
+* [DEPENDENCY] update memcached Docker tag to v1.6.45 #654
+
+## 3.3.5 / 2026-07-09
+
+* [BUGFIX] Querier: avoid rendering empty `env:` key when no env vars are set
+* [BUGFIX] Ruler: fix sidecar securityContext using main container's condition instead of sidecar's
+* [DEPENDENCY] update kiwigrid/k8s-sidecar docker tag to v2.8.1 #648
+* [DEPENDENCY] update memcached Docker tag to v1.6.44 #651
+
+## 3.3.4 / 2026-06-23
+
+* [DEPENDENCY] update kiwigrid/k8s-sidecar docker tag to v2.8.0 #646
+
+## 3.3.3 / 2026-06-22
+
+* [DEPENDENCY] update kiwigrid/k8s-sidecar docker tag to v2.7.4 #641
+
+## 3.3.2 / 2026-06-05
+
+* [DEPENDENCY] update quay.io/cortexproject/cortex docker tag to v1.21.1 #635
+
+## 3.3.1 / 2026-05-21
+
+* [DEPENDENCY] update kiwigrid/k8s-sidecar docker tag to v2.7.3 #628
+* [DEPENDENCY] update nginx docker tag to v1.31 #629
+* [DEPENDENCY] update memcached docker tag to v1.6.42 #631
+
 ## 3.3.0 / 2026-04-27
 
 * [FEATURE] Add a parquet labels cache. #621
