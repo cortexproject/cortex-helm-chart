@@ -2,6 +2,8 @@
 
 ## master / unreleased
 
+## 3.6.0 / 2026-10-29
+
 * [FEATURE] Parquet converter: allow running it as a StatefulSet with a persistent volume per pod #685
 * [ENHANCEMENT] Expose `nginx.config.client_body_buffer_size` to set the nginx `client_body_buffer_size` #350
 * [DEPENDENCY] Update Helm release rollout-operator to v0.53.1 #683
