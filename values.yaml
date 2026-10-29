@@ -24,6 +24,30 @@ ingress:
         - /
   tls: []
 
+# Gateway API HTTPRoute that routes traffic to the nginx service, as an alternative to `ingress`.
+# Requires the Gateway API CRDs (v1) in the cluster.
+httpRoute:
+  # -- Create an HTTPRoute for the nginx service
+  enabled: false
+  # -- Annotations for the HTTPRoute
+  annotations: {}
+  # -- Extra labels for the HTTPRoute
+  labels: {}
+  # -- Gateways the HTTPRoute attaches to
+  parentRefs: []
+  # - name: my-gateway
+  #   namespace: gateway-system
+  #   sectionName: https
+  # -- Hostnames matched by the HTTPRoute (templated)
+  hostnames: []
+  # -- Request matches of the route rule
+  matches:
+    - path:
+        type: PathPrefix
+        value: /
+  # -- Filters of the route rule
+  filters: []
+
 serviceAccount:
   create: true
   name:
