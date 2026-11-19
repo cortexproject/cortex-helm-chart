@@ -2,6 +2,8 @@
 
 ## master / unreleased
 
+## 3.6.0 / 2026-11-19
+
 * [FEATURE] Parquet converter: allow running it as a StatefulSet with a persistent volume per pod #685
 * [FEATURE] Add optional Gateway API `HTTPRoute` for the nginx service (`httpRoute.*`) as an alternative to `ingress` #689
 * [FEATURE] Add `ruler.sidecar.resourceName` and `alertmanager.sidecar.resourceName` to set `RESOURCE_NAME` on the sidecars #688
