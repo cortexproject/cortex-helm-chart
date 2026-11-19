@@ -2,6 +2,8 @@
 
 ## master / unreleased
 
+## 3.6.1 / 2026-11-19
+
 ## 3.6.0 / 2026-11-19
 
 * [FEATURE] Parquet converter: allow running it as a StatefulSet with a persistent volume per pod #685
