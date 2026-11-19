@@ -319,6 +319,13 @@ Kubernetes: `^1.19.0-0`
 | distributor.&ZeroWidthSpace;topologySpreadConstraints | list | `[]` |  |
 | externalConfigSecretName | string | `"secret-with-config.yaml"` |  |
 | externalConfigVersion | string | `"0"` |  |
+| httpRoute.&ZeroWidthSpace;annotations | object | `{}` | Annotations for the HTTPRoute |
+| httpRoute.&ZeroWidthSpace;enabled | bool | `false` | Create an HTTPRoute for the nginx service |
+| httpRoute.&ZeroWidthSpace;filters | list | `[]` | Filters of the route rule |
+| httpRoute.&ZeroWidthSpace;hostnames | list | `[]` | Hostnames matched by the HTTPRoute (templated) |
+| httpRoute.&ZeroWidthSpace;labels | object | `{}` | Extra labels for the HTTPRoute |
+| httpRoute.&ZeroWidthSpace;matches | list | `[{"path":{"type":"PathPrefix","value":"/"}}]` | Request matches of the route rule |
+| httpRoute.&ZeroWidthSpace;parentRefs | list | `[]` | Gateways the HTTPRoute attaches to |
 | image.&ZeroWidthSpace;pullPolicy | string | `"IfNotPresent"` |  |
 | image.&ZeroWidthSpace;pullSecrets | list | `[]` | Optionally specify an array of imagePullSecrets. Secrets must be manually created in the namespace. ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/ |
 | image.&ZeroWidthSpace;repository | string | `"quay.io/cortexproject/cortex"` |  |
