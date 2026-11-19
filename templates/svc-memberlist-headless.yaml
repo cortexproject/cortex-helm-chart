@@ -13,6 +13,7 @@ metadata:
 spec:
   type: ClusterIP
   clusterIP: None
+  publishNotReadyAddresses: true
   ports:
     - port: {{ .Values.config.memberlist.bind_port }}
       protocol: TCP
