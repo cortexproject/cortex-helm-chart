@@ -3,10 +3,13 @@
 ## master / unreleased
 
 * [FEATURE] Parquet converter: allow running it as a StatefulSet with a persistent volume per pod #685
+* [FEATURE] Add optional Gateway API `HTTPRoute` for the nginx service (`httpRoute.*`) as an alternative to `ingress` #689
+* [FEATURE] Add `ruler.sidecar.resourceName` and `alertmanager.sidecar.resourceName` to set `RESOURCE_NAME` on the sidecars #688
 * [ENHANCEMENT] Expose `nginx.config.client_body_buffer_size` to set the nginx `client_body_buffer_size` #350
 * [BUGFIX] Memberlist: publish not-ready pod addresses in the memberlist headless service so pods can discover each other on startup #322
 * [DEPENDENCY] Update Helm release rollout-operator to v0.53.1 #683
 * [DEPENDENCY] Update prom/memcached-exporter Docker tag to v0.18.0 #684
+* [DEPENDENCY] Update kiwigrid/k8s-sidecar docker tag to v2.14.3 #690
 
 ## 3.5.0 / 2026-10-08
 

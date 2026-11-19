@@ -24,6 +24,30 @@ ingress:
         - /
   tls: []
 
+# Gateway API HTTPRoute that routes traffic to the nginx service, as an alternative to `ingress`.
+# Requires the Gateway API CRDs (v1) in the cluster.
+httpRoute:
+  # -- Create an HTTPRoute for the nginx service
+  enabled: false
+  # -- Annotations for the HTTPRoute
+  annotations: {}
+  # -- Extra labels for the HTTPRoute
+  labels: {}
+  # -- Gateways the HTTPRoute attaches to
+  parentRefs: []
+  # - name: my-gateway
+  #   namespace: gateway-system
+  #   sectionName: https
+  # -- Hostnames matched by the HTTPRoute (templated)
+  hostnames: []
+  # -- Request matches of the route rule
+  matches:
+    - path:
+        type: PathPrefix
+        value: /
+  # -- Filters of the route rule
+  filters: []
+
 serviceAccount:
   create: true
   name:
@@ -284,7 +308,7 @@ alertmanager:
     enabled: false
     image:
       repository: kiwigrid/k8s-sidecar
-      tag: 2.14.1
+      tag: 2.14.3
       sha: ""
     imagePullPolicy: IfNotPresent
     resources: {}
@@ -315,6 +339,8 @@ alertmanager:
     folderAnnotation: "k8s-sidecar-target-directory"
     # -- The resource type that the operator will filter for. Can be configmap, secret or both
     resource: "both"
+    # -- Comma separated list of ConfigMap and/or Secret names to watch. When empty, all resources matching the label are watched
+    resourceName: ""
     containerSecurityContext:
       enabled: true
       readOnlyRootFilesystem: true
@@ -737,7 +763,7 @@ ruler:
     enabled: false
     image:
       repository: kiwigrid/k8s-sidecar
-      tag: 2.14.1
+      tag: 2.14.3
       sha: ""
     imagePullPolicy: IfNotPresent
     resources: {}
@@ -768,6 +794,8 @@ ruler:
     folderAnnotation: "k8s-sidecar-target-directory"
     # -- The resource type that the operator will filter for. Can be configmap, secret or both
     resource: "both"
+    # -- Comma separated list of ConfigMap and/or Secret names to watch. When empty, all resources matching the label are watched
+    resourceName: ""
     containerSecurityContext:
       enabled: true
       readOnlyRootFilesystem: true

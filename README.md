@@ -147,7 +147,7 @@ Kubernetes: `^1.19.0-0`
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;healthPort | int | `8081` | The port the kiwigrid/k8s-sidecar listens on for health checks. The image default matches the cortex default listen port (8080), so it must be overridden here. |
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;repository | string | `"kiwigrid/k8s-sidecar"` |  |
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;sha | string | `""` |  |
-| alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"2.14.1"` |  |
+| alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"2.14.3"` |  |
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;imagePullPolicy | string | `"IfNotPresent"` |  |
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;label | string | `"cortex_alertmanager"` | Label that should be used for filtering |
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;labelValue | string | `""` | The value for the label you want to filter your resources on. Don't set a value to filter by any value |
@@ -155,6 +155,7 @@ Kubernetes: `^1.19.0-0`
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;readinessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"sidecar-health"` |  |
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;readinessProbe.&ZeroWidthSpace;periodSeconds | int | `5` |  |
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;resource | string | `"both"` | The resource type that the operator will filter for. Can be configmap, secret or both |
+| alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;resourceName | string | `""` | Comma separated list of ConfigMap and/or Secret names to watch. When empty, all resources matching the label are watched |
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;resources | object | `{}` |  |
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;searchNamespace | string | `""` | The Namespace(s) from which resources will be watched. For multiple namespaces, use a comma-separated string like "default,test". If not set or set to ALL, it will watch all Namespaces. |
 | alertmanager.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;skipTlsVerify | bool | `false` | Set to true to skip tls verification for kube api calls |
@@ -319,6 +320,13 @@ Kubernetes: `^1.19.0-0`
 | distributor.&ZeroWidthSpace;topologySpreadConstraints | list | `[]` |  |
 | externalConfigSecretName | string | `"secret-with-config.yaml"` |  |
 | externalConfigVersion | string | `"0"` |  |
+| httpRoute.&ZeroWidthSpace;annotations | object | `{}` | Annotations for the HTTPRoute |
+| httpRoute.&ZeroWidthSpace;enabled | bool | `false` | Create an HTTPRoute for the nginx service |
+| httpRoute.&ZeroWidthSpace;filters | list | `[]` | Filters of the route rule |
+| httpRoute.&ZeroWidthSpace;hostnames | list | `[]` | Hostnames matched by the HTTPRoute (templated) |
+| httpRoute.&ZeroWidthSpace;labels | object | `{}` | Extra labels for the HTTPRoute |
+| httpRoute.&ZeroWidthSpace;matches | list | `[{"path":{"type":"PathPrefix","value":"/"}}]` | Request matches of the route rule |
+| httpRoute.&ZeroWidthSpace;parentRefs | list | `[]` | Gateways the HTTPRoute attaches to |
 | image.&ZeroWidthSpace;pullPolicy | string | `"IfNotPresent"` |  |
 | image.&ZeroWidthSpace;pullSecrets | list | `[]` | Optionally specify an array of imagePullSecrets. Secrets must be manually created in the namespace. ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/ |
 | image.&ZeroWidthSpace;repository | string | `"quay.io/cortexproject/cortex"` |  |
@@ -885,7 +893,7 @@ Kubernetes: `^1.19.0-0`
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;healthPort | int | `8081` | The port the kiwigrid/k8s-sidecar listens on for health checks. The image default matches the cortex default listen port (8080), so it must be overridden here. |
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;repository | string | `"kiwigrid/k8s-sidecar"` |  |
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;sha | string | `""` |  |
-| ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"2.14.1"` |  |
+| ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;image.&ZeroWidthSpace;tag | string | `"2.14.3"` |  |
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;imagePullPolicy | string | `"IfNotPresent"` |  |
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;label | string | `"cortex_rules"` | label that the configmaps with rules are marked with |
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;labelValue | string | `""` | The value for the label you want to filter your resources on. Don't set a value to filter by any value |
@@ -893,6 +901,7 @@ Kubernetes: `^1.19.0-0`
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;readinessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"sidecar-health"` |  |
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;readinessProbe.&ZeroWidthSpace;periodSeconds | int | `5` |  |
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;resource | string | `"both"` | The resource type that the operator will filter for. Can be configmap, secret or both |
+| ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;resourceName | string | `""` | Comma separated list of ConfigMap and/or Secret names to watch. When empty, all resources matching the label are watched |
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;resources | object | `{}` |  |
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;searchNamespace | string | `""` | The Namespace(s) from which resources will be watched. For multiple namespaces, use a comma-separated string like "default,test". If not set or set to ALL, it will watch all Namespaces. |
 | ruler.&ZeroWidthSpace;sidecar.&ZeroWidthSpace;skipTlsVerify | bool | `false` | Set to true to skip tls verification for kube api calls |
