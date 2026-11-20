@@ -25,7 +25,7 @@ spec:
       annotations:
         checksum/config: {{ include "cortex.configChecksum" . }}
       {{- with .Values.purger.podAnnotations }}
-        {{- toYaml . | nindent 8 }}
+        {{- tpl (toYaml .) $ | nindent 8 }}
       {{- end }}
     spec:
       serviceAccountName: {{ .Values.purger.serviceAccount.name | default (include "cortex.serviceAccountName" . ) }}

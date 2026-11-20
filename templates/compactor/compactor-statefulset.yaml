@@ -56,7 +56,7 @@ spec:
       annotations:
         checksum/config: {{ include "cortex.configChecksum" . }}
         {{- with .Values.compactor.podAnnotations }}
-        {{- toYaml . | nindent 8 }}
+        {{- tpl (toYaml .) $ | nindent 8 }}
         {{- end }}
     spec:
       serviceAccountName: {{ .Values.compactor.serviceAccount.name | default (include "cortex.serviceAccountName" . ) }}

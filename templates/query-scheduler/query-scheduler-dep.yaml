@@ -25,7 +25,7 @@ spec:
       annotations:
         checksum/config: {{ include "cortex.configChecksum" . }}
       {{- with .Values.query_scheduler.podAnnotations }}
-        {{- toYaml . | nindent 8 }}
+        {{- tpl (toYaml .) $ | nindent 8 }}
       {{- end }}
     spec:
       serviceAccountName: {{ template "cortex.serviceAccountName" . }}
