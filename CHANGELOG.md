@@ -2,6 +2,8 @@
 
 ## master / unreleased
 
+* [ENHANCEMENT] Render `podAnnotations` with `tpl`, so the default `prometheus.io/port` annotations follow `config.server.http_listen_port` #410
+
 ## 3.6.0 / 2026-11-19
 
 * [FEATURE] Parquet converter: allow running it as a StatefulSet with a persistent volume per pod #685

@@ -205,7 +205,7 @@ alertmanager:
   # -- Pod Annotations
   podAnnotations:
     prometheus.io/scrape: 'true'
-    prometheus.io/port: '8080'
+    prometheus.io/port: '{{ .Values.config.server.http_listen_port }}'
 
   nodeSelector: {}
   topologySpreadConstraints: []
@@ -390,7 +390,7 @@ distributor:
   # -- Pod Annotations
   podAnnotations:
     prometheus.io/scrape: 'true'
-    prometheus.io/port: '8080'
+    prometheus.io/port: '{{ .Values.config.server.http_listen_port }}'
 
   nodeSelector: {}
   topologySpreadConstraints: []
@@ -526,7 +526,7 @@ ingester:
   # -- Pod Annotations
   podAnnotations:
     prometheus.io/scrape: 'true'
-    prometheus.io/port: '8080'
+    prometheus.io/port: '{{ .Values.config.server.http_listen_port }}'
 
   nodeSelector: {}
   topologySpreadConstraints: []
@@ -690,7 +690,7 @@ ruler:
   # -- Pod Annotations
   podAnnotations:
     prometheus.io/scrape: 'true'
-    prometheus.io/port: '8080'
+    prometheus.io/port: '{{ .Values.config.server.http_listen_port }}'
 
   nodeSelector: {}
   topologySpreadConstraints: []
@@ -844,7 +844,7 @@ querier:
   # -- Pod Annotations
   podAnnotations:
     prometheus.io/scrape: 'true'
-    prometheus.io/port: '8080'
+    prometheus.io/port: '{{ .Values.config.server.http_listen_port }}'
 
   nodeSelector: {}
   topologySpreadConstraints: []
@@ -954,7 +954,7 @@ query_frontend:
   # -- Pod Annotations
   podAnnotations:
     prometheus.io/scrape: 'true'
-    prometheus.io/port: '8080'
+    prometheus.io/port: '{{ .Values.config.server.http_listen_port }}'
 
   nodeSelector: {}
   topologySpreadConstraints: []
@@ -1358,7 +1358,7 @@ purger:
 
   podAnnotations:
     prometheus.io/scrape: 'true'
-    prometheus.io/port: '8080'
+    prometheus.io/port: '{{ .Values.config.server.http_listen_port }}'
 
   nodeSelector: {}
   topologySpreadConstraints: []
@@ -1586,7 +1586,7 @@ store_gateway:
   # -- Pod Annotations
   podAnnotations:
     prometheus.io/scrape: 'true'
-    prometheus.io/port: '8080'
+    prometheus.io/port: '{{ .Values.config.server.http_listen_port }}'
 
   nodeSelector: {}
   topologySpreadConstraints: []
@@ -1719,7 +1719,7 @@ compactor:
   # -- Pod Annotations
   podAnnotations:
     prometheus.io/scrape: 'true'
-    prometheus.io/port: '8080'
+    prometheus.io/port: '{{ .Values.config.server.http_listen_port }}'
 
   nodeSelector: {}
   topologySpreadConstraints: []

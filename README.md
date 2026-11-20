@@ -119,7 +119,7 @@ Kubernetes: `^1.19.0-0`
 | alertmanager.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;size | string | `"2Gi"` | Alertmanager data Persistent Volume size |
 | alertmanager.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;storageClass | string | `nil` | Alertmanager data Persistent Volume Storage Class If defined, storageClassName: <storageClass> If set to "-", storageClassName: "", which disables dynamic provisioning If undefined (the default) or set to null, no storageClassName spec is set, choosing the default provisioner. |
 | alertmanager.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;subPath | string | `""` | Subdirectory of Alertmanager data Persistent Volume to mount Useful if the volume's root directory is not empty |
-| alertmanager.&ZeroWidthSpace;podAnnotations | object | `{"prometheus.io/port":"8080","prometheus.io/scrape":"true"}` | Pod Annotations |
+| alertmanager.&ZeroWidthSpace;podAnnotations | object | `{"prometheus.io/port":"{{ .Values.config.server.http_listen_port }}","prometheus.io/scrape":"true"}` | Pod Annotations |
 | alertmanager.&ZeroWidthSpace;podDisruptionBudget | object | `{"maxUnavailable":1}` | If not set then a PodDisruptionBudget will not be created |
 | alertmanager.&ZeroWidthSpace;podLabels | object | `{}` | Pod Labels |
 | alertmanager.&ZeroWidthSpace;readinessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
@@ -200,7 +200,7 @@ Kubernetes: `^1.19.0-0`
 | compactor.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;size | string | `"2Gi"` |  |
 | compactor.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;storageClass | string | `nil` | compactor data Persistent Volume Storage Class If defined, storageClassName: <storageClass> If set to "-", storageClassName: "", which disables dynamic provisioning If undefined (the default) or set to null, no storageClassName spec is set, choosing the default provisioner. |
 | compactor.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;subPath | string | `""` | Subdirectory of compactor data Persistent Volume to mount Useful if the volume's root directory is not empty |
-| compactor.&ZeroWidthSpace;podAnnotations | object | `{"prometheus.io/port":"8080","prometheus.io/scrape":"true"}` | Pod Annotations |
+| compactor.&ZeroWidthSpace;podAnnotations | object | `{"prometheus.io/port":"{{ .Values.config.server.http_listen_port }}","prometheus.io/scrape":"true"}` | Pod Annotations |
 | compactor.&ZeroWidthSpace;podDisruptionBudget.&ZeroWidthSpace;maxUnavailable | string | `"30%"` |  |
 | compactor.&ZeroWidthSpace;podLabels | object | `{}` | Pod Labels |
 | compactor.&ZeroWidthSpace;readinessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
@@ -291,7 +291,7 @@ Kubernetes: `^1.19.0-0`
 | distributor.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
 | distributor.&ZeroWidthSpace;nodeSelector | object | `{}` |  |
 | distributor.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;subPath | string | `nil` |  |
-| distributor.&ZeroWidthSpace;podAnnotations | object | `{"prometheus.io/port":"8080","prometheus.io/scrape":"true"}` | Pod Annotations |
+| distributor.&ZeroWidthSpace;podAnnotations | object | `{"prometheus.io/port":"{{ .Values.config.server.http_listen_port }}","prometheus.io/scrape":"true"}` | Pod Annotations |
 | distributor.&ZeroWidthSpace;podDisruptionBudget.&ZeroWidthSpace;maxUnavailable | string | `"30%"` |  |
 | distributor.&ZeroWidthSpace;podLabels | object | `{}` | Pod Labels |
 | distributor.&ZeroWidthSpace;readinessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
@@ -366,7 +366,7 @@ Kubernetes: `^1.19.0-0`
 | ingester.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;size | string | `"2Gi"` | Ingester data Persistent Volume size |
 | ingester.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;storageClass | string | `nil` | Ingester data Persistent Volume Storage Class If defined, storageClassName: <storageClass> If set to "-", storageClassName: "", which disables dynamic provisioning If undefined (the default) or set to null, no storageClassName spec is set, choosing the default provisioner. |
 | ingester.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;subPath | string | `""` | Subdirectory of Ingester data Persistent Volume to mount Useful if the volume's root directory is not empty |
-| ingester.&ZeroWidthSpace;podAnnotations | object | `{"prometheus.io/port":"8080","prometheus.io/scrape":"true"}` | Pod Annotations |
+| ingester.&ZeroWidthSpace;podAnnotations | object | `{"prometheus.io/port":"{{ .Values.config.server.http_listen_port }}","prometheus.io/scrape":"true"}` | Pod Annotations |
 | ingester.&ZeroWidthSpace;podDisruptionBudget.&ZeroWidthSpace;maxUnavailable | int | `1` |  |
 | ingester.&ZeroWidthSpace;podLabels | object | `{}` | Pod Labels |
 | ingester.&ZeroWidthSpace;readinessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
@@ -655,7 +655,7 @@ Kubernetes: `^1.19.0-0`
 | purger.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
 | purger.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;scheme | string | `"HTTP"` |  |
 | purger.&ZeroWidthSpace;nodeSelector | object | `{}` |  |
-| purger.&ZeroWidthSpace;podAnnotations.&ZeroWidthSpace;"prometheus.&ZeroWidthSpace;io/port" | string | `"8080"` |  |
+| purger.&ZeroWidthSpace;podAnnotations.&ZeroWidthSpace;"prometheus.&ZeroWidthSpace;io/port" | string | `"{{ .Values.config.server.http_listen_port }}"` |  |
 | purger.&ZeroWidthSpace;podAnnotations.&ZeroWidthSpace;"prometheus.&ZeroWidthSpace;io/scrape" | string | `"true"` |  |
 | purger.&ZeroWidthSpace;podLabels | object | `{}` |  |
 | purger.&ZeroWidthSpace;readinessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
@@ -710,7 +710,7 @@ Kubernetes: `^1.19.0-0`
 | querier.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
 | querier.&ZeroWidthSpace;nodeSelector | object | `{}` |  |
 | querier.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;subPath | string | `nil` |  |
-| querier.&ZeroWidthSpace;podAnnotations | object | `{"prometheus.io/port":"8080","prometheus.io/scrape":"true"}` | Pod Annotations |
+| querier.&ZeroWidthSpace;podAnnotations | object | `{"prometheus.io/port":"{{ .Values.config.server.http_listen_port }}","prometheus.io/scrape":"true"}` | Pod Annotations |
 | querier.&ZeroWidthSpace;podDisruptionBudget.&ZeroWidthSpace;maxUnavailable | string | `"30%"` |  |
 | querier.&ZeroWidthSpace;podLabels | object | `{}` | Pod Labels |
 | querier.&ZeroWidthSpace;readinessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
@@ -757,7 +757,7 @@ Kubernetes: `^1.19.0-0`
 | query_frontend.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
 | query_frontend.&ZeroWidthSpace;nodeSelector | object | `{}` |  |
 | query_frontend.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;subPath | string | `nil` |  |
-| query_frontend.&ZeroWidthSpace;podAnnotations | object | `{"prometheus.io/port":"8080","prometheus.io/scrape":"true"}` | Pod Annotations |
+| query_frontend.&ZeroWidthSpace;podAnnotations | object | `{"prometheus.io/port":"{{ .Values.config.server.http_listen_port }}","prometheus.io/scrape":"true"}` | Pod Annotations |
 | query_frontend.&ZeroWidthSpace;podDisruptionBudget.&ZeroWidthSpace;maxUnavailable | string | `"30%"` |  |
 | query_frontend.&ZeroWidthSpace;podLabels | object | `{}` | Pod Labels |
 | query_frontend.&ZeroWidthSpace;readinessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
@@ -865,7 +865,7 @@ Kubernetes: `^1.19.0-0`
 | ruler.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
 | ruler.&ZeroWidthSpace;livenessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;port | string | `"http-metrics"` |  |
 | ruler.&ZeroWidthSpace;nodeSelector | object | `{}` |  |
-| ruler.&ZeroWidthSpace;podAnnotations | object | `{"prometheus.io/port":"8080","prometheus.io/scrape":"true"}` | Pod Annotations |
+| ruler.&ZeroWidthSpace;podAnnotations | object | `{"prometheus.io/port":"{{ .Values.config.server.http_listen_port }}","prometheus.io/scrape":"true"}` | Pod Annotations |
 | ruler.&ZeroWidthSpace;podDisruptionBudget.&ZeroWidthSpace;maxUnavailable | string | `"30%"` |  |
 | ruler.&ZeroWidthSpace;podLabels | object | `{}` | Pod Labels |
 | ruler.&ZeroWidthSpace;readinessProbe.&ZeroWidthSpace;httpGet.&ZeroWidthSpace;path | string | `"/ready"` |  |
@@ -957,7 +957,7 @@ Kubernetes: `^1.19.0-0`
 | store_gateway.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;size | string | `"2Gi"` | Store-gateway data Persistent Volume size |
 | store_gateway.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;storageClass | string | `nil` | Store-gateway data Persistent Volume Storage Class If defined, storageClassName: <storageClass> If set to "-", storageClassName: "", which disables dynamic provisioning If undefined (the default) or set to null, no storageClassName spec is set, choosing the default provisioner. |
 | store_gateway.&ZeroWidthSpace;persistentVolume.&ZeroWidthSpace;subPath | string | `""` | Subdirectory of Store-gateway data Persistent Volume to mount Useful if the volume's root directory is not empty |
-| store_gateway.&ZeroWidthSpace;podAnnotations | object | `{"prometheus.io/port":"8080","prometheus.io/scrape":"true"}` | Pod Annotations |
+| store_gateway.&ZeroWidthSpace;podAnnotations | object | `{"prometheus.io/port":"{{ .Values.config.server.http_listen_port }}","prometheus.io/scrape":"true"}` | Pod Annotations |
 | store_gateway.&ZeroWidthSpace;podDisruptionBudget.&ZeroWidthSpace;maxUnavailable | int | `1` |  |
 | store_gateway.&ZeroWidthSpace;podLabels | object | `{}` | Pod Labels |
 | store_gateway.&ZeroWidthSpace;podManagementPolicy | string | `"OrderedReady"` | https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#pod-management-policies |

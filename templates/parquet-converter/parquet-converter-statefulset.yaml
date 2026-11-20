@@ -59,7 +59,7 @@ spec:
         checksum/config: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
       {{- end }}
       {{- with .Values.parquet_converter.podAnnotations }}
-        {{- toYaml . | nindent 8 }}
+        {{- tpl (toYaml .) $ | nindent 8 }}
       {{- end }}
     spec:
       serviceAccountName: {{ template "cortex.serviceAccountName" . }}

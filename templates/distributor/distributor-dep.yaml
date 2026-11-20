@@ -29,7 +29,7 @@ spec:
       annotations:
         checksum/config: {{ include "cortex.configChecksum" . }}
         {{- with .Values.distributor.podAnnotations }}
-        {{- toYaml . | nindent 8 }}
+        {{- tpl (toYaml .) $ | nindent 8 }}
         {{- end }}
     spec:
       serviceAccountName: {{ .Values.distributor.serviceAccount.name | default (include "cortex.serviceAccountName" . ) }}
