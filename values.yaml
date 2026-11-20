@@ -297,7 +297,7 @@ alertmanager:
   # -- Extra volume mounts that will be added to the cortex container
   extraVolumeMounts: []
 
-  # -- Additional ports to the cortex services. Useful to expose extra container ports.
+  # -- Additional container ports, as in the Kubernetes ContainerPort spec. Each one is also exposed on the services under its name.
   extraPorts: []
 
   # -- Extra env variables to pass to the cortex container
@@ -462,6 +462,7 @@ distributor:
   extraContainers: []
   extraVolumes: []
   extraVolumeMounts: []
+  # -- Additional container ports, as in the Kubernetes ContainerPort spec. Each one is also exposed on the services under its name.
   extraPorts: []
   env: []
   lifecycle: {}
@@ -654,6 +655,7 @@ ingester:
   extraContainers: []
   extraVolumes: []
   extraVolumeMounts: []
+  # -- Additional container ports, as in the Kubernetes ContainerPort spec. Each one is also exposed on the services under its name.
   extraPorts: []
   env: []
 
@@ -753,6 +755,7 @@ ruler:
   extraContainers: []
   extraVolumes: []
   extraVolumeMounts: []
+  # -- Additional container ports, as in the Kubernetes ContainerPort spec. Each one is also exposed on the services under its name.
   extraPorts: []
   env: []
   # -- allow configuring rules via configmap. ref: https://cortexproject.github.io/cortex-helm-chart/guides/configure_rules_via_configmap.html
@@ -917,6 +920,7 @@ querier:
   extraContainers: []
   extraVolumes: []
   extraVolumeMounts: []
+  # -- Additional container ports, as in the Kubernetes ContainerPort spec. Each one is also exposed on the services under its name.
   extraPorts: []
   env: []
   lifecycle: {}
@@ -1011,6 +1015,7 @@ query_frontend:
   extraContainers: []
   extraVolumes: []
   extraVolumeMounts: []
+  # -- Additional container ports, as in the Kubernetes ContainerPort spec. Each one is also exposed on the services under its name.
   extraPorts: []
   env: []
   lifecycle: {}
@@ -1102,6 +1107,7 @@ query_scheduler:
   extraContainers: []
   extraVolumes: []
   extraVolumeMounts: []
+  # -- Additional container ports, as in the Kubernetes ContainerPort spec. Each one is also exposed on the services under its name.
   extraPorts: []
   env: []
   lifecycle: {}
@@ -1190,6 +1196,7 @@ overrides_exporter:
   extraContainers: []
   extraVolumes: []
   extraVolumeMounts: []
+  # -- Additional container ports, as in the Kubernetes ContainerPort spec. Each one is also exposed on the services under its name.
   extraPorts: []
   env: []
   lifecycle: {}
@@ -1326,6 +1333,7 @@ parquet_converter:
   extraContainers: []
   extraVolumes: []
   extraVolumeMounts: []
+  # -- Additional container ports, as in the Kubernetes ContainerPort spec. Each one is also exposed on the services under its name.
   extraPorts: []
   env: []
   lifecycle: {}
@@ -1389,7 +1397,7 @@ purger:
   # -- Extra volume mounts that will be added to the cortex container
   extraVolumeMounts: []
 
-  # -- Additional ports to the cortex services. Useful to expose extra container ports.
+  # -- Additional container ports, as in the Kubernetes ContainerPort spec. Each one is also exposed on the services under its name.
   extraPorts: []
 
   # -- Extra env variables to pass to the cortex container
@@ -1536,6 +1544,7 @@ nginx:
   extraContainers: []
   extraVolumes: []
   extraVolumeMounts: []
+  # -- Additional container ports, as in the Kubernetes ContainerPort spec. Each one is also exposed on the services under its name.
   extraPorts: []
   env: []
 
@@ -1684,6 +1693,7 @@ store_gateway:
   extraContainers: []
   extraVolumes: []
   extraVolumeMounts: []
+  # -- Additional container ports, as in the Kubernetes ContainerPort spec. Each one is also exposed on the services under its name.
   extraPorts: []
   env: []
 
@@ -1798,6 +1808,7 @@ compactor:
   extraContainers: []
   extraVolumes: []
   extraVolumeMounts: []
+  # -- Additional container ports, as in the Kubernetes ContainerPort spec. Each one is also exposed on the services under its name.
   extraPorts: []
   env: []
 

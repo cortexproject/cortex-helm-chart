@@ -19,6 +19,9 @@ spec:
       protocol: TCP
       name: grpc
       targetPort: grpc
+    {{- with .Values.ingester.extraPorts }}
+    {{- include "cortex.extraServicePorts" . | trim | nindent 4 }}
+    {{- end }}
   selector:
     {{- include "cortex.ingesterSelectorLabels" . | nindent 4 }}
 {{- end }}

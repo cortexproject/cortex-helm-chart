@@ -18,6 +18,9 @@ spec:
       protocol: TCP
       name: http-metrics
       targetPort: http-metrics
+    {{- with .Values.store_gateway.extraPorts }}
+    {{- include "cortex.extraServicePorts" . | trim | nindent 4 }}
+    {{- end }}
   selector:
     {{- include "cortex.storeGatewaySelectorLabels" . | nindent 4 }}
 {{- end -}}

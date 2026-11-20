@@ -68,6 +68,9 @@ spec:
             - name: grpc
               containerPort: {{ .Values.config.server.grpc_listen_port }}
               protocol: TCP
+          {{- with .Values.query_scheduler.extraPorts }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           startupProbe:
             {{- toYaml .Values.query_scheduler.startupProbe | nindent 12 }}
           livenessProbe:

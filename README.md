@@ -105,7 +105,7 @@ Kubernetes: `^1.19.0-0`
 | alertmanager.&ZeroWidthSpace;env | list | `[]` | Extra env variables to pass to the cortex container |
 | alertmanager.&ZeroWidthSpace;extraArgs | object | `{}` | Additional Cortex container arguments, e.g. log level (debug, info, warn, error) |
 | alertmanager.&ZeroWidthSpace;extraContainers | list | `[]` | Additional containers to be added to the cortex pod. |
-| alertmanager.&ZeroWidthSpace;extraPorts | list | `[]` | Additional ports to the cortex services. Useful to expose extra container ports. |
+| alertmanager.&ZeroWidthSpace;extraPorts | list | `[]` | Additional container ports, as in the Kubernetes ContainerPort spec. Each one is also exposed on the services under its name. |
 | alertmanager.&ZeroWidthSpace;extraVolumeMounts | list | `[]` | Extra volume mounts that will be added to the cortex container |
 | alertmanager.&ZeroWidthSpace;extraVolumes | list | `[]` | Additional volumes to the cortex pod. |
 | alertmanager.&ZeroWidthSpace;initContainers | list | `[]` | Init containers to be added to the cortex pod. |
@@ -187,7 +187,7 @@ Kubernetes: `^1.19.0-0`
 | compactor.&ZeroWidthSpace;env | list | `[]` |  |
 | compactor.&ZeroWidthSpace;extraArgs | object | `{}` | Additional Cortex container arguments, e.g. log.level (debug, info, warn, error) |
 | compactor.&ZeroWidthSpace;extraContainers | list | `[]` |  |
-| compactor.&ZeroWidthSpace;extraPorts | list | `[]` |  |
+| compactor.&ZeroWidthSpace;extraPorts | list | `[]` | Additional container ports, as in the Kubernetes ContainerPort spec. Each one is also exposed on the services under its name. |
 | compactor.&ZeroWidthSpace;extraVolumeMounts | list | `[]` |  |
 | compactor.&ZeroWidthSpace;extraVolumes | list | `[]` |  |
 | compactor.&ZeroWidthSpace;initContainers | list | `[]` |  |
@@ -282,7 +282,7 @@ Kubernetes: `^1.19.0-0`
 | distributor.&ZeroWidthSpace;env | list | `[]` |  |
 | distributor.&ZeroWidthSpace;extraArgs | object | `{}` | Additional Cortex container arguments, e.g. log.level (debug, info, warn, error) |
 | distributor.&ZeroWidthSpace;extraContainers | list | `[]` |  |
-| distributor.&ZeroWidthSpace;extraPorts | list | `[]` |  |
+| distributor.&ZeroWidthSpace;extraPorts | list | `[]` | Additional container ports, as in the Kubernetes ContainerPort spec. Each one is also exposed on the services under its name. |
 | distributor.&ZeroWidthSpace;extraVolumeMounts | list | `[]` |  |
 | distributor.&ZeroWidthSpace;extraVolumes | list | `[]` |  |
 | distributor.&ZeroWidthSpace;initContainers | list | `[]` |  |
@@ -352,7 +352,7 @@ Kubernetes: `^1.19.0-0`
 | ingester.&ZeroWidthSpace;env | list | `[]` |  |
 | ingester.&ZeroWidthSpace;extraArgs | object | `{}` | Additional Cortex container arguments, e.g. log.level (debug, info, warn, error) |
 | ingester.&ZeroWidthSpace;extraContainers | list | `[]` |  |
-| ingester.&ZeroWidthSpace;extraPorts | list | `[]` |  |
+| ingester.&ZeroWidthSpace;extraPorts | list | `[]` | Additional container ports, as in the Kubernetes ContainerPort spec. Each one is also exposed on the services under its name. |
 | ingester.&ZeroWidthSpace;extraVolumeMounts | list | `[]` |  |
 | ingester.&ZeroWidthSpace;extraVolumes | list | `[]` |  |
 | ingester.&ZeroWidthSpace;initContainers | list | `[]` |  |
@@ -505,7 +505,7 @@ Kubernetes: `^1.19.0-0`
 | nginx.&ZeroWidthSpace;env | list | `[]` |  |
 | nginx.&ZeroWidthSpace;extraArgs | object | `{}` | Additional Cortex container arguments, e.g. log.level (debug, info, warn, error) |
 | nginx.&ZeroWidthSpace;extraContainers | list | `[]` |  |
-| nginx.&ZeroWidthSpace;extraPorts | list | `[]` |  |
+| nginx.&ZeroWidthSpace;extraPorts | list | `[]` | Additional container ports, as in the Kubernetes ContainerPort spec. Each one is also exposed on the services under its name. |
 | nginx.&ZeroWidthSpace;extraVolumeMounts | list | `[]` |  |
 | nginx.&ZeroWidthSpace;extraVolumes | list | `[]` |  |
 | nginx.&ZeroWidthSpace;http_listen_port | int | `80` |  |
@@ -551,7 +551,7 @@ Kubernetes: `^1.19.0-0`
 | overrides_exporter.&ZeroWidthSpace;env | list | `[]` |  |
 | overrides_exporter.&ZeroWidthSpace;extraArgs | object | `{}` | Additional Cortex container arguments, e.g. log.level (debug, info, warn, error) |
 | overrides_exporter.&ZeroWidthSpace;extraContainers | list | `[]` |  |
-| overrides_exporter.&ZeroWidthSpace;extraPorts | list | `[]` |  |
+| overrides_exporter.&ZeroWidthSpace;extraPorts | list | `[]` | Additional container ports, as in the Kubernetes ContainerPort spec. Each one is also exposed on the services under its name. |
 | overrides_exporter.&ZeroWidthSpace;extraVolumeMounts | list | `[]` |  |
 | overrides_exporter.&ZeroWidthSpace;extraVolumes | list | `[]` |  |
 | overrides_exporter.&ZeroWidthSpace;initContainers | list | `[]` |  |
@@ -596,7 +596,7 @@ Kubernetes: `^1.19.0-0`
 | parquet_converter.&ZeroWidthSpace;env | list | `[]` |  |
 | parquet_converter.&ZeroWidthSpace;extraArgs | object | `{}` | Additional Cortex container arguments, e.g. log.level (debug, info, warn, error) |
 | parquet_converter.&ZeroWidthSpace;extraContainers | list | `[]` |  |
-| parquet_converter.&ZeroWidthSpace;extraPorts | list | `[]` |  |
+| parquet_converter.&ZeroWidthSpace;extraPorts | list | `[]` | Additional container ports, as in the Kubernetes ContainerPort spec. Each one is also exposed on the services under its name. |
 | parquet_converter.&ZeroWidthSpace;extraVolumeMounts | list | `[]` |  |
 | parquet_converter.&ZeroWidthSpace;extraVolumes | list | `[]` |  |
 | parquet_converter.&ZeroWidthSpace;initContainers | list | `[]` |  |
@@ -646,7 +646,7 @@ Kubernetes: `^1.19.0-0`
 | purger.&ZeroWidthSpace;env | list | `[]` | Extra env variables to pass to the cortex container |
 | purger.&ZeroWidthSpace;extraArgs | object | `{}` | Additional Cortex container arguments, e.g. log.level (debug, info, warn, error) |
 | purger.&ZeroWidthSpace;extraContainers | list | `[]` | Additional containers to be added to the cortex pod. |
-| purger.&ZeroWidthSpace;extraPorts | list | `[]` | Additional ports to the cortex services. Useful to expose extra container ports. |
+| purger.&ZeroWidthSpace;extraPorts | list | `[]` | Additional container ports, as in the Kubernetes ContainerPort spec. Each one is also exposed on the services under its name. |
 | purger.&ZeroWidthSpace;extraVolumeMounts | list | `[]` | Extra volume mounts that will be added to the cortex container |
 | purger.&ZeroWidthSpace;extraVolumes | list | `[]` | Additional volumes to the cortex pod. |
 | purger.&ZeroWidthSpace;initContainers | list | `[]` | Init containers to be added to the cortex pod. |
@@ -701,7 +701,7 @@ Kubernetes: `^1.19.0-0`
 | querier.&ZeroWidthSpace;env | list | `[]` |  |
 | querier.&ZeroWidthSpace;extraArgs | object | `{}` | Additional Cortex container arguments, e.g. log.level (debug, info, warn, error) |
 | querier.&ZeroWidthSpace;extraContainers | list | `[]` |  |
-| querier.&ZeroWidthSpace;extraPorts | list | `[]` |  |
+| querier.&ZeroWidthSpace;extraPorts | list | `[]` | Additional container ports, as in the Kubernetes ContainerPort spec. Each one is also exposed on the services under its name. |
 | querier.&ZeroWidthSpace;extraVolumeMounts | list | `[]` |  |
 | querier.&ZeroWidthSpace;extraVolumes | list | `[]` |  |
 | querier.&ZeroWidthSpace;initContainers | list | `[]` |  |
@@ -748,7 +748,7 @@ Kubernetes: `^1.19.0-0`
 | query_frontend.&ZeroWidthSpace;env | list | `[]` |  |
 | query_frontend.&ZeroWidthSpace;extraArgs | object | `{}` | Additional Cortex container arguments, e.g. log.level (debug, info, warn, error) |
 | query_frontend.&ZeroWidthSpace;extraContainers | list | `[]` |  |
-| query_frontend.&ZeroWidthSpace;extraPorts | list | `[]` |  |
+| query_frontend.&ZeroWidthSpace;extraPorts | list | `[]` | Additional container ports, as in the Kubernetes ContainerPort spec. Each one is also exposed on the services under its name. |
 | query_frontend.&ZeroWidthSpace;extraVolumeMounts | list | `[]` |  |
 | query_frontend.&ZeroWidthSpace;extraVolumes | list | `[]` |  |
 | query_frontend.&ZeroWidthSpace;initContainers | list | `[]` |  |
@@ -796,7 +796,7 @@ Kubernetes: `^1.19.0-0`
 | query_scheduler.&ZeroWidthSpace;env | list | `[]` |  |
 | query_scheduler.&ZeroWidthSpace;extraArgs | object | `{}` | Additional Cortex container arguments, e.g. log.level (debug, info, warn, error) |
 | query_scheduler.&ZeroWidthSpace;extraContainers | list | `[]` |  |
-| query_scheduler.&ZeroWidthSpace;extraPorts | list | `[]` |  |
+| query_scheduler.&ZeroWidthSpace;extraPorts | list | `[]` | Additional container ports, as in the Kubernetes ContainerPort spec. Each one is also exposed on the services under its name. |
 | query_scheduler.&ZeroWidthSpace;extraVolumeMounts | list | `[]` |  |
 | query_scheduler.&ZeroWidthSpace;extraVolumes | list | `[]` |  |
 | query_scheduler.&ZeroWidthSpace;initContainers | list | `[]` |  |
@@ -858,7 +858,7 @@ Kubernetes: `^1.19.0-0`
 | ruler.&ZeroWidthSpace;env | list | `[]` |  |
 | ruler.&ZeroWidthSpace;extraArgs | object | `{}` | Additional Cortex container arguments, e.g. log.level (debug, info, warn, error) |
 | ruler.&ZeroWidthSpace;extraContainers | list | `[]` |  |
-| ruler.&ZeroWidthSpace;extraPorts | list | `[]` |  |
+| ruler.&ZeroWidthSpace;extraPorts | list | `[]` | Additional container ports, as in the Kubernetes ContainerPort spec. Each one is also exposed on the services under its name. |
 | ruler.&ZeroWidthSpace;extraVolumeMounts | list | `[]` |  |
 | ruler.&ZeroWidthSpace;extraVolumes | list | `[]` |  |
 | ruler.&ZeroWidthSpace;initContainers | list | `[]` |  |
@@ -944,7 +944,7 @@ Kubernetes: `^1.19.0-0`
 | store_gateway.&ZeroWidthSpace;env | list | `[]` |  |
 | store_gateway.&ZeroWidthSpace;extraArgs | object | `{}` | Additional Cortex container arguments, e.g. log.level (debug, info, warn, error) |
 | store_gateway.&ZeroWidthSpace;extraContainers | list | `[]` |  |
-| store_gateway.&ZeroWidthSpace;extraPorts | list | `[]` |  |
+| store_gateway.&ZeroWidthSpace;extraPorts | list | `[]` | Additional container ports, as in the Kubernetes ContainerPort spec. Each one is also exposed on the services under its name. |
 | store_gateway.&ZeroWidthSpace;extraVolumeMounts | list | `[]` |  |
 | store_gateway.&ZeroWidthSpace;extraVolumes | list | `[]` |  |
 | store_gateway.&ZeroWidthSpace;initContainers | list | `[]` |  |

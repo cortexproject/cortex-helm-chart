@@ -172,6 +172,9 @@ spec:
             - name: gossip
               containerPort: {{ .Values.config.memberlist.bind_port }}
               protocol: TCP
+          {{- with .Values.ruler.extraPorts }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           startupProbe:
             {{- toYaml .Values.ruler.startupProbe | nindent 12 }}
           livenessProbe:

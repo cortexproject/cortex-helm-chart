@@ -22,6 +22,9 @@ spec:
       protocol: TCP
       name: grpc
       targetPort: grpc
+    {{- with .Values.query_frontend.extraPorts }}
+    {{- include "cortex.extraServicePorts" . | trim | nindent 4 }}
+    {{- end }}
   selector:
     {{- include "cortex.queryFrontendSelectorLabels" . | nindent 4 }}
   {{- with .Values.query_frontend.service.trafficDistribution }}

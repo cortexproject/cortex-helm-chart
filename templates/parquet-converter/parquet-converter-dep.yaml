@@ -69,6 +69,9 @@ spec:
             - name: http-metrics
               containerPort: {{ .Values.config.server.http_listen_port }}
               protocol: TCP
+          {{- with .Values.parquet_converter.extraPorts }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           startupProbe:
             {{- toYaml .Values.parquet_converter.startupProbe | nindent 12 }}
           livenessProbe:
