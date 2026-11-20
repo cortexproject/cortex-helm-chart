@@ -32,6 +32,9 @@ spec:
       protocol: TCP
       name: alert-clu-tcp
       targetPort: alert-clu-tcp
+    {{- with .Values.alertmanager.extraPorts }}
+    {{- include "cortex.extraServicePorts" . | trim | nindent 4 }}
+    {{- end }}
   selector:
     {{- include "cortex.alertmanagerSelectorLabels" . | nindent 4 }}
 {{- end -}}

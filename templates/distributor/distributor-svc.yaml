@@ -18,6 +18,9 @@ spec:
       protocol: TCP
       name: http-metrics
       targetPort: http-metrics
+    {{- with .Values.distributor.extraPorts }}
+    {{- include "cortex.extraServicePorts" . | trim | nindent 4 }}
+    {{- end }}
   selector:
     {{- include "cortex.distributorSelectorLabels" . | nindent 4 }}
   {{- with .Values.distributor.service.trafficDistribution }}

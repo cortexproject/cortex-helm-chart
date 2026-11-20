@@ -18,6 +18,9 @@ spec:
       protocol: TCP
       name: http-metrics
       targetPort: http-metrics
+    {{- with .Values.overrides_exporter.extraPorts }}
+    {{- include "cortex.extraServicePorts" . | trim | nindent 4 }}
+    {{- end }}
   selector:
     {{- include "cortex.overridesExporterSelectorLabels" . | nindent 4 }}
 {{- end }}

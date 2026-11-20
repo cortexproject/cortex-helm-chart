@@ -2,6 +2,8 @@
 
 ## master / unreleased
 
+* [ENHANCEMENT] Make `extraPorts` work for all components: the ports are added to the cortex container and exposed on the component services #409
+
 ## 3.7.0 / 2026-11-20
 
 * [ENHANCEMENT] Render `podAnnotations` with `tpl`, so the default `prometheus.io/port` annotations follow `config.server.http_listen_port` #410

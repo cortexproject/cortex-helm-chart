@@ -179,3 +179,16 @@ This helper validates that if memcached image is set to official image, args are
 {{- end -}}
 {{- end -}}
 {{- end -}}
+
+{{/*
+Service ports for the extraPorts of a component. Each extra container port is
+exposed on the service under its own name and port.
+*/}}
+{{- define "cortex.extraServicePorts" -}}
+{{- range . }}
+- port: {{ .containerPort }}
+  protocol: {{ .protocol | default "TCP" }}
+  name: {{ required "extraPorts entries need a name so they can be exposed on the service" .name }}
+  targetPort: {{ .name }}
+{{- end }}
+{{- end }}

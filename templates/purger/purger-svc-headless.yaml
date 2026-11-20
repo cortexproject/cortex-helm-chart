@@ -20,6 +20,9 @@ spec:
       protocol: TCP
       name: grpc
       targetPort: grpc
+    {{- with .Values.purger.extraPorts }}
+    {{- include "cortex.extraServicePorts" . | trim | nindent 4 }}
+    {{- end }}
   selector:
     {{- include "cortex.purgerSelectorLabels" . | nindent 4 }}
 {{- end }}
