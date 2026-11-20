@@ -2,6 +2,8 @@
 
 ## master / unreleased
 
+## 3.7.0 / 2026-11-20
+
 * [ENHANCEMENT] Render `podAnnotations` with `tpl`, so the default `prometheus.io/port` annotations follow `config.server.http_listen_port` #410
 * [DEPENDENCY] update quay.io/cortexproject/cortex docker tag to v1.22.0 #699
 
